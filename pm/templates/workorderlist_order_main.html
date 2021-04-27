@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Work Request Select Page</title>
+</head>
+<style>
+click_btn{
+    	font-family: arial;
+        font-size:14px;
+        font-weight:bold;
+}
+.View_css{
+        position: fixed; top:45px; left:40px;
+    	font-family: arial;
+        font-size:12px;
+        cursor:pointer;
+        width:50px;
+}
+.Print_css{
+        position: fixed; top:45px; left:100px;
+    	font-family: arial;
+        font-size:12px;
+        cursor:pointer;
+        width:50px;
+}
+</style>
+<body>
+<click_btn>Click the button</click_btn>
+    <form action="workorderlist_order" name="Call_request" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="workorderno_get">
+        <input type="submit" name="workorderno" class="View_css" value="View">
+    </form>
+
+    <form action="workorderlist_order_print" name="Print_request" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="workorderno_trans">
+        <input type="submit" name="workorderno" class="Print_css" value="Print">
+    </form>
+
+<script>
+     //////////// 기본초기값 불러오기//////////////
+     function init(){
+             var workorderno = opener.document.getElementById("workorderno_up").value;
+             document.Call_request.workorderno_get.value = workorderno;
+             document.Print_request.workorderno_trans.value = workorderno;
+             }
+      onload=init
+
+      function Request_print(){
+             document.Call_request.action="workorderlist_request";
+             document.Call_request.submit();
+                    }
+</script>
+</body>
+</html>

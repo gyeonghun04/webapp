@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+#main_today{
+    position:fixed; left:9.3%; top:64.3%;
+    border-radius:3%;
+    padding-left:20px;
+    padding-top:10px;
+    padding-right:20px;
+    background-color:white;
+    width:37.3%;
+    height:33.5%;
+}
+#date{
+    position:fixed; left:10.3%; top:68%;
+    background-color:lightgrey;
+    width:200px;
+    height:250px;
+    border-radius:10%;
+}
+#date_title{
+    position:fixed; left:10.85%; top:68.5%;
+    z-index:1000;
+    width:180px;
+}
+#main_month{
+    font-family:arial;
+    font-size:40px;
+    font-weight:bold;
+    color:black;
+}
+main_day{
+    position:fixed; left:11.7%; top:75.5%;
+    font-family:arial;
+    font-size:130px;
+    font-weight:bold;
+}
+#today_table{
+    position:fixed; left:23%; top:68%;
+    font-family: arial;
+    font-size:16px;
+}
+.t1{width:100px;
+color:white;
+background-color:#6F6F6F;
+height:25px;}
+.t2{width:200px;
+color:white;
+background-color:#6F6F6F;}
+.t3{width:150px;
+color:white;
+background-color:#6F6F6F;}
+
+.t1-1{width:100px;
+font-size:14px;
+font-weight:bold;}
+.t2-1{width:200px;
+font-size:14px;
+font-weight:bold;}
+.t3-1{width:150px;
+font-size:14px;}
+</style>
+
+<body>
+<div id="main_today">
+    </div>
+<div id="date">
+    </div>
+<table id="date_title">
+    <tr>
+        <td align="center" id="main_month">{{calendar_month}}</td>
+    </tr>
+</table>
+    <main_day>{{calendar_day}}</main_day>
+
+<div id="today_table">
+<table>
+<tr>
+    <td align="center" class="t1">Team</td>
+    <td align="center" class="t2">Number of PM</td>
+    <td align="center" class="t3">Remark</td>
+</tr>
+    {% for team_info in df_team_info %}
+<tr>
+    <td align="center" class="t1-1">{{team_info.team}}</td>
+    <td align="center" class="t2-1">{{team_info.team__count}}</td>
+    <td align="center" class="t3-1"></td>
+</tr>
+    {%endfor%}
+</table>
+</div>
+
+</body>
+</html>

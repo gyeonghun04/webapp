@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+    <title>Title</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap');
+
+header{
+        height:30px;
+        background:#6F6F6F;
+        justify-content:space-between;
+        align-items:center;
+        position:fixed;
+        top:0;
+        left:0;
+        right:0;
+        z-index:10;
+        }
+header2{
+        height:0.3px;
+        padding-top:3px;
+        background:#EEEEEE;
+        display:flex;
+        justify-content:space-between;
+        position:fixed;
+        top:30px;
+        left:0;
+        right:0;
+        z-index:10;
+}
+toptext{
+        font-family: 'Rubik', sans-serif;
+        font-size:18px;
+        vertical-align:top;
+        font-weight:bold;
+        padding-left:5px;
+        color:white;
+}
+#logindata{
+        position:fixed; top:1px; left:90px;
+        font-family: 'Rubik', sans-serif;
+        font-size:18px;
+        vertical-align:top;
+        font-weight:bold;
+        color:white;
+}
+l{
+        margin-left:1%;
+        color:white;
+}
+m{
+        margin-left:1%;
+        color:white;
+}
+k{
+        position:fixed; top:0%; left:94.5%;
+        color:white;
+}
+.Button {
+        position:fixed; left:320px;
+        font-family:'Rubik', sans-serif;
+        font-size:18px;
+        background-color: rgba(255, 255, 255, 0.0);
+        cursor:pointer;
+        border:0px;
+        color:white;
+        font-weight:bold;
+}
+spareparts{
+        position:fixed; top:35px; left:5px;
+        font-family: 'Rubik', sans-serif;
+        font-size:18px;
+        font-weight:bold;
+}
+#table_location{
+        position:fixed; top:70px; left:5px;
+}
+
+#sparepartstable{
+        border:1px solid white;
+        border-collapse:collapse;
+}
+.text_css{
+      font-family:'Rubik', sans-serif;
+      font-size:13px;
+      color:black;
+      background-color:#D8D8D8;
+      width:130px;
+      height:25px;
+      }
+.input_css{
+      width:220px;
+      height:25px;
+}
+.location_css{
+      width:120px;
+      height:25px;
+}
+.select_css{
+      font-size:13px;
+      width:125px;
+      height:27px;
+}
+.location_btn{
+        margin-top:11px;
+    	font-family: arial;
+        font-size:12px;
+        cursor:pointer;
+}
+.submit_btn{
+    	font-family: arial;
+        font-size:12px;
+        cursor:pointer;
+        position:fixed; top:320px; left:315px;
+
+}
+</style>
+</head>
+
+<body>
+<header>
+<toptext>Welcome,&nbsp;</toptext>
+<div id="logindata"></div>
+
+<input type="button"value="Close" class="Button" onclick="Close();">
+
+</header>
+<header2>
+</header2>
+<spareparts>Spare Parts New Registration</spareparts>
+<form action="spareparts_new_submit" method="post" name="spare_registration">
+    {% csrf_token %}
+<div id="table_location">
+   <table id="sparepartstable" border="1">
+        <tr>
+            <td align="center" class="text_css">Team</td>
+            <td align="left" colspan="2"><select class="select_css" name="team">&nbsp;
+            <option value="DS">DS</option>
+            <option value="DP">DP</option>
+            <option value="ENG">ENG</option>
+            <option value="QC">QC</option>
+            <option value="SCM">SCM</option>
+            <option value="ETC">ETC</option></select></td>
+        </tr>
+        <tr>
+            <td align="center" class="text_css">Parts Name</td>
+            <td align="center" colspan="2">
+            <input type="text" name="partsname"  class="input_css" required ></td>
+        </tr>
+        <tr>
+            <td align="center" class="text_css">Vendor</td>
+            <td align="center" colspan="2">
+            <input type="text" name="vendor"  class="input_css" required></td>
+        </tr>
+        <tr>
+            <td align="center" class="text_css">Model Name</td>
+            <td align="center" colspan="2">
+            <input type="text" name="modelno"  class="input_css" required></td>
+        </tr>
+        <tr>
+            <td align="center" class="text_css">Spec</td>
+            <td align="center" colspan="2">
+            <input type="text" name="spec"  class="input_css" required></td>
+        </tr>
+        <tr>
+            <td align="center" class="text_css">Location</td>
+             <td align="left">
+            <input type="text" name="location"  class="location_css" required></td>
+            <td align="right"><input type="button" class="location_btn" value="Search" onclick="Location_btn();"></td>
+        </tr>
+        <tr>
+            <td align="center" class="text_css">Safety Stock</td>
+            <td align="center" colspan="2">
+            <input type="text" name="safety_stock"  class="input_css" required></td>
+        </tr>
+   </table>
+</div>
+    <input type="hidden" name="loginid">
+<input type="submit" class="submit_btn" value="Submit"></form>
+<script>
+    //////////// 기본초기값 불러오기//////////////
+     function init(){
+            loginid = opener.document.getElementById("loginid_up").value;
+            document.spare_registration.loginid.value = loginid;
+       ////아이디 정보 보내기
+            var loginid_up = loginid;
+            document.getElementById("logindata").innerHTML=loginid_up;
+            }
+
+      onload=init
+
+
+    function Close(){
+    self.close();
+    }
+
+</script>
+</body>
+</html>

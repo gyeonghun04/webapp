@@ -1,0 +1,218 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+
+</head>
+<style>
+#tablemenu{
+    	font-family: arial;
+        font-size:11px;
+        position:fixed;top:7.5%; left:9%;
+        height:2.5%;
+        width:53.8%;
+        background-color:#6F6F6F;
+        color:white;
+}
+.m1{width:40px;}
+.m2{width:70px;}
+.m3{width:150px;}
+.m4{width:80px;}
+.m4-2{width:30px;}
+.m5{width:50px;}
+.m6{width:140px;}
+.m7{width:55px;}
+.m8{width:100px;}
+.m9{width:120px;}
+.m10{width:70px;}
+.m11{width:60px;}
+
+.row{
+        position:absolute;top:10%; left:9%;
+        z-index:10;
+        width:53.8%;
+        font-family: arial;
+        font-size:11px;
+        overflow-y:scroll;
+        height:86.8%;
+}
+
+.m1-1{width:40px;}
+.m2-1{width:65px;}
+.m3-1{width:150px;}
+.m4-1{width:90px;}
+.m4-2{width:30px;}
+.m5-1{width:50px;}
+.m6-1{width:150px;}
+.m7-1{width:50px;}
+.m8-1{width:100px;}
+.m9-1{width:100px;}
+.m10-1{width:80px;}
+.m11-1{width:60px;}
+
+body{overflow:hidden;}
+
+#sideline2{
+        background:#EEEEEE;
+        position:fixed; right:36.95%;
+        height:100%;
+        width:5px;
+}
+mainfooter{
+        background-color:#6F6F6F;
+        position:fixed; top:97%; left:9%;
+        height:30px;
+        width:53.8%;
+        z-index:100;
+}
+.monButton {
+        font-family:'Rubik', sans-serif;
+        font-size:13.5px;
+        background-color: rgba(255, 255, 255, 0.0);
+        cursor:pointer;
+        border:0px;
+
+        color:white;
+}
+#buttonlocation{
+        margin-left:85%;
+}
+.plandate_css{
+        width:110px;
+        font-family: arial;
+        font-size:11px;
+}
+.button{
+    	font-family: arial;
+        font-size:11px;
+        cursor:pointer;
+}
+tr:nth-child(even){
+    background-color:#EEEEEE;
+}
+</style>
+<body>
+<div id="tablemenu">
+     <table  style="word-break:break-all">
+        <thead>
+        <tr>
+            <td align="center" class="m1">Team</td>
+            <td align="center" class="m2">Control No.</td>
+            <td align="center" class="m3">Equip. Name</td>
+            <td align="center" class="m4">PM Sheet No.</td>
+            <td align="center" class="m4-2">Rev</td>
+            <td align="center" class="m5">Room No.</td>
+            <td align="center" class="m6">Room Name</td>
+            <td align="center" class="m7">Date</td>
+            <td align="center" class="m8">Plan Date</td>
+            <td align="center" class="m9">Action Date</td>
+            <td align="center" class="m10">Status</td>
+            <td align="center" class="m11">View</td>
+        </tr>
+        </thead>
+     </table>
+</div>
+    <div class="row">
+        <table id="example-table-1" width="100%">
+                <tbody>
+                      {% for pm_sch in pmmonthly_sch %}
+        <tr>
+            <td align="center" class="m1-1">{{pm_sch.team}}</td> <!--models.py에서 값받아오기-->
+            <td align="center" class="m2-1">{{pm_sch.controlno}}</td>
+            <td align="center" class="m3-1">{{pm_sch.name}}</td>
+            <td align="center" class="m4-1">{{pm_sch.pmsheetno}}</td>
+            <td align="center" class="m4-2">{{pm_sch.revno}}</td>
+            <td align="center" class="m5-1">{{pm_sch.roomno}}</td>
+            <td align="center" class="m6-1">{{pm_sch.roomname}}</td>
+            <td align="center" class="m7-1">{{pm_sch.date}}</td>
+            <td align="center" class="m8-1">
+            <input type="date" name="plandate" class="plandate_css" value={{pm_sch.plandate_temp}}>
+            </td>
+            <td align="center" class="m9-1">{{pm_sch.actiondate}}</td>
+            <td align="center" class="m10-1">{{pm_sch.status}}</td>
+            <td align="center" class="m11-1">
+            <form action="pmmonthly_view" method="post" >
+                {% csrf_token %}
+                <input type="hidden" value={{loginid}} name="loginid">
+                <input type="hidden" value={{calendarsearch}} name="calendarsearch">
+                <input type="hidden" value={{pm_sch.pmsheetno}} name="pmsheetno">
+                <input type="hidden" value={{pm_sch.revno}} name="revno">
+                <input type="hidden" value={{pm_sch.controlno}} name="controlno">
+                <input type="hidden" value={{pm_sch.pmcode}} name="pmcode" >
+                <input type="submit" class="button" value="View">
+                </form></td>
+        </tr>
+                       {% endfor %}
+        </tbody>
+        </table>
+        <form action="" method="post" name="plandateform">
+             {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="hidden" value={{calendarsearch}} name="calendarsearch">
+        <input type="hidden" name="plandate">
+        <input type="hidden" name="pmsheetno">
+        <input type="hidden" name="controlno">
+        <input type="hidden" name="revno">
+        <input type="hidden" name="pmcode">
+        </form>
+    </div>
+
+<div id="sideline2">
+<mainline>
+</mainline>
+<mainfooter>
+<table id="buttonlocation">
+    <tr>
+        <td><form action="" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="hidden" value={{calendarsearch}} name="calendarsearch">
+        <input type="submit" value="Preview" class="monButton"></form>
+        </td>
+
+        <td><form action="pmmonthly_submit" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="hidden" value={{calendarsearch}} name="calendarsearch">
+        <input type="submit" value="Submit" class="monButton" onclick="this.disabled=true;this.value='Loading'; this.form.submit();"></form>
+        </td>
+    </tr>
+
+</table>
+</mainfooter>
+</div>
+
+<script>
+        $("#example-table-1 tr").change(function(){
+            var str = ""
+            var tdArr = new Array();    // 배열 선언
+            // 현재 클릭된 Row(<tr>)
+            var tr = $(this);
+            var td = tr.children();
+
+            // 클릭한 위치 pmsheetno, revno, controlno  받기
+            let pmsheetnoget = td.eq(3).text();
+            document.plandateform.pmsheetno.value = pmsheetnoget;
+            let controlnoget = td.eq(1).text();
+            document.plandateform.controlno.value = controlnoget;
+            let revnoget = td.eq(4).text();
+            document.plandateform.revno.value = revnoget;
+
+            // 행위치값과 플랜데이트/pmcode 받기
+            var i = $(this).closest('tr').prevAll().length;
+            var plandateget= document.getElementsByName('plandate')[i].value;
+            document.plandateform.plandate.value = plandateget;
+            var pmcodeget= document.getElementsByName('pmcode')[i].value;
+            document.plandateform.pmcode.value = pmcodeget;
+            document.plandateform.action="pmmonthly_plandate";
+            document.plandateform.submit();
+        });
+
+</script>
+
+
+</body>
+</html>

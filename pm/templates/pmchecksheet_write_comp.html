@@ -1,0 +1,303 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+
+</head>
+<style>
+pmchecksheettitle{
+        position:fixed;top:5.5%; left:58%;
+        font-size: 25px;
+        font-family: arial;
+        font-weight:bold;
+}
+controlformtext{
+        position:fixed;top:7.8%; left:53%;
+        font-size: 11px;
+}
+#pmchecksheettitle{
+    	font-family: arial;
+        font-size:11px;
+        position:fixed;top:22%; left:39.6%;
+        width:59.98%;
+        background-color:#6F6F6F;
+        color:white;
+        height:35px;
+}
+.pmchecksheettop{
+        position:fixed; top:25.6%; left:39.6%;
+        width:59.90%;
+        height:52.6%;
+        overflow-y:scroll;
+}
+#pmchecksheettable{
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+        font-size:11px;
+        font-family: arial;
+}
+
+#usedparthead{
+        position:fixed; top:78.2%; left:39.6%;
+        width:60%;
+    	font-family: arial;
+        font-size:11px;
+        background-color:#6F6F6F;
+        color:white;
+        height:40px;
+        border:1px solid white;
+        border-collapse:collapse;
+        z-index:-10;
+}
+#usedpartbody{
+        position:fixed; top:82.4%; left:39.6%;
+        height:64px;
+        width:59.90%;
+        overflow-y:scroll;
+        height:7.9%;
+}
+#usedparttop{
+    	font-family: arial;
+        font-size:11px;
+        height:20px;
+}
+#usedparttable{
+        font-size:11px;
+    	font-family: arial;
+    	border:1px solid #6F6F6F;
+        border-collapse:collapse;
+}
+
+#pmremarktop{
+    	font-family: arial;
+        font-size:11px;
+        height:20px;
+}
+#pmremarkhead{
+        position:fixed; top:90.2%; left:39.6%;
+        width:59.98%;
+    	font-family: arial;
+        font-size:11px;
+        background-color:#6F6F6F;
+        color:white;
+        height:20px;
+}
+#pmremarkbody{
+        position:fixed; top:92.3%; left:39.6%;
+        height:64px;
+        width:59.98%;
+}
+
+#pmremarktable{
+        font-size:11px;
+    	font-family: arial;
+    	border:1px solid #6F6F6F;
+        border-collapse:collapse;
+}
+#pmcheck_return{
+        position:fixed; top:97%; left:96.5%;
+}
+
+.s1{width:150px;}
+
+.r1{width:150px;}
+.r2{width:100px;}
+.r1-1{width:700px;}
+.r2-1{width:500px;}
+
+.c1{width:280px;}
+.c2{width:110px;}
+.c3{width:200px;}
+.c4{width:120px;}
+.c5{width:150px;}
+.c6{width:110px;}
+.c7{width:30px;
+    background-color:#6F6F6F;
+    font-size:9px;
+    font-family: arial;}
+.c8{width:130px;}
+
+.c1-1{width:280px;
+      padding-top:5px;
+      padding-bottom:5px;}
+.c2-1{width:140px;}
+.c3-1{width:200px;}
+.c4-1{width:120px;}
+.c5-1{width:150px;}
+.c6-1{width:130px;}
+.c7-1{width:30px;}
+.c8-1{width:130px;}
+
+.u1{width:13.2%;
+background-color:#6F6F6F;}
+.u2{width:17.6%;
+background-color:#6F6F6F;}
+.u3{width:13.3%;
+background-color:#6F6F6F;}
+.u4{width:26.3%;
+background-color:#6F6F6F;}
+.u5{width:10.7%;
+background-color:#6F6F6F;}
+.u6{width:;
+background-color:#6F6F6F;}
+
+.u1-1{width:150px;
+height:20px;}
+.u2-1{width:200px;}
+.u3-1{width:150px;}
+.u4-1{width:300px;}
+.u5-1{width:120px;}
+.u6-1{width:200px;}
+
+.remark_css{
+        width:600px;
+        height:25px;
+        font-size:11px;
+        font-family: arial;
+}
+
+.pmcheck_return_css{
+        font-size:12px;
+        cursor:pointer;
+        font-family: arial;
+        color:blue;
+}
+.upload_complete_css{
+    	font-family: arial;
+        font-size:12px;
+        padding-left:10px;
+        }
+</style>
+<body>
+
+<pmchecksheettitle>
+Preventive Maintenance Check Sheet
+</pmchecksheettitle>
+
+<div id="pmchecksheettitle" >
+     <table  style="word-break:break-all">
+        <thead>
+        <tr>
+            <td align="center" class="c1" rowspan="2">Maintenance Item</td>
+            <td align="center" class="c2" rowspan="2">Check Standard</td>
+            <td align="center" class="c3" rowspan="2">Check Result</td>
+            <td align="center" class="c4" colspan="3">Judgement</td>
+            <td align="center" class="c5" rowspan="2">Repair Detail</td>
+            <td align="center" class="c6" rowspan="2">Work Request</td>
+            <td align="center" class="c8" rowspan="2">Used Parts</td>
+        </tr>
+        <tr>
+            <td align="center" class="c7">Pass</td>
+            <td align="center" class="c7">Fail_Y</td>
+            <td align="center" class="c7">Fail_N</td>
+        </tr>
+        </thead>
+     </table>
+</div>
+    <div class="pmchecksheettop">
+        <table id="pmchecksheettable" width="100%"  border="1">
+                <tbody>
+                      {% for pmlist in pmchecksheets  %}
+        <tr>
+           <td align="left" class="c1-1">{{pmlist.item}}</td> <!--models.py에서 값받아오기-->
+            <td align="left" class="c2-1">{{pmlist.check}}</td>
+            <td align="left" class="c3-1">{{pmlist.result_temp}}</td>
+            <td align="center" class="c7-1">
+            <input type="checkbox" name="judpass" {{pmlist.pass_y_temp}} onclick="return false">
+            </td>
+            <td align="center" class="c7-1">
+            <input type="checkbox" name="judfaily" {{pmlist.fail_y_temp}} onclick="return false">
+            </td>
+            <td align="center" class="c7-1">
+            <input type="checkbox" name="judfailn" {{pmlist.fail_n_temp}} onclick="return false">
+            </td>
+            <td align="left" class="c5-1">{{pmlist.actiondetail_temp}}</td>
+            <td align="center" class="c6-1">{{pmlist.workrequest_temp}}</td>
+            <td align="center" class="c8-1">{{pmlist.usedpart_temp}}</td>
+        </tr>
+                       {% endfor %}
+        </tbody>
+        </table>
+    </div>
+ <div id="usedparttop">
+   <table id="usedparthead" border="1">
+        <tr>
+            <td align="center" class="u7" colspan="6">Used Parts List</td>
+        </tr>
+       <tr>
+            <td align="center" class="u1">Code No.</td>
+            <td align="center" class="u2">Part Name</td>
+            <td align="center" class="u3">Vendor</td>
+            <td align="center" class="u4">Model Name</td>
+            <td align="center" class="u5">Quantity</td>
+            <td align="center" class="u6">Out Code</td>
+       </tr>
+   </table>
+ </div>
+ <div id="usedpartbody">
+   <table id="usedparttable" border="1">
+            {% for spare_out in spare_list %}
+       <tr>
+            <td align="center" class="u1-1">{{spare_out.codeno}}</td>
+            <td align="center" class="u2-1">{{spare_out.partname}}</td>
+            <td align="center" class="u3-1">{{spare_out.vendor}}</td>
+            <td align="center" class="u4-1">{{spare_out.modelno}}</td>
+            <td align="center" class="u5-1">{{spare_out.used_qy}}</td>
+            <td align="center" class="u6-1">{{spare_out.out_code}}</td>
+       </tr>
+            {% endfor %}
+   </table>
+ </div>
+
+</div>
+
+ <div id="pmremarktop">
+   <table id="pmremarkhead">
+        <tr>
+            <td align="center" class="r1">Remark</td>
+            <td align="center" class="r2">Attach File</td>
+        </tr>
+   </table>
+ </div>
+ <div id="pmremarkbody">
+
+   <table id="pmremarktable" border="1">
+       {% for pmremark_info in pmchecksheet_info %}
+     <tr>
+            <td align="left" class="r1-1">
+            <input type="text" style="resize: none" name="pmchecksheet_remark" placeholder="N/A"
+                      value="{{pmremark_info.remark_temp}}" class="remark_css" readonly/>
+            <input type="checkbox" name="remark_na" value="remark_na" class="remark_na_css"
+                   {{pmremark_info.remark_na_temp}} onclick="return false">N/A
+            </td>
+            {% if url_comp == "Y" %}
+            <td align="left" class="r2-1">
+           <a href="{{pmremark_info.attach_temp}}" target="_blank" class="upload_complete_css">Upload_ Complete</a>
+            </td>
+            {%else%}
+            <td align="left" class="r2-1">
+            <a class="upload_complete_css">N/A</a>
+            </td>
+            {% endif %}
+     </tr>
+       {%endfor%}
+   </table>
+
+ </div>
+ <div id="pmcheck_return">
+     {% for equipinfo in pmchecksheet_info  %}
+     <form action="pmchecksheet_return" method="post" >
+                {% csrf_token %}
+     <input type="hidden" value={{equipinfo.controlno}} name="controlno">
+     <input type="hidden" value={{loginid}} name="loginid">
+     <input type="hidden" value={{pmcode}} name="pmcode">
+     <input type="submit" class="pmcheck_return_css" value="Return" onclick="this.disabled=true;this.value='Return'; this.form.submit();">
+     </form>
+     {%endfor%}
+ </div>
+
+</body>
+</html>

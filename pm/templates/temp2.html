@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+    <title>Title</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap');
+
+#search_top{
+        position:fixed;top:9.2%; left:64%;
+        height:5%;
+        width:18%;
+        background-color:white;
+        z-index:10;
+}
+searchtext{
+    	font-family:'Rubik', sans-serif;
+        font-size:30px;
+        font-weight:bold;
+}
+#search_radius{
+        box-shadow: 3px 4px 0px 0px #A9A9A9;
+        position:fixed;top:11.5%; left:63%;
+        border:2px solid #EEEEEE;
+        border-radius:2%;
+        width:35%;
+        height:43%;
+    }
+#search_main{
+        position:fixed;top:15%; left:64%;
+}
+#auto_select{
+        position:fixed;top:16%; left:83.5%;
+        font-family:'Rubik', sans-serif;
+        font-size:16px;
+}
+title_text{
+        font-weight:bold;
+        text-decoration: underline;
+}
+.search_text{
+        width:300px;
+        height:40px;
+        font-family:'Rubik', sans-serif;
+        font-size:25px;
+        font-weight:bold;
+}
+#search_table{
+        position:fixed;top:21%; left:64%;
+}
+.text_css{
+      font-family:'Rubik', sans-serif;
+      font-size:20px;
+      font-weight:bold;
+      color:black;
+      background-color:#D8D8D8;
+      width:200px;
+      height:45px;
+      }
+.input_css{
+      font-family:'Rubik', sans-serif;
+      font-size:20px;
+      background-color:#EEEEEE;
+      color:black;
+      width:350px;
+}
+#submit_radius{
+        box-shadow: 3px 4px 0px 0px #A9A9A9;
+        position:fixed;top:58.5%; left:63%;
+        border:2px solid #EEEEEE;
+        border-radius:2%;
+        width:35%;
+        height:35%;
+}
+#info_top{
+        position:fixed;top:56.5%; left:64%;
+        height:5%;
+        width:16%;
+        background-color:white;
+        z-index:10;
+}
+#controlno_select{
+        position:fixed;top:62.5%; left:64%;
+        font-family:'Rubik', sans-serif;
+        font-size:24px;}
+#qy_select{
+        position:fixed;top:80.5%; left:64%;
+        font-family:'Rubik', sans-serif;
+        font-size:24px;}
+.controlno_css{
+      height:35px;
+      width:350px;
+      font-family:'Rubik', sans-serif;
+      font-size:20px;
+}
+.selecttext{
+      margin-top:5px;
+      height:35px;
+      width:100px;
+      font-family:'Rubik', sans-serif;
+      font-size:20px;
+}
+#controlno_table{
+      margin-top:5px;
+}
+#messages_location{
+        position:fixed;top:76.5%; left:64%;
+        font-size:18px;
+        font-weight:bold;
+        animation-iteration-count:5;
+	    animation-duration:1s;
+	    animation-name: changecolor;
+       	color:white;
+}
+@keyframes changecolor{
+    from{
+       	  color:white;    }
+    to{
+          color:red;    }
+}
+</style>
+</head>
+<body>
+<div id="search_top">
+<i class="xi-reply xi-2x"><searchtext>&nbsp;Release Search Table</searchtext></i>
+</div>
+<div id="search_radius" >
+</div>
+<div id="search_main">
+<form name="scan_result" method="post">
+                {% csrf_token %}
+<input type="hidden" value={{loginid}} name="loginid">
+<input type="search" name="search_text" class="search_text" value="{{reset_text}}"placeholder="Please Scan Barcode">
+</form>
+</div>
+
+<div id="auto_select">
+    <title_text>Select Mode</title_text><br>
+    {%if next_scan%}
+    &nbsp;<input type="radio" name="type" value="auto" {{auto}}>Barcode&emsp;
+    <input type="radio" name="type" value="manual" {{manual}}>Manual&emsp;
+    {%else%}
+    &nbsp;<input type="radio" name="type" value="auto" checked>Barcode&emsp;
+    <input type="radio" name="type" value="manual" >Manual&emsp;
+    {%endif%}
+</div>
+
+<div id="search_table">
+    <table>
+        {%for result in release_result %}
+        <tr>
+            <td align="center" class="text_css">Code No.</td>
+            <td align="center" class="input_css">{{result.codeno}}</td>
+        </tr>
+        <tr>
+            <td align="center" class="text_css">Team</td>
+            <td align="center" class="input_css">{{result.team}}</td>
+        </tr>
+        <tr>
+            <td align="center" class="text_css">Part Name</td>
+            <td align="center" class="input_css">{{result.partname}}</td>
+        </tr>
+                <tr>
+            <td align="center" class="text_css">Vendor</td>
+            <td align="center" class="input_css">{{result.vendor}}</td>
+        </tr>
+        <tr>
+            <td align="center" class="text_css">Model Name</td>
+            <td align="center" class="input_css">{{result.modelno}}</td>
+        </tr>
+                <tr>
+            <td align="center" class="text_css">Location</td>
+            <td align="center" class="input_css">{{result.location}}</td>
+        </tr>
+        {%endfor%}
+    </table>
+</div>
+
+<div id="submit_radius">
+</div>
+<div id="info_top">
+<searchtext>&nbsp;Manual Information</searchtext>
+</div>
+
+<div id="controlno_select">
+    <title_text>Equipment</title_text>
+    &nbsp;<table id="controlno_table">
+        <tr>
+            <td align="center" class="text_css">Control No.</td>
+            <td align="center" class="input_css">
+                <input type="text" name="controlno_up" value="{{controlno}}"class="controlno_css" onchange="Controlno_upload();"></td>
+        </tr>
+        <tr>
+            <td align="center" class="text_css">Equipment Name</td>
+            <td align="center" class="input_css">
+                <input type="text" name="equipname" value="{{equipname}}" class="controlno_css" readonly></td>
+        </tr>
+    </table>
+</div>
+<div id="messages_location">
+{%if messages %}
+{%for message in messages%}
+{{message}}
+{%endfor%}
+{%endif%}
+</div>
+<div id="qy_select">
+    <title_text>Quantity</title_text><br>
+     &nbsp;<select class="selecttext" name="selecttext">&nbsp;
+            <option value="1">1ea</option>
+            <option value="2">2ea</option>
+            <option value="3">3ea</option>
+            <option value="4">4ea</option>
+            <option value="5">5ea</option>
+            <option value="6">6ea</option>
+            <option value="7">7ea</option>
+            <option value="8">8ea</option>
+            <option value="9">9ea</option>
+            <option value="10">10ea</option>
+            <option value="11">11ea</option>
+            <option value="12">12ea</option>
+            <option value="13">13ea</option>
+            <option value="14">14ea</option>
+            <option value="15">15ea</option>
+            <option value="16">16ea</option>
+            <option value="17">17ea</option>
+            <option value="18">18ea</option>
+            <option value="19">19ea</option>
+            <option value="20">20ea</option>
+            </select>
+</div>
+
+    <form method="post" name="control_no">
+             {% csrf_token %}
+        <input type="hidden" name="loginid" value="{{loginid}}">
+        <input type="hidden" name="controlno"></form>
+
+<script>
+      barcode_scan = setInterval(function(){
+            var search_text = document.getElementsByName('search_text')[0].value;
+            var len_check = search_text.length;
+            if(len_check=="6"){
+      // type 값받기
+            var obj_length = document.getElementsByName("type").length;
+                for (var i=0; i<obj_length; i++) {
+                    if (document.getElementsByName("type")[i].checked == true) {
+                        var type = document.getElementsByName("type")[i].value;
+                        }
+                    }
+            if(type=="auto"){
+            document.scan_result.action="spareparts_release_scan";
+            document.scan_result.submit();
+            clearInterval(barcode_scan);}}
+            },3000)
+
+      function Controlno_upload(){
+            var controlno= document.getElementsByName('controlno_up')[0].value;
+            // 값보내기
+            document.control_no.controlno.value = controlno;
+            // 서버로 전송
+            document.control_no.action="spareparts_release_controlno";
+            document.control_no.submit();
+            }
+</script>
+</body>
+</html>

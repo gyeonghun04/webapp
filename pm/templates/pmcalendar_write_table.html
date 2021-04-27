@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+#tabletop{
+        position:fixed;top:4.2%; left:4%;
+        height:5%;
+        width:30%;
+}
+titletext{
+        position:fixed;top:5.5%;
+    	font-family:'Rubik', sans-serif;
+        font-size:20px;
+        font-weight:bold;
+}
+.selecttext{
+
+        width:105px;
+        height:20px;
+}
+.searchtext{
+        width:110px;
+        height:20px;
+}
+.searchbutton{
+        width:60px;
+        height:20px;
+        cursor:pointer;
+}
+#searchbar{
+        padding-left:10px;
+        padding-top:5px;
+        font-family:arial;
+        font-size:10px;
+}
+#tablemenu{
+    	font-family: arial;
+        font-size:11px;
+        position:fixed;top:7.5%;
+        height:2.5%;
+        width:19%;
+        background-color:#6F6F6F;
+        color:white;
+}
+#tabledesc{
+        position:absolute;top:10%;
+        z-index:10;
+        width:19%;
+        font-family: arial;
+        font-size:11px;
+        overflow:scroll;
+        height:89.8%;
+}
+.m1{width:30px;}
+.m2{width:90px;}
+.m4{width:100px;}
+.m3{width:50px;}
+.m5{width:60px;}
+
+.m1-1{width:30px;}
+.m2-1{width:90px;}
+.m4-1{width:100px;}
+.m3-1{width:70px;}
+.m5-1{width:50px;}
+
+body{overflow:hidden;}
+
+#sideline2{
+        background:#EEEEEE;
+        position:fixed; right:80.3%;
+        height:100%;
+        width:5px;
+}
+.button{
+    	font-family: arial;
+        font-size:11px;
+        cursor:pointer;
+}
+tr:nth-child(even){
+    background-color:#EEEEEE;
+}
+</style>
+<body>
+<main>
+
+<div id="tabletop">
+<table>
+    <div id="searchbar">
+        <form action="pmcalendar_write" method="post">
+            {% csrf_token %}
+            <select class="selecttext" name="selecttext">
+            <option value="status">Status</option>
+            <option value="team">Team</option>
+            <option value="control_no">Control No.</option>
+            <option value="equipname">Equipment</option></select>
+            <input type="search"  class="searchtext" placeholder="Keywords" name="searchtext" value={{searchtext}}>
+            <input type="hidden" value={{loginid}} name="loginid">
+            <input type="hidden" value={{calendar_date}} name="calendar_date">
+            <input type="hidden" value={{pmsheetno}} name="pmsheetno">
+            <input type="hidden" value={{pmcode}} name="pmcode">
+            <input type="hidden" value={{controlno}} name="controlno">
+            <input type="hidden" name="table_signal" value="Y">
+            <input type="submit"  class="searchbutton" value="Search"></form>
+    </div>
+</table>
+</div>
+<div id="tablemenu">
+     <table  style="word-break:break-all">
+        <thead>
+        <tr>
+            <td align="center" class="m1">Team</td>
+            <td align="center" class="m2">Equip. Name</td>
+            <td align="center" class="m4">Room Name (No.)</td>
+            <td align="center" class="m3">Status</td>
+            <td align="center" class="m5">Write</td>
+        </tr>
+        </thead>
+     </table>
+</div>
+<div id="tabledesc">
+ <table style="word-break:break-all">
+     <tbody>
+                           {% for equiplist in pmchecksheet_list %}
+        <tr>
+            <td align="center" class="m1-1">{{equiplist.team}}</td> <!--models.py에서 값받아오기-->
+            <td align="center" class="m2-1">{{equiplist.name}} / <br>{{equiplist.controlno}}</td>
+            <td align="center" class="m4-1">{{equiplist.roomname}}<br>({{equiplist.roomno}})</td>
+            <td align="center" class="m3-1">{{equiplist.status}}</td>
+            <td align="center" class="m5-1">
+                <form action="pmcalendar_write" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="loginid" value={{loginid}}>
+                <input type="hidden" name="calendar_date" value={{calendar_date}}>
+                <input type="hidden" name="pmcode" value={{equiplist.pmcode}}>
+                <input type="hidden" name="pmsheetno" value={{equiplist.pmsheetno}}>
+                <input type="hidden" name="controlno" value={{equiplist.controlno}}>
+                <input type="hidden" value={{searchtext}} name="searchtext">
+                <input type="hidden" value={{selecttext}} name="selecttext">
+                <input type="submit" class="button" value="Write">
+                </form>
+            </td>
+        </tr>
+                             {% endfor %}
+        </tbody>
+ </table>
+</div>
+<div id="sideline2">
+<mainline>
+</mainline>
+</div>
+</main>
+</body>
+</html>

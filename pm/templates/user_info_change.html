@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table>
+<form action="" method="post" name="user_info_form">
+    {% csrf_token %}
+    <tr>
+        <td><div id="userteam_get"></div></td>
+        <td><input type="text" name="userteam"></td>
+    </tr>
+    <tr>
+        <td><div id="password_get"></div></td>
+        <td><input type="text" name="password"></td>
+    </tr>
+    <tr>
+        <td><div id="useremail_get"></div></td>
+        <td><input type="text" name="useremail"></td>
+    </tr>
+    <tr>
+        <td><div id="auth_1_get"></div></td>
+        <td>
+            <select class="authtext" name="auth_1" required>
+                                     {% for approval_info in approval_infos %}
+            <option value="{{approval_info.code_no}}">{{approval_info.code_no}}</option>
+                                     {%endfor%}</td>
+    </tr>
+    <tr>
+        <td><div id="user_div_get"></div></td>
+        <td><select class="n7-1" name="user_div" required>
+                    <option value="Admin">Admin</option>
+                    <option value="Engineer">Engineer</option>
+                    <option value="Staff">Staff</option>
+                    <option value="Manager">Manager</option>
+                    <option value="SO Manager">SO Manager</option>
+                    <option value="QA Manager">QA Manager</option>
+                </select></td>
+    </tr>
+</form>
+</table>
+<script>
+     //////////// 기본초기값 불러오기//////////////
+     function init(){
+            loginid = opener.document.getElementById("loginid_up").value;
+            userteam = opener.document.getElementById("userteam_up").value;
+            password = opener.document.getElementById("password_up").value;
+            useremail = opener.document.getElementById("useremail_up").value;
+            auth_1 = opener.document.getElementById("auth_1_up").value;
+            user_div = opener.document.getElementById("user_div_up").value;
+        // 기존값 보내기
+            document.user_info_form.userteam.value = userteam;
+            document.user_info_form.password.value = password;
+            document.user_info_form.useremail.value = useremail;
+        // 값 표현하기
+            document.getElementById("userteam_get").innerHTML=userteam;
+            document.getElementById("password_get").innerHTML=password;
+            document.getElementById("useremail_get").innerHTML=useremail;
+            document.getElementById("auth_1_get").innerHTML=auth_1;
+            document.getElementById("user_div_get").innerHTML=user_div;
+            }
+
+      onload=init
+</script>
+</body>
+</html>

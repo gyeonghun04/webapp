@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<style>
+#tabletop{
+    	font-family: arial;
+        position:fixed;top:4%; left:9%;
+        height:5%;
+        width:46%;
+}
+titletext{
+    	font-family:'Rubik', sans-serif;
+        font-size:20px;
+        font-weight:bold;
+}
+
+.request_new{
+        font-family:'Rubik', sans-serif;
+        font-size:15px;
+        background-color: rgba(255, 255, 255, 0.0);
+        cursor:pointer;
+        border:0px;
+        font-color:black;
+        text-decoration:underline;
+}
+.selecttext{
+        margin-left:80px;
+        width:105px;
+        height:20px;
+}
+.searchtext{
+        width:110px;
+        height:20px;
+}
+.searchbutton{
+        width:60px;
+        height:20px;
+        cursor:pointer;
+}
+#searchbar{
+        padding-left:50px;
+        padding-top:5px;
+        font-family:'Rubik', sans-serif;
+        font-size:10px;
+}
+b{
+        padding-top:10px;
+        padding-left:150px;
+        align-text:left;
+        color:black;
+}
+</style>
+</head>
+<body>
+<div id="tabletop" style="word-break:break-all">
+<table>
+    <tr>
+    <td><titletext>Work Request List</titletext></td>
+    <td>
+        <b class="xi-pen"><input type="button" value="New Request" class="request_new" onclick="Request_new();"></b>
+    </td>
+    <td>
+    <div id="searchbar">
+        <form action="workrequest_main" method="post">
+            {% csrf_token %}
+            <select class="selecttext" name="selecttext">&nbsp;
+            <option value="status">Status</option>
+            <option value="requestor">Requestor</option>
+            <option value="team">Team</option>
+            <option value="controlno">Control No.</option></select>
+            <input type="search"  class="searchtext" placeholder="Keywords" name="searchtext" value="{{searchtext}}">
+            <input type="hidden" value={{loginid}} id="workloginid">
+            <input type="hidden" value={{loginid}} name="loginid">
+            <input type="submit"  class="searchbutton" value="Search"></form>
+    </div></td>
+    </tr>
+</table>
+</div>
+
+<script>
+            function Request_new(){
+                        // 팝업창열기
+            var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=880, height=840, left=50, top=10';
+            window.open("/workrequest_new", "Work Request Form", settings);
+            }
+</script>
+</body>
+</html>

@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+workorder_title{
+        position:fixed;top:35px; left:20px;
+        font-size: 26px;
+        font-family: arial;
+        font-weight:bold;
+}
+#workrequest_info{
+        margin-left:15px;
+        margin-top:70px;
+        font-family: arial;
+        font-weight:bold;
+        width:1870px;
+}
+#workrequest_info_t{
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+        width:1870px;
+        }
+#equip_info{
+        margin-left:15px;
+        font-family: arial;
+        font-weight:bold;
+        display: block;
+        width:1870px;
+}
+#equip_info_t{
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+        width:1870px;
+        }
+#workorder_info{
+        margin-left:15px;
+        font-family: arial;
+        font-weight:bold;
+        display: block;
+        width:1870px;
+        z-index:100;
+}
+#workorder_info_t{
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+         width:1870px;
+        }
+#usedpart_title{
+        margin-left:15px;
+        display: block;
+        width:202px;
+        font-size:16px;
+        font-family: arial;
+        background-color:#EEEEEE;
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+        font-weight:bold;
+        text-align:center;
+        vertical-align:middle;
+        vertical-align:middle;
+        height:180px;
+}
+#usedpart_info{
+        position:fixed;top:680px;left:226px;
+        font-family: arial;
+        font-weight:bold;
+        display:block;
+        z-index:10;
+}
+#usedpart_info_h{
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+        width:1105px;
+        }
+
+#usedpart_table{
+        position:fixed;top:713px;left:226px;
+        font-family: arial;
+        font-weight:bold;
+        display:block;
+        overflow-y:scroll;
+
+}
+#usedpart_info_t{
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+        width:1087px;
+        }
+
+#usedpart_check{
+        margin-left:15px;
+        position:fixed;top:680px;left:1315px;
+        width:202px;
+        font-size:16px;
+        font-family: arial;
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+        font-weight:bold;
+        text-align:left;
+        vertical-align:middle;
+        height:180px;}
+#attached_check{
+        margin-left:15px;
+        position:fixed;top:680px;left:1518px;
+        width:358px;
+        font-size:16px;
+        font-family: arial;
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+        font-weight:bold;
+        text-align:left;
+        vertical-align:middle;
+        height:180px;}
+
+#repair_info{
+        margin-left:15px;
+        font-family: arial;
+        font-weight:bold;
+        display: block;
+        width:1870px;
+}
+#repair_info_t{
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+        width:1870px;
+        }
+
+.w_info_1{width:200px;
+font-size:16px;
+font-family: arial;
+background-color:#EEEEEE;
+}
+.w_info_2{width:550px;
+font-family: arial;
+height:50px;
+}
+.w_info_3{
+font-family: arial;
+height:50px;
+}
+.w_info_4{
+width:273.5px;
+font-family: arial;
+height:50px;
+}
+
+info_title{
+font-size:14px;
+}
+info_text{
+font-size:12px;
+padding-left:40px;
+}
+.u_info_6{
+font-size:12px;
+width:231px;
+font-family: arial;
+height:30px;
+}
+.u_info_7{
+font-size:12px;
+font-family: arial;
+height:30px;
+}
+.t_info_2{
+width:21%;
+background-color:#EEEEEE;
+font-family: arial;
+height:30px;}
+
+.t_info_3{
+background-color:#EEEEEE;
+width:15%;
+font-family: arial;
+height:30px;
+}
+
+.r_info_2{width:300px;
+font-family: arial;
+height:50px;
+}
+
+.r_info_3{width:1055px;
+font-family: arial;
+height:50px;
+}
+.o_info_3{
+height:115px;
+}
+.desc_css{
+width:1600px;
+height:70px;
+font-size:12px;
+font-family: arial;
+}
+.assigned_date_css{
+font-size:12px;
+font-family: arial;
+}
+.repairtext{
+width:160px;
+}
+.maint_method_css{
+width:1000px;
+}
+.button_css{
+font-family: arial;
+font-size:12px;
+cursor:pointer;
+}
+#usedpart_info_b{
+height:150px;
+overflow-y:scroll;
+}
+.print_button{
+        position:fixed; top:96.5%; left:92%;
+    	font-family: arial;
+        font-size:16px;
+        cursor:pointer;
+        width:60px;
+}
+.submit_button{
+        position:fixed; top:96.5%; left:94.6%;
+    	font-family: arial;
+        font-size:16px;
+        cursor:pointer;
+        width:80px;
+        font-weight:bold;
+}
+#workorder_info_comp{
+        margin-left:15px;
+        font-family: arial;
+        font-weight:bold;
+        width:1800px;
+        display: block;
+        width:1870px;
+        z-index:100;
+}
+#workorder_info_t_comp{
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+         width:1870px;
+        }
+#usedpart_title_comp{
+        margin-left:15px;
+        display: block;
+        width:202px;
+        font-size:16px;
+        font-family: arial;
+        background-color:#EEEEEE;
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+        font-weight:bold;
+        text-align:center;
+        vertical-align:middle;
+        vertical-align:middle;
+        height:180px;
+}
+#usedpart_info_comp{
+        position:fixed;top:680px;left:226px;
+        font-family: arial;
+        font-weight:bold;
+        display:block;
+        z-index:10;
+}
+#usedpart_info_h_comp{
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+        width:1105px;
+        }
+
+#usedpart_table_comp{
+        position:fixed;top:713px;left:226px;
+        font-family: arial;
+        font-weight:bold;
+        display:block;
+        overflow-y:scroll;
+
+}
+#usedpart_info_t_comp{
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+        width:1087px;
+        }
+
+#usedpart_check_comp{
+        margin-left:15px;
+        position:fixed;top:680px;left:1315px;
+        width:202px;
+        font-size:16px;
+        font-family: arial;
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+        font-weight:bold;
+        text-align:left;
+        vertical-align:middle;
+        height:180px;}
+#attached_check_comp{
+        margin-left:15px;
+        position:fixed;top:680px;left:1518px;
+        width:358px;
+        font-size:16px;
+        font-family: arial;
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+        font-weight:bold;
+        text-align:left;
+        vertical-align:middle;
+        height:180px;}
+#repair_info_comp{
+        margin-left:15px;
+        font-family: arial;
+        font-weight:bold;
+        display: block;
+        width:1870px;
+}
+#repair_info_t_comp{
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+        width:1870px;
+        }
+</style>
+<body>
+{% include "css.html"%}
+{% include "pmcalendar_write_top.html"%}
+<workorder_title>
+Maintenance Work Order Form
+</workorder_title>
+<div class="border">
+</div>
+            {%for workrequest in workorder_call %}
+<div id="workrequest_info">
+    <table border="1" id="workrequest_info_t">
+        <tr>
+            <td align="center" class="w_info_1" rowspan="4">
+                Work Request<br> Information
+            </td>
+            <td align="left" class="w_info_2">
+                <info_title>Work Order No.</info_title><br>
+                <info_text>{{workorderno}}</info_text>
+            </td>
+            <td align="left" class="w_info_2">
+                <info_title>Requestor</info_title><br>
+                <info_text>{{workrequest.requestor}}</info_text>
+            </td>
+            <td align="left" class="w_info_2">
+                <info_title>Request Date</info_title><br>
+                <info_text>{{workrequest.date}}</info_text>
+            </td>
+        </tr>
+        <tr>
+            <td align="left" class="w_info_2">
+                <info_title>Department</info_title><br>
+                <info_text>{{workrequest.team}}</info_text>
+            </td>
+            <td align="left" class="w_info_2">
+                <info_title>Type</info_title><br>
+                <info_text>{{workrequest.type}}</info_text>
+            </td>
+            <td align="left" class="w_info_2">
+                <info_title>CAPA. or Deviation No.</info_title><br>
+                <info_text>{{workrequest.capa}}</info_text>
+            </td>
+        </tr>
+        <tr>
+            <td align="left" class="w_info_3" colspan="3">
+                <info_title>Description</info_title><br>
+                <info_text>{{workrequest.description}}</info_text></td>
+        </tr>
+        <tr>
+            <td align="left" class="w_info_3" colspan="3">
+                <info_title>Breakdown Cause</info_title><br>
+                <info_text>{{workrequest.description_info}}</info_text></td>
+        </tr>
+    </table>
+</div>
+
+<div id="equip_info">
+    <table border="1" id="equip_info_t">
+        <tr>
+            <td align="center" class="w_info_1" rowspan="2">
+                Equipment<br> Information
+            </td>
+            <td align="left" class="w_info_2">
+                <info_title>Control No.</info_title><br>
+                <info_text>{{workrequest.controlno}}</info_text>
+            </td>
+            <td align="left" class="w_info_2">
+                <info_title>Equipment Name</info_title><br>
+                <info_text>{{workrequest.equipname}}</info_text>
+            </td>
+            <td align="left" class="w_info_2">
+                <info_title>Location</info_title><br>
+                <info_text>{{workrequest.roomname}} ({{workrequest.roomno}})</info_text>
+            </td>
+        </tr>
+        {% for equip_info in equipinfos %}
+        <tr>
+            <td align="left" class="w_info_2">
+                <info_title>Serial No.</info_title><br>
+                <info_text>{{equip_info.serial}}</info_text>
+            </td>
+            <td align="left" class="w_info_2">
+                <info_title>Model No.</info_title><br>
+                <info_text>{{equip_info.model}}</info_text>
+            </td>
+            <td align="left" class="w_info_2">
+                <info_title>Manufacture</info_title><br>
+                <info_text>{{equip_info.maker}}</info_text>
+            </td>
+
+        </tr>
+            {%endfor%}
+    </table>
+</div>
+{% if comp_signal == "Y" %}
+                    {%for workrequest in workorder_call %}
+<div id="workorder_info_comp">
+    <table border="1" id="workorder_info_t_comp">
+        <form name="workorder_company">
+        <tr>
+            <td align="center" class="w_info_1" rowspan="3">
+                Work Order<br> Information
+            </td>
+            <td align="left" class="w_info_2">
+                <info_title>Assigned to Staff</info_title><br>
+                <info_text>{{workrequest.action_name}}</info_text>
+            </td>
+            <td align="left" class="w_info_2">
+                <info_title>Assigned to Company</info_title><br>
+                <info_text>{{workrequest.action_company}}</info_text>
+            </td>
+            <td align="left" class="w_info_4">
+                <info_title>Date Assigned</info_title><br>
+            <info_text>{{workrequest.action_date}}</info_text>
+            </td>
+            <td align="left" class="w_info_4">
+                <info_title>PM Link</info_title><br>
+            <info_text>{{workrequest.pm_trans}}</info_text>
+            </td>
+        </tr>
+        </form>
+        <form name="workorder_info">
+        <tr>
+            <td align="left" class="o_info_3" colspan="4">
+            <info_title>Description of Work</info_title><br>
+            <info_text><textarea name="description_of_work" class="desc_css" style="resize:none;" readonly>{{workrequest.work_desc}}
+            </textarea></info_text>
+            </td>
+        </tr>
+        <tr>
+            <td align="left" class="o_info_3" colspan="4">
+            <info_title>Test Result</info_title><br>
+            <info_text><textarea name="test_result" class="desc_css" style="resize:none;" readonly>{{workrequest.test_result}}
+            </textarea></info_text>
+            </td>
+        </tr>
+        </form>
+    </table>
+</div>
+
+<div id="usedpart_title_comp"><br><br><br><br>
+  Used Parts<br> Information
+</div>
+<div id="usedpart_info_comp">
+    <table id="usedpart_info_h_comp" border="1" >
+        <tr>
+            <td align="center" class="t_info_2">
+                <info_title>Part Name</info_title>
+            </td>
+            <td align="center" class="t_info_2">
+                <info_title>Code No.</info_title>
+            </td>
+            <td align="center" class="t_info_2">
+                <info_title>Vendor</info_title>
+            </td>
+            <td align="center" class="t_info_2">
+                <info_title>Model Name</info_title>
+            </td>
+            <td align="center" class="t_info_3">
+                <info_title>QY.</info_title>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div id="usedpart_table_comp">
+    <table id="usedpart_info_t_comp" border="1">
+            {% for out_list in spare_list%}
+        <tr>
+            <td align="center" class="u_info_6">
+                {{out_list.partname}}
+            </td>
+            <td align="center" class="u_info_6">
+                {{out_list.codeno}}
+            </td>
+            <td align="center" class="u_info_6">
+                {{out_list.vendor}}
+            </td>
+            <td align="center" class="u_info_6">
+                {{out_list.modelno}}
+            </td>
+            <td align="center" class="u_info_7">
+                {{out_list.used_qy}}
+            </td>
+        </tr>
+            {%endfor%}
+    </table>
+</div>
+
+<div id="usedpart_check_comp">
+                        {%for workrequest in workorder_call %}
+              <br><br><br>
+              <info_title>Used Parts</info_title><br>
+              <info_text>{{workrequest.usedpart}}<br></info_text>
+                        {%endfor%}
+</div>
+<div id="attached_check_comp">
+                 {% if url_comp == "Y" %}
+            <br><br><br>
+                <info_title>Attached File</info_title><br>
+                <info_text><a href="{{url}}" target="_blank" class="upload_complete_css">Upload_ Complete</a></info_text>
+                            {%else%}
+            <br><br><br>
+                <info_title>Attached File</info_title><br>
+                <info_text>N/A</info_text>
+                {%endif%}
+        </tr>
+</div>
+<div id="repair_info_comp">
+    <form name="repair_info">
+    <table border="1" id="repair_info_t_comp">
+        <tr>
+            <td align="center" class="w_info_1" rowspan="2">
+               Repair<br> Information
+            </td>
+            <td align="left" class="r_info_2">
+                <info_title>Division</info_title><br>
+            <info_text>{{workrequest.repair_type}}</info_text>
+            </td>
+
+            <td align="left" class="r_info_2">
+                <info_title> Detail Description</info_title><br>
+            <info_text>{{workrequest.detail_type}}</info_text>
+            </td>
+            <td align="left" class="r_info_3">
+                <info_title>Maintenance Method</info_title><br>
+                <info_text>{{workrequest.repair_method}}</info_text>
+            </td>
+        </tr>
+    </table>
+    </form>
+</div>
+        <form action="workorder_return" method="post" name="Return_workorder">
+            {% csrf_token %}
+            <input type="hidden" value="{{loginid}}" name="loginid">
+            <input type="hidden" value="{{workorderno}}" name="workorderno">
+            <input type="hidden" value="{{url}}" name="url_up">
+            <input type="hidden"  value="{{workrequest.action_name}}" name="action_name">
+            <input type="hidden"  value="{{workrequest.action_company}}" name="action_company">
+            <input type="hidden"  value="{{workrequest.work_desc}}" name="work_desc">
+            <input type="hidden"  value="{{workrequest.test_result}}" name="test_result">
+            <input type="hidden"  value="{{workrequest.detail_type}}" name="detail_type">
+            <input type="hidden"  value="{{workrequest.repair_method}}" name="repair_method">
+            <input type="hidden"  value="{{workrequest.pm_trans}}" name="pm_trans">
+            <input type="hidden"  value="{{workrequest.action_date}}" name="action_date">
+            <input type="hidden"  value="{{workrequest.repair_type}}" name="repair_type">
+            <input type="submit" class="submit_button" value="Return"></form>
+
+{%endfor%}
+
+{%else%}
+<div id="workorder_info">
+    <table border="1" id="workorder_info_t">
+        <form name="workorder_company">
+        <tr>
+            <td align="center" class="w_info_1" rowspan="3">
+                Work Order<br> Information
+            </td>
+            <td align="left" class="w_info_2">
+                <info_title>Assigned to Staff</info_title><br>
+                <info_text><input type="text" name="assigned_staff" class="text_css" value="{{username}}" required></info_text>
+            </td>
+            <td align="left" class="w_info_2">
+                <info_title>Assigned to Company</info_title><br>
+                <info_text><input type="text" name="assigned_company" class="text_css" value="{{action_company}}" required>
+                <input type="checkbox" name="company_na" class="company_na" {{company_na_return}} onclick="Company_na();">N/A</info_text>
+            </td>
+            <td align="left" class="w_info_4">
+                <info_title>Date Assigned</info_title><br>
+            <info_text><input type="date" name="action_date" class="assigned_date_css" value="{{action_date}}"></info_text>
+            </td>
+            <td align="left" class="w_info_4">
+                <info_title>PM Link</info_title><br>
+
+            <info_text><select class="selecttext" name="pmlinktext" onchange="Pmlink();">
+            <option value="Y" {{pm_trans_Y}}>Y</option>
+            <option value="N" {{pm_trans_N}}>N</option>
+            </select></info_text>
+            </td>
+        </tr>
+        </form>
+        <form name="workorder_info">
+        <tr>
+            <td align="left" class="o_info_3" colspan="4">
+            <info_title>Description of Work</info_title><br>
+            <info_text><textarea name="description_of_work" class="desc_css" style="resize:none;" required>{{work_desc}}</textarea></info_text>
+            </td>
+        </tr>
+        <tr>
+            <td align="left" class="o_info_3" colspan="4">
+            <info_title>Test Result</info_title><br>
+            <info_text><textarea name="test_result" class="desc_css" style="resize:none;" required>{{test_result}}
+            </textarea></info_text>
+            </td>
+        </tr>
+        </form>
+    </table>
+</div>
+<div id="usedpart_title"><br><br><br><br>
+  Used Parts<br> Information
+</div>
+<div id="usedpart_info">
+    <table id="usedpart_info_h" border="1" >
+        <tr>
+            <td align="center" class="t_info_2">
+                <info_title>Part Name</info_title>
+            </td>
+            <td align="center" class="t_info_2">
+                <info_title>Code No.</info_title>
+            </td>
+            <td align="center" class="t_info_2">
+                <info_title>Vendor</info_title>
+            </td>
+            <td align="center" class="t_info_2">
+                <info_title>Model Name</info_title>
+            </td>
+            <td align="center" class="t_info_3">
+                <info_title>QY.</info_title>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div id="usedpart_table">
+    <table id="usedpart_info_t" border="1">
+            {% for out_list in spare_list%}
+        <tr>
+            <td align="center" class="u_info_6">
+                {{out_list.partname}}
+            </td>
+            <td align="center" class="u_info_6">
+                {{out_list.codeno}}
+            </td>
+            <td align="center" class="u_info_6">
+                {{out_list.vendor}}
+            </td>
+            <td align="center" class="u_info_6">
+                {{out_list.modelno}}
+            </td>
+            <td align="center" class="u_info_7">
+                {{out_list.used_qy}}
+            </td>
+        </tr>
+            {%endfor%}
+    </table>
+</div>
+
+<div id="usedpart_check">
+
+            <br><br><br>
+              <info_title>Used Parts</info_title><br>
+                    {%for workrequest in workorder_call %}
+              <info_text>{{workrequest.usedpart}}&emsp;
+                                  {%endfor%}
+              <info_text><select class="selecttext" name="usedparts_na" onchange="Usedpart_na();">
+                    <option value="Y" {{usedpart_Y}}>Y</option>
+                    <option value="N" {{usedpart_N}}>N</option>
+                    </select></info_text>
+
+</div>
+<div id="attached_check">
+                 {% if url_comp == "Y" %}
+            <br><br><br>
+                <info_title>Attached File</info_title><br>
+                <info_text><a href="{{url}}" target="_blank" class="upload_complete_css">Upload_ Complete</a></info_text>
+                            {%else%}
+            <br><br><br>
+                <info_title>Attached File</info_title><br>
+            <form method="post" enctype="multipart/form-data" class="uploadfile" name="uploadfile">
+            {% csrf_token %}
+            <input type="hidden" value="{{loginid}}" name="loginid">
+            <input type="hidden" value="{{workorderno}}" name="workorderno">
+            <input type="hidden"  name="action_name">
+            <input type="hidden"  name="action_company">
+            <input type="hidden"  name="work_desc">
+            <input type="hidden"  name="test_result">
+            <input type="hidden"  name="detail_type">
+            <input type="hidden"  name="repair_method">
+            <input type="hidden"  name="pm_trans">
+            <input type="hidden"  name="action_date">
+            <input type="hidden"  name="repair_type">
+            <input type="file" name="upload_file" id="upload_file" class="button_css1">
+            <info_text><input type="button" value="Upload" class="button_css2" onclick="Upload_file();"></info_text></form>
+                            {%endif%}
+</div>
+
+
+<div id="repair_info">
+    <form name="repair_info">
+    <table border="1" id="repair_info_t">
+        <tr>
+            <td align="center" class="w_info_1" rowspan="2">
+               Repair<br> Information
+            </td>
+            <td align="left" class="r_info_2">
+                <info_title>Division</info_title><br>
+            <info_text><select class="repairtext" name="selectRepair">&nbsp;
+            <option value="Elec.Part" {{repair_type_1}}>Elec.Part</option>
+            <option value="Pump" {{repair_type_2}}>Pump</option>
+            <option value="Piping" {{repair_type_3}}>Piping</option>
+            <option value="PLC" {{repair_type_4}}>PLC</option>
+            <option value="ETC" {{repair_type_5}}>ETC</option>
+            </select></info_text>
+            </td>
+
+            <td align="left" class="r_info_2">
+                <info_title> Detail Description</info_title><br>
+            <info_text><input type="text" name="select_detail" class="text_css" value="{{detail_type}}"></info_text>
+            </td>
+            <td align="left" class="r_info_3">
+                <info_title>Maintenance Method</info_title><br>
+                <info_text><input type="text" name="maint_method" class="maint_method_css" value="{{repair_method}}"></info_text>
+            </td>
+        </tr>
+    </table>
+    </form>
+</div>
+
+            <input type="hidden" id="workorderno_up" value="{{workorderno}}">
+            <input type="hidden" id="controlno_up" value="{{workrequest.controlno}}">
+            <input type="hidden" id="loginid_up" value="{{loginid}}">
+
+            <input type="button" class="submit_button" value="Submit" onclick="Workorder_submit();">
+
+    <form method="post" name="usedpartup">
+             {% csrf_token %}
+        <input type="hidden" value={{loginid}} id="workloginid2">
+        <input type="hidden" value="{{workorderno}}" id="workorderno2">
+        </form>
+
+    <form method="post" name="Submit_workorder">
+            {% csrf_token %}
+            <input type="hidden" value="{{loginid}}" name="loginid">
+            <input type="hidden" value="{{workorderno}}" name="workorderno">
+            <input type="hidden" value="{{url}}" name="url_up">
+            <input type="hidden"  name="action_name">
+            <input type="hidden"  name="action_company">
+            <input type="hidden"  name="work_desc">
+            <input type="hidden"  name="test_result">
+            <input type="hidden"  name="detail_type">
+            <input type="hidden"  name="repair_method">
+            <input type="hidden"  name="pm_trans">
+            <input type="hidden"  name="action_date">
+            <input type="hidden"  name="usedparts_na">
+            <input type="hidden"  name="repair_type"></form>
+            {%endif%}
+            {% endfor %}
+<script>
+     //////////// n/a클릭 시 자동 클릭 //////////////
+              function Company_na(){
+                if (document.workorder_company.company_na.checked == true){
+                document.workorder_company.assigned_company.value = "N/A";
+                }
+                else{
+                document.workorder_company.assigned_company.value = "";
+                }
+              }
+
+     //////////// Workorder_submit //////////////
+              function Workorder_submit(){
+                var assigned_staff= document.getElementsByName('assigned_staff')[0].value;
+                var assigned_company= document.getElementsByName('assigned_company')[0].value;
+                var description_of_work= document.getElementsByName('description_of_work')[0].value;
+                var test_result= document.getElementsByName('test_result')[0].value;
+                var select_detail= document.getElementsByName('select_detail')[0].value;
+                var maint_method= document.getElementsByName('maint_method')[0].value;
+                var pmlinktext= document.getElementsByName('pmlinktext')[0].value;
+                var selectRepair= document.getElementsByName('selectRepair')[0].value;
+                var action_date= document.getElementsByName('action_date')[0].value;
+                var usedparts_na= document.getElementsByName('usedparts_na')[0].value;
+
+                         // 값보내기
+                document.Submit_workorder.action_name.value = assigned_staff;
+                document.Submit_workorder.action_company.value = assigned_company;
+                document.Submit_workorder.work_desc.value = description_of_work;
+                document.Submit_workorder.test_result.value = test_result;
+                document.Submit_workorder.detail_type.value = select_detail;
+                document.Submit_workorder.repair_method.value = maint_method;
+                document.Submit_workorder.pm_trans.value = pmlinktext;
+                document.Submit_workorder.repair_type.value = selectRepair;
+                document.Submit_workorder.action_date.value = action_date;
+                document.Submit_workorder.usedparts_na.value = usedparts_na;
+
+                            // 서버연결
+                document.Submit_workorder.action="workorder_submit";
+                document.Submit_workorder.submit();
+                opener.document.location.reload();
+              }
+
+//////////// PM Link하기//////////////
+              function Pmlink(){
+                var pmlinktext= document.getElementsByName('pmlinktext')[0].value;
+                if (pmlinktext == "Y"){
+                var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=1105, height=150, left=50, top=10';
+                    window.open("/workorder_pmcontrolform", "PM Control Form_Link", settings);
+                }
+                }
+
+//////////// 파일업로드하기//////////////
+            function Upload_file(){
+                var assigned_staff= document.getElementsByName('assigned_staff')[0].value;
+                var assigned_company= document.getElementsByName('assigned_company')[0].value;
+                var description_of_work= document.getElementsByName('description_of_work')[0].value;
+                var test_result= document.getElementsByName('test_result')[0].value;
+                var select_detail= document.getElementsByName('select_detail')[0].value;
+                var maint_method= document.getElementsByName('maint_method')[0].value;
+                var pmlinktext= document.getElementsByName('pmlinktext')[0].value;
+                var selectRepair= document.getElementsByName('selectRepair')[0].value;
+                var action_date= document.getElementsByName('action_date')[0].value;
+                // 값보내기
+                document.uploadfile.action_name.value = assigned_staff;
+                document.uploadfile.action_company.value = assigned_company;
+                document.uploadfile.work_desc.value = description_of_work;
+                document.uploadfile.test_result.value = test_result;
+                document.uploadfile.detail_type.value = select_detail;
+                document.uploadfile.repair_method.value = maint_method;
+                document.uploadfile.pm_trans.value = pmlinktext;
+                document.uploadfile.repair_type.value = selectRepair;
+                document.uploadfile.action_date.value = action_date;
+                // 서버연결
+                document.uploadfile.action="workorder_upload";
+                document.uploadfile.submit();
+                }
+
+            function Usedpart_na(){
+                var usedparts_na= document.getElementsByName('usedparts_na')[0].value;
+                if (usedparts_na == "Y"){
+                                            // 팝업창열기
+                var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=1320,height=800, left=50, top=10';
+                window.open("/workorder_used_part", "Used Parts Link", settings);
+                }
+              }
+</script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+#tablemenu{
+    	font-family: arial;
+        font-size:11px;
+        position:fixed;top:7.5%; left:9%;
+        height:3%;
+        width:18%;
+        background-color:#6F6F6F;
+        color:white;
+}
+#tabledesc{
+        position:absolute;top:10.5%; left:9%;
+        z-index:10;
+        width:18%;
+        font-family: arial;
+        font-size:11px;
+        overflow:scroll;
+        height:89.3%;
+}
+.m1{width:50px;}
+.m2{width:100px;}
+.m3{width:100px;}
+.m4{width:70px;}
+
+.m1-1{width:50px;}
+.m2-1{width:120px;}
+.m3-1{width:80px;}
+.m4-1{width:70px;}
+
+body{overflow:hidden;}
+
+#sideline2{
+        background:#EEEEEE;
+        position:fixed; right:72.8%;
+        height:100%;
+        width:5px;
+}
+.button{
+    	font-family: arial;
+        font-size:11px;
+        cursor:pointer;
+}
+tr:nth-child(even){
+    background-color:#EEEEEE;
+}
+</style>
+<body>
+<main>
+
+
+</div>
+<div id="tablemenu">
+     <table  style="word-break:break-all">
+        <thead>
+        <tr>
+            <td align="center" class="m1">Team</td>
+            <td align="center" class="m2">Equip. Name<br>(Control No.)</td>
+            <td align="center" class="m3">Work Order No.<br>(Status)</td>
+            <td align="center" class="m4">Approval</td>
+        </tr>
+        </thead>
+     </table>
+</div>
+<div id="tabledesc">
+ <table style="word-break:break-all">
+     <tbody>
+                           {% for workorder in workorderlist %}
+        <tr>
+            <td align="center" class="m1-1">{{workorder.team}}</td> <!--models.py에서 값받아오기-->
+            <td align="center" class="m2-1">{{workorder.equipname}}<br>({{workorder.controlno}})</td>
+            <td align="center" class="m3-1">{{workorder.workorderno}}<br>({{workorder.status}})</td>
+            <td align="center" class="m4-1">
+                <form action="workorder_approval_view" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="loginid" value={{loginid}}>
+                <input type="hidden" name="workorderno" value={{workorder.workorderno}}>
+                <input type="hidden" name="controlno" value={{workorder.controlno}}>
+                <input type="submit" class="button" value="Approval">
+                </form>
+            </td>
+        </tr>
+                             {% endfor %}
+        </tbody>
+ </table>
+</div>
+<div id="sideline2">
+<mainline>
+</mainline>
+</div>
+</main>
+</body>
+</html>

@@ -1,0 +1,24 @@
+!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<script language="javascript">
+//변수 = 부모창에서 값받기 / 팝업창 폼이름.네임값 = 부모창에서 온 변수
+      function init(){
+            itemcode = opener.document.getElementById("itemcode").value;
+            document.Delete.delete.value = itemcode;
+            }
+
+      onload=init
+</script>
+</head>
+<body>
+"Please enter the change information."
+<form action="pmitemcode_delete" method="post" name="Delete">
+    {% csrf_token %}
+<input type="text" name="delete">
+<input type="text" name="itemcodedelete">
+<input type="submit" value="submit"></form>
+</body>
+</html>

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<style>
+header{
+        height:30px;
+        background:#6F6F6F;
+        justify-content:space-between;
+        align-items:center;
+        position:fixed;
+        top:0;
+        left:0;
+        right:0;
+        z-index:10;
+        }
+header2{
+        height:0.3px;
+        padding-top:3px;
+        background:#EEEEEE;
+        display:flex;
+        justify-content:space-between;
+        position:fixed;
+        top:30px;
+        left:0;
+        right:0;
+        z-index:10;
+}
+#logindata{
+        position:fixed; top:1px; left:100px;
+        font-family: 'Rubik', sans-serif;
+        font-size:18px;
+        vertical-align:top;
+        font-weight:bold;
+        color:white;
+}
+toptext{
+        font-family: 'Rubik', sans-serif;
+        font-size:18px;
+        vertical-align:top;
+        font-weight:bold;
+        padding-left:10px;
+        color:white;
+}
+.Button {
+        position:fixed; left:1200px;
+        font-family:'Rubik', sans-serif;
+        font-size:18px;
+        background-color: rgba(255, 255, 255, 0.0);
+        cursor:pointer;
+        border:0px;
+        color:white;
+        font-weight:bold;
+}
+#tabletop{
+    	font-family: arial;
+        position:fixed;top:27px;
+        height:30px;
+}
+titletext{
+    	font-family:'Rubik', sans-serif;
+        font-size:20px;
+        font-weight:bold;
+}
+.selecttext{
+        margin-left:640px;
+        width:105px;
+        height:20px;
+}
+.searchtext{
+        width:200px;
+        height:20px;
+}
+.searchbutton{
+        width:60px;
+        height:20px;
+        cursor:pointer;
+}
+#searchbar{
+        padding-top:5px;
+        font-family:'Rubik', sans-serif;
+        font-size:10px;
+}
+
+#tablemenu{
+    	font-family: arial;
+        font-size:11px;
+        position:fixed;top:60px;
+        height:20px;
+        background-color:#6F6F6F;
+        color:white;
+}
+#tabledesc{
+        position:absolute;top:80px;
+        z-index:10;
+        font-family: arial;
+        font-size:11px;
+        overflow-y:scroll;
+        height:89.8%;
+}
+
+.m1{width:70px;}
+.m2{width:50px;}
+.m3{width:150px;}
+.m4{width:70px;}
+.m5{width:150px;}
+.m6{width:70px;}
+.m7{width:50px;}
+.m8{width:80px;}
+.m9{width:100px;}
+.m10{width:77px;}
+.m11{width:140px;}
+.m12{width:75px;}
+.m13{width:110px;}
+
+.m1-1{width:70px;
+height:20px;}
+.m2-1{width:50px;}
+.m3-1{width:150px;}
+.m4-1{width:70px;}
+.m5-1{width:150px;}
+.m6-1{width:80px;}
+.m7-1{width:50px;}
+.m8-1{width:80px;}
+.m9-1{width:100px;}
+.m10-1{width:80px;}
+.m11-1{width:140px;}
+.m12-1{width:80px;}
+.m13-1{width:110px;}
+
+
+body{overflow:hidden;}
+
+tr:nth-child(even){
+    background-color:#EEEEEE;
+}
+</style>
+</head>
+<body>
+<header>
+<toptext>Welcome,&nbsp;</toptext>
+<div id="logindata"></div>
+
+<input type="button"value="Close" class="Button" onclick="Close();">
+</header>
+<header2>
+</header2>
+
+<div id="tabletop" style="word-break:break-all">
+<table>
+    <tr>
+    <td><titletext>Spare Parts Release List</titletext></td>
+    <td>
+    <div id="searchbar">
+        <form action="spareparts_release_list" method="get">
+            <select class="selecttext" name="selecttext">&nbsp;
+            <option value="codeno">Code No.</option>
+            <option value="partname">Parts Name</option>
+            <option value="date">Date</option>
+            <option value="out_code">Out Code</option>
+            <option value="staff">Staff</option>
+            </select>
+            <input type="search"  class="searchtext" placeholder="Keywords" name="searchtext">
+            <input type="hidden" value={{loginid}} name="loginid">
+            <input type="submit"  class="searchbutton" value="Search"></form>
+    </div></td>
+    </tr>
+</table>
+</div>
+<div id="tablemenu">
+     <table  style="word-break:break-all">
+        <thead>
+        <tr>
+            <td align="center" class="m1">Code No.</td>
+            <td align="center" class="m2">Team</td>
+            <td align="center" class="m3">Parts Name</td>
+            <td align="center" class="m4">Vendor</td>
+            <td align="center" class="m5">Model Name</td>
+            <td align="center" class="m6">Staff</td>
+            <td align="center" class="m7">QY</td>
+            <td align="center" class="m8">Location</td>
+            <td align="center" class="m9">Date</td>
+            <td align="center" class="m10">Control No.</td>
+            <td align="center" class="m11">Equipment Name</td>
+            <td align="center" class="m12">Out Code</td>
+            <td align="center" class="m13">Use Information</td>
+        </tr>
+        </thead>
+     </table>
+</div>
+<div id="tabledesc">
+ <table style="word-break:break-all">
+     <tbody>
+            {% for spare_out in spareparts_release %}
+        <tr>
+            <td align="center" class="m1-1">{{spare_out.codeno}}</td>
+            <td align="center" class="m2-1">{{spare_out.team}}</td>
+            <td align="center" class="m3-1">{{spare_out.partname}}</td>
+            <td align="center" class="m4-1">{{spare_out.vendor}}</td>
+            <td align="center" class="m5-1">{{spare_out.modelno}}</td>
+            <td align="center" class="m6-1">{{spare_out.staff}}</td>
+            <td align="center" class="m7-1">{{spare_out.qy}}</td>
+            <td align="center" class="m8-1">{{spare_out.location}}</td>
+            <td align="center" class="m9-1">{{spare_out.date}}</td>
+            <td align="center" class="m10-1">{{spare_out.controlno}}</td>
+            <td align="center" class="m11-1">{{spare_out.equipname}}</td>
+            <td align="center" class="m12-1">{{spare_out.out_code}}</td>
+            <td align="center" class="m13-1">{{spare_out.used_y_n}}</td>
+        </tr>
+            {% endfor %}
+        </tbody>
+ </table>
+</div>
+<script>
+     function init(){
+            loginid = opener.document.getElementById("loginid_up").value;
+            var loginid_up = loginid;
+            document.getElementById("logindata").innerHTML=loginid_up;}
+
+      onload=init
+
+    function Close(){
+            self.close();
+    }
+</script>
+</body>
+</html>

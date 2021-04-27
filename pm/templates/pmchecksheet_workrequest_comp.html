@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+workrequesttitle{
+        position:fixed;top:64.8px; left:28.8px;
+        font-size: 24px;
+        font-family: arial;
+        font-weight:bold;
+}
+#equipinfo{
+    	font-family: arial;
+        font-size:11px;
+        position:fixed;top:108px; left:15.36px;
+        color:black;
+        width:846.7px;
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+}
+.table1{
+        background-color: #EEEEEE;
+        width:140px;
+        height:25px;
+        font-weight:bold;
+}
+.table2{
+        background-color: white;
+}
+.table3{
+        height:44px;
+        background-color: #EEEEEE;
+        font-weight:bold;
+}
+.border {
+        position:fixed;top:37.8px;
+        border:8px solid #6F6F6F;
+        width:844.8px;
+        height:736.56px;
+    }
+#workrequesttitle{
+    	font-family: arial;
+        font-size:11px;
+        position:fixed;top:240px; left:15.36px;
+        width:846.72px;
+        background-color:#6F6F6F;
+        color:white;
+        height:20px;
+}
+#workrequestdesc{
+        position:fixed; top:260px; left:15.36px;
+        font-family: arial;
+        font-size:11px;
+}
+#workrequesttable{
+        font-size:11px;
+    	font-family: arial;
+}
+.c1{padding-left:400px;}
+.c1-1{width:400px; height:15px;}
+
+#workrequesttitle2{
+    	font-family: arial;
+        font-size:11px;
+        position:fixed;top:675px; left:15.36px;
+        width:846.72px;
+        background-color:#6F6F6F;
+        color:white;
+        height:20px;
+}
+#workrequesttable2{
+        position:fixed;top:700px; left:15.36px;
+        width:846.72px;
+        font-family: arial;
+        font-size:11px;
+}
+#workrequesttitle3{
+    	font-family: arial;
+        font-size:11px;
+        position:fixed;top:734.4px; left:15.36px;
+        width:846.72px;
+        background-color:#6F6F6F;
+        color:white;
+        height:20px;
+}
+#workrequesttable3{
+        position:fixed;top:753.84px; left:13.44px;
+        width:846.72px;
+        font-family: arial;
+        font-size:11px;
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+}
+.description_css{
+width:835px;
+height:402px;
+font-size:12px;
+font-family: arial;
+}
+.text_css{
+width:270px;
+height:16px;
+font-size:11px;
+font-family: arial;
+}
+.text_css2{
+width:260px;
+height:16px;
+font-size:11px;
+font-family: arial;
+}
+.text_css3{
+width:835px;
+height:16px;
+font-size:11px;
+font-family: arial;
+}
+.pmcheck_submit_css{
+position:fixed;top:797.04px; left:806.4px;
+font-family: arial;
+font-size:12px;
+cursor:pointer;
+}
+.button_css2{
+font-family: arial;
+font-size:16px;
+cursor:pointer
+}
+
+#messages_location{
+        position:fixed; top:5px; left:100px;
+        font-size:18px;
+        font-weight:bold;
+        animation-iteration-count:10;
+	    animation-duration:1s;
+	    animation-name: changecolor;
+       	color:white;
+}
+@keyframes changecolor{
+    from{
+       	  color:white;    }
+    to{
+          color:red;    }
+}
+</style>
+<body>
+<div class="border">
+</div>
+
+<div id="messages_location">
+{%if messages %}
+{%for message in messages%}
+{{message}}
+{%endfor%}
+{%endif%}
+</div>
+
+<workrequesttitle>
+Work Request Form
+</workrequesttitle>
+
+<form action="" method="post" name="workrequest">
+         {% csrf_token %}
+<table id="equipinfo" border= "1">
+    <tr>
+        <td class="table1">
+            Control No.
+        </td>
+        <td class="table2">
+            {{controlno}}
+        </td>
+        <td class="table1">
+            Equipment. Name
+        </td>
+        <td class="table2">
+            {{equipname}}
+        </td>
+    </tr>
+    <tr>
+        <td class="table3">
+            Room Name<br>(Room No.)
+        </td>
+        <td class="table2">
+            {{roomname}}<br>
+            ({{roomno}})
+        </td>
+        <td class="table1">
+            Type
+        </td>
+        <td class="table2">
+            PM
+        </td>
+    </tr>
+    <tr>
+        <td class="table1">
+            CAPA. or Deviation No.
+        </td>
+        <td class="table2">
+           {{capa}}
+        </td>
+        <td class="table1">
+            Team
+        </td>
+        <td class="table2">
+            {{equipteam}}
+        </td>
+    </tr>
+    <tr>
+        <td class="table1">
+            Requestor
+        </td>
+        <td class="table2">
+            {{username}}
+        </td>
+        <td class="table1">
+            Request Date
+        </td>
+        <td class="table2">
+            {{request_date}}
+        </td>
+    </tr>
+</table>
+<div id="workrequesttitle" >
+     <table  style="word-break:break-all">
+        <thead>
+        <tr>
+            <td align="center" class="c1">Description</td>
+        </tr>
+        </thead>
+     </table>
+</div>
+<div id="workrequestdesc">
+ <table style="word-break:break-all" id="workrequesttable">
+     <tbody>
+        <tr>
+            <td align="center" class="c1-1">
+                <textarea name="checkresult_up" class="description_css" style="resize:none;" readonly>{{description}}</textarea>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</form>
+<div id="workrequesttitle2" >
+     <table  style="word-break:break-all">
+        <thead>
+        <tr>
+            <td align="center" class="c2">Attached File</td>
+        </tr>
+        </thead>
+     </table>
+</div>
+
+<div id="workrequesttable2" >
+     <table  style="word-break:break-all">
+        <thead>
+        <tr>
+            <td align="center" class="c2-1">
+            <a href="{{url}}" target="_blank" class="upload_complete_css">Upload_ Complete</a>
+            </td>
+        </tr>
+        </thead>
+     </table>
+</div>
+
+<form action="" method="post" name="workrequest_2">
+<div id="workrequesttitle3" >
+     <table  style="word-break:break-all">
+        <thead>
+        <tr>
+            <td align="center" class="c3">Breakdown Cause</td>
+        </tr>
+        </thead>
+     </table>
+</div>
+<div id="workrequesttable3" >
+     <table  style="word-break:break-all" >
+        <thead>
+        <tr>
+            <td align="center" class="c3-1">
+                {{description_info}}
+            </td>
+        </tr>
+        </thead>
+     </table>
+</div>
+</form>
+
+<script>
+        //부모창 f5기능 추가
+    function Closepage(){
+        opener.document.location.reload();
+        self.close();}
+
+    function init(){
+        opener.document.location.reload();
+        setTimeout(function(){
+                if(opener){
+                self.close();
+                }
+            },10000);}
+
+    onload=init
+</script>
+</body>
+</html>

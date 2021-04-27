@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+
+#tablemenu{
+    	font-family: arial;
+        font-size:11px;
+        position:fixed;top:7.5%; left:9%;
+        height:2.5%;
+        width:30%;
+        background-color:#6F6F6F;
+        color:white;
+}
+#tabledesc{
+        position:absolute;top:10%; left:9%;
+        z-index:10;
+        width:30%;
+        font-family: arial;
+        font-size:11px;
+        overflow:scroll;
+        height:89.8%;
+}
+.m1{width:50px;}
+.m2{width:80px;}
+.m3{width:150px;}
+.m4{width:50px;}
+.m5{width:50px;}
+.m6{width:50px;}
+.m7{width:50px;}
+.m8{width:46px;}
+.m61{width:76px;}
+.m71{width:70px;}
+
+.m1-1{width:50px;}
+.m2-1{width:80px;}
+.m3-1{width:150px;}
+.m4-1{width:50px;}
+.m5-1{width:50px;}
+.m6-1{width:50px;}
+.m7-1{width:50px;}
+.m8-1{width:50px;}
+.m6-11{width:75px;}
+.m7-11{width:75px;}
+
+body{overflow:hidden;}
+
+#sideline2{
+        background:#EEEEEE;
+        position:fixed; right:60.8%;
+        height:100%;
+        width:5px;
+}
+
+tr:nth-child(even){
+    background-color:#EEEEEE;
+}
+
+.button{
+    	font-family: arial;
+        font-size:11px;
+        cursor:pointer;
+}
+</style>
+<body>
+<main>
+<div id="tablemenu">
+     <table  style="word-break:break-all">
+        <thead>
+        <tr>
+            <td align="center" class="m1">Team</td>
+            <td align="center" class="m2">Control No.</td>
+            <td align="center" class="m3">Equip. Name</td>
+            <td align="center" class="m4">R/A</td>
+            <td align="center" class="m5">Status</td>
+            {% if user_div == "Engineer" %}
+            <td align="center" class="m6">Review</td>
+            <td align="center" class="m7">View</td>
+            <td align="center" class="m8">Write</td>
+            {% elif user_div == "SO Manager" %}
+            <td align="center" class="m6">Review</td>
+            <td align="center" class="m7">View</td>
+            <td align="center" class="m8">Write</td>
+            {%else%}
+            <td align="center" class="m61">Review</td>
+            <td align="center" class="m71">View</td>
+            {%endif%}
+        </tr>
+        </thead>
+     </table>
+</div>
+<div id="tabledesc">
+ <table style="word-break:break-all">
+     <tbody>
+                      {% for equiplist in equiplists %}
+        <tr>
+            <td align="center" class="m1-1">{{equiplist.team}}</td> <!--models.py에서 값받아오기-->
+            <td align="center" class="m2-1">{{equiplist.controlno}}</td>
+            <td align="center" class="m3-1">{{equiplist.name}}</td>
+            <td align="center" class="m4-1">{{equiplist.ra}}</td>
+            <td align="center" class="m5-1">{{equiplist.status}}</td>
+            {% if user_div == "Engineer" %}
+            <td align="center" class="m6-1">{{equiplist.recheck}}</td>
+            <td align="center" class="m7-1">
+                <form action="pmra_view" method="post" >
+                {% csrf_token %}
+                <input type="hidden" value={{equiplist.controlno}} name="controlno">
+                <input type="hidden" value={{loginid}} name="loginid">
+                <input type="hidden" value={{selecttext}} name="selecttext">
+                <input type="hidden" value={{searchtext}} name="searchtext">
+                <input type="submit" class="button" value="View">
+                </form>
+            </td>
+            <td align="center" class="m8-1" >
+                <form action="pmra_write" method="post" >
+                {% csrf_token %}
+                <input type="hidden" value={{equiplist.controlno}} name="controlno">
+                <input type="hidden" value={{loginid}} name="loginid">
+                <input type="hidden" value={{selecttext}} name="selecttext">
+                <input type="hidden" value={{searchtext}} name="searchtext">
+                <input type="submit" class="button" value="Write">
+                </form>
+            </td>
+            {% elif user_div == "SO Manager" %}
+            <td align="center" class="m6-1">{{equiplist.recheck}}</td>
+            <td align="center" class="m7-1">
+                <form action="pmra_view" method="post" >
+                {% csrf_token %}
+                <input type="hidden" value={{equiplist.controlno}} name="controlno">
+                <input type="hidden" value={{loginid}} name="loginid">
+                <input type="hidden" value={{selecttext}} name="selecttext">
+                <input type="hidden" value={{searchtext}} name="searchtext">
+                <input type="submit" class="button" value="View">
+                </form>
+            </td>
+            <td align="center" class="m8-1" >
+                <form action="pmra_write" method="post" >
+                {% csrf_token %}
+                <input type="hidden" value={{equiplist.controlno}} name="controlno">
+                <input type="hidden" value={{loginid}} name="loginid">
+                <input type="hidden" value={{selecttext}} name="selecttext">
+                <input type="hidden" value={{searchtext}} name="searchtext">
+                <input type="submit" class="button" value="Write">
+                </form>
+            </td>
+            {%else%}
+            <td align="center" class="m6-11">{{equiplist.recheck}}</td>
+            <td align="center" class="m7-11">
+                <form action="pmra_view" method="post" >
+                {% csrf_token %}
+                <input type="hidden" value={{equiplist.controlno}} name="controlno">
+                <input type="hidden" value={{loginid}} name="loginid">
+                <input type="hidden" value={{selecttext}} name="selecttext">
+                <input type="hidden" value={{searchtext}} name="searchtext">
+                <input type="submit" class="button" value="View">
+                </form>
+            </td>
+            {%endif%}
+        </tr>
+                        {% endfor %}
+        </tbody>
+ </table>
+</div>
+<div id="sideline2">
+<mainline>
+</mainline>
+</div>
+</main>
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+    <title>Title</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap');
+
+header{
+        height:30px;
+        background:#6F6F6F;
+        justify-content:space-between;
+        align-items:center;
+        position:fixed;
+        top:0;
+        left:0;
+        right:0;
+        z-index:10;
+        }
+header2{
+        height:0.3px;
+        padding-top:3px;
+        background:#EEEEEE;
+        display:flex;
+        justify-content:space-between;
+        position:fixed;
+        top:30px;
+        left:0;
+        right:0;
+        z-index:10;
+}
+toptext{
+        font-family: 'Rubik', sans-serif;
+        font-size:18px;
+        vertical-align:top;
+        font-weight:bold;
+        padding-left:1%;
+        color:white;
+}
+#logindata{
+        position:fixed; top:0.1%; left:9%;
+        font-family: 'Rubik', sans-serif;
+        font-size:18px;
+        vertical-align:top;
+        font-weight:bold;
+        color:white;
+}
+l{
+        margin-left:1%;
+        color:white;
+}
+m{
+        margin-left:1%;
+        color:white;
+}
+#messages_location{
+        position:fixed; top:0.1%; left:40%;
+        font-size:18px;
+        font-weight:bold;
+        animation-iteration-count:10;
+	    animation-duration:1s;
+	    animation-name: changecolor;
+       	color:#6F6F6F;
+}
+@keyframes changecolor{
+    from{
+       	  color:white;    }
+    to{
+          color:red;    }
+}
+k{
+        position:fixed; top:0%; left:94.5%;
+        color:white;
+}
+.Button {
+        position:fixed; left:94%;
+        font-family:'Rubik', sans-serif;
+        font-size:18px;
+        background-color: rgba(255, 255, 255, 0.0);
+        cursor:pointer;
+        border:0px;
+        color:white;
+        font-weight:bold;
+}
+pmcontrolform{
+        position:fixed; top:35px; left:5px;
+        font-family: arial;
+        font-size:18px;
+        font-weight:bold;
+}
+#table_location{
+        position:fixed; top:60px; left:5px;
+}
+.button_css{
+        position:fixed; top:120px; left:1045px;
+    	font-family: arial;
+        font-size:12px;
+        cursor:pointer;
+}
+#pmcontrolformtitle{
+        font-family: arial;
+        font-size:11px;
+        background-color:#6F6F6F;
+        color:white;
+        width:1093px;}
+
+.t1{width:150px;
+height:20px;}
+.t2{width:150px;
+height:20px;}
+.t3{width:300px;
+height:20px;}
+.t4{width:300px;
+height:20px;}
+.t5{width:150px;
+height:20px;}
+
+.t1-1{width:150px;
+height:21px;}
+.t2-1{width:50px;
+height:21px;}
+.t2-2{width:100px;
+height:21px;}
+.t3-1{width:300px;}
+.t4-1{width:300px;}
+.t5-1{width:150px;}
+
+#pmcontrolformtable{
+        font-size:11px;
+    	font-family: arial;
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+}
+</style>
+</head>
+
+<body>
+<header>
+<toptext>Welcome,&nbsp;</toptext>
+<div id="logindata"></div>
+<div id="messages_location">
+{%if messages %}
+{%for message in messages%}
+{{message}}
+{%endfor%}
+{%endif%}
+</div>
+
+<a><k></k></a>
+<input type="button"value="Close" class="Button" onclick="Close();">
+
+</header>
+<header2>
+</header2>
+<pmcontrolform>PM Control Form</pmcontrolform>
+<div id="table_location">
+   <table id="pmcontrolformtitle">
+        <tr>
+            <td align="center" class="t1">Division</td>
+            <td align="center" class="t2">Frequency</td>
+            <td align="center" class="t3">Maintenance Item</td>
+            <td align="center" class="t4">Check Standard</td>
+            <td align="center" class="t5">Change Information</td>
+        </tr>
+   </table>
+   <table id="pmcontrolformtable" border="1">
+<form action="workorder_pmcontrolform_submit" name="pmcontrolform" method="post">
+    {% csrf_token %}
+    <tr>
+<td align="center">
+            <select class="t1-1" name="division">
+                {% for pm_reference in pmreference %}
+            <option value={{pm_reference.description}}>{{pm_reference.description}}</option>
+                {% endfor %}
+            </select></td>
+<td align="center">
+            <select class="t2-1" name="freq_no">&nbsp;
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option></select></td>
+<td align="center">
+<select class="t2-2" name="freq_my">&nbsp;
+            <option value="Month">Month</option>
+            <option value="Year">Year</option></select></td>
+            <td align="left" >
+                     <input type="text" name="item"  class="t3-1" required></td>
+            <td align="left">
+                     <input type="text" name="check"  class="t4-1" required></td>
+            <td align="center">
+                     <input type="text" name="change_reason"  class="t5-1" readonly></td>
+
+    </tr>
+<input type="hidden" name="loginid">
+<input type="hidden" name="controlno">
+<input type="hidden" name="workorderno">
+<input type="hidden" name="date">
+<input type="submit" value="Submit" class="button_css">
+</form>
+</table>
+</div>
+<script>
+    //////////// 기본초기값 불러오기//////////////
+     function init(){
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth()+1; //January is 0!
+            var yyyy = today.getFullYear();
+            if(dd<10) {
+                dd='0'+dd
+            }
+            if(mm<10) {
+                mm='0'+mm
+            }
+            today = yyyy+'-'+mm+'-'+dd;
+            document.pmcontrolform.date.value = today;
+            loginid = opener.document.getElementById("loginid_up").value;
+            document.pmcontrolform.loginid.value = loginid;
+            controlno = opener.document.getElementById("controlno_up").value;
+            document.pmcontrolform.controlno.value = controlno;
+            workorderno = opener.document.getElementById("workorderno_up").value;
+            document.pmcontrolform.change_reason.value = workorderno;
+            document.pmcontrolform.workorderno.value = workorderno;
+       ////아이디 정보 보내기
+            var loginid_up = loginid;
+            document.getElementById("logindata").innerHTML=loginid_up;
+            }
+
+      onload=init
+
+
+    function Close(){
+    self.close();
+    }
+
+</script>
+</body>
+</html>

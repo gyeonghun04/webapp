@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<style>
+#tabletop{
+    	font-family: arial;
+        position:fixed;top:3.2%; left:9%;
+        height:5%;
+        width:30%;
+}
+titletext{
+        position:fixed;top:5.5%; left:9.2%;
+    	font-family:'Rubik', sans-serif;
+        font-size:20px;
+        font-weight:bold;
+}
+.selecttext{
+        margin-left:269px;
+        width:105px;
+        height:20px;
+}
+.searchtext{
+        width:110px;
+        height:20px;
+}
+.searchbutton{
+        width:60px;
+        height:20px;
+        cursor:pointer;
+}
+#searchbar{
+        padding-left:10px;
+        padding-top:5px;
+        font-family:arial;
+        font-size:10px;
+}
+.calendartext{
+        margin-left:340px;
+        width:150px;
+        height:16px;
+        font-family: arial;
+        font-size:11px;
+}
+.searchbutton2{
+        width:60px;
+        height:20px;
+        cursor:pointer;
+}
+</style>
+</head>
+<body>
+ <titletext>PM Check Sheet</titletext>
+<div id="tabletop">
+<table>
+    <tr>
+    <td>
+    <div id="searchbar">
+        <form action="pmchecksheet_main" method="post">
+            {% csrf_token %}
+            <select class="selecttext" name="selecttext">
+            <option value="status">Status</option>
+            <option value="team">Team</option>
+            <option value="control_no">Control No.</option>
+            <option value="equipname">Equipment</option></select>
+            <input type="search"  class="searchtext" placeholder="Keywords" name="searchtext" value={{searchtext}}>
+            <input type="hidden" value={{loginid}} name="loginid">
+            <input type="hidden" value={{calendarsearch}} name="calendarsearch">
+            <input type="submit"  class="searchbutton" value="Search"></form>
+    </div></td>
+    <tr>
+    </tr>
+        <td>
+    <div id="calendar">
+        <form action="pmchecksheet_main" method="post">
+            {% csrf_token %}
+            <input type="month"  class="calendartext" name="calendarsearch">
+            <input type="hidden" value={{loginid}} name="loginid">
+            <input type="hidden" value={{selecttext}} name="selecttext">
+            <input type="hidden" value={{searchtext}} name="searchtext">
+            <input type="submit"  class="searchbutton2" value="Search"></form>
+    </div>
+        </td>
+    </tr>
+</table>
+</div>
+</body>
+</html>

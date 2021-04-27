@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+<script language="javascript">
+        //PM Standard 안끝나면 작동안하는 인터락
+        function scoreresult(){
+            let pmsignal = document.getElementsByName('pmok')[0].value;
+            if (pmsignal == ""){
+            alert("[PM Standard] is not yet finished");}
+            else{
+            document.pmwritescore.action="pmwritescore";
+            document.pmwritescore.submit();}
+            }
+
+</script>
+<style>
+ratitle{
+        position:fixed;top:6%; left:58%;
+        font-size: 20px;
+        font-family: arial;
+        font-weight:bold;
+}
+#raok{
+    	font-family: arial;
+        font-size:11px;
+        position:fixed;top:19.6%; left:39.6%;
+        width:59.98%;
+        background-color:#6F6F6F;
+        color:white;
+        height:20px;
+}
+#raokdesc{
+        position:fixed; top:21.6%; left:39.6%;
+        width:59.98%;
+}
+#raoktable{
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+        font-size:11px;
+        font-family: arial;
+}
+#ratitle{
+    	font-family: arial;
+        font-size:11px;
+        position:fixed;top:28%; left:39.6%;
+        width:59.98%;
+        background-color:#6F6F6F;
+        color:white;
+        height:20px;
+}
+#radesc{
+        position:fixed; top:30%; left:39.6%;
+        width:59.98%;
+        height:67%;
+}
+#ratable{
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+        font-size:11px;
+        font-family: arial;
+}
+#ramain{
+    	font-family: arial;
+        font-size:11px;
+        position:fixed;top:42.6%; left:39.6%;
+        width:59.98%;
+        background-color:#6F6F6F;
+        color:white;
+        height:20px;
+}
+#ramaindesc{
+        position:fixed; top:44.6%; left:39.6%;
+        width:59.98%;
+        height:67%;
+}
+#ramaintable{
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+        font-size:11px;
+        font-family: arial;
+}
+#rafooter{
+        position:fixed;top:72.8%; left:39.6%;
+    	font-family: arial;
+        font-size:11px;
+        width:59.98%;
+        background-color:#6F6F6F;
+        color:white;
+        height:20px;
+}
+#rafooterdesc{
+        position:fixed; top:75%; left:39.6%;
+        width:59.98%;
+        font-family: arial;
+        font-size:11px;
+        padding-left:5px;
+}
+#score{
+        position:fixed; top:79%; left:40%;
+        width:40%;
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+        font-size:11px;
+        font-family: arial;
+}
+#raresult{
+    	font-family: arial;
+        font-size:11px;
+        position:fixed;top:86%; left:39.6%;
+        width:59.98%;
+        background-color:#6F6F6F;
+        color:white;
+        height:20px;
+}
+#raresultdesc{
+        position:fixed; top:88.5%; left:39.6%;
+        width:59.98%;
+        font-family: arial;
+        font-size:12px;
+        padding-left:56.5%;
+        font-weight:bold;
+}
+
+
+.a1-1{width:100px; height:20px;}
+.a2-1{width:841px; height:20px;}
+.a3-1{width:200px; height:20px;}
+
+.c1-1{width:100px; height:15px;}
+.c2-1{width:1044px; height:15px;}
+.c1-2{width:100px; height:100px;}
+.c2-2{width:1044px; height:100px;}
+
+.t1-1{width:100px; height:20px;}
+.t2-1{width:841px; height:20px;}
+.t3-1{width:200px; height:20px;}
+
+.t1-2{width:100px; height:100px;}
+.t1-3{width:100px; height:100px;}
+.t1-4{width:100px; height:40px;}
+
+.c1{width:100px;}
+.c2{width:100px;}
+.c3{width:140px;}
+.c4{width:60px;}
+.c5{width:100px;}
+
+.c11{width:300px;
+    height:25px;
+    background-color: #EEEEEE;
+    font-weight:bold;}
+.c12{width:300px;
+    height:15px;
+    background-color:white;}
+.c13{width:300px;
+    height:15px;
+    background-color:white;}
+.scorebox{
+    width:60px;
+    font-family: arial;
+    font-size:11px;
+}
+#pmcontrolformtop{
+        position:fixed; top:91%; left:39.6%;
+        width:59.98%;
+    	font-family: arial;
+        font-size:11px;
+        background-color:#6F6F6F;
+        color:white;
+        padding:3px;
+        }
+
+#pmcontrolformapproval{
+        position:fixed; top:93.5%; left:39.6%;
+        width:59.98%;
+        font-family: arial;
+        font-size:11px;
+        padding:10px;
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+        }
+.button{
+    	font-family: arial;
+        font-size:11px;
+        cursor:pointer;
+}
+</style>
+
+</head>
+<body>
+<ratitle>
+Assessment for Period of Preventive Maintenance
+</ratitle>
+
+<main>
+{% for equipinfos in equipinfo %}
+<div id="raok" >
+<table  style="word-break:break-all">
+        <thead>
+        <tr>
+            <td align="center" class="c5">1. PM Standard</td>
+        </thead>
+</table>
+</div>
+<div id="raokdesc">
+ <table style="word-break:break-all" border="1" id="raoktable">
+     <tbody>
+     <form action="pm_write_standard" method="post">
+                {% csrf_token %}
+         <tr>
+            <td align="center" class="a1-1">Items</td>
+            <td align="center" class="a2-1">Description</td>
+            <td align="center" class="a3-1">Result</td>
+         </tr>
+         <tr>
+            <td align="center" class="a1-2" height="35">PM<br>Standard</td>
+            <td align="left" class="a2-2">
+            {%if pmreason %}
+            {{pmreason}}
+            {%else%}
+            <input type="radio" name="pmreason" value="PQ" checked>PQ&emsp;
+            <input type="radio" name="pmreason" value="Manual">Manual&emsp;
+            <input type="radio" name="pmreason" value="PLC">PLC&emsp;
+            <input type="radio" name="pmreason" value="IT">IT&emsp;
+            <input type="radio" name="pmreason" value="None">None
+            {%endif%}
+            </td>
+            <td align="center" class="a3-2">
+            {%if pmok == "Y" %} Y
+            {%elif pmok == "N" %} N
+            {%else%}
+                <input type="hidden" value={{equipinfos.controlno}} name="controlno">
+                <input type="hidden" value={{loginid}} name="loginid">
+                <input type="submit" class="button" value="Submit">
+            {%endif%}
+            </td>
+         </tr>
+     </form>
+</tbody>
+ </table>
+</div>
+
+<div id="ratitle" >
+     <table  style="word-break:break-all">
+        <thead>
+        <tr>
+            <td align="center" class="c1">2. Assessment Ⅰ</td>
+        </thead>
+     </table>
+</div>
+<div id="radesc">
+ <table style="word-break:break-all" border="1" id="ratable">
+     <tbody>
+        <tr>
+            <td align="center" class="c1-1">Items</td>
+            <td align="center" class="c2-1">Description</td>
+        </tr>
+         <tr>
+            <td align="center" class="c1-2">Equipment<br> Manual</td>
+            <td align="left" class="c2-2">
+1. “설비 및 컴퓨터의 GxP평가(FE002)” 결과에 따라 PQ 대상 설비로 분류되거나 또는 PM 필요 시 본 평가를 진행하고 그렇지 않으면 ‘N / A’에 표기한다.<br>
+(1. If it is classified as a PQ target facility according to the result of “GxP assessment of equipment and computers (FE002)”
+or if necessary, this implementation will be conducted. Otherwise,<br> “Not applicable” is indicated
+2. 설비 매뉴얼의 권고사항을 기준으로 주기를 적용하나 그렇지 않으면 아래의 평가 방법을 따른다.<br>
+(2. The interval is applied based on the recommendations of the equipment manual, but exceptions follow the interval setting
+evaluation method Ⅱ below.)
+</td>
+</tr>
+</tbody>
+ </table>
+</div>
+
+<div id="ramain" >
+     <table  style="word-break:break-all">
+        <thead>
+        <tr>
+            <td align="center" class="c2">3. Assessment Ⅱ</td>
+        </thead>
+     </table>
+</div>
+<div id="ramaindesc">
+ <table style="word-break:break-all" border="1" id="ramaintable">
+     <tbody>
+     <form name="pmwritescore" method="post" >
+     {% csrf_token %}
+        <tr>
+            <td align="center" class="t1-1">Items </td>
+            <td align="center" class="t2-1">Description </td>
+            <td align="center" class="t3-1">Result (Score) </td>
+        </tr>
+         <tr>
+            <td align="center" class="t1-2">Frequency of<br> use<br>(F)</td>
+             <td align="left" class="t2-2">
+                 설비의 연간 가동 일수에 따라 설비에 미치는 영향을 주요 변수로 적용.<br>
+                The effect of the item on the equipment depending on the frequency of use is applied as the main variable.<br>
+                (평가: 1 ~ 90일(1점), 91 ~ 180일(2점), 181 ~ 270일(3점), 271일 이상(4점) )<br>
+                (Assessment : 1 ~ 90 days(1 point), 91 ~ 180 days(2 points), 181 ~ 270 days(3 points), 271 days or more(4 points)</td>
+            <td align="center" class="t3-2">
+            {%if score_f == "1" %} 1Point
+            {%elif score_f == "2" %} 2Point
+            {%elif score_f == "3" %} 3Point
+            {%elif score_f == "4" %} 4Point
+            {%else%}
+            {%if pmok == "Y" %}
+            <select class="scorebox" name="score_f">&nbsp;
+            <option value="1">1Point</option>
+            <option value="2">2Point</option>
+            <option value="3">3Point</option>
+            <option value="4">4Point</option></select>
+            {%endif%}
+            {%endif%}
+            </td>
+         </tr>
+         <tr>
+            <td align="center" class="t1-3">Equipment<br> Manual</td>
+             <td align="left" class="t2-3">
+                 설비의 사용 연수에 따라 설비에 미치는 영향을 주요 변수로 적용.<br>
+                The effect on the equipment is applied as the main variable according to
+                the number of years of equipment use.<br>
+                (평가: 0 ~ 5년(1점), 6 ~ 10년(2점), 11 ~ 15년(3점), 16년 이상(4점))<br>
+                (Assessment : 0 to 5 years(1 point), 6 to 10 years(2 points), 11 to 15 years(3 points),16 years or more(4 points)<br></td>
+            <td align="center" class="t3-3">
+                 {%if score_y %}
+                {{score_y}}Point
+                 {%endif%}</td>
+         </tr>
+         <tr>
+            <td align="center" class="t1-4">Total Score <br> (F + Y)</td>
+             <td align="left" class="t2-4">
+                 {%if score_result %}
+                {{score_f}}Point + {{score_y}}Point = {{score_result}}Point
+                 {%endif%}
+             </td>
+
+            <td align="center" class="t3-4">
+                 {%if score_result %}
+                 {{score_result}}Point
+                 {%else%}
+                 {%if pmok == "Y" %}
+                <input type="hidden" value={{equipinfos.controlno}} name="controlno">
+                <input type="hidden" value={{pmreason}} name="pmreason">
+                <input type="hidden" value={{pmok}} name="pmok">
+                <input type="hidden" value={{loginid}} name="loginid">
+                <input type="button" class="button" value="Submit" onclick="scoreresult();">
+                 {%endif%}
+                 {%endif%}
+            </td>
+            </td>
+         </tr>
+     </form>
+</tbody>
+ </table>
+</div>
+
+<div id="rafooter" >
+     <table  style="word-break:break-all">
+        <thead>
+        <tr>
+            <td align="center" class="c3">4. Assessment Standard</td>
+        </thead>
+     </table>
+</div>
+<div id="rafooterdesc">
+ <table style="word-break:break-all" >
+     <thead>
+        <tr>
+            <td align="left">
+                합산 점수가 정해지면 PM 주기가 설정된다.<br>
+                When the total score is determined, the PM period is set according to the grade.</td>
+        </tr>
+    </thead>
+ </table>
+ <table id="score" border="1">
+    <tr>
+        <td align="center" width="200" height="25">Total Score (F + Y)</td>
+        <td align="center" width="150">2</td>
+        <td align="center" width="150">3</td>
+        <td align="center" width="150">4 ~ 5</td>
+        <td align="center" width="150">6 ~ 8</td>
+    </tr>
+    <tr>
+        <td align="center" height="25">PM Period</td>
+        <td align="center" >12 Months</td>
+        <td align="center" >6 Months</td>
+        <td align="center" >3 Months</td>
+        <td align="center" >1 Month</td>
+    </tr>
+ </table>
+</div>
+
+<div id="raresult" >
+     <table  style="word-break:break-all">
+        <thead>
+        <tr>
+            <td align="center" class="c4">5. Result</td>
+        </thead>
+     </table>
+</div>
+<div id="raresultdesc">
+ <table style="word-break:break-all">
+     <thead>
+        <tr>
+            {%if pmok == "Y" %}
+            <td>{{ra_result}}Month(s)</td>
+            {%elif pmok == "N" %}
+            <td>N/A</td>
+            {%endif%}
+        </tr>
+    </thead>
+ </table>
+</div>
+
+ <table style="word-break:break-all" id="pmcontrolformtop">
+     <thead>
+         <tr>
+            <td align="center" class="c15">Prepared & Approved</td>
+        </tr>
+     </thead>
+ </table>
+ <table style="word-break:break-all" id="pmcontrolformapproval" border="1">
+    <tbody>
+        <tr>
+            <td align="left" class="c11">Prepared by:</td> <!--models.py에서 값받아오기-->
+                 {%if p_signal == "NN" %}
+                <td align="center" class="c12"></td>
+                <td align="center" class="c13"></td>
+                  {%elif p_signal == "OY" %}
+                <td align="center" class="c12">{{p_name}}</td>
+                <td align="center" class="c13">{{p_date}}</td>
+                  {%elif p_signal == "OO" %}
+                <td align="center" class="c12">{{p_name}}</td>
+                <td align="center" class="c13">{{p_date}}</td>
+                 {%elif p_signal == "ON" %}
+                <td align="center" class="c12">{{p_name}}</td>
+                <td align="center" class="c13">{{p_date}}</td>
+                 {%elif p_signal == "YN" %}
+            <td align="center" class="c12">
+            <form action="pmra_write_prepared" method="post">
+                {% csrf_token %}
+                <input type="hidden" value={{equipinfos.controlno}} name="controlno">
+                <input type="hidden" value={{pmreason}} name="pmreason">
+                <input type="hidden" value={{pmok}} name="pmok">
+                <input type="hidden" value={{score_y}} name="score_y">
+                <input type="hidden" value={{score_f}} name="score_f">
+                <input type="hidden" value={{score_result}} name="score_result">
+                <input type="hidden" value={{ra_result}} name="ra_result">
+                <input type="hidden" value={{loginid}} name="loginid">
+                <input type="submit" class="button" value="Accept" onclick="this.disabled=true;this.value='Accept'; this.form.submit();">
+            </form></td>
+            <td align="center" class="c13">
+                <input type="submit" class="button" value="Reject" onclick="this.disabled=true;this.value='Reject'; this.form.submit();">
+            </td>
+                {%endif%}
+        </tr>
+
+        <tr>
+            <td align="left" class="c11">Approved by:</td>
+
+            {%if p_signal == "NN" %}
+            <td align="center" class="c12"></td>
+            <td align="center" class="c13"></td>
+            {%elif p_signal == "YN" %}
+            <td align="center" class="c12"></td>
+            <td align="center" class="c13"></td>
+            {%elif p_signal == "ON" %}
+            <td align="center" class="c12"></td>
+            <td align="center" class="c13"></td>
+            {%elif p_signal == "OO" %}
+            <td align="center" class="c12">{{a_name}}</td>
+            <td align="center" class="c13">{{a_date}}</td>
+            {%elif p_signal == "OY" %}
+            <td align="center" class="c12">
+            <form action="pmra_write_approved" method="post" >
+                {% csrf_token %}
+                <input type="hidden" value={{equipinfos.controlno}} name="controlno">
+                <input type="hidden" value={{pmreason}} name="pmreason">
+                <input type="hidden" value={{pmok}} name="pmok">
+                <input type="hidden" value={{score_y}} name="score_y">
+                <input type="hidden" value={{score_f}} name="score_f">
+                <input type="hidden" value={{score_result}} name="score_result">
+                <input type="hidden" value={{ra_result}} name="ra_result">
+                <input type="hidden" value={{loginid}} name="loginid">
+                <input type="hidden" value={{p_name}} name="p_name">
+                <input type="hidden" value={{p_date}} name="p_date">
+                <input type="submit" class="button" value="Accept" onclick="this.disabled=true;this.value='Accept'; this.form.submit();">
+            </form>
+            </td>
+            <td align="center" class="c13">
+                <input type="submit" class="button" value="Reject" onclick="this.disabled=true;this.value='Reject'; this.form.submit();">
+            </td>
+            {%endif%}
+        </tr>
+     </tbody>
+ </table>
+{%endfor%}
+</main>
+</body>
+</html>

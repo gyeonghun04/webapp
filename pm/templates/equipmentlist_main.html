@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+
+#tablemenu{
+    	font-family: arial;
+        font-size:11px;
+        position:fixed;top:7.5%; left:9%;
+        height:2.5%;
+        width:90.7%;
+        background-color:#6F6F6F;
+        color:white;
+}
+#tabledesc{
+        position:absolute;top:10%; left:9%;
+        z-index:10;
+        width:90.7%;
+        font-family: arial;
+        font-size:11px;
+        overflow-y:scroll;
+        height:83.8%;
+}
+.m1{width:30px;}
+.m2{width:80px;}
+.m3{width:70px;}
+.m4{width:200px;}
+.m5{width:300px;}
+.m6{width:250px;}
+.m7{width:230px;}
+.m8{width:180px;}
+.m9{width:60px;}
+.m10{width:120px;}
+.m11{width:80px;}
+.m12{width:70px;}
+
+.m1-1{width:30px;}
+.m2-1{width:80px;}
+.m3-1{width:70px;}
+.m4-1{width:200px;}
+.m5-1{width:300px;}
+.m6-1{width:250px;}
+.m7-1{width:230px;}
+.m8-1{width:180px;}
+.m9-1{width:60px;}
+.m10-1{width:120px;}
+.m11-1{width:80px;}
+.m12-1{width:80px;}
+
+body{overflow:hidden;}
+
+tr:nth-child(even){
+    background-color:#EEEEEE;
+}
+#manualchange{
+        position:fixed; top:94%; left:9%;
+        width:90.7%;
+    	font-family: arial;
+        font-size:11px;
+        background-color:#6F6F6F;
+        color:white;
+        height:20px;
+}
+
+#manualchangeinput{
+        position:fixed; top:96.5%; left:9%;
+        width:90.7%;
+    	font-family: arial;
+        font-size:11px;
+        height:40px;
+}
+
+.n1{width:30px;}
+.n2{width:80px;}
+.n3{width:70px;}
+.n4{width:200px;}
+.n5{width:300px;}
+.n6{width:250px;}
+.n7{width:230px;}
+.n8{width:200px;}
+.n9{width:80px;}
+.n10{width:120px;}
+.n11{width:80px;}
+.n12{width:80px;}
+
+.m2-2{width:60px;}
+.m3-2{width:90px;}
+.m4-2{width:180px;}
+.m5-2{width:300px;}
+.m6-2{width:220px;}
+.m7-2{width:250px;}
+.m8-2{width:160px;}
+.m9-2{width:100px;}
+.m10-2{width:100px;}
+.m11-2{width:80px; height:21px;}
+
+.button{
+    	font-family: arial;
+    	margin-left:20px;
+        cursor:pointer;
+}
+</style>
+<body>
+<main>
+{% include "css.html"%}
+{% include "top.html"%}
+{% include "sidetap.html"%}
+{% include "equipmentlisttop.html"%}
+<div id="tablemenu">
+     <table  style="word-break:break-all">
+        <thead>
+        <tr>
+            <td align="center" class="m1">No</td>
+            <td align="center" class="m2">Control No.</td>
+            <td align="center" class="m3">Team</td>
+            <td align="center" class="m4">Equip. Name</td>
+            <td align="center" class="m5">Model Name</td>
+            <td align="center" class="m6">Serial No.</td>
+            <td align="center" class="m7">Manufacturer</td>
+            <td align="center" class="m8">Room Name</td>
+            <td align="center" class="m9">Room No.</td>
+            <td align="center" class="m10">Setup Date</td>
+            <td align="center" class="m11">PQ</td>
+            <td align="center" class="m12">PM</td>
+        </tr>
+        </thead>
+     </table>
+</div>
+<div id="tabledesc">
+ <table style="word-break:break-all">
+     <tbody>
+                      {% for equiplist in equiplists %}
+        <tr>
+            <td align="center" class="m1-1">{{equiplist.no}}</td>
+            <td align="center" class="m2-1">{{equiplist.controlno}}</td>
+            <td align="center" class="m3-1">{{equiplist.team}}</td>
+            <td align="center" class="m4-1">{{equiplist.name}}</td>
+            <td align="center" class="m5-1">{{equiplist.model}}</td>
+            <td align="center" class="m6-1">{{equiplist.serial}}</td>
+            <td align="center" class="m7-1">{{equiplist.maker}}</td>
+            <td align="center" class="m8-1">{{equiplist.roomname}}</td>
+            <td align="center" class="m9-1">{{equiplist.roomno}}</td>
+            <td align="center" class="m10-1">{{equiplist.setupdate}}</td>
+            <td align="center" class="m11-1">{{equiplist.pq}}</td>
+            <td align="center" class="m12-1">{{equiplist.pmok}}</td>
+        </tr>
+                  {% endfor %}
+        </tbody>
+ </table>
+</div>
+ <div>
+ <table>
+   <thead id="manualchange">
+        <tr>
+            <td align="center" class="n2">Control No.</td>
+            <td align="center" class="n3">Team</td>
+            <td align="center" class="n4">Equip. Name</td>
+            <td align="center" class="n5">Model Name</td>
+            <td align="center" class="n6">Serial No.</td>
+            <td align="center" class="n7">Manufacturer</td>
+            <td align="center" class="n8">Room Name</td>
+            <td align="center" class="n9">Room No.</td>
+            <td align="center" class="n10">Setup Date</td>
+            <td align="center" class="n11">PQ</td>
+            <td align="center" class="n12">New</td>
+        </tr>
+   </thead>
+   <tbody id="manualchangeinput">
+     <tr>
+     <form action="equipmentlist_new" method="post" >
+         {% csrf_token %}
+            <td align="center">
+            <input type="text" name="controlno"  class="m2-2" required></td>
+            <td align="center">
+                     <input type="text" name="team"  class="m3-2" required></td>
+            <td align="left">
+                     <input type="text" name="name"  class="m4-2" required></td>
+            <td align="left">
+                     <input type="text" name="model"  class="m5-2" required></td>
+            <td align="center">
+                     <input type="text" name="serial"  class="m6-2" required></td>
+            <td align="center">
+                     <input type="text" name="maker"  class="m7-2" required></td>
+            <td align="center">
+                     <input type="text" name="roomname"  class="m8-2" required></td>
+            <td align="center">
+                     <input type="text" name="roomno"  class="m9-2" required></td>
+            <td align="center">
+                     <input type="text" name="setupdate"  class="m10-2" required></td>
+            <td align="center">
+                 <select class="m11-2" name="pq">&nbsp;
+                 <option value="Y">Y</option>
+                 <option value="N">N</option>
+            <td>
+            <input type="hidden" value={{loginid}} name="loginid">
+            <input type="submit" class="button" value="New"></td>
+            </form>
+     </tr>
+   </tbody>
+</table>
+ </div>
+
+</main>
+</body>
+</html>

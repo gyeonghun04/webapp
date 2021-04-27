@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+    <title>Title</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap');
+.radius {
+        border: 0.260416666666667vw solid #EEEEEE;
+        border-radius: 0.260416666666667vw;
+        width:40%;
+        height:40%;
+        position:fixed; left:50%; top:20%;
+        padding-top:1%;
+        background-image: url();
+    }
+login{
+        font-family: 'Rubik', sans-serif;
+        font-size:33px;
+        }
+.text1{
+        font-family: 'Rubik', sans-serif;
+        font-size:25px;
+}
+.textcss{
+        font-family: 'Rubik', sans-serif;
+        font-size:18px;
+}
+#tablelocation{
+        position:fixed; left:73%; top:37%;
+        z-index:100;
+}
+.myButton {
+        font-family:'Rubik', sans-serif;
+        font-size:20px;
+        background-color: rgba(255, 255, 255, 0.0);
+        cursor:pointer;
+        border:0px;
+        font-color:black;
+}
+#btnlocation{
+        position:fixed; left:80%; top:51%;
+        z-index:100;
+}
+.imglocation{
+        padding-left:84.5%;
+        padding-top:7.3%;
+}
+#messages_location{
+        position:fixed; top:63%; left:50.2%;
+        font-size:18px;
+        font-weight:bold;
+        animation-iteration-count:10;
+	    animation-duration:1s;
+	    animation-name: changecolor;
+       	color:white;
+}
+@keyframes changecolor{
+    from{
+       	  color:white;    }
+    to{
+          color:red;    }
+}
+</style>
+
+</head>
+<body>
+<main>
+<div class ="imglocation"><img src="https://www.dmbio.com/images/kor/common/h1_logo.gif"></div>
+<div class="radius">
+<login>&emsp;Welcome to Equipment Management System</login><br>
+<form action="main" method="post">
+{% csrf_token %}
+    <table>
+    <tr>
+        <td><br>&nbsp;
+        <img src="https://t3.ftcdn.net/jpg/00/20/69/30/240_F_20693022_XyGYPa5YTymZhKANj4i7gOVrjLYVWb5u.jpg" width=300" height="300">
+        </td>
+        <td>
+        <table id="tablelocation">
+        <tr>
+            <td class="text1">
+            <img src="https://cdn.icon-icons.com/icons2/1471/PNG/512/31-id-horizontal_101205.png" width=20" height="20">&nbsp;User Name</td></tr>
+        <tr>
+            <td><input type="text" name="loginid" class="textcss" placeholder="Insert Login ID" required></td></tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="text1">
+            <img src="https://cdn.icon-icons.com/icons2/1678/PNG/512/wondicon-ui-free-password_111203.png" width=20" height="20">&nbsp;Password</td></tr>
+        <tr>
+            <td><input type="password" name="pw" class="textcss" placeholder="Insert Password" required></td></tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td id="btnlocation"><i class="xi-send"><input type="submit" class="myButton" value="Log In"></i></td></tr>
+        </tr>
+    </table></td>
+    </tr>
+    </table>
+</form>
+</div>
+
+<div id="messages_location">
+{%if messages %}
+{%for message in messages%}
+{{message}}
+{%endfor%}
+{%endif%}
+</div>
+
+</main>
+</body>
+</html>

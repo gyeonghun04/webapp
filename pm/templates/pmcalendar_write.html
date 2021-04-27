@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% include "css.html"%}
+{% include "pmcalendar_write_top.html"%}
+{% include "pmcalendar_write_table.html"%}
+
+{% if table_signal == "Y" %}
+{%else%}
+{% include "pmcalendar_write_equip.html"%}
+{% if comp_signal == "Y" %}
+{% include "pmcalendar_write_comp.html"%}
+{%else%}
+{% include "pmcalendar_write_sheet.html"%}
+{%endif%}
+{%endif%}
+</body>
+</html>

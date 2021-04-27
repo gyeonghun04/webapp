@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<style>
+#tabletop{
+    	font-family: arial;
+        position:fixed;top:4%; left:9%;
+        height:5%;
+        width:45%;
+}
+titletext{
+    	font-family:'Rubik', sans-serif;
+        font-size:20px;
+        font-weight:bold;
+}
+
+#tablemenu{
+    	font-family: arial;
+        font-size:11px;
+        position:fixed;top:7.5%; left:9%;
+        height:2.5%;
+        width:45%;
+        background-color:#6F6F6F;
+        color:white;
+}
+#tabledesc{
+        position:absolute;top:10%; left:9%;
+        z-index:10;
+        width:45%;
+        font-family: arial;
+        font-size:11px;
+        height:89.8%;
+        overflow-y:scroll;
+}
+.m1{width:70px;}
+.m2{width:60px;}
+.m3{width:150px;}
+.m4{width:100px;}
+.m5{width:150px;}
+.m6{width:40px;}
+.m7{width:100px;}
+.m8{width:70px;}
+.m9{width:70px;}
+
+.m1-1{width:70px;}
+.m2-1{width:60px;}
+.m3-1{width:150px;}
+.m4-1{width:100px;}
+.m5-1{width:150px;}
+.m6-1{width:40px;}
+.m7-1{width:100px;}
+.m8-1{width:70px;}
+.m9-1{width:70px;}
+
+body{overflow:hidden;}
+
+#sideline2{
+        background:#EEEEEE;
+        position:fixed; right:45.8%;
+        height:100%;
+        width:5px;
+}
+
+tr:nth-child(even){
+    background-color:#EEEEEE;
+}
+.delete_btn{
+    	font-family: arial;
+        font-size:11px;
+        cursor:pointer;
+}
+#in_list{
+        position:fixed;top:5.5%; left:46.5%;
+}
+.incoming{
+        font-family:'Rubik', sans-serif;
+        font-size:15px;
+        background-color: rgba(255, 255, 255, 0.0);
+        cursor:pointer;
+        border:0px;
+        font-color:black;
+        text-decoration:underline;}
+.qy_btn_minus{
+        font-weight:bold;
+        background-color: rgba(255, 255, 255, 0.0);
+        outline:0;
+        font-size:15px;
+        height:20px;
+        cursor:pointer;
+        border:1px;
+        width:20px;
+        color:red;
+}
+.qy_btn_plus{
+        font-weight:bold;
+        background-color: rgba(255, 255, 255, 0.0);
+        outline:0;
+        cursor:pointer;
+        border:1px;
+        width:20px;
+        color:blue;
+}
+.location_text{
+    	font-family: arial;
+        font-size:11px;
+        width:60px;
+        text-align:center;
+}
+</style>
+</head>
+<body>
+<div id="tabletop">
+<table>
+    <tr>
+    <td><titletext>Spare Parts Incoming</titletext></td>
+    </tr>
+</table>
+</div>
+<div id="in_list">
+    <i class="xi-library-books"></i><input type="button" value="Incoming List" class="incoming" onclick="Incoming();">
+</div>
+<div id="tablemenu">
+     <table  style="word-break:break-all">
+        <thead>
+        <tr>
+            <td align="center" class="m1">Code No.</td>
+            <td align="center" class="m2">Team</td>
+            <td align="center" class="m3">Parts Name</td>
+            <td align="center" class="m4">Vendor</td>
+            <td align="center" class="m5">Model Name</td>
+            <td align="center" class="m6">QY</td>
+            <td align="center" class="m7">Location</td>
+            <td align="center" class="m8">Division</td>
+            <td align="center" class="m9">Delete</td>
+        </tr>
+        </thead>
+     </table>
+</div>
+<div id="tabledesc">
+ <table style="word-break:break-all">
+     <tbody>
+                      {% for sp_incoming in spare_incoming %}
+        <tr>
+            <td align="center" class="m1-1">{{sp_incoming.codeno}}</td> <!--models.py에서 값받아오기-->
+            <td align="center" class="m2-1">{{sp_incoming.team}}</td>
+            <td align="center" class="m3-1">{{sp_incoming.partname}}</td>
+            <td align="center" class="m4-1">{{sp_incoming.vendor}}</td>
+            <td align="center" class="m5-1">{{sp_incoming.modelno}}</td>
+            <td align="right" class="m6-2">
+                <form action="spareparts_incoming_minus" method="post">
+                    {% csrf_token %}
+                <input type="hidden" value={{sp_incoming.no}} name="no">
+                <input type="hidden" value={{loginid}} name="loginid">
+                <input type="submit" value="-" class="qy_btn_minus"></form>
+            </td>
+            <td align="center" class="m6-1">{{sp_incoming.qy}}</td>
+            <td align="left" class="m6-2">
+                <form action="spareparts_incoming_plus" method="post">
+                    {% csrf_token %}
+                <input type="hidden" value={{sp_incoming.no}} name="no">
+                <input type="hidden" value={{loginid}} name="loginid">
+                <input type="submit" value="+" class="qy_btn_plus"></form>
+            </td>
+            <td align="center" class="m7-1">
+            <input type="hidden" value={{sp_incoming.no}} name="no_up">
+            <input type="text" value="{{sp_incoming.location}}" name="location_up" class="location_text" onchange="Location_change(this);">
+            </td>
+            <td align="center" class="m8-1">{{sp_incoming.division}}</td>
+            <td align="center" class="m9-1">
+                 <form action="spareparts_incoming_delete" method="post">
+                    {% csrf_token %}
+                <input type="hidden" value="{{sp_incoming.no}}" name="no">
+                <input type="hidden" value="{{loginid}}" name="loginid">
+                <input type="submit"  class="delete_btn" value="Delete"></form>
+            </td>
+        </tr>
+                        {% endfor %}
+        </tbody>
+ </table>
+</div>
+<div id="sideline2">
+<mainline>
+</mainline>
+</div>
+        <form name="location_change_form" method="post">
+                  {% csrf_token %}
+        <input type="hidden" name="loginid" value="{{loginid}}">
+        <input type="hidden" name="no_up">
+        <input type="hidden" name="location_up">
+        </form>
+        <input type="hidden" value={{loginid}} id="loginid_up">
+<script>
+       function Incoming(){
+            var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=1270,height=800,location=0,top=0,left=0';
+            window.open("/spareparts_incoming_list", "Spare Parts Incoming List", settings);
+          }
+
+       function Location_change(obj){
+            var i = obj.parentNode.parentNode.rowIndex;
+            var no_up = document.getElementsByName('no_up')[i].value;
+            var location_up = document.getElementsByName('location_up')[i].value;
+            document.location_change_form.no_up.value = no_up;
+            document.location_change_form.location_up.value = location_up;
+                        //서버전송
+            document.location_change_form.action="spareparts_incoming_location";
+            document.location_change_form.submit();
+       }
+
+</script>
+</body>
+</html>

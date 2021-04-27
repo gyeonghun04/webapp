@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+    <title>Login_Check</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap');
+.radius {
+        border: 0.260416666666667vw solid #EEEEEE;
+        border-radius: 0.260416666666667vw;
+        width:300px;
+        height:200px;
+        padding-top:0.3%;
+        background-image: url();
+    }
+login{
+        position:fixed;left:65px;
+        font-family: 'Rubik', sans-serif;
+        font-size:32px;
+        }
+.text1{
+        font-family: 'Rubik', sans-serif;
+        font-size:20px;
+}
+.textcss{
+        font-family: 'Rubik', sans-serif;
+        font-size:14px;
+}
+#tablelocation{
+        position:fixed; top:80px; left:65px;
+        z-index:100;
+}
+.myButton {
+        font-family:'Rubik', sans-serif;
+        font-size:16px;
+        background-color: rgba(255, 255, 255, 0.0);
+        cursor:pointer;
+        border:0px;
+        font-color:black;
+}
+#btnlocation{
+        position:fixed;top:200px; left:180px;
+        z-index:100;
+}
+#msg_error{
+    	font-family: arial;
+        font-size:12px;
+        font-weight:bold;
+        position:fixed;top:10px; left:90px;
+        z-index:100;
+        animation-iteration-count:10;
+	    animation-duration:1s;
+	    animation-name: changecolor;
+	    color:white;
+}
+@keyframes changecolor{
+    from{
+       	  color:white;    }
+    to{
+          color:red;    }
+}
+</style>
+
+</head>
+<body>
+<main>
+<div class ="imglocation"><img src="https://www.dmbio.com/images/kor/common/h1_logo.gif" height="20"></div>
+<div class="radius">
+<login>Login Check</login><br>
+
+    <table>
+    <tr>
+        <form action="" name="idcheck" method="post">
+        <td>
+        <table id="tablelocation">
+        <tr>
+            <td class="text1">
+            <img src="https://cdn.icon-icons.com/icons2/1471/PNG/512/31-id-horizontal_101205.png" width=20" height="20">&nbsp;User Name</td></tr>
+        <tr>
+            <td><input type="text" name="loginid_input" class="textcss" placeholder="Insert Login ID" required></td></tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="text1">
+            <img src="https://cdn.icon-icons.com/icons2/1678/PNG/512/wondicon-ui-free-password_111203.png" width=20" height="20">&nbsp;Password</td></tr>
+        <tr>
+            <td><input type="password" name="pw_input" class="textcss" placeholder="Insert Password" required></td></tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td id="btnlocation">
+                {% csrf_token %}
+                <input type="hidden" name="loginid">
+                <input type="button" class="myButton" value="Check" onclick="Idcheck();">
+            </td>
+        </tr>
+    </table>
+        </td>
+        </form>
+    </tr>
+    </table>
+</div>
+<div id="msg_error"></div>
+</main>
+<script>
+       // 부모창 submit작동시키기
+    function Idcheck(){
+//기존값 받기
+    login_division = opener.document.getElementById("login_division_up").value;
+    loginid = opener.document.getElementById("loginidcheck").value;
+    auth = opener.document.getElementById("authcheck").value;
+    username = opener.document.getElementById("usernamecheck").value;
+    password = opener.document.getElementById("passwordcheck").value;
+    loginid_input = document.getElementsByName("loginid_input")[0].value;
+    pw_input = document.getElementsByName("pw_input")[0].value;
+
+//승인페이지에 따른 페이지 이동-ra
+    if(login_division=="pmra"){
+    if(loginid==loginid_input){
+        if(password==pw_input){
+            document.forms.idcheck.target = "famPage";
+            document.forms.idcheck.action="pmapproval_main";
+            document.forms.idcheck.submit();
+            self.close();}}
+    document.getElementById("msg_error").innerHTML="ID/Password mismatch.";
+    }
+
+//승인페이지에 따른 페이지 이동-checksheet
+    if(login_division=="pmcheck"){
+    if(loginid==loginid_input){
+        if(password==pw_input){
+            document.forms.idcheck.target = "famPage";
+            document.forms.idcheck.action="pmcheckapproval_main";
+            document.forms.idcheck.submit();
+            self.close();}}
+    document.getElementById("msg_error").innerHTML="ID/Password mismatch.";
+    }
+
+//승인페이지에 따른 페이지 이동-workrequest
+    if(login_division=="workrequest"){
+    if(loginid==loginid_input){
+        if(password==pw_input){
+            document.forms.idcheck.target = "famPage";
+            document.forms.idcheck.action="workrequest_approval_main";
+            document.forms.idcheck.submit();
+            self.close();}}
+    document.getElementById("msg_error").innerHTML="ID/Password mismatch.";
+    }
+
+//승인페이지에 따른 페이지 이동-workorder
+    if(login_division=="workorder"){
+    if(loginid==loginid_input){
+        if(password==pw_input){
+            document.forms.idcheck.target = "famPage";
+            document.forms.idcheck.action="workorder_approval_main";
+            document.forms.idcheck.submit();
+            self.close();}}
+    document.getElementById("msg_error").innerHTML="ID/Password mismatch.";
+    }}
+
+       // 로그인정보 받기
+    function init(){
+    loginid = opener.document.getElementById("loginidcheck").value;
+    document.idcheck.loginid.value = loginid;
+    }
+
+    onload=init
+
+</script>
+</body>
+</html>

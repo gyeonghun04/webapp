@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<style>
+#tabletop{
+    	font-family: arial;
+        position:fixed;top:4%; left:9%;
+        height:5%;
+
+}
+titletext{
+    	font-family:'Rubik', sans-serif;
+        font-size:20px;
+        font-weight:bold;
+}
+.selecttext{
+
+        width:105px;
+        height:20px;
+}
+.searchtext{
+        width:200px;
+        height:20px;
+}
+.searchbutton{
+        width:60px;
+        height:20px;
+}
+#searchbar{
+        position:fixed;top:4%; left:80%;
+        padding-top:5px;
+        font-family:'Rubik', sans-serif;
+        font-size:10px;
+}
+.new{
+        font-family:'Rubik', sans-serif;
+        font-size:15px;
+        background-color: rgba(255, 255, 255, 0.0);
+        cursor:pointer;
+        border:0px;
+        font-color:black;
+        text-decoration:underline;
+}
+b{
+        position:fixed;top:4.9%; left:72%;
+        align-text:left;
+        color:black;
+}
+</style>
+</head>
+<body>
+<div id="tabletop" style="word-break:break-all">
+<table>
+    <tr>
+    <td><titletext>Spare Parts List</titletext></td>
+        <td>
+        <b class="xi-pen"><input type="button" value="New Registration" class="new" onclick="Registration_new();"></b>
+    </td>
+        <td>
+    <div id="searchbar">
+        <form action="spareparts_main" method="post">
+            {% csrf_token %}
+            <select class="selecttext" name="selecttext">&nbsp;
+            <option value="partname">Parts Name</option>
+            <option value="vendor">Vendor</option>
+            <option value="team">Team</option>
+            <option value="codeno">Code No.</option>
+            <option value="stock">Stock</option>
+            </select>
+            <input type="search"  class="searchtext" placeholder="Keywords" name="searchtext">
+            <input type="hidden" value={{loginid}} name="loginid">
+            <input type="hidden" value={{loginid}} id="loginid_up">
+            <input type="submit"  class="searchbutton" value="Search"></form>
+    </div></td>
+    </tr>
+</table>
+</div>
+<script>
+            function Registration_new(){
+                        // 팝업창열기
+            var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=380, height=360, left=50, top=10';
+            window.open("/spareparts_new", "Spare Parts Registration", settings);
+            }
+
+</script>
+</body>
+</html>

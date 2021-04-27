@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Preventive Maintenance Check Sheet</title>
+<style>
+@media print{
+.print_button{
+      display:none;}
+.close_button{
+    display:none;}
+#pmchecksheet{
+        position:relative; left:35%;
+        margin-top:30px;
+        font-size: 24px;
+        font-family: arial;
+        font-weight:bold;}
+
+#equipinfo{
+        position:relative; left:0.2%;
+        margin-top:10px;
+        width:99.3%;
+    	font-family: arial;
+        font-size:11px;
+        color:black;
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;}
+.table1{
+        -webkit-print-color-adjust: exact !important;
+        background-color: #EEEEEE;
+        width:17%;
+        height:25px;
+        font-size:11px;
+        font-weight:bold;}
+.table2{
+        -webkit-print-color-adjust: exact !important;
+        background-color: white;
+        width:30%;}
+#pmchecksheettitle{
+        -webkit-print-color-adjust: exact !important;
+        position:relative; left:0.2%;
+    	font-family: arial;
+        font-size:11px;
+        width:99.2%;
+        background-color:#6F6F6F;
+        color:white;
+        height:32px;}
+
+.c1{width:210px;}
+.c2{width:150px;}
+.c3{width:200px;}
+.c4{width:120px;}
+.c5{width:180px;}
+.c6{width:100px;}
+.c7{width:40px;
+    background-color:#6F6F6F;
+    font-size:8px;
+    font-family: arial;}
+.c8{width:100px;}
+
+#pmtable{
+        position:relative; left:0.3%;
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+        font-size:11px;
+        font-family: arial;}
+
+.c1-1{width:200px;}
+.c2-1{width:150px;}
+.c3-1{width:190px;}
+.c5-1{width:180px;}
+.c6-1{width:80px;}
+.c7-1{width:40px;}
+.c8-1{width:80px;}
+
+tr:nth-child(even){
+     -webkit-print-color-adjust: exact !important;
+    background-color:#EEEEEE;}
+
+#pmremarkhead{
+        -webkit-print-color-adjust: exact !important;
+        position: inline-block;
+        height:20px;
+        background-color:#6F6F6F;
+    	font-family: arial;
+        color:white;
+        width:99.2%;
+        font-size:11px;}
+
+
+#pmremark{
+        -webkit-print-color-adjust: exact !important;
+        position:relative; left:0.2%;
+        height:24px;
+        background-color:#6F6F6F;
+        width:99.2%;
+}
+#pmremarkhead{
+    	font-family: arial;
+        color:white;
+        font-size:16px;}
+
+#pmremarkbody{
+        position:relative; left:0.3%;
+        height:24px;
+        width:99.2%;
+}
+
+#pmremarktable{
+        font-size:16px;
+    	font-family: arial;
+        width:99.2%;
+}
+
+#pmchecksheetapprovaltop{
+        -webkit-print-color-adjust: exact !important;
+        position:relative; left:0.3%;
+    	font-family: arial;
+        font-size:16px;
+        background-color:#6F6F6F;
+        color:white;
+        padding:1px;
+        width:99.2%;
+        }
+
+#pmchecksheetapproval{
+        position:relative; left:0.3%;
+        font-family: arial;
+        font-size:16px;
+        padding:10px;
+        width:99.2%;
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+        }
+.c11{width:300px;
+    -webkit-print-color-adjust: exact !important;
+    background-color: #EEEEEE;}
+.c12{width:300px;
+    background-color:white;}
+.c13{width:300px;
+    background-color:white;}
+
+.border {
+        position:fixed;top:1.5%; left:0.5%;
+        border:5px solid #6F6F6F;
+        height:93.5%;
+        width:98%;
+        }
+}
+
+
+@media screen{
+#pmchecksheet{
+        position:fixed;top:4.2%; left:33%;
+        font-size: 40px;
+        font-family: arial;
+        font-weight:bold;
+}
+.border {
+        position:fixed;top:1.5%; left:0.5%;
+        border:8px solid #6F6F6F;
+        height:93.5%;
+        width:98%;
+    }
+#equipinfo{
+        position:fixed;top:10%; left:0.9%;
+        width:98.1%;
+    	font-family: arial;
+        font-size:16px;
+        color:black;
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+}
+.table1{
+        background-color: #EEEEEE;
+        width:17%;
+        height:20px;
+        font-weight:bold;
+}
+.table2{
+        background-color: white;
+        width:30%;
+}
+#pmchecksheettitle{
+        position:fixed;top:22%; left:0.9%;
+    	font-family: arial;
+        font-size:16px;
+        width:98.1%;
+        background-color:#6F6F6F;
+        color:white;
+        height:40px;
+}
+.c1{width:400px;}
+.c2{width:300px;}
+.c3{width:330px;}
+.c4{width:150px;}
+.c5{width:350px;}
+.c6{width:150px;}
+.c7{width:50px;
+    background-color:#6F6F6F;
+    font-size:9px;
+    font-family: arial;}
+.c8{width:150px;}
+
+#pmchecksheetdesc{
+        position:fixed; top:26.1%; left:0.9%;
+        height:48%;
+        width:97.9%;
+        overflow-y:scroll;
+}
+#pmtable{
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+        font-size:16px;
+        font-family: arial;
+}
+.c1-1{width:380px;}
+.c2-1{width:310px;}
+.c3-1{width:350px;}
+.c5-1{width:350px;}
+.c6-1{width:150px;}
+.c7-1{width:50px;}
+.c8-1{width:150px;}
+
+tr:nth-child(even){
+    background-color:#EEEEEE;
+}
+
+#pmremark{
+        position:fixed; top:81.3%; left:0.9%;
+        height:24px;
+        width:98.1%;
+        background-color:#6F6F6F;
+}
+#pmremarkhead{
+    	font-family: arial;
+        color:white;
+        width:98.1%;
+        font-size:16px;}
+
+#pmremarkbody{
+        position:fixed; top:84%; left:0.9%;
+        height:24px;
+        width:98.1%;
+}
+
+#pmremarktable{
+        font-size:16px;
+    	font-family: arial;
+    	width:98.1%;
+}
+
+#pmchecksheetapprovaltop{
+        position:fixed; top:86.6%; left:0.9%;
+    	font-family: arial;
+        font-size:16px;
+        background-color:#6F6F6F;
+        color:white;
+        padding:1px;
+        width:98.1%;
+        }
+
+#pmchecksheetapproval{
+        position:fixed; top:89.3%; left:0.9%;
+        font-family: arial;
+        font-size:16px;
+        padding:10px;
+        width:98.1%;
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+        }
+.c11{width:300px;
+    background-color: #EEEEEE;}
+.c12{width:300px;
+    background-color:white;}
+.c13{width:300px;
+    background-color:white;}
+
+.print_button{
+        position:fixed; top:97%; left:92.5%;
+    	font-family: arial;
+        font-size:16px;
+        cursor:pointer;
+        width:60px;
+}
+.close_button{
+        position:fixed; top:97%; left:96.2%;
+    	font-family: arial;
+        font-size:16px;
+        cursor:pointer;
+        width:60px;
+}}
+</style>
+
+</head>
+
+<body>
+<div id="pmchecksheet">
+Preventive Maintenance Check Sheet
+</div>
+
+<main>
+<div class="border">
+</div>
+
+<table id="equipinfo" border= "1">
+                      {% for equipinfos in equipinfo %}
+                      {% for equipinforevs in equipinforev %}
+                      {% for pmchecksheet_schs in pmchecksheet_info %}
+
+    <tr>
+        <td class="table1">
+            Control No.
+        </td>
+        <td class="table2">
+            {{pmchecksheet_schs.controlno}}
+        </td>
+        <td class="table1">
+            Equipment. Name
+        </td>
+        <td class="table2">
+            {{pmchecksheet_schs.name}}
+        </td>
+    </tr>
+    <tr>
+        <td class="table1">
+            Model Name
+        </td>
+        <td class="table2">
+            {{equipinfos.model}}
+        </td>
+        <td class="table1">
+            Serial No.
+        </td>
+        <td class="table2">
+            {{equipinfos.serial}}
+        </td>
+    </tr>
+    <tr>
+        <td class="table1">
+            Manufacturer
+        </td>
+        <td class="table2">
+            {{equipinfos.maker}}
+        </td>
+        <td class="table1">
+            Team
+        </td>
+        <td class="table2">
+            {{pmchecksheet_schs.team}}
+        </td>
+    </tr>
+    <tr>
+        <td class="table1">
+            Room Name&nbsp;(Room No.)
+        </td>
+        <td class="table2">
+            {{pmchecksheet_schs.roomname}}&nbsp;({{pmchecksheet_schs.roomno}})
+        </td>
+        <td class="table1">
+            Revision No. / Revision Date
+        </td>
+        <td class="table2">
+            Rev.{{pmchecksheet_schs.revno}} / {{pmchecksheet_schs.revdate}}
+        </td>
+    </tr>
+    <tr>
+        <td class="table1">
+             Plan Date / Action Date
+        </td>
+        <td class="table2">
+            {{pmchecksheet_schs.plandate}} / {{pmchecksheet_schs.actiondate_temp}}
+        </td>
+        <td class="table1">
+            PM Sheet No.
+        </td>
+        <td class="table2">
+            {{pmchecksheet_schs.pmsheetno}}
+        </td>
+    </tr>
+                                 {% endfor %}
+                                 {% endfor %}
+                                 {% endfor %}
+</table>
+
+<div id="pmchecksheettitle" >
+     <table  style="word-break:break-all">
+        <thead>
+        <tr>
+            <td align="center" class="c1" rowspan="2">Maintenance Item</td>
+            <td align="center" class="c2" rowspan="2">Check Standard</td>
+            <td align="center" class="c3" rowspan="2">Check Result</td>
+            <td align="center" class="c4" colspan="3">Judgement</td>
+            <td align="center" class="c5" rowspan="2">Repair Detail</td>
+            <td align="center" class="c6" rowspan="2">Work Request</td>
+            <td align="center" class="c8" rowspan="2">Used Parts</td>
+        </tr>
+        <tr>
+            <td align="center" class="c7">Pass</td>
+            <td align="center" class="c7">Fail_Y</td>
+            <td align="center" class="c7">Fail_N</td>
+        </tr>
+        </thead>
+     </table>
+</div>
+
+<div id="pmchecksheetdesc">
+ <table style="word-break:break-all" border="1" id="pmtable">
+                 {%if comp_signal == "N" %}
+     <tbody>
+                      {% for pmresult in pmchecksheet_before  %}
+        <tr>
+            <td align="left" class="c1-1">{{pmresult.item}}</td> <!--models.py에서 값받아오기-->
+            <td align="left" class="c2-1">{{pmresult.check}}</td>
+            <td align="left" class="c3-1"></td>
+            <td align="center" class="c7-1"><input type="checkbox" name="judpass"  onclick="return false">
+            </td>
+            <td align="center" class="c7-1"><input type="checkbox" name="judfaily" onclick="return false">
+            </td>
+            <td align="center" class="c7-1"><input type="checkbox" name="judfailn" onclick="return false">
+            </td>
+            <td align="left" class="c5-1"></td>
+            <td align="center" class="c6-1"></td>
+            <td align="center" class="c6-1"></td>
+        </tr>
+                             {% endfor %}
+        </tbody>
+                      {%else%}
+          <tbody>
+                      {% for pmresult in pmchecksheet_result  %}
+        <tr>
+            <td align="left" class="c1-1">{{pmresult.item}}</td> <!--models.py에서 값받아오기-->
+            <td align="left" class="c2-1">{{pmresult.check}}</td>
+            <td align="left" class="c3-1">{{pmresult.result}}</td>
+            <td align="center" class="c7-1"><input type="checkbox" name="judpass" {{pmresult.pass_y}} onclick="return false">
+            </td>
+            <td align="center" class="c7-1"><input type="checkbox" name="judfaily" {{pmresult.fail_y}} onclick="return false">
+            </td>
+            <td align="center" class="c7-1"><input type="checkbox" name="judfailn" {{pmresult.fail_n}} onclick="return false">
+            </td>
+            <td align="left" class="c5-1">{{pmresult.actiondetail}}</td>
+            <td align="center" class="c6-1">{{pmresult.workrequest}}</td>
+            <td align="center" class="c6-1">{{pmresult.usedpart}}</td>
+        </tr>
+                             {% endfor %}
+        </tbody>
+                    {%endif%}
+ </table>
+</div>
+
+<div id="pmremark">
+   <table id="pmremarkhead">
+        <tr>
+            <td align="center" class="s1">Remark</td>
+        </tr>
+   </table>
+ </div>
+
+ <div id="pmremarkbody">
+   <table id="pmremarktable">
+                {% for pmlist in pmchecksheet_info  %}
+     <tr>
+            <td align="left">{{pmlist.remark}}</td>
+     </tr>
+                   {% endfor %}
+   </table>
+ </div>
+
+ <div>
+ <table style="word-break:break-all" id="pmchecksheetapprovaltop">
+     <thead>
+         <tr>
+            <td align="center">Review & Approved</td>
+        </tr>
+     </thead>
+ </table>
+
+ <table style="word-break:break-all" id="pmchecksheetapproval" border="1">
+                     {%if comp_signal == "N" %}
+     <tbody>
+        <tr>
+            <td align="left" class="c11">Performed by:</td> <!--models.py에서 값받아오기-->
+            <td align="center" class="c12"></td>
+            <td align="center" class="c13"></td>
+        </tr>
+
+        <tr>
+            <td align="left" class="c11">Reviewed by:</td> <!--models.py에서 값받아오기-->
+            <td align="center" class="c12"></td>
+            <td align="center" class="c13"></td>
+        </tr>
+        <tr>
+            <td align="left" class="c11">Approved by:</td> <!--models.py에서 값받아오기-->
+            <td align="center" class="c12"></td>
+            <td align="center" class="c13"></td>
+        </tr>
+     </tbody>
+                {%else%}
+         <tbody>
+                      {% for pmresult in pmchecksheet_info  %}
+
+        <tr>
+            <td align="left" class="c11">Performed by:</td> <!--models.py에서 값받아오기-->
+            <td align="center" class="c12">{{pmresult.p_name}}</td>
+            <td align="center" class="c13">{{pmresult.p_date}}</td>
+        </tr>
+
+        <tr>
+            <td align="left" class="c11">Reviewed by:</td> <!--models.py에서 값받아오기-->
+            <td align="center" class="c12">{{pmresult.r_name}}</td>
+            <td align="center" class="c13">{{pmresult.r_date}}</td>
+        </tr>
+        <tr>
+            <td align="left" class="c11">Approved by:</td> <!--models.py에서 값받아오기-->
+            <td align="center" class="c12">{{pmresult.r_name}}</td>
+            <td align="center" class="c13">{{pmresult.a_date}}</td>
+        </tr>
+                    {%endfor%}
+        </tbody>
+               {%endif%}
+ </table>
+ </div>
+</main>
+</div>
+
+<input type="button" class="print_button" value="Print" onclick="print()">
+<input type="button" class="close_button" value="Close" onclick="Close();">
+
+<script>
+    function Close(){
+    self.close();
+    }
+</script>
+</body>
+</html>

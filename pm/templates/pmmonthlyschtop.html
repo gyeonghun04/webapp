@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<style>
+#tabletop{
+    	font-family: arial;
+        position:fixed;top:4%; left:9%;
+        height:5%;
+        width:53.8%;
+}
+titletext{
+    	font-family:'Rubik', sans-serif;
+        font-size:20px;
+        font-weight:bold;
+}
+.calendartext{
+        width:150px;
+        height:20px;
+}
+.searchbutton{
+        width:60px;
+        height:25px;
+        cursor:pointer;
+}
+#calendar{
+        margin-left:580px;
+        font-family:'Rubik', sans-serif;
+        font-size:10px;
+}
+</style>
+</head>
+<body>
+<div id="tabletop" style="word-break:break-all">
+<table>
+    <tr>
+    <td><titletext>PM Monthly Schedule</titletext></td>
+    <td>
+    <div id="calendar">
+        <form action="pmmonthly_search" method="post">
+            {% csrf_token %}
+            <input type="month"  class="calendartext" name="calendarsearch">
+            <input type="hidden" value={{loginid}} name="loginid">
+            <input type="submit"  class="searchbutton" value="Search"></form>
+    </div></td>
+    </tr>
+</table>
+</div>
+</body>
+</html>

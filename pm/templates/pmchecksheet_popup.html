@@ -1,0 +1,409 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+
+</head>
+<style>
+pmchecksheettitle{
+        position:fixed;top:5.5%; left:58%;
+        font-size: 25px;
+        font-family: arial;
+        font-weight:bold;
+}
+controlformtext{
+        position:fixed;top:7.8%; left:53%;
+        font-size: 11px;
+}
+#pmchecksheettitle{
+    	font-family: arial;
+        font-size:11px;
+        position:fixed;top:22%; left:39.6%;
+        width:59.98%;
+        background-color:#6F6F6F;
+        color:white;
+        height:35px;
+}
+.pmchecksheettop{
+        position:fixed; top:25.6%; left:39.6%;
+        width:59.98%;
+        height:49.9%;
+        overflow-y:scroll;
+}
+#pmchecksheettable{
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+        font-size:11px;
+        font-family: arial;
+}
+
+#usedparthead{
+        position:fixed; top:75.5%; left:39.6%;
+        width:59.98%;
+    	font-family: arial;
+        font-size:11px;
+        background-color:#6F6F6F;
+        color:white;
+        height:20px;
+}
+#usedpartbody{
+        position:fixed; top:77.6%; left:39.6%;
+        height:64px;
+        width:59.98%;
+        overflow-y:scroll;
+        height:9.9%;
+}
+#usedparttop{
+    	font-family: arial;
+        font-size:11px;
+        height:20px;
+}
+#usedparttable{
+        font-size:11px;
+    	font-family: arial;
+}
+
+#pmremarktop{
+    	font-family: arial;
+        font-size:11px;
+        height:20px;
+}
+#pmremarkhead{
+        position:fixed; top:87.5%; left:39.6%;
+        width:59.98%;
+    	font-family: arial;
+        font-size:11px;
+        background-color:#6F6F6F;
+        color:white;
+        height:20px;
+}
+#pmremarkbody{
+        position:fixed; top:89.6%; left:39.6%;
+        height:64px;
+        width:59.98%;
+}
+
+#pmremarktable{
+        font-size:11px;
+    	font-family: arial;
+}
+.s1{width:150px;}
+
+.c1{width:280px;}
+.c2{width:150px;}
+.c3{width:250px;}
+.c4{width:120px;}
+.c5{width:200px;}
+.c6{width:100px;}
+.c7{width:40px;
+    background-color:#6F6F6F;}
+
+.c1-1{width:280px;
+      padding-top:5px;
+      padding-bottom:5px;}
+.c2-1{width:180px;}
+.c3-1{width:250px;}
+.c4-1{width:120px;}
+.c5-1{width:200px;}
+.c6-1{width:100px;}
+.c7-1{width:40px;}
+
+.check_result_css{
+        font-size:11px;
+        font-family: arial;
+        width:96%;
+}
+.action_detail_css{
+        font-size:11px;
+        font-family: arial;
+        width:96%;
+}
+textarea{
+        width:1115px;
+        height:50px;
+        font-size:11px;
+        font-family: arial;
+}
+.remark_na_css{
+    margin-top:30px;
+}
+.usedpart_css{
+        font-size:11px;
+        cursor:pointer;
+        font-family: arial;
+        }
+#equipinfo{
+    	font-family: arial;
+        font-size:11px;
+        position:fixed;top:10%; left:39.6%;
+        color:black;
+        width:59.98%;
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+}
+.table1{
+        background-color: #EEEEEE;
+        width:17%;
+        height:20px;
+        font-weight:bold;
+}
+.table2{
+        background-color: white;
+        width:30%;
+}
+.border {
+        position:fixed;top:3.5%; left:39.2%;
+        border:8px solid #6F6F6F;
+        width:59.9%;
+        height:91.7%;
+    }
+.rev_no_button{
+        margin-left:255px;
+        font-size:11px;
+        cursor:pointer;
+        font-family: arial;
+        }
+.rev_no_box{
+        font-family: arial;
+        font-size:11px;
+        }
+</style>
+<body>
+
+<pmchecksheettitle>
+Preventive Maintenance Check Sheet
+</pmchecksheettitle>
+<div class="border">
+</div>
+
+<table id="equipinfo" border= "1">
+                      {% for equipinfos in equipinfo %}
+                      {% for equipinforevs in equipinforev %}
+
+
+    <tr>
+        <td class="table1">
+            Control No.
+        </td>
+        <td class="table2">
+            {{equipinfos.controlno}}
+        </td>
+        <td class="table1">
+            Equipment. Name
+        </td>
+        <td class="table2">
+            {{equipinfos.name}}
+        </td>
+    </tr>
+    <tr>
+        <td class="table1">
+            Model Name
+        </td>
+        <td class="table2">
+            {{equipinfos.model}}
+        </td>
+        <td class="table1">
+            Serial No.
+        </td>
+        <td class="table2">
+            {{equipinfos.serial}}
+        </td>
+    </tr>
+    <tr>
+        <td class="table1">
+            Manufacturer
+        </td>
+        <td class="table2">
+            {{equipinfos.maker}}
+        </td>
+        <td class="table1">
+            Team
+        </td>
+        <td class="table2">
+            {{equipinfos.team}}
+        </td>
+    </tr>
+    <tr>
+        <td class="table1">
+            Room Name&nbsp;(Room No.)
+        </td>
+        <td class="table2">
+            {{equipinfos.roomname}}&nbsp;({{equipinfos.roomno}})
+        </td>
+        <td class="table1">
+            Revision Date / Revision No.
+        </td>
+        <td class="table2">
+            {{equipinforevs.revdate}} / Rev.{{equipinforevs.revno}}
+        </td>
+    </tr>
+    <tr>
+        <td class="table1">
+             Plan Date / Action Date
+        </td>
+        <td class="table2">
+            {{plandate}} / {{actiondate}}
+        </td>
+        <td class="table1">
+            Assessment of Period
+        </td>
+        <td class="table2">
+            {{equipinfos.ra}}Month(s)
+        </td>
+    </tr>
+                                 {% endfor %}
+                                 {% endfor %}
+</table>
+
+<div id="pmchecksheettitle" >
+     <table  style="word-break:break-all">
+        <thead>
+        <tr>
+            <td align="center" class="c1" rowspan="2">Maintenance Item</td>
+            <td align="center" class="c2" rowspan="2">Check Standard</td>
+            <td align="center" class="c3" rowspan="2">Check Result</td>
+            <td align="center" class="c4" colspan="3">Judgement</td>
+            <td align="center" class="c5" rowspan="2">Action Details</td>
+            <td align="center" class="c6" rowspan="2">Used Parts</td>
+        </tr>
+        <tr>
+            <td align="center" class="c7">Pass</td>
+            <td align="center" class="c7">Fail_Y</td>
+            <td align="center" class="c7">Fail_N</td>
+        </tr>
+        </thead>
+     </table>
+</div>
+    <div class="pmchecksheettop">
+        <table id="pmchecksheettable" width="100%"  border="1">
+                <tbody>
+                      {% for pmlist in pmchecksheets  %}
+        <tr>
+           <td align="left" class="c1-1">{{pmlist.item}}</td> <!--models.py에서 값받아오기-->
+            <td align="left" class="c2-1">{{pmlist.check}}</td>
+            <td align="left" class="c3-1">
+                <input type="text" name="checkresult" class="check_result_css" required onchange="Checkresult();">
+            </td>
+            <td align="center" class="c7-1">
+            <input type="checkbox" name="judpass" value="pass" onchange="Checkboxpass();">
+            </td>
+            <td align="center" class="c7-1">
+            <input type="checkbox" name="judfaily" value="fail_y" onchange="Checkboxfaily();">
+            </td>
+            <td align="center" class="c7-1">
+            <input type="checkbox" name="judfailn" value="fail_n" onchange="Checkboxfailn();">
+            </td>
+            <td align="left" class="c5-1">
+                <input type="text" name="actiondetail" class="action_detail_css" onchange="Actiondetail();">
+            </td>
+            <td align="center" class="c6-1">
+                <input type="button" name="usedpart" class="usedpart_css" value="Link">
+            </td>
+        </tr>
+                       {% endfor %}
+        </tbody>
+        </table>
+        <form action="" method="post" name="plandateform">
+             {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="hidden" value={{calendarsearch}} name="calendarsearch">
+        <input type="hidden" name="plandatereturn">
+        <input type="hidden" name="pmsheetno">
+        <input type="hidden" name="controlno">
+        <input type="hidden" name="revno">
+        </form>
+    </div>
+
+
+ <div id="usedparttop">
+   <table id="usedparthead">
+        <tr>
+            <td align="center" class="s1">Used Parts List</td>
+        </tr>
+   </table>
+ </div>
+ <div id="usedpartbody">
+   <table id="usedparttable">
+     <tr>
+            <td align="center">
+            </td>
+     </tr>
+   </table>
+ </div>
+
+</div>
+
+ <div id="pmremarktop">
+   <table id="pmremarkhead">
+        <tr>
+            <td align="center" class="s1">Remark</td>
+        </tr>
+   </table>
+ </div>
+ <div id="pmremarkbody">
+   <table id="pmremarktable">
+     <tr>
+            <td align="center">
+            <textarea style="resize: none" name="pmchecksheet_remark" placeholder="요청사항을 입력해주세요." required></textarea>
+            </td>
+            <td align="right">
+            <input type="checkbox" name="remark_na" value="remark_na" class="remark_na_css">N/A
+            </td>
+     </tr>
+   </table>
+ </div>
+ <div id="pmcheck_submit">
+     <form action="" method="post" >
+                {% csrf_token %}
+     <input type="hidden" value={{equiplist.controlno}} name="controlno">
+     <input type="hidden" value={{loginid}} name="loginid">
+     <input type="submit" class="button" value="Write">
+     </form>
+ </div>
+
+<script>
+        function Checkresult(){
+            // 행위치값과 플랜데이트 받기
+            var i = $(this).closest('tr').prevAll().length;
+            var checkresult= document.getElementsByName('checkresult')[i].value;
+            alert(checkresult);
+        }
+        function Checkboxpass(){
+            // 행위치값과 플랜데이트 받기
+            var i = $(this).closest('tr').prevAll().length;
+            var judgment= document.getElementsByName('judpass')[i].value;
+            document.getElementsByName('judfaily')[i].checked=false;
+            document.getElementsByName('judfailn')[i].checked=false;
+            alert(judgment);
+        }
+        function Checkboxfaily(){
+            // 행위치값과 플랜데이트 받기
+            var i = $(this).closest('tr').prevAll().length;
+            var judgment= document.getElementsByName('judfaily')[i].value;
+            document.getElementsByName('judpass')[i].checked=false;
+            document.getElementsByName('judfailn')[i].checked=false;
+            alert(judgment);
+        }
+        function Checkboxfailn(){
+            // 행위치값과 플랜데이트 받기
+            var i = $(this).closest('tr').prevAll().length;
+            var judgment= document.getElementsByName('judfailn')[i].value;
+            document.getElementsByName('judfaily')[i].checked=false;
+            document.getElementsByName('judpass')[i].checked=false;
+            alert(judgment);
+        }
+        function Actiondetail(){
+            // 행위치값과 플랜데이트 받기
+            var i = $(this).closest('tr').prevAll().length;
+            var actiondetail= document.getElementsByName('actiondetail')[i].value;
+            alert(actiondetail);
+        }
+
+</script>
+
+
+</body>
+</html>

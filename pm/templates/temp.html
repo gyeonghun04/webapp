@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+<script language="javascript">
+        //폼없이 업로드하기 참 편하다~
+        function test(){
+            document.form1.action="upload";
+            document.form1.submit();}
+</script>
+    <title>수리제작의뢰서 List</title>
+</head>
+<style>
+main{
+        padding-top:60px;
+        padding-bottom:20px;
+        }
+
+f#msg{
+     fond-size:12px;
+     color:red;
+     font-family:arial;
+     font-size:15px;
+     font-weight:3px;
+}
+
+tr:nth-child(even){
+    background-color:#EEEEEE;
+}
+#tablemenu{
+    font-family:arial;
+    font-size:16px;
+    font-weight:bold;
+    background-color:#FFEEEE;
+    border:1px solid white;
+    position:fixed;
+    grid-area:tablemenu;
+    margin-left:10.8%;
+    margin-top:3.4%;
+    z-index:10;
+    left:0;
+    right:0;
+    clear:both;
+}
+#sidemenubar{
+    grid-area:sidemenubar;
+    position:fixed;
+    z-index:14;
+    clear:both;
+    width:9.5%;
+}
+#listheader{
+    grid-area:listheader;
+    position:fixed;
+    margin-left:10%;
+    width:90%;
+    z-index:10;
+    margin-top:0%;
+    clear:both;
+}
+#tabledesc{
+    z-index:13;
+    font-size:14px;
+    font-family:arial;
+    grid-area:tabledesc;
+    clear:both;
+    position:absolute;top:20%; left:11%;
+    overflow:auto;
+    height:75%
+}
+.container{
+            display: grid;
+            height: 100%;
+            grid-template-columns: 10% 1fr;
+            grid-template-rows:5% 1% 1fr;
+            grid-gap:10px;
+            grid-template-areas:
+            "sidemenubar listheader"
+            "sidemenubar tablemenu"
+            "sidemenubar tabledesc"
+      }
+
+.button {
+	background-color:transparent;
+	border-radius:10px;
+	border:2px solid #5777d9;
+	display:inline-block;
+	cursor:pointer;
+	color:#000000;
+	font-family:arial;
+	font-size:14px;
+	padding:1px 5px;
+	text-decoration:none;
+}
+.button:hover {
+	background-color:transparent;
+}
+.button:active {
+	position:relative;
+	top:1px;
+}
+body{overflow:hidden;}
+</style>
+<body>
+{% include "css.html"%}
+{% include "top.html"%}
+{% include "sidetap.html"%}
+<main>
+<div id="tablemenu">
+<h1>FILE UPLOAD TEST</h1>
+
+<form method="post" id="form1" name="form1" enctype="multipart/form-data">
+            {% csrf_token %}
+    <input type="file" name="file1" id="file1">
+    <input type="button" value="ok" onclick="test();"><br>
+
+    {% if url %}
+    <a href="{{url}}">click</a>
+    {% endif %}
+
+</form>
+
+</div>
+</main>
+
+<script language="javascript">
+        //폼없이 업로드하기 참 편하다~
+        function test(){
+            document.form1.action="upload";
+            document.form1.submit();}
+</script>
+
+</body>
+</html>

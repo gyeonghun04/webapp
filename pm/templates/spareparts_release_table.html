@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<style>
+#tabletop{
+    	font-family: arial;
+        position:fixed;top:4%; left:9%;
+        height:5%;
+        width:53%;
+}
+titletext{
+    	font-family:'Rubik', sans-serif;
+        font-size:20px;
+        font-weight:bold;
+}
+
+#tablemenu{
+    	font-family: arial;
+        font-size:11px;
+        position:fixed;top:7.5%; left:9%;
+        height:2.5%;
+        width:53%;
+        background-color:#6F6F6F;
+        color:white;
+}
+#tabledesc{
+        position:absolute;top:10%; left:9%;
+        z-index:10;
+        width:53%;
+        font-family: arial;
+        font-size:11px;
+        height:89.8%;
+        overflow-y:scroll;
+}
+.m1{width:70px;}
+.m2{width:60px;}
+.m3{width:150px;}
+.m4{width:100px;}
+.m5{width:140px;}
+.m6{width:100px;}
+.m7{width:100px;}
+.m8{width:70px;}
+.m9{width:100px;}
+.m10{width:70px;}
+
+.m1-1{width:70px;}
+.m2-1{width:60px;}
+.m3-1{width:150px;}
+.m4-1{width:100px;}
+.m5-1{width:140px;}
+.m6-1{width:30px;}
+.m6-2{width:35px;}
+.m7-1{width:100px;}
+.m8-1{width:70px;}
+.m9-1{width:100px;}
+.m10-1{width:70px;}
+
+body{overflow:hidden;}
+
+#sideline2{
+        background:#EEEEEE;
+        position:fixed; right:37.8%;
+        height:100%;
+        width:5px;
+}
+
+tr:nth-child(even){
+    background-color:#EEEEEE;
+}
+.delete_btn{
+    	font-family: arial;
+        font-size:11px;
+        cursor:pointer;
+}
+#out_list{
+        position:fixed;top:5.5%; left:55%;
+}
+.release{
+        font-family:'Rubik', sans-serif;
+        font-size:15px;
+        background-color: rgba(255, 255, 255, 0.0);
+        cursor:pointer;
+        border:0px;
+        font-color:black;
+        text-decoration:underline;}
+.qy_btn_minus{
+        font-weight:bold;
+        background-color: rgba(255, 255, 255, 0.0);
+        outline:0;
+        font-size:15px;
+        height:20px;
+        cursor:pointer;
+        border:1px;
+        width:20px;
+        color:red;
+}
+.qy_btn_plus{
+        font-weight:bold;
+        background-color: rgba(255, 255, 255, 0.0);
+        outline:0;
+        cursor:pointer;
+        border:1px;
+        width:20px;
+        color:blue;
+}
+.controlno_css2{
+        width:60px;
+    	font-family: arial;
+        font-size:11px;
+}
+</style>
+</head>
+<body>
+<div id="tabletop">
+<table>
+    <tr>
+    <td><titletext>Spare Parts Release</titletext></td>
+    </tr>
+</table>
+<div id="out_list">
+    <i class="xi-library-books"></i><input type="button" value="Release List" class="release" onclick="Release();">
+</div>
+</div>
+<div id="tablemenu">
+     <table  style="word-break:break-all">
+        <thead>
+        <tr>
+            <td align="center" class="m1">Code No.</td>
+            <td align="center" class="m2">Team</td>
+            <td align="center" class="m3">Parts Name</td>
+            <td align="center" class="m4">Vendor</td>
+            <td align="center" class="m5">Model Name</td>
+            <td align="center" class="m6">Quantity</td>
+            <td align="center" class="m7">Location</td>
+            <td align="center" class="m8">Control No.</td>
+            <td align="center" class="m9">Equip. Name</td>
+            <td align="center" class="m10">Delete</td>
+        </tr>
+        </thead>
+     </table>
+</div>
+<div id="tabledesc">
+ <table style="word-break:break-all">
+     <tbody>
+                      {% for sp_release in spare_release %}
+        <tr>
+            <td align="center" class="m1-1">{{sp_release.codeno}}</td> <!--models.py에서 값받아오기-->
+            <td align="center" class="m2-1">{{sp_release.team}}</td>
+            <td align="center" class="m3-1">{{sp_release.partname}}</td>
+            <td align="center" class="m4-1">{{sp_release.vendor}}</td>
+            <td align="center" class="m5-1">{{sp_release.modelno}}</td>
+            <td align="right" class="m6-2">
+                <form action="spareparts_release_minus" method="post">
+                    {% csrf_token %}
+                <input type="hidden" value={{sp_release.no}} name="no">
+                <input type="hidden" value={{loginid}} name="loginid">
+                <input type="submit" value="-" class="qy_btn_minus"></form>
+            </td>
+            <td align="center" class="m6-1">{{sp_release.qy}}</td>
+            <td align="left" class="m6-2">
+                <form action="spareparts_release_plus" method="post">
+                    {% csrf_token %}
+                <input type="hidden" value={{sp_release.no}} name="no">
+                <input type="hidden" value={{loginid}} name="loginid">
+                <input type="submit" value="+" class="qy_btn_plus"></form>
+            </td>
+            <td align="center" class="m7-1">{{sp_release.location}}</td>
+            <td align="center" class="m8-1">
+            <input type="hidden" name="no_up2" value="{{sp_release.no}}">
+            <input type="text" name="controlno_up2" value="{{sp_release.controlno}}" class="controlno_css2" onchange="Controlno_upload2(this)"></td>
+            <td align="center" class="m9-1">{{sp_release.equipname}}</td>
+            <td align="center" class="m10-1">
+                 <form action="spareparts_release_delete" method="post">
+                    {% csrf_token %}
+                <input type="hidden" value={{sp_release.no}} name="no">
+                <input type="hidden" value={{loginid}} name="loginid">
+                <input type="submit"  class="delete_btn" value="Delete"></form>
+            </td>
+        </tr>
+                        {% endfor %}
+        </tbody>
+ </table>
+</div>
+<div id="sideline2">
+<mainline>
+</mainline>
+</div>
+
+    <form method="post" name="control_no2">
+             {% csrf_token %}
+        <input type="hidden" name="loginid" value="{{loginid}}">
+        <input type="hidden" name="controlno">
+        <input type="hidden" value={{loginid}} id="loginid_up">
+        <input type="hidden" name="no_up"></form>
+
+<script>
+          function Controlno_upload2(obj){
+            var i = obj.parentNode.parentNode.rowIndex;
+            var controlno= document.getElementsByName('controlno_up2')[i].value;
+            var no_up= document.getElementsByName('no_up2')[i].value;
+            // 값보내기
+            document.control_no2.controlno.value = controlno;
+            document.control_no2.no_up.value = no_up;
+            // 서버로 전송
+            document.control_no2.action="spareparts_release_table_controlno";
+            document.control_no2.submit();
+            }
+
+          function Release(){
+            var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=1270,height=800,location=0,top=0,left=0';
+            window.open("/spareparts_release_list", "Spare Parts Release List", settings);
+          }
+</script>
+</body>
+</html>

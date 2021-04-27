@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+
+tr:nth-child(even){
+    background-color:#EEEEEE;
+}
+#tablemenu{
+    	font-family: arial;
+        font-size:11px;
+        position:fixed;top:7.5%; left:9%;
+        height:2.5%;
+        background-color:#6F6F6F;
+        color:white;
+
+}
+#tablemenu_top{
+        border:1px solid white;
+        border-collapse:collapse;
+}
+#tabledesc{
+        position:absolute;top:10.6%; left:9%;
+        z-index:10;
+        width:90.7%;
+        font-family: arial;
+        font-size:11px;
+        overflow:scroll;
+        height:89.8%;
+}
+.m1{width:92px;
+background-color:#6F6F6F;}
+.m2{width:47px;
+background-color:#6F6F6F;}
+.m3{width:72px;
+background-color:#6F6F6F;}
+.m4{width:137px;
+background-color:#6F6F6F;}
+.m5{width:70px;
+background-color:#6F6F6F;}
+.m6{width:248px;
+background-color:#6F6F6F;}
+.m7{width:160px;
+background-color:#6F6F6F;}
+.m8{width:80px;
+background-color:#6F6F6F;}
+.m10{width:80px;
+background-color:#6F6F6F;}
+.m11{width:202px;
+background-color:#6F6F6F;}
+.m12{width:180px;
+background-color:#6F6F6F;}
+.m13{width:122px;
+background-color:#6F6F6F;}
+.m14{width:107px;
+background-color:#6F6F6F;}
+.m16{width:100px;
+background-color:#6F6F6F;}
+
+.m1-1{width:92px;
+height:20px;}
+.m2-1{width:45px;}
+.m3-1{width:70px;}
+.m4-1{width:135px;}
+.m5-1{width:70px;}
+.m6-1{width:245px;}
+.m7-1{width:160px;}
+.m8-1{width:80px;}
+.m10-1{width:80px;}
+.m11-1{width:200px;}
+.m12-1{width:180px;}
+.m13-1{width:120px;}
+.m14-1{width:90px;}
+.m16-1{width:100px;}
+
+body{overflow:hidden;}
+
+#sideline2{
+        background:#EEEEEE;
+        position:fixed; left:99.7%;
+        height:100%;
+        width:5px;
+}
+.button_css{
+    	font-family: arial;
+        font-size:11px;
+        cursor:pointer;
+}
+</style>
+<body>
+<main>
+<div id="tablemenu">
+     <table  style="word-break:break-all" border="1" id="tablemenu_top">
+        <thead>
+        <tr>
+            <td align="center" class="c1" colspan="9">Work Request</td>
+            <td align="center" class="c2" colspan="6">Work Order</td>
+        </tr>
+        <tr>
+            <td align="center" class="m1">Work Order No.</td>
+            <td align="center" class="m2">Team</td>
+            <td align="center" class="m3">Control No.</td>
+            <td align="center" class="m4">Equip. Name</td>
+            <td align="center" class="m16">Status</td>
+            <td align="center" class="m5">Requestor</td>
+            <td align="center" class="m6">Description</td>
+            <td align="center" class="m7">BreakDown Cause</td>
+            <td align="center" class="m8">Request Date</td>
+            <td align="center" class="m10">Staff Name</td>
+            <td align="center" class="m11">Work Description</td>
+            <td align="center" class="m12">Test Result</td>
+            <td align="center" class="m13">Completed Date</td>
+            <td align="center" class="m14">Write</td>
+
+        </tr>
+        </thead>
+     </table>
+</div>
+<div id="tabledesc">
+ <table style="word-break:break-all">
+     <tbody>
+                {% for workorder in workorderlist %}
+        <tr>
+            <td align="center" class="m1-1">{{workorder.workorderno}}</td>
+            <td align="center" class="m2-1">{{workorder.team}}</td>
+            <td align="center" class="m3-1">{{workorder.controlno}}</td>
+            <td align="center" class="m4-1">{{workorder.equipname}}</td>
+            <td align="center" class="m16-1">{{workorder.status}}</td>
+            <td align="center" class="m5-1">{{workorder.requestor}}</td>
+            <td align="center" class="m6-1">{{workorder.description}}</td>
+            <td align="center" class="m7-1">{{workorder.description_info}}</td>
+            <td align="center" class="m8-1">{{workorder.date}}</td>
+            <td align="center" class="m10-1">{{workorder.action_name}}</td>
+            <td align="center" class="m11-1">{{workorder.work_desc}}</td>
+            <td align="center" class="m12-1">{{workorder.test_result}}</td>
+            <td align="center" class="m13-1">{{workorder.action_date}}</td>
+            <td align="center" class="m14-1">
+                <form action="workorder_form" method="post" target="_blank">
+                  {% csrf_token %}
+                <input type="hidden" value="{{workorder.workorderno}}" name="workorderno">
+                <input type="hidden" value="{{loginid}}" name="loginid">
+                <input type="submit" class="button_css" value="Write"></form>
+            </td>
+        </tr>
+                {% endfor %}
+        </tbody>
+ </table>
+</div>
+<div id="sideline2">
+<mainline>
+</mainline>
+</div>
+</main>
+</body>
+</html>

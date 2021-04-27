@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+    <title>Title</title>
+<style>
+#search_top{
+        position:fixed;top:4%; left:56%;
+        height:5%;
+        width:20%;
+        background-color:white;
+        z-index:10;
+}
+searchtext{
+    	font-family:'Rubik', sans-serif;
+        font-size:30px;
+        font-weight:bold;
+}
+#search_radius{
+        box-shadow: 3px 4px 0px 0px #A9A9A9;
+        position:fixed;top:6.5%; left:55%;
+        border:2px solid #EEEEEE;
+        border-radius:2%;
+        width:44%;
+        height:60%;
+    }
+#search_main{
+        position:fixed;top:10%; left:73.7%;
+}
+#search_head{
+position:fixed;top:15%; left:56%;}
+
+#search_header{
+        border:2px solid white;
+        background-color:#EEEEEE;
+        border-collapse:collapse;
+}
+#search_body{
+        position:fixed;top:21%; left:56%;
+        overflow-y:auto;}
+
+title_text{
+        font-weight:bold;
+        text-decoration: underline;
+        font-family:'Rubik', sans-serif;
+        font-size:24px;
+}
+.k1{width:90px;
+   font-size:14px;
+   height:25px;
+   font-weight:bold;}
+.k2{width:180px;
+   font-size:14px;
+   height:25px;
+   font-weight:bold;}
+.k3{width:120px;
+   font-size:14px;
+   height:25px;
+   font-weight:bold;}
+.k4{width:150px;
+   font-size:14px;
+   height:25px;
+   font-weight:bold;}
+.k5{width:80px;
+   font-size:14px;
+   height:25px;
+   font-weight:bold;}
+.k6{width:100px;
+   font-size:14px;
+   height:25px;
+   font-weight:bold;}
+.k7{width:70px;
+   font-size:14px;
+   height:25px;
+   font-weight:bold;}
+
+.k1-1{width:90px;}
+.k2-1{width:180px;}
+.k3-1{width:120px;}
+.k4-1{width:150px;}
+.k5-1{width:80px;}
+.k6-1{width:93px;}
+.k7-1{width:70px;}
+
+#search_tables{
+        font-size:14px;
+        height:25px;
+        }
+
+#submit_radius{
+        box-shadow: 3px 4px 0px 0px #A9A9A9;
+        position:fixed;top:70.5%; left:55%;
+        border:2px solid #EEEEEE;
+        border-radius:2%;
+        width:44%;
+        height:23%;
+}
+#info_top{
+        position:fixed;top:68.5%; left:56%;
+        height:5%;
+        width:16%;
+        background-color:white;
+        z-index:10;
+}
+#qy_select{
+        position:fixed;top:85.5%; left:56%;
+        font-family:'Rubik', sans-serif;
+        font-size:24px;}
+#division_select{
+        position:fixed;top:85.5%; left:72%;
+        font-family:'Rubik', sans-serif;
+        font-size:24px;}
+.qy_text{
+      margin-top:5px;
+      height:35px;
+      width:100px;
+      font-family:'Rubik', sans-serif;
+      font-size:20px;
+}
+.select_btn{
+        font-size:12px;
+        cursor:pointer;
+}
+.division_text{
+      margin-left:10px;
+      margin-top:5px;
+      height:35px;
+      width:150px;
+      font-size:18px;
+}
+.spareparts_incoming_submit{
+  position:fixed;top:87%; left:93.5%;}
+
+#btn_location{
+        position:fixed;top:95.5%; left:91%;
+}
+.btn_submit{
+        margin-left:10px;
+        font-size:14px;
+        cursor:pointer;
+        font-family:'Rubik', sans-serif;
+        width:70px;
+        font-weight:bold;
+        }
+.btn_reset{
+        font-size:14px;
+        cursor:pointer;
+        font-family:'Rubik', sans-serif;
+        width:70px;
+        font-weight:bold;
+        color:red;
+}
+#search_result{
+position:fixed;top:73%; left:56%;
+}
+#search_text{
+        border:2px solid white;
+        background-color:#EEEEEE;
+        border-collapse:collapse;
+}
+.a1{width:90px;
+   font-size:14px;
+   height:25px;
+   font-weight:bold;}
+.a2{width:200px;
+   font-size:14px;
+   height:25px;
+   font-weight:bold;}
+.a3{width:120px;
+   font-size:14px;
+   height:25px;
+   font-weight:bold;}
+.a4{width:200px;
+   font-size:14px;
+   height:25px;
+   font-weight:bold;}
+.a5{width:100px;
+   font-size:14px;
+   height:25px;
+   font-weight:bold;}
+.a6{width:80px;
+   font-size:14px;
+   height:25px;
+   font-weight:bold;}
+.select_text{
+      height:35px;
+      width:150px;
+      font-family:'Rubik', sans-serif;
+      font-size:20px;}
+.search_text{
+      height:28px;
+      width:200px;
+      font-family:'Rubik', sans-serif;
+      font-size:20px;}
+.btn_search{
+      cursor:pointer;
+      margin-top:5px;
+      height:35px;
+      width:100px;
+      font-family:'Rubik', sans-serif;
+      font-size:20px;}
+#select_tbody{
+      background-color:white;
+}
+.btn_select_submit{
+      margin-left:110px;
+      cursor:pointer;
+      height:35px;
+      width:100px;
+      font-family:'Rubik', sans-serif;
+      font-size:20px
+}
+</style>
+</head>
+<>
+<div id="search_top">
+<table>
+    <tr>
+    <td><i class="xi-share xi-2x"><searchtext>&nbsp;Incoming Search Table</searchtext></i></td>
+    </tr>
+</table>
+</div>
+<div id="search_radius" >
+</div>
+<div id="search_main">
+    <form action="spareparts_incoming_search" method="post">
+            {% csrf_token %}
+<select class="select_text" name="select_text">&nbsp;
+            <option value="total">Total</option>
+            <option value="codeno">Code No.</option>
+            <option value="partname">Parts Name</option>
+            <option value="modelno">Model Name</option>
+            <option value="vendor">Vendor</option>
+            <option value="team">Team</option>
+            </select>
+<input type="text" name="search_text" class="search_text" value="{{searchtext}}" placeholder="Enter the Keyword">
+<input type="hidden" name="loginid" value="{{loginid}}">
+<input type="submit" value="Search" class="btn_search"></form>
+</div>
+
+<div id="search_head">
+    <title_text>Search Result</title_text>
+<table id="search_header" border="1">
+    <tr>
+        <td align="center" class="k1">Code No.</td>
+        <td align="center" class="k7">Team</td>
+        <td align="center" class="k2">Parts Name</td>
+        <td align="center" class="k3">Vendor</td>
+        <td align="center" class="k4">Model Name</td>
+        <td align="center" class="k5">Location</td>
+        <td align="center" class="k6">Select</td>
+    </tr>
+</table>
+</div>
+
+<div id="search_body">
+<table id="search_tables">
+                {% for search in search_result%}
+    <tr>
+        <td align="center" class="k1-1">{{search.codeno}}</td>
+        <td align="center" class="k7-1">{{search.team}}</td>
+        <td align="center" class="k2-1">{{search.partname}}</td>
+        <td align="center" class="k3-1">{{search.vendor}}</td>
+        <td align="center" class="k4-1">{{search.modelno}}</td>
+        <td align="center" class="k5-1">{{search.location}}</td>
+        <td align="center" class="k6-1">
+            <input type="hidden" value="{{search.codeno}}" name="codeno_up">
+            <input type="button"  class="select_btn" value="Select" onclick="Select_codeno(this);">
+        </td>
+    </tr>
+                {%endfor%}
+</table>
+</div>
+
+<div id="submit_radius">
+</div>
+<div id="info_top">
+<searchtext>&nbsp;Select Information</searchtext>
+</div>
+
+<div id="search_result">
+<title_text>Select Result</title_text>
+<table id="search_text" border="1">
+    <thead>
+    <tr>
+        <td align="center" class="a1">Code No.</td>
+        <td align="center" class="a6">Team</td>
+        <td align="center" class="a2">Parts Name</td>
+        <td align="center" class="a3">Vendor</td>
+        <td align="center" class="a4">Model Name</td>
+        <td align="center" class="a5">Location</td>
+    </tr>
+    </thead>
+            {%for select in select_result%}
+    <tbody id="select_tbody">
+        <td align="center" class="a1">{{select.codeno}}</td>
+        <td align="center" class="a6">{{select.team}}</td>
+        <td align="center" class="a2">{{select.partname}}</td>
+        <td align="center" class="a3">{{select.vendor}}</td>
+        <td align="center" class="a4">{{select.modelno}}</td>
+        <td align="center" class="a5">{{select.location}}</td>
+    </tbody>
+            {%endfor%}
+</table>
+</div>
+
+    <form action="spareparts_incoming_sel_submit" name="Submit_incoming" method="post" class="spareparts_incoming_submit">
+                {% csrf_token %}
+<div id="qy_select">
+    <title_text>Quantity</title_text>&emsp;
+     &nbsp;<select class="qy_text" name="qy_text">&nbsp;
+            <option value="1">1ea</option>
+            <option value="2">2ea</option>
+            <option value="3">3ea</option>
+            <option value="4">4ea</option>
+            <option value="5">5ea</option>
+            <option value="6">6ea</option>
+            <option value="7">7ea</option>
+            <option value="8">8ea</option>
+            <option value="9">9ea</option>
+            <option value="10">10ea</option>
+            <option value="11">11ea</option>
+            <option value="12">12ea</option>
+            <option value="13">13ea</option>
+            <option value="14">14ea</option>
+            <option value="15">15ea</option>
+            <option value="16">16ea</option>
+            <option value="17">17ea</option>
+            <option value="18">18ea</option>
+            <option value="19">19ea</option>
+            <option value="20">20ea</option>
+            </select>
+</div>
+<div id="division_select">
+    <title_text>Division</title_text>&emsp;
+     &nbsp;<select class="division_text" name="division_text">&nbsp;
+            <option value="신규구매">신규구매</option>
+            <option value="미사용 반납">미사용 반납</option>
+            <option value="업체 무상제공">업체 무상제공</option>
+            </select>
+            <input type="hidden" name="loginid" value="{{loginid}}">
+            <input type="hidden" name="codeno" value="{{codeno}}">
+            <input type="submit" value="Submit" class="btn_select_submit">
+</div>
+        </form>
+
+<div id="btn_location">
+    <table>
+        <tr>
+            <td>
+            <form action="spareparts_incoming_reset" name="Reset_incoming" method="post">
+                {% csrf_token %}
+            <input type="hidden" name="loginid" value="{{loginid}}">
+            <input type="submit" value="Reset" class="btn_reset">
+                </form></td>
+            <td>
+             <form action="spareparts_incoming_submit" name="Submit_incoming" method="post">
+                {% csrf_token %}
+            <input type="hidden" name="loginid" value="{{loginid}}">
+            <input type="submit" value="Submit" class="btn_submit">
+                </form></td>
+        </tr>
+    </table>
+</div>
+        <form name="select_codeno_form" method="post">
+                  {% csrf_token %}
+        <input type="hidden" name="loginid" value="{{loginid}}">
+        <input type="hidden" name="codeno">
+        <input type="hidden" name="search_text" value="{{searchtext}}">
+        <input type="hidden" name="select_text" value="{{selecttext}}">
+        </form>
+
+<script>
+        function Select_codeno(obj){
+            var i = obj.parentNode.parentNode.rowIndex;
+            var codeno = document.getElementsByName('codeno_up')[i].value;
+            document.select_codeno_form.codeno.value = codeno;
+                        //서버전송
+            document.select_codeno_form.action="spareparts_incoming_select";
+            document.select_codeno_form.submit();
+            }
+</script>
+</body>
+</html>

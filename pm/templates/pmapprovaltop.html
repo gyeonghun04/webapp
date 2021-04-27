@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<style>
+#tabletop{
+    	font-family: arial;
+        position:fixed;top:4%; left:9%;
+        height:5%;
+        width:30%;
+}
+titletext{
+    	font-family:'Rubik', sans-serif;
+        font-size:20px;
+        font-weight:bold;
+}
+
+.selecttext{
+        margin-left:10px;
+        width:105px;
+        height:20px;
+}
+.searchtext{
+        width:110px;
+        height:20px;
+}
+.searchbutton{
+        width:60px;
+        height:20px;
+}
+#searchbar{
+        padding-left:10px;
+        padding-top:5px;
+        font-family:'Rubik', sans-serif;
+        font-size:10px;
+}
+</style>
+</head>
+<body>
+<div id="tabletop">
+<table>
+    <tr>
+    <td><titletext>PM Control Form Approval</titletext></td>
+
+    <td>
+    <div id="searchbar">
+        <form action="search" method="post">
+            {% csrf_token %}
+            <select class="selecttext" name="selecttext">
+            <option value="controlno">Control No.</option>
+            <option value="team">Team</option>
+            <option value="status">Status</option>
+            <option value="equipname">Equip. Name</option></select>
+            <input type="search"  class="searchtext" placeholder="Keywords" name="searchtext">
+            <input type="hidden" value={{loginid}} name="loginid">
+            <input type="submit"  class="searchbutton" value="Search"></form>
+    </div></td>
+    </tr>
+</table>
+</div>
+</body>
+</html>

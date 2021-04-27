@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+
+#tablemenu{
+    	font-family: arial;
+        font-size:11px;
+        position:fixed;top:7.5%; left:9%;
+        height:3%;
+        width:46%;
+        background-color:#6F6F6F;
+        color:white;
+}
+#tabledesc{
+        position:absolute;top:10.5%; left:9%;
+        z-index:10;
+        width:46%;
+        font-family: arial;
+        font-size:11px;
+        height:89.3%;
+        overflow-y:scroll;
+}
+.m1{width:50px;}
+.m2{width:80px;}
+.m3{width:100px;}
+.m4{width:80px;}
+.m5{width:300px;}
+.m6{width:80px;}
+.m7{width:60px;}
+.m8{width:80px;}
+.m51{width:355px;}
+.m61{width:80px;}
+.m71{width:90px;}
+
+.m1-1{width:50px;}
+.m2-1{width:80px;}
+.m3-1{width:100px;}
+.m4-1{width:80px;}
+.m5-1{width:300px;}
+.m6-1{width:80px;}
+.m7-1{width:60px;}
+.m8-1{width:80px;}
+.m5-11{width:360px;}
+.m6-11{width:80px;}
+.m7-11{width:90px;}
+
+body{overflow:hidden;}
+
+#sideline2{
+        background:#EEEEEE;
+        position:fixed; right:44.8%;
+        height:100%;
+        width:5px;
+}
+
+tr:nth-child(even){
+    background-color:#EEEEEE;
+}
+.button{
+    	font-family: arial;
+        font-size:11px;
+        cursor:pointer;
+}
+
+</style>
+<body>
+<main>
+<div id="tablemenu">
+     <table  style="word-break:break-all">
+        <thead>
+        <tr>
+            <td align="center" class="m1">Team</td>
+            <td align="center" class="m2">Equip. Name<br>(Control No.)</td>
+            <td align="center" class="m3">Work Order No.</td>
+            <td align="center" class="m4">Requestor</td>
+            {% if user_div == "Engineer" %}
+            <td align="center" class="m5">description</td>
+            <td align="center" class="m6">Status</td>
+            <td align="center" class="m7">View</td>
+            <td align="center" class="m8">Approval</td>
+            {% elif user_div == "Manager" %}
+            <td align="center" class="m5">description</td>
+            <td align="center" class="m6">Status</td>
+            <td align="center" class="m7">View</td>
+            <td align="center" class="m8">Approval</td>
+            {%else%}
+            <td align="center" class="m51">description</td>
+            <td align="center" class="m61">Status</td>
+            <td align="center" class="m71">View</td>
+            {%endif%}
+        </tr>
+        </thead>
+     </table>
+</div>
+<div id="tabledesc">
+ <table style="word-break:break-all">
+     <tbody>
+                      {% for workorder in workorderlist %}
+        <tr>
+            <td align="center" class="m1-1">{{workorder.team}}</td>
+            <td align="center" class="m2-1">{{workorder.equipname}}<br>({{workorder.controlno}})</td>
+            <td align="center" class="m3-1">{{workorder.workorderno}}</td>
+            <td align="center" class="m4-1">{{workorder.requestor}}</td>
+            {% if user_div == "Engineer" %}
+            <td align="center" class="m5-1">{{workorder.description}}</td>
+            <td align="center" class="m6-1">{{workorder.status}}</td>
+            <td align="center" class="m7-1">
+                <form action="workrequest_view" method="post" >
+                {% csrf_token %}
+                <input type="hidden" value={{loginid}} name="loginid">
+                <input type="hidden" value={{workorder.workorderno}} name="workorderno">
+                <input type="hidden" value={{searchtext}} name="searchtext">
+                <input type="hidden" value={{selecttext}} name="selecttext">
+                <input type="submit" class="button" value="View">
+                </form>
+            </td>
+            <td align="center" class="m8-1" >
+                <form action="workrequest_receive" method="post" >
+                {% csrf_token %}
+                <input type="hidden" value={{loginid}} name="loginid">
+                <input type="hidden" value={{workorder.workorderno}} name="workorderno">
+                <input type="hidden" value={{searchtext}} name="searchtext">
+                <input type="hidden" value={{selecttext}} name="selecttext">
+                <input type="submit" class="button" value="Approval">
+                </form>
+            </td>
+            {% elif user_div == "Manager" %}
+            <td align="center" class="m5-1">{{workorder.description}}</td>
+            <td align="center" class="m6-1">{{workorder.status}}</td>
+            <td align="center" class="m7-1">
+                <form action="workrequest_view" method="post" >
+                {% csrf_token %}
+                <input type="hidden" value={{loginid}} name="loginid">
+                <input type="hidden" value={{workorder.workorderno}} name="workorderno">
+                <input type="hidden" value={{searchtext}} name="searchtext">
+                <input type="hidden" value={{selecttext}} name="selecttext">
+                <input type="submit" class="button" value="View">
+                </form>
+            </td>
+            <td align="center" class="m8-1" >
+                <form action="workrequest_receive" method="post" >
+                {% csrf_token %}
+                <input type="hidden" value={{loginid}} name="loginid">
+                <input type="hidden" value={{workorder.workorderno}} name="workorderno">
+                <input type="hidden" value={{searchtext}} name="searchtext">
+                <input type="hidden" value={{selecttext}} name="selecttext">
+                <input type="submit" class="button" value="Approval">
+                </form>
+            </td>
+            {%else%}
+            <td align="center" class="m5-11">{{workorder.description}}</td>
+            <td align="center" class="m6-11">{{workorder.status}}</td>
+            <td align="center" class="m7-11">
+                <form action="workrequest_view" method="post" >
+                {% csrf_token %}
+                <input type="hidden" value={{loginid}} name="loginid">
+                <input type="hidden" value={{workorder.workorderno}} name="workorderno">
+                <input type="hidden" value={{searchtext}} name="searchtext">
+                <input type="hidden" value={{selecttext}} name="selecttext">
+                <input type="submit" class="button" value="View">
+                </form>
+            </td>
+            {%endif%}
+        </tr>
+                        {% endfor %}
+        </tbody>
+ </table>
+</div>
+<div id="sideline2">
+<mainline>
+</mainline>
+</div>
+</main>
+</body>
+</html>

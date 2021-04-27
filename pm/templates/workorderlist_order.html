@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+#workorder_title{
+        position:relative; left:20px;
+        margin-top:20px;
+    	font-family:'Rubik', sans-serif;
+        font-size:20px;
+        font-weight:bold;
+}
+#workrequest_info{
+        position:relative; left:10px;
+        margin-top:10px;
+        font-family: arial;
+        font-weight:bold;
+}
+#workrequest_info_t{
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+        width:1380px;
+        }
+#equip_info{
+        position:relative; left:10px;
+        font-family: arial;
+        font-weight:bold;
+        display: block;
+}
+#equip_info_t{
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+        width:1380px;
+        }
+
+#workorder_info_comp{
+        position:relative; left:10px;
+        font-family: arial;
+        font-weight:bold;
+        display: block;
+        z-index:100;
+}
+#workorder_info_t_comp{
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+        width:1380px;
+        }
+#usedpart_info_comp{
+        position:relative; left:10px;
+        font-family: arial;
+        font-weight:bold;
+        display: block;
+}
+#usedpart_info_t_comp{
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+        width:1380px;
+        }
+#completed{
+        position:relative; left:10px;
+        font-family: arial;
+        font-weight:bold;
+        display: block;
+        }
+#completed_t{
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+        width:1380px;
+        }
+#teamreviewed{
+        position:relative; left:10px;
+        font-family: arial;
+        font-weight:bold;
+        display: block;
+        }
+#teamreviewed_t{
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+        width:1380px;
+        }
+#somanager{
+        position:relative; left:10px;
+        font-family: arial;
+        font-weight:bold;
+        display: block;
+        }
+#somanager_t{
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+        width:1380px;
+        }
+#qamanager{
+        position:relative; left:10px;
+        font-family: arial;
+        font-weight:bold;
+        display: block;
+        }
+#qamanager_t{
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+        width:1380px;
+        }
+.w_info_1{width:170px;
+font-size:16px;
+font-family: arial;
+background-color:#EEEEEE;
+}
+.w_info_2{width:397px;
+font-family: arial;
+height:50px;
+background-color:white;
+}
+.w_info_3{
+font-family: arial;
+height:50px;
+background-color:white;
+
+}
+.w_info_4{
+width:197px;
+font-family: arial;
+height:50px;
+}
+
+info_title{
+font-size:14px;
+}
+info_title_a{
+font-size:13px;
+}
+info_text{
+font-size:12px;
+padding-left:40px;
+}
+info_text_a{
+font-size:12px;
+}
+.t_info_2{
+font-family: arial;
+height:30px;
+width:200px;
+}
+
+.t_info_3{
+font-family: arial;
+height:30px;
+width:83px;
+}
+.u_info_5{
+font-family: arial;
+width:250px;
+}
+
+.o_info_3{
+height:65px;
+background-color:white;
+}
+
+.desc_css{
+width:1150px;
+height:40px;
+font-size:12px;
+font-family: arial;
+}
+
+.u_info_6{
+height:100px;
+
+}
+
+.c_info_2{
+height:40px;
+width:600px;
+}
+.button_css{
+font-family: arial;
+font-size:12px;
+cursor:pointer;
+}
+
+.usedpart_info_b{
+height:150px;
+overflow-y:scroll;
+}
+.border {
+        position:fixed;top:10px; left:10px;
+        border:8px solid #6F6F6F;
+        width:1380px;
+        height:890px;
+    }
+body{overflow:hidden;}
+</style>
+<body>
+<div id="workorder_title">
+Maintenance Work Order Form
+</div>
+
+<div class="border">
+</div>
+            {%for workorder in workorder_table %}
+<div id="workrequest_info">
+    <table border="1" id="workrequest_info_t">
+        <tr>
+            <td align="center" class="w_info_1" rowspan="4">
+                Work Request<br> Information
+            </td>
+            <td align="left" class="w_info_2">
+                <info_title>Work Order No.</info_title><br>
+                <info_text>{{workorder.workorderno}}</info_text>
+            </td>
+            <td align="left" class="w_info_2">
+                <info_title>Requestor</info_title><br>
+                <info_text>{{workorder.requestor}}</info_text>
+            </td>
+            <td align="left" class="w_info_2">
+                <info_title>Request Date</info_title><br>
+                <info_text>{{workorder.date}}</info_text>
+            </td>
+        </tr>
+        <tr>
+            <td align="left" class="w_info_2">
+                <info_title>Department</info_title><br>
+                <info_text>{{workorder.team}}</info_text>
+            </td>
+            <td align="left" class="w_info_2">
+                <info_title>Type</info_title><br>
+                <info_text>{{workorder.type}}</info_text>
+            </td>
+            <td align="left" class="w_info_2">
+                <info_title>CAPA. or Deviation No.</info_title><br>
+                <info_text>{{workorder.capa}}</info_text>
+            </td>
+        </tr>
+        <tr>
+            <td align="left" class="o_info_3" colspan="3">
+                <info_title>Description</info_title><br>
+                <info_text>{{workorder.description}}</info_text></td>
+        </tr>
+        <tr>
+            <td align="left" class="o_info_3" colspan="3">
+                <info_title>Breakdown Cause</info_title><br>
+                <info_text>{{workorder.description_info}}</info_text></td>
+        </tr>
+    </table>
+</div>
+
+<div id="equip_info">
+    <table border="1" id="equip_info_t">
+        <tr>
+            <td align="center" class="w_info_1" rowspan="2">
+                Equipment<br> Information
+            </td>
+            <td align="left" class="w_info_2">
+                <info_title>Control No.</info_title><br>
+                <info_text>{{workorder.controlno}}</info_text>
+            </td>
+            <td align="left" class="w_info_2">
+                <info_title>Equipment Name</info_title><br>
+                <info_text>{{workorder.equipname}}</info_text>
+            </td>
+            <td align="left" class="w_info_2">
+                <info_title>Location</info_title><br>
+                <info_text>{{workorder.roomname}} ({{workorder.roomno}})</info_text>
+            </td>
+        </tr>
+        {% for equip_info in equipinfos %}
+        <tr>
+            <td align="left" class="w_info_2">
+                <info_title>Serial No.</info_title><br>
+                <info_text>{{equip_info.serial}}</info_text>
+            </td>
+            <td align="left" class="w_info_2">
+                <info_title>Model No.</info_title><br>
+                <info_text>{{equip_info.model}}</info_text>
+            </td>
+            <td align="left" class="w_info_2">
+                <info_title>Manufacture</info_title><br>
+                <info_text>{{equip_info.maker}}</info_text>
+            </td>
+
+        </tr>
+            {%endfor%}
+    </table>
+</div>
+<div id="workorder_info_comp">
+    <table border="1" id="workorder_info_t_comp">
+        <form name="workorder_company">
+        <tr>
+            <td align="center" class="w_info_1" rowspan="3">
+                Work Order<br> Information
+            </td>
+            <td align="left" class="w_info_2">
+                <info_title>Assigned to Staff</info_title><br>
+                <info_text>{{workorder.action_name}}</info_text>
+            </td>
+            <td align="left" class="w_info_2">
+                <info_title>Assigned to Company</info_title><br>
+                <info_text>{{workorder.action_company}}</info_text>
+            </td>
+            <td align="left" class="w_info_4">
+                <info_title>Date Assigned</info_title><br>
+            <info_text>{{workorder.action_date}}</info_text>
+            </td>
+            <td align="left" class="w_info_4">
+                <info_title>PM Link</info_title><br>
+            <info_text>{{workorder.pm_trans}}</info_text>
+            </td>
+        </tr>
+        </form>
+        <form name="workorder_info">
+        <tr>
+            <td align="left" class="o_info_3" colspan="4">
+            <info_title>Description of Work</info_title><br>
+            <info_text>{{workorder.work_desc}}</info_text>
+            </td>
+        </tr>
+        <tr>
+            <td align="left" class="o_info_3" colspan="4">
+            <info_title>Test Result</info_title><br>
+            <info_text>{{workorder.test_result}}</info_text>
+            </td>
+        </tr>
+        </form>
+    </table>
+</div>
+
+<div id="usedpart_info_comp">
+    <table border="1" id="usedpart_info_t_comp">
+        <tr>
+            <td align="center" class="w_info_1" rowspan="2">
+                Used Parts<br> Information
+            </td>
+            <td align="center" class="t_info_2">
+                <ta_title>Part Name</ta_title>
+            </td>
+            <td align="center" class="t_info_2">
+                <info_title>Item Code</info_title>
+            </td>
+            <td align="center" class="t_info_2">
+                <info_title>Model Name</info_title>
+            </td>
+            <td align="center" class="t_info_3">
+                <info_title>QY.</info_title>
+            </td>
+            <td align="left" class="u_info_5" rowspan="2">
+              <info_title>Used Parts</info_title><br>
+              <info_text><input type="button" name="usedparts" class="button_css" value="Click">
+                  <input type="checkbox" name="usedparts_na" class="usedparts_na" {{usedpart_return}}>N/A</info_text>
+            </td>
+                 {% if url_comp == "Y" %}
+            <td align="left" class="u_info_5" rowspan="2">
+                <info_title>Attached File</info_title><br>
+                <info_text><a href="{{url}}" target="_blank" class="upload_complete_css">Upload_ Complete</a></info_text></td>
+                            {%else%}
+            <td align="left" class="u_info_5" rowspan="2">
+                <info_title>Attached File</info_title><br>
+                <info_text>N/A</info_text></td>
+                {%endif%}
+
+        </tr>
+        <tr id="usedpart_info_b_comp">
+            <td align="center" class="u_info_6">
+
+            </td>
+            <td align="center" class="u_info_7">
+
+            </td>
+            <td align="center" class="u_info_8">
+
+            </td>
+            <td align="center" class="u_info_9">
+
+            </td>
+        </tr>
+    </table>
+        </form>
+</div>
+<div id="completed">
+    <table border="1" id="completed_t">
+        <tr>
+            <td align="center" class="w_info_1">
+                <info_title_a>Completed By</info_title_a>
+            </td>
+            <td align="center" class="c_info_2">
+                <info_text_a>{{workorder.action_name}}</info_text_a>
+            </td>
+            <td align="center" class="c_info_2">
+                <info_text_a>{{workorder.action_date}}</info_text_a>
+            </td>
+        </tr>
+    </table>
+</div>
+<div id="teamreviewed">
+    <table border="1" id="teamreviewed_t">
+        <tr>
+            <td align="center" class="w_info_1">
+                <info_title_a>Team Reviewed</info_title_a>
+            </td>
+            <td class="c_info_2" align="center">
+                <info_text_a>{{workorder.w_s_name}}</info_text_a>
+            </td>
+            <td class="c_info_2" align="center">
+                <info_text_a>{{workorder.w_s_date}}</info_text_a>
+            </td>
+        </tr>
+    </table>
+</div>
+<div id="somanager">
+    <table border="1" id="somanager_t">
+        <tr>
+            <td align="center" class="w_info_1">
+                <info_title_a>Maintenance Manager<br>Check and Approval</info_title_a>
+            </td>
+        <td class="c_info_2" align="center">
+            <info_text_a>{{workorder.w_m_name}}</info_text_a>
+        </td>
+        <td class="c_info_2" align="center">
+            <info_text_a>{{workorder.w_m_date}}</info_text_a>
+        </td>
+        </tr>
+    </table>
+</div>
+
+<div id="qamanager">
+    <table border="1" id="qamanager_t">
+        <tr>
+            <td align="center" class="w_info_1">
+                <info_title_a>QA Manager<br>Review and Approval</info_title_a>
+            </td>
+        <td class="c_info_2" align="center">
+            <info_text_a>{{workorder.w_q_name}}</info_text_a>
+        </td>
+        <td class="c_info_2" align="center">
+            <info_text_a>{{workorder.w_q_date}}</info_text_a>
+        </td>
+        </tr>
+    </table>
+</div>
+{%endfor%}
+
+<script>
+     //////////// 리사이즈//////////////
+     function init(){
+            window.resizeTo(1440, 1010);
+             }
+      onload=init
+</script>
+</body>
+</html>

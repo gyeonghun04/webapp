@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+세션이 종료되었습니다.
+</body>
+<script>
+//페이지 BACK불가
+history.pushState(null, null, location.href);
+    window.onpopstate = function () {
+        history.go(1);
+};
+</script>
+
+
+</html>

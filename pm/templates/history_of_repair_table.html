@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+
+#tablemenu{
+    	font-family: arial;
+        font-size:11px;
+        position:fixed;top:7.5%; left:9%;
+        height:2.5%;
+        width:90.7%;
+        background-color:#6F6F6F;
+        color:white;
+}
+#tabledesc{
+        position:absolute;top:10%; left:9%;
+        z-index:10;
+        width:90.7%;
+        font-family: arial;
+        font-size:11px;
+        overflow:scroll;
+        height:89.8%;
+}
+.m1{width:50px;}
+.m2{width:80px;}
+.m3{width:150px;}
+.m4{width:80px;}
+.m5{width:80px;}
+.m6{width:250px;}
+.m7{width:250px;}
+.m8{width:250px;}
+.m9{width:100px;}
+.m10{width:140px;}
+.m11{width:250px;}
+
+.m1-1{width:50px;
+height:20px;}
+.m2-1{width:80px;}
+.m3-1{width:150px;}
+.m4-1{width:80px;}
+.m5-1{width:80px;}
+.m6-1{width:250px;}
+.m7-1{width:250px;}
+.m8-1{width:250px;}
+.m9-1{width:100px;}
+.m10-1{width:140px;}
+.m11-1{width:250px;}
+
+body{overflow:hidden;}
+
+#sideline2{
+        background:#EEEEEE;
+        position:fixed; left:99.7%;
+        height:100%;
+        width:5px;
+}
+
+tr:nth-child(even){
+    background-color:#EEEEEE;
+}
+</style>
+<body>
+<main>
+<div id="tablemenu">
+     <table  style="word-break:break-all">
+        <thead>
+        <tr>
+            <td align="center" class="m1">Team</td>
+            <td align="center" class="m2">Control No.</td>
+            <td align="center" class="m3">Equip. Name</td>
+            <td align="center" class="m4">Action Name</td>
+            <td align="center" class="m5">Action Date</td>
+            <td align="center" class="m6">Description</td>
+            <td align="center" class="m7">Breakdown Cause</td>
+            <td align="center" class="m8">Work Description</td>
+            <td align="center" class="m9">Repair Division</td>
+            <td align="center" class="m10">Repair Detail</td>
+            <td align="center" class="m11">Maintenance Method</td>
+        </tr>
+        </thead>
+     </table>
+</div>
+<div id="tabledesc">
+ <table style="word-break:break-all">
+     <tbody>
+                 {% for history in history_info %}
+        <tr>
+            <td align="center" class="m1-1">{{history.team}}</td>
+            <td align="center" class="m2-1">{{history.controlno}}</td>
+            <td align="center" class="m3-1">{{history.equipname}}</td>
+            <td align="center" class="m4-1">{{history.action_name}}</td>
+            <td align="center" class="m5-1">{{history.action_date}}</td>
+            <td align="center" class="m6-1">{{history.description}}</td>
+            <td align="center" class="m7-1">{{history.description_info}}</td>
+            <td align="center" class="m8-1">{{history.work_desc}}</td>
+            <td align="center" class="m9-1">{{history.repair_type}}</td>
+            <td align="center" class="m10-1">{{history.detail_type}}</td>
+            <td align="center" class="m11-1">{{history.repair_method}}</td>
+        </tr>
+                  {% endfor %}
+        </tbody>
+ </table>
+</div>
+<div id="sideline2">
+<mainline>
+</mainline>
+</div>
+</main>
+</body>
+</html>

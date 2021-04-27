@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+    <title>Title</title>
+<style>
+header{
+        height:30px;
+        background:#6F6F6F;
+        justify-content:space-between;
+        align-items:center;
+        position:fixed;
+        top:0;
+        left:0;
+        right:0;
+        z-index:10;
+        }
+header2{
+        height:0.3px;
+        padding-top:3px;
+        background:#EEEEEE;
+        display:flex;
+        justify-content:space-between;
+        position:fixed;
+        top:30px;
+        left:0;
+        right:0;
+        z-index:10;
+}
+toptext{
+        font-family: 'Rubik', sans-serif;
+        font-size:18px;
+        vertical-align:top;
+        font-weight:bold;
+        position:fixed; top:0.1%; left:9%;
+        color:white;
+}
+
+l{
+        position:fixed; top:0.1%; left:1%;
+        color:white;
+}
+m{
+        position:fixed; top:0.1%; left:4%;
+        color:white;
+}
+#messages_location{
+        position:fixed; top:0.1%; left:40%;
+        font-size:18px;
+        font-weight:bold;
+        animation-iteration-count:10;
+	    animation-duration:1s;
+	    animation-name: changecolor;
+       	color:#6F6F6F;
+}
+@keyframes changecolor{
+    from{
+       	  color:white;    }
+    to{
+          color:red;    }
+}
+
+j{
+        position:fixed; top:0.1%; left:93%;
+        color:white;
+}
+k{
+        position:fixed; top:0.1%; left:96%;
+        color:white;
+}
+.hidden_btn_home{
+ position:fixed; top:0.1%; left:1%;
+ background-color: rgba(0, 0, 0, 0.0);
+ width:32px;
+ height:30px;
+ cursor:pointer;
+ z-index:10;
+ border:0px;
+ outline:0;
+}
+.hidden_btn_audit{
+ position:fixed; top:0.1%; left:4%;
+ background-color: rgba(0, 0, 0, 0.0);
+ width:32px;
+ height:30px;
+ cursor:pointer;
+ z-index:10;
+ border:0px;
+ outline:0;
+}
+
+.hidden_btn_alarm{
+ position:fixed; top:0.1%; left:93%;
+ background-color: rgba(0, 0, 0, 0.0);
+ width:32px;
+ height:30px;
+ cursor:pointer;
+ z-index:10;
+ border:0px;
+ outline:0;
+ }
+</style>
+
+</head>
+<body>
+<header>
+<form action="main" method="post">
+{% csrf_token %}
+<input type="hidden" value={{loginid}} name="loginid">
+<input type="hidden" value={{password}} name="pw">
+<input type="submit" class="hidden_btn_home" value=""></form>
+<l class="xi-home-o xi-2x"></l>
+<form action="auditrail_main" method="post" target="_blank">
+{% csrf_token %}
+<input type="hidden" value={{loginid}} name="loginid">
+<input type="hidden" value={{password}} name="pw">
+<input type="submit" class="hidden_btn_audit" value=""></form>
+<m class="xi-align-justify xi-2x"></m>
+<toptext>Welcome,&nbsp;{{loginid}}</toptext>
+<div id="messages_location">
+{%if messages %}
+{%for message in messages%}
+{{message}}
+{%endfor%}
+{%endif%}
+</div>
+
+<input type="button" class="hidden_btn_alarm" value="" onclick="information_main();">
+<j class="xi-lightbulb-o xi-2x"></j></a>
+<a href="/"><k class="xi-log-out xi-2x"></k></a>
+
+</header>
+<header2>
+</header2>
+<script>
+      function information_main(){
+        // 팝업창열기
+            var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=400, height=500, left=50, top=10';
+            window.open("/information_main", "Program Information", settings);}
+
+
+      // 자동 로그아웃 Logout Timer 객체 정의
+      var LogOutTimer = function() {
+        var S = {
+                  timer : null,
+                  limit : 1000 * 60 * 15,
+                  fnc   : function() {},
+                  start : function() {
+                            S.timer = window.setTimeout(S.fnc, S.limit);
+                          },
+                  reset : function() {
+                            window.clearTimeout(S.timer);
+                            S.start();
+                          }
+                };
+	document.onmousemove = function() { S.reset(); };
+            return S;
+      }();
+      // 로그아웃 체크시간 설정
+      LogOutTimer.limit = 1000 * 60 * 15;
+      // 로그아웃 함수 설정
+      LogOutTimer.fnc = function() {
+        location.href = "logout_page";
+      }
+      // 로그아웃 타이머 실행
+      LogOutTimer.start();
+
+
+</script>
+</body>
+</html>

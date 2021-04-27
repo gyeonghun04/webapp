@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+
+#tablemenu{
+    	font-family: arial;
+        font-size:11px;
+        position:fixed;top:7.5%; left:9%;
+        height:2.5%;
+        width:30%;
+        background-color:#6F6F6F;
+        color:white;
+}
+#tabledesc{
+        position:absolute;top:10%; left:9%;
+        z-index:10;
+        width:30%;
+        font-family: arial;
+        font-size:11px;
+        height:89.8%;
+        overflow-y:scroll;
+}
+.m1{width:50px;}
+.m2{width:110px;}
+.m3{width:180px;}
+.m4{width:64px;}
+.m5{width:68px;}
+.m41{width:98px;}
+
+
+.m1-1{width:50px;}
+.m2-1{width:150px;}
+.m3-1{width:200px;}
+.m4-1{width:70px;}
+.m5-1{width:70px;}
+.m4-11{width:105px;}
+
+body{overflow:hidden;}
+
+#sideline2{
+        background:#EEEEEE;
+        position:fixed; right:60.8%;
+        height:100%;
+        width:5px;
+}
+
+tr:nth-child(even){
+    background-color:#EEEEEE;
+}
+.button{
+    	font-family: arial;
+        font-size:11px;
+        cursor:pointer;
+}
+
+</style>
+<body>
+<main>
+<div id="tablemenu">
+     <table  style="word-break:break-all">
+        <thead>
+        <tr>
+            <td align="center" class="m1">Team</td>
+            <td align="center" class="m2">Control No.</td>
+            <td align="center" class="m3">Equip. Name</td>
+            {% if user_div == "Engineer" %}
+            <td align="center" class="m4">Status</td>
+            <td align="center" class="m4">View</td>
+            <td align="center" class="m5">Write</td>
+            {%else%}
+            <td align="center" class="m41">Status</td>
+            <td align="center" class="m41">View</td>
+            {%endif%}
+        </tr>
+        </thead>
+     </table>
+</div>
+<div id="tabledesc">
+ <table style="word-break:break-all">
+     <tbody>
+                      {% for controlformlist in controlformlists %}
+        <tr>
+            <td align="center" class="m1-1">{{controlformlist.team}}</td> <!--models.py에서 값받아오기-->
+            <td align="center" class="m2-1">{{controlformlist.controlno}}</td>
+            <td align="center" class="m3-1">{{controlformlist.name}}</td>
+            {% if user_div == "Engineer" %}
+            <td align="center" class="m4-1">{{controlformlist.status}}</td>
+            <td align="center" class="m4-1">
+                <form action="pmcontrolform_view" method="post" >
+                {% csrf_token %}
+                <input type="hidden" value={{loginid}} name="loginid">
+                <input type="hidden" value={{controlformlist.controlno}} name="controlno">
+                <input type="hidden" value={{controlformlist.revno}} name="rev_no_1">
+                <input type="hidden" value={{selecttext}} name="selecttext">
+                <input type="hidden" value={{searchtext}} name="searchtext">
+                <input type="submit" class="button" value="View">
+                </form>
+            </td>
+            <td align="center" class="m5-1" >
+                <form action="pmcontrolform_write" method="post" >
+                {% csrf_token %}
+                <input type="hidden" value={{loginid}} name="loginid">
+                <input type="hidden" value={{controlformlist.controlno}} name="controlno">
+                <input type="hidden" value={{selecttext}} name="selecttext">
+                <input type="hidden" value={{searchtext}} name="searchtext">
+                <input type="submit" class="button" value="Write">
+                </form>
+            </td>
+            {%else%}
+            <td align="center" class="m4-11">{{controlformlist.status}}</td>
+            <td align="center" class="m4-11">
+                <form action="pmcontrolform_view" method="post" >
+                {% csrf_token %}
+                <input type="hidden" value={{loginid}} name="loginid">
+                <input type="hidden" value={{controlformlist.controlno}} name="controlno">
+                <input type="hidden" value={{controlformlist.revno}} name="rev_no_1">
+                <input type="hidden" value={{selecttext}} name="selecttext">
+                <input type="hidden" value={{searchtext}} name="searchtext">
+                <input type="submit" class="button" value="View">
+                </form>
+            </td>
+            {%endif%}
+        </tr>
+                        {% endfor %}
+        </tbody>
+ </table>
+</div>
+<div id="sideline2">
+<mainline>
+</mainline>
+</div>
+</main>
+</body>
+</html>

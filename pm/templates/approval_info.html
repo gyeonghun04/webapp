@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+#tabletop{
+    	font-family: arial;
+        position:fixed;top:4%; left:9%;
+        height:5%;
+
+}
+titletext{
+    	font-family:'Rubik', sans-serif;
+        font-size:20px;
+        font-weight:bold;
+}
+.selecttext{
+        margin-left:1190px;
+        width:105px;
+        height:20px;
+}
+.searchtext{
+        width:200px;
+        height:20px;
+}
+.searchbutton{
+        width:60px;
+        cursor:pointer;
+        height:20px;
+}
+#searchbar{
+        padding-top:5px;
+        font-family:'Rubik', sans-serif;
+        font-size:10px;
+}
+
+#tablemenu{
+    	font-family: arial;
+        font-size:11px;
+        position:fixed;top:7.5%; left:9%;
+        height:2.5%;
+        width:90.7%;
+        background-color:#6F6F6F;
+        color:white;
+}
+#tabledesc{
+        position:absolute;top:10%; left:9%;
+        z-index:10;
+        width:90.7%;
+        font-family: arial;
+        font-size:11px;
+        overflow-y:scroll;
+        height:83.8%;
+}
+
+body{overflow:hidden;}
+
+tr:nth-child(even){
+    background-color:#EEEEEE;
+}
+#manualchange{
+        position:fixed; top:94%; left:9%;
+        width:90.7%;
+    	font-family: arial;
+        font-size:11px;
+        background-color:#6F6F6F;
+        color:white;
+        height:20px;
+}
+
+#manualchangeinput{
+        position:fixed; top:96.5%; left:9%;
+        width:80%;
+    	font-family: arial;
+        font-size:11px;
+        height:40px;
+}
+
+.m1{width:240px;}
+.m2{width:255px;}
+.m3{width:240px;}
+.m4{width:240px;}
+.m5{width:240px;}
+.m6{width:240px;}
+.m7{width:240px;}
+
+.m1-1{width:240px;}
+.m2-1{width:255px;}
+.m3-1{width:240px;}
+.m4-1{width:240px;}
+.m5-1{width:240px;}
+.m6-1{width:240px;}
+.m7-1{width:240px;}
+.change_button{
+        font-family: arial;
+        font-size:11px;
+        cursor:pointer;}
+.delete_button{
+    	font-family: arial;
+        font-size:11px;
+        cursor:pointer;
+}
+
+.n1{width:120px;}
+.n2{width:200px;}
+.n3{width:60px;}
+.n4{width:200px;}
+.n5{width:200px;}
+.n6{width:150px;}
+
+.n1-1{width:100px;
+height:18px;}
+.n2-1{width:200px;
+height:18px;}
+.n3-1{width:60px;
+height:18px;}
+.n4-1{width:190px;
+height:18px;}
+.n5-1{width:200px;
+height:18px;}
+.n6-1{width:250px;
+height:18px;}
+
+.submit_button{
+    	font-family: arial;
+        cursor:pointer;
+        font-size:14px;
+        height:24px;
+        margin-left:1800px;
+        margin-top:930px;
+}
+
+.authtext{
+    	font-family: arial;
+        padding-top:2px;
+        padding-bottom:3px;
+        width:140px;
+        }
+</style>
+<body>
+<main>
+{% include "css.html"%}
+{% include "top.html"%}
+{% include "sidetap.html"%}
+
+<div id="tabletop" style="word-break:break-all">
+<table>
+    <tr>
+    <td><titletext>Authority Information</titletext></td>
+    </tr>
+</table>
+</div>
+
+<div id="tablemenu">
+     <table  style="word-break:break-all">
+        <thead>
+        <tr>
+            <td align="center" class="m1">Division</td>
+            <td align="center" class="m2">Description</td>
+            <td align="center" class="m3">Auth. Team</td>
+            <td align="center" class="m4">Auth. Name</td>
+            <td align="center" class="m5">Authority</td>
+            <td align="center" class="m6">Change</td>
+            <td align="center" class="m7">Delete</td>
+        </tr>
+        </thead>
+     </table>
+</div>
+<div id="tabledesc">
+ <table style="word-break:break-all">
+     <tbody>
+                      {% for approval_info in approval_infos %}
+        <tr>
+            <td align="center" class="m1-1">{{approval_info.division}}</td>
+            <td align="center" class="m2-1">{{approval_info.description}}</td>
+            <td align="center" class="m3-1">{{approval_info.auth_team}}</td>
+            <td align="center" class="m4-1">{{approval_info.auth_name}}</td>
+            <td align="center" class="m5-1">{{approval_info.code_no}}</td>
+            <td align="center" class="m6-1">
+                <input type="button" class="change_button" value="Change"></td>
+            <td align="center" class="m7-1">
+                <input type="button" class="delete_button" value="Delete"></td>
+        </tr>
+                        {%endfor%}
+        </tbody>
+ </table>
+</div>
+ <div>
+ <table>
+   <thead id="manualchange">
+        <tr>
+            <td align="center" class="n1">Division</td>
+            <td align="center" class="n2">Description</td>
+            <td align="center" class="n3">Auth. Name</td>
+
+        </tr>
+   </thead>
+              <form action="user_info_new" method="post">
+         {% csrf_token %}
+   <tbody id="manualchangeinput">
+     <tr>
+            <td align="center">
+                <input type="text" name="division" class="n1-1" required ></td>
+            <td align="center">
+                <input type="text" name="description"  class="n2-1" required></td>
+            <td align="center">
+                <input type="text" name="auth_name"  class="n3-1" required></td>
+     </tr>
+   </tbody>
+      <input type="hidden" value={{loginid}} name="loginid">
+      <input type="submit" class="submit_button" value="Submit"></form>
+     </table>
+ </div>
+</main>
+<script>
+</script>
+</body>
+</html>

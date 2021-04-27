@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+workrequesttitle{
+        position:fixed;top:64.8px; left:28.8px;
+        font-size: 24px;
+        font-family: arial;
+        font-weight:bold;
+}
+#equipinfo{
+    	font-family: arial;
+        font-size:11px;
+        position:fixed;top:108px; left:15.36px;
+        color:black;
+        width:846.7px;
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+}
+.table1{
+        background-color: #EEEEEE;
+        width:140px;
+        height:25px;
+        font-weight:bold;
+}
+.table2{
+        background-color: white;
+}
+.border {
+        position:fixed;top:37.8px;
+        border:8px solid #6F6F6F;
+        width:844.8px;
+        height:736.56px;
+    }
+#workrequesttitle{
+    	font-family: arial;
+        font-size:11px;
+        position:fixed;top:240px; left:15.36px;
+        width:846.72px;
+        background-color:#6F6F6F;
+        color:white;
+        height:20px;
+}
+#workrequestdesc{
+        position:fixed; top:260px; left:15.36px;
+        font-family: arial;
+        font-size:11px;
+}
+#workrequesttable{
+        font-size:11px;
+    	font-family: arial;
+}
+.c1{padding-left:400px;}
+.c1-1{width:400px; height:15px;}
+
+#workrequesttitle2{
+    	font-family: arial;
+        font-size:11px;
+        position:fixed;top:675px; left:15.36px;
+        width:846.72px;
+        background-color:#6F6F6F;
+        color:white;
+        height:20px;
+}
+#workrequesttable2{
+        position:fixed;top:700px; left:15.36px;
+        width:846.72px;
+        font-family: arial;
+        font-size:11px;
+}
+#workrequesttitle3{
+    	font-family: arial;
+        font-size:11px;
+        position:fixed;top:734.4px; left:15.36px;
+        width:846.72px;
+        background-color:#6F6F6F;
+        color:white;
+        height:20px;
+}
+#workrequesttable3{
+        position:fixed;top:753.84px; left:13.44px;
+        width:846.72px;
+        font-family: arial;
+        font-size:11px;
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+}
+.description_css{
+width:835px;
+height:402px;
+font-size:12px;
+font-family: arial;
+}
+.text_css{
+width:270px;
+height:16px;
+font-size:11px;
+font-family: arial;
+}
+.text_css2{
+width:260px;
+height:16px;
+font-size:11px;
+font-family: arial;
+}
+.text_css3{
+width:835px;
+height:16px;
+font-size:11px;
+font-family: arial;
+}
+.pmcheck_submit_css{
+position:fixed;top:797.04px; left:806.4px;
+font-family: arial;
+font-size:12px;
+cursor:pointer;
+}
+.button_css2{
+font-family: arial;
+font-size:16px;
+cursor:pointer
+}
+
+#messages_location{
+        position:fixed; top:5px; left:100px;
+        font-size:18px;
+        font-weight:bold;
+        animation-iteration-count:10;
+	    animation-duration:1s;
+	    animation-name: changecolor;
+       	color:white;
+}
+@keyframes changecolor{
+    from{
+       	  color:white;    }
+    to{
+          color:red;    }
+}
+</style>
+<body>
+<div class="border">
+</div>
+
+<div id="messages_location">
+{%if messages %}
+{%for message in messages%}
+{{message}}
+{%endfor%}
+{%endif%}
+</div>
+
+<workrequesttitle>
+Work Request Form
+</workrequesttitle>
+
+<form action="" method="post" name="workrequest">
+         {% csrf_token %}
+<table id="equipinfo" border= "1">
+    <tr>
+        <td class="table1">
+            Control No.
+        </td>
+        <td class="table2">
+            <input type="text" name="controlno_up" class="text_css" readonly>
+        </td>
+        <td class="table1">
+            Equipment. Name
+        </td>
+        <td class="table2">
+            <input type="text" name="equipname_up" class="text_css" readonly>
+        </td>
+    </tr>
+    <tr>
+        <td class="table1">
+            Room Name<br>(Room No.)
+        </td>
+        <td class="table2">
+            <input type="text" name="roomname_up" class="text_css" readonly><br>
+            (<input type="text" name="roomno_up"  class="text_css2" readonly>)
+        </td>
+        <td class="table1">
+            Type
+        </td>
+        <td class="table2">
+            <input type="radio" name="type" value="BM">BM&emsp;
+            <input type="radio" name="type" value="CM">CM&emsp;
+            <input type="radio" name="type" value="PM" checked>PM&emsp;
+            <input type="radio" name="type" value="IT">IT&emsp;
+        </td>
+    </tr>
+    <tr>
+        <td class="table1">
+            CAPA. or Deviation No.
+        </td>
+        <td class="table2">
+           <input type="text" name="capa_up" value="N/A" class="text_css" readonly>
+        </td>
+        <td class="table1">
+            Team
+        </td>
+        <td class="table2">
+            <input type="text" name="equipteam_up" class="text_css" readonly>
+        </td>
+    </tr>
+    <tr>
+        <td class="table1">
+            Requestor
+        </td>
+        <td class="table2">
+            <input type="text" name="loginid_up" class="text_css" readonly>
+        </td>
+        <td class="table1">
+            Request Date
+        </td>
+        <td class="table2">
+            <input type="text" name="request_date" class="text_css" readonly>
+        </td>
+    </tr>
+</table>
+<div id="workrequesttitle" >
+     <table  style="word-break:break-all">
+        <thead>
+        <tr>
+            <td align="center" class="c1">Description</td>
+        </tr>
+        </thead>
+     </table>
+</div>
+<div id="workrequestdesc">
+ <table style="word-break:break-all" id="workrequesttable">
+     <tbody>
+        <tr>
+            <td align="center" class="c1-1">
+                <textarea name="checkresult_up" class="description_css" style="resize:none;" required>{{description}}</textarea>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</form>
+<div id="workrequesttitle2" >
+     <table  style="word-break:break-all">
+        <thead>
+        <tr>
+            <td align="center" class="c2">Attached File</td>
+        </tr>
+        </thead>
+     </table>
+</div>
+
+<div id="workrequesttable2" >
+     <table  style="word-break:break-all">
+        <thead>
+        <tr>
+            <td align="center" class="c2-1">
+            {% if url_comp == "Y" %}
+            <a href="{{url}}" target="_blank" class="upload_complete_css">Upload_ Complete</a>
+            {%else%}
+                <form method="post" name="uploadfile" enctype="multipart/form-data" class="uploadfile">
+            {% csrf_token %}
+            <input type="hidden" name="loginid">
+            <input type="hidden"  name="controlno">
+            <input type="hidden"  name="capa">
+            <input type="hidden"  name="requestor">
+            <input type="hidden"  name="team">
+            <input type="hidden"  name="date">
+            <input type="hidden"  name="description">
+            <input type="hidden"  name="equipname">
+            <input type="hidden"  name="roomname">
+            <input type="hidden"  name="roomno">
+            <input type="hidden"  name="description_info">
+            <input type="file" name="upload_file" id="upload_file" class="button_css1">
+            <input type="button" value="Upload" class="button_css2" onclick="Upload_file();"></form>
+            {%endif%}
+            </td>
+        </tr>
+        </thead>
+     </table>
+</div>
+
+<form action="" method="post" name="workrequest_2">
+<div id="workrequesttitle3" >
+     <table  style="word-break:break-all">
+        <thead>
+        <tr>
+            <td align="center" class="c3">Breakdown Cause</td>
+        </tr>
+        </thead>
+     </table>
+</div>
+<div id="workrequesttable3" >
+     <table  style="word-break:break-all" >
+        <thead>
+        <tr>
+            <td align="center" class="c3-1">
+                <input type="text" name="description_info_up" class="text_css3" value="{{description_info}}" required>
+            </td>
+        </tr>
+        </thead>
+     </table>
+</div>
+        <input type="hidden" value="{{url}}" name="url_up">
+</form>
+     <input type="button" class="pmcheck_submit_css" value="Submit" onclick="submit_request();">
+
+    <form method="post" name="Submit_request">
+            {% csrf_token %}
+            <input type="hidden" name="loginid">
+            <input type="hidden"  name="controlno">
+            <input type="hidden"  name="capa">
+            <input type="hidden"  name="requestor">
+            <input type="hidden"  name="team">
+            <input type="hidden"  name="date">
+            <input type="hidden"  name="description">
+            <input type="hidden"  name="equipname">
+            <input type="hidden"  name="roomname">
+            <input type="hidden"  name="roomno">
+            <input type="hidden"  name="url">
+            <input type="hidden"  name="pmcode">
+            <input type="hidden"  name="itemcode">
+            <input type="hidden"  name="description_info"></form>
+
+
+<script>
+ //////////// 기본초기값 불러오기//////////////
+     function init(){
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth()+1; //January is 0!
+            var yyyy = today.getFullYear();
+            if(dd<10) {
+                dd='0'+dd
+            }
+            if(mm<10) {
+                mm='0'+mm
+            }
+            today = yyyy+'-'+mm+'-'+dd;
+            document.workrequest.request_date.value = today;
+            loginid = opener.document.getElementById("workloginid").value;
+            document.workrequest.loginid_up.value = loginid;
+            equipname = opener.document.getElementById("workequipname").value;
+            document.workrequest.equipname_up.value = equipname;
+            controlno = opener.document.getElementById("workcontrolno").value;
+            document.workrequest.controlno_up.value = controlno;
+            equipteam = opener.document.getElementById("workequipteam").value;
+            document.workrequest.equipteam_up.value = equipteam;
+            roomname = opener.document.getElementById("workroomname").value;
+            document.workrequest.roomname_up.value = roomname;
+            roomno = opener.document.getElementById("workroomno").value;
+            document.workrequest.roomno_up.value = roomno;
+            checkresult = opener.document.getElementById("workcheckresult").value;
+            document.workrequest.checkresult_up.value = checkresult;
+            }
+
+      onload=init
+
+ //////////// 파일업로드하기//////////////
+              function Upload_file(){
+            loginid = opener.document.getElementById("workloginid").value;
+            var controlno= document.getElementsByName('controlno_up')[0].value;
+            var capa= document.getElementsByName('capa_up')[0].value;
+            var team= document.getElementsByName('equipteam_up')[0].value;
+            var description= document.getElementsByName('checkresult_up')[0].value;
+            var equipname= document.getElementsByName('equipname_up')[0].value;
+            var roomname= document.getElementsByName('roomname_up')[0].value;
+            var roomno= document.getElementsByName('roomno_up')[0].value;
+            var description_info= document.getElementsByName('description_info_up')[0].value;
+            var loginid_up= document.getElementsByName('loginid_up')[0].value;
+            var request_date= document.getElementsByName('request_date')[0].value;
+            // 값보내기
+            document.uploadfile.loginid.value = loginid;
+            document.uploadfile.controlno.value = controlno;
+            document.uploadfile.capa.value = capa;
+            document.uploadfile.requestor.value = loginid_up;
+            document.uploadfile.team.value = team;
+            document.uploadfile.description.value = description;
+            document.uploadfile.date.value = request_date;
+            document.uploadfile.equipname.value = equipname;
+            document.uploadfile.roomname.value = roomname;
+            document.uploadfile.roomno.value = roomno;
+            document.uploadfile.description_info.value = description_info;
+            // 서버연결
+            document.uploadfile.action="pmcheck_workrequest_up";
+            document.uploadfile.submit();}
+
+        function submit_request(){
+            loginid = opener.document.getElementById("workloginid").value;
+            pmcode = opener.document.getElementById("workpmcode").value;
+            itemcode = opener.document.getElementById("workitemcode").value;
+            var controlno= document.getElementsByName('controlno_up')[0].value;
+            var capa= document.getElementsByName('capa_up')[0].value;
+            var team= document.getElementsByName('equipteam_up')[0].value;
+            var description= document.getElementsByName('checkresult_up')[0].value;
+            var equipname= document.getElementsByName('equipname_up')[0].value;
+            var roomname= document.getElementsByName('roomname_up')[0].value;
+            var roomno= document.getElementsByName('roomno_up')[0].value;
+            var description_info= document.getElementsByName('description_info_up')[0].value;
+            var loginid_up= document.getElementsByName('loginid_up')[0].value;
+            var request_date= document.getElementsByName('request_date')[0].value;
+            var url= document.getElementsByName('url_up')[0].value;
+             // 값보내기
+            document.Submit_request.loginid.value = loginid;
+            document.Submit_request.controlno.value = controlno;
+            document.Submit_request.capa.value = capa;
+            document.Submit_request.requestor.value = loginid_up;
+            document.Submit_request.team.value = team;
+            document.Submit_request.description.value = description;
+            document.Submit_request.date.value = request_date;
+            document.Submit_request.equipname.value = equipname;
+            document.Submit_request.roomname.value = roomname;
+            document.Submit_request.roomno.value = roomno;
+            document.Submit_request.description_info.value = description_info;
+            document.Submit_request.url.value = url;
+            document.Submit_request.pmcode.value = pmcode;
+            document.Submit_request.itemcode.value = itemcode;
+            // 서버연결
+            document.Submit_request.action="pmcheck_workrequest_submit";
+            document.Submit_request.submit();}
+
+</script>
+</body>
+</html>

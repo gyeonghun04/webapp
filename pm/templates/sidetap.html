@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+    <title>Title</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap');
+
+comment_css{
+background:#EEEEEE;
+left:0;
+right:0;
+justify-content:space-between;
+position:fixed; right:91%; bottom:92.4%;
+height:3.5%;
+text-align:center;
+font-weight:bold;
+padding-top:0.5%;
+font-size:16px;
+z-index:100;
+}
+
+#sidetap{
+height:100%;
+position:fixed; right:91.8%; top:7%;
+
+overflow-y:auto;}
+
+
+
+#sideline{
+background:#EEEEEE;
+position:fixed; right:91%;
+height:100%;
+width:5px;
+}
+
+.Button {
+        font-family:'Rubik', sans-serif;
+        font-size:12px;
+        background-color: rgba(255, 255, 255, 0.0);
+        cursor:pointer;
+        border:0px;
+        font-color:black;
+        padding-left:4%;
+        outline:0;
+}
+.Button:hover {
+	background-color:#EEEEEE;
+	border-radius:10%;
+}
+text{
+        font-family:'Rubik', sans-serif;
+        font-size:16px;
+        font-color:black;
+}
+::-webkit-scrollbar{
+}
+
+i{
+        align-text:left;
+        color:black;
+}
+</style>
+
+</head>
+<body>
+
+
+<comment_css>Go To Applications</comment_css>
+<div id="sidetap">
+    <table id="sidetable">
+        <tr>
+<br><i class="xi-cog"><text>&nbsp;PM Check Sheet</text></i><br>
+{% if user_div == "Staff"%}
+    <form action="pmequipsch_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="PM Equip. Schedule" class="Button"></form><br>
+{% elif user_div == "Engineer"%}
+    <form action="pmchecksheet_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="PM Check Sheet" class="Button"></form><br>
+    <form action="pmmonthly_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="PM Monthly Schedule" class="Button"></form><br>
+    <form action="pmequipsch_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="PM Equip. Schedule" class="Button"></form><br>
+    <form action="pmcalendar_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="PM Calendar" class="Button"></form><br>
+    <form action="" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="button"value="PM Approval" class="Button"  onclick="Pmcheckapproval();"></form><br>
+{% elif user_div == "Manager"%}
+    <form action="pmchecksheet_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="PM Check Sheet" class="Button"></form><br>
+    <form action="pmequipsch_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="PM Equip. Schedule" class="Button"></form><br>
+{% elif user_div == "SO Manager"%}
+    <form action="pmchecksheet_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="PM Check Sheet" class="Button"></form><br>
+    <form action="pmequipsch_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="PM Equip. Schedule" class="Button"></form><br>
+    <form method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="button"value="PM Approval" class="Button"  onclick="Pmcheckapproval();"></form><br>
+{% elif user_div == "QA Manager"%}
+    <form action="pmchecksheet_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="PM Check Sheet" class="Button"></form><br>
+    <form action="pmequipsch_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="PM Equip. Schedule" class="Button"></form><br>
+{% elif user_div == "Admin"%}
+    <form action="pmchecksheet_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="PM Check Sheet" class="Button"></form><br>
+    <form action="pmmonthly_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="PM Monthly Schedule" class="Button"></form><br>
+    <form action="pmequipsch_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="PM Equip. Schedule" class="Button"></form><br>
+    <form action="pmcalendar_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="PM Calendar" class="Button"></form><br>
+    <form action="" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="button"value="PM Approval" class="Button"  onclick="Pmcheckapproval();"></form><br>
+{%endif%}
+</tr>
+{% if user_div == "Engineer"%}
+        <tr>
+<br><i class="xi-library-books"><text>&nbsp;PM Document</text></i><br>
+    <form action="pmra_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="PM Period" class="Button"></form><br>
+    <form action="pmcontrolform_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="PM Control Form" class="Button"></form><br>
+    <form action="" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="button" value="PM Approval" class="Button" onclick="Pmapproval();"></form><br>
+    <form action="pmmasterlist_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="PM Master List" class="Button"></form><br>
+    <form action="pmmanual_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="PM Manual" class="Button"></form>
+</tr><br>
+{% elif user_div == "SO Manager"%}
+        <tr>
+<br><i class="xi-library-books"><text>&nbsp;PM Document</text></i><br>
+    <form action="pmra_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="PM Period" class="Button"></form><br>
+    <form action="pmcontrolform_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="PM Control Form" class="Button"></form><br>
+    <form method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="button" value="PM Approval" class="Button" onclick="Pmapproval();"></form><br>
+    <form action="pmmasterlist_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="PM Master List" class="Button"></form><br>
+    <form action="pmmanual_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="PM Manual" class="Button"></form>
+</tr><br>
+{% elif user_div == "QA Manager"%}
+        <tr>
+<br><i class="xi-library-books"><text>&nbsp;PM Document</text></i><br>
+    <form action="pmra_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="PM Period" class="Button"></form><br>
+    <form action="pmcontrolform_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="PM Control Form" class="Button"></form><br>
+    <form action="" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="button" value="PM Approval" class="Button" onclick="Pmapproval();"></form><br>
+    <form action="pmmasterlist_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="PM Master List" class="Button"></form><br>
+    <form action="pmmanual_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="PM Manual" class="Button"></form>
+</tr><br>
+{% elif user_div == "Admin"%}
+                <tr>
+<br><i class="xi-library-books"><text>&nbsp;PM Document</text></i><br>
+    <form action="pmra_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="PM Period" class="Button"></form><br>
+    <form action="pmcontrolform_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="PM Control Form" class="Button"></form><br>
+    <form action="" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="button" value="PM Approval" class="Button" onclick="Pmapproval();"></form><br>
+    <form action="pmmasterlist_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="PM Master List" class="Button"></form><br>
+    <form action="pmmanual_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="PM Manual" class="Button"></form>
+</tr><br>
+{%endif%}
+
+        <tr>
+<br><i class="xi-wrench"><text>&nbsp;Work Order</text></i><br>
+{% if user_div == "Staff"%}
+     <form action="workorderlist_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="Work Order List" class="Button"></form><br>
+     <form action="workrequest_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="Work Request" class="Button"></form><br>
+{% elif user_div == "Admin"%}
+     <form action="workorderlist_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="Work Order List" class="Button"></form><br>
+    <form action="workrequest_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="Work Request" class="Button"></form><br>
+    <form method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="button"value="Work Request Approval" class="Button" onclick="Workrequest_approval();"></form><br>
+    <form action="workorder_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="Work Order" class="Button"></form><br>
+    <form method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="button"value="Work Order Approval" class="Button" onclick="Workorder_approval();"></form><br>
+    <form action="history_of_repair_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="History of Repair" class="Button"></form><br>
+{% elif user_div == "Engineer"%}
+    <form action="workorderlist_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="Work Order List" class="Button"></form><br>
+    <form action="workrequest_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="Work Request" class="Button"></form><br>
+    <form action="" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="button"value="Work Request Approval" class="Button" onclick="Workrequest_approval();"></form><br>
+    <form action="workorder_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="Work Order" class="Button"></form><br>
+    <form action="" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="button"value="Work Order Approval" class="Button" onclick="Workorder_approval();"></form><br>
+    <form action="history_of_repair_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="History of Repair" class="Button"></form><br>
+{% elif user_div == "Manager"%}
+     <form action="workorderlist_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="Work Order List" class="Button"></form><br>
+     <form action="workrequest_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="Work Request" class="Button"></form><br>
+{% elif user_div == "SO Manager"%}
+     <form action="workorderlist_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="Work Order List" class="Button"></form><br>
+    <form action="workrequest_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="Work Request" class="Button"></form><br>
+    <form action="" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="button"value="Work Request Approval" class="Button" onclick="Workrequest_approval();"></form><br>
+    <form action="" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="button"value="Work Order Approval" class="Button" onclick="Workorder_approval();"></form><br>
+{% elif user_div == "QA Manager"%}
+    <form action="workorderlist_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="Work Order List" class="Button"></form><br>
+    <form action="workrequest_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="Work Request" class="Button"></form><br>
+    <form action="" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="button"value="Work Request Approval" class="Button" onclick="Workrequest_approval();"></form><br>
+    <form action="" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="button"value="Work Order Approval" class="Button" onclick="Workorder_approval();"></form><br>
+{%endif%}
+</tr>
+        {% if user_div == "Admin"%}
+        <tr>
+<br><i class="xi-package"><text>&nbsp;Spare Parts</text></i><br>
+    <form action="spareparts_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="Spare Parts List" class="Button"></form><br>
+    <form action="spareparts_release_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="Release" class="Button"></form><br>
+    <form action="spareparts_incoming_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="Incoming" class="Button"></form><br>
+    <form action="" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="Parts List for PM(개발중)" class="Button"></form><br>
+    <form action="" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="Certficate(개발중)" class="Button"></form>
+</tr><br>
+        {% elif user_div == "Engineer"%}
+        <tr>
+<br><i class="xi-package"><text>&nbsp;Spare Parts</text></i><br>
+    <form action="spareparts_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="Spare Parts List" class="Button"></form><br>
+    <form action="spareparts_release_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="Release" class="Button"></form><br>
+    <form action="spareparts_incoming_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="Incoming" class="Button"></form><br>
+    <form action="" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="Parts List for PM(개발중)" class="Button"></form><br>
+    <form action="" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="Certficate(개발중)" class="Button"></form>
+</tr><br>
+          {%endif%}
+        <tr>
+<br><i class="xi-folder-open"><text>&nbsp;Information</text></i><br>
+    <form action="equipmentlist_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="Equipment List" class="Button"></form><br>
+    <form action="" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="Room List(개발중)" class="Button"></form>
+</tr><br>
+        <tr>
+<br><i class="xi-library-bookmark"><text>&nbsp;Report</text></i><br>
+    <form action="" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="Report(개발중)" class="Button"></form><br>
+    <form action="" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="History of Equip.(개발중)" class="Button"></form>
+</tr><br>
+        <tr>
+    {% if user_div == "Admin"%}
+<br><i class="xi-key"><text>&nbsp;Admin</text></i><br>
+    <form action="" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="PM Reference(개발중)" class="Button"></form><br>
+    <form action="user_info" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="User Information" class="Button"></form><br>
+    <form action="approval_info" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="Approval Info." class="Button"></form>
+    {%endif%}
+        </tr>
+        </table>
+            <input type="hidden" value={{loginid}} id="loginidcheck">
+            <input type="hidden" value={{auth}} id="authcheck">
+            <input type="hidden" value={{username}} id="usernamecheck">
+            <input type="hidden" value={{password}} id="passwordcheck">
+</div>
+    <form name="login_division" method="post">
+                     {% csrf_token %}
+    <input type="hidden" name="login_division" id="login_division_up"></form>
+
+<div id="sideline">
+<mainline>
+</mainline>
+</div>
+
+<script>
+    //로그인 정보 받기
+  function Pmapproval(){
+    document.login_division.login_division.value ="pmra";
+    window.name="famPage";
+    var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=320,height=250,location=0,top=400,left=800';
+    window.open("/login_again", "Log-In Check", settings);
+    }
+
+  function Pmcheckapproval(){
+    document.login_division.login_division.value ="pmcheck";
+    window.name="famPage";
+    var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=320,height=250,location=0,top=400,left=800';
+    window.open("/login_again", "Log-In Check", settings);
+    }
+
+  function Workrequest_approval(){
+    document.login_division.login_division.value ="workrequest";
+    window.name="famPage";
+    var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=320,height=250,location=0,top=400,left=800';
+    window.open("/login_again", "Log-In Check", settings);
+    }
+
+  function Workorder_approval(){
+    document.login_division.login_division.value ="workorder";
+    window.name="famPage";
+    var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=320,height=250,location=0,top=400,left=800';
+    window.open("/login_again", "Log-In Check", settings);
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<style>
+equipschtitle{
+        position:fixed;top:6%; left:59%;
+        font-size: 20px;
+        font-family: arial;
+        font-weight:bold;
+}
+#equipschtitle{
+    	font-family: arial;
+        font-size:11px;
+        position:fixed;top:22%; left:39.6%;
+        width:59.93%;
+        background-color:#6F6F6F;
+        color:white;
+        height:20px;
+}
+#equipschdesc{
+        position:fixed; top:24%; left:39.6%;
+        z-index:10;
+        width:59.93%;
+        overflow-y:scroll;
+}
+#equip_table{
+        font-family: arial;
+        font-size:11px;
+        height:20px;
+}
+.c1{width:150px;}
+.c2{width:50px;}
+.c3{width:150px;}
+.c4{width:130px;}
+.c5{width:130px;}
+.c6{width:130px;}
+.c7{width:130px;}
+.c8{width:130px;}
+.c9{width:100px;}
+
+.c1-1{width:150px;}
+.c2-1{width:50px;}
+.c3-1{width:150px;}
+.c4-1{width:150px;}
+.c5-1{width:130px;}
+.c6-1{width:130px;}
+.c7-1{width:130px;}
+.c8-1{width:130px;}
+.c9-1{width:100px;}
+
+tr:nth-child(even){
+    background-color:#EEEEEE;
+}
+
+.button{
+    	font-family: arial;
+        font-size:11px;
+        cursor:pointer;
+}
+</style>
+
+</head>
+<body>
+<equipschtitle>
+Preventive Maintenance Equipment Schedule
+</equipschtitle>
+
+<main>
+<div id="equipschtitle" >
+     <table  style="word-break:break-all">
+        <thead>
+        <tr>
+            <td align="center" class="c1">PM Sheet No.</td>
+            <td align="center" class="c2">Rev No.</td>
+            <td align="center" class="c3">Rev Date</td>
+            <td align="center" class="c4">Plan Month</td>
+            <td align="center" class="c5">Plan Date</td>
+            <td align="center" class="c6">Action Date</td>
+            <td align="center" class="c7">Staff Name</td>
+            <td align="center" class="c8">Status</td>
+            <td align="center" class="c9">Check</td>
+        </tr>
+        </thead>
+     </table>
+</div>
+<div id="equipschdesc">
+ <table style="word-break:break-all" id="equip_table">
+     <tbody>
+                                {% for pmsch in pmsch_info %}
+        <tr>
+            <td align="center" class="c1-1">{{pmsch.pmsheetno}}</td>
+            <td align="center" class="c2-1">{{pmsch.revno}}</td>
+            <td align="center" class="c3-1">{{pmsch.revdate}}</td>
+            <td align="center" class="c4-1">{{pmsch.date}}</td>
+            <td align="center" class="c5-1">{{pmsch.plandate}}</td>
+            <td align="center" class="c6-1">{{pmsch.actiondate_temp}}</td>
+            <td align="center" class="c7-1">{{pmsch.p_name}}</td>
+            <td align="center" class="c8-1">{{pmsch.status}}</td>
+            <td align="center" class="c9-1">
+            <form action="pm_fullscreen" method="post" target="_blank">
+                {% csrf_token %}
+                <input type="hidden" name="pmsheetno" value={{pmsch.pmsheetno}}>
+                <input type="hidden" name="pmcode" value={{pmsch.pmcode}}>
+                <input type="hidden" name="loginid" value={{loginid}}>
+                <input type="hidden" name="controlno" value={{pmsch.controlno}}>
+                <input type="submit" value="Check" class="button">
+            </form>
+            </td>
+        </tr>
+                                  {% endfor %}
+        </tbody>
+ </table>
+</div>
+</main>
+</body>
+</html>

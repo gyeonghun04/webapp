@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% include "css.html"%}
+{% include "top.html"%}
+{% include "sidetap.html"%}
+{% include "pmchecksheetlisttop.html"%}
+{% include "pmchecksheetlisttable.html"%}
+{% include "pmchecksheet_write_equip.html"%}
+
+{% if comp_signal == "Y" %}
+{% include "pmchecksheet_write_comp.html"%}
+{%else%}
+{% include "pmchecksheet_write_table.html"%}
+{%endif%}
+
+</body>
+</html>

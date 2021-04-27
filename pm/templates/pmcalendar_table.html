@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+titletext{
+        position:fixed;top:4.3%; left:50%;
+    	font-family:'Rubik', sans-serif;
+        font-size:20px;
+        font-weight:bold;
+}
+#sideline_calendar{
+background:#EEEEEE;
+position:fixed; right:50.7%;
+height:100%;
+width:5px;
+}
+#tablemenu{
+    	font-family: arial;
+        font-size:11px;
+        position:fixed;top:7.5%; left:49.4%;
+        height:2.5%;
+        width:50.4%;
+        background-color:#6F6F6F;
+        color:white;
+}
+#tabledesc{
+        position:absolute;top:10%; left:49.4%;
+        z-index:1000;
+        width:50.4%;
+        font-family: arial;
+        font-size:11px;
+        overflow:scroll;
+        height:89.8%;
+}
+.m1{width:50px;}
+.m2{width:100px;}
+.m3{width:200px;}
+.m4{width:100px;}
+.m5{width:250px;}
+.m6{width:150px;}
+.m7{width:70px;}
+
+.m1-1{width:50px;}
+.m2-1{width:100px;}
+.m3-1{width:200px;}
+.m4-1{width:100px;}
+.m5-1{width:250px;}
+.m6-1{width:150px;}
+.m7-1{width:70px;}
+
+body{overflow:hidden;}
+.button{
+    	font-family: arial;
+        font-size:11px;
+        cursor:pointer;
+}
+tr:nth-child(even){
+    background-color:#EEEEEE;
+}
+</style>
+<body>
+ <titletext>Preventive Maintenance Check Sheet</titletext>
+<main_table>
+<div id="tablemenu">
+     <table  style="word-break:break-all">
+        <thead>
+        <tr>
+            <td align="center" class="m1">Team</td>
+            <td align="center" class="m2">Control No.</td>
+            <td align="center" class="m3">Equip. Name</td>
+            <td align="center" class="m4">PM Sheet No.</td>
+            <td align="center" class="m5">Room Name(Room No.)</td>
+            <td align="center" class="m6">Status</td>
+            <td align="center" class="m7">View</td>
+        </tr>
+        </thead>
+     </table>
+</div>
+<div id="tabledesc">
+ <table style="word-break:break-all">
+     <tbody>
+                           {% for equiplist in pmchecksheet_info %}
+        <tr>
+            <td align="center" class="m1-1">{{equiplist.team}}</td> <!--models.py에서 값받아오기-->
+            <td align="center" class="m2-1">{{equiplist.controlno}}</td>
+            <td align="center" class="m3-1">{{equiplist.name}}</td>
+            <td align="center" class="m4-1">{{equiplist.pmsheetno}}</td>
+            <td align="center" class="m5-1">{{equiplist.roomname}} ({{equiplist.roomno}})</td>
+            <td align="center" class="m6-1">{{equiplist.status}}</td>
+            <td align="center" class="m7-1">
+                <form action="pmcalendar_write" method="post" target="_blank">
+                {% csrf_token %}
+                <input type="hidden" name="loginid" value={{loginid}}>
+                <input type="hidden" name="calendar_date" value={{calendar_date}}>
+                <input type="hidden" name="pmcode" value={{equiplist.pmcode}}>
+                <input type="hidden" name="pmsheetno" value={{equiplist.pmsheetno}}>
+                <input type="hidden" name="controlno" value={{equiplist.controlno}}>
+                <input type="submit" class="button" value="Write">
+                </form>
+            </td>
+        </tr>
+                                        {% endfor %}
+        </tbody>
+ </table>
+</div>
+</main_table>
+
+<div id="sideline_calendar">
+<mainline>
+</mainline>
+</div>
+
+</body>
+</html>

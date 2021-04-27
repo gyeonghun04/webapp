@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+    <title>Title</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap');
+
+header{
+        height:30px;
+        background:#6F6F6F;
+        justify-content:space-between;
+        align-items:center;
+        position:fixed;
+        top:0;
+        left:0;
+        right:0;
+        z-index:10;
+        }
+header2{
+        height:0.3px;
+        padding-top:3px;
+        background:#EEEEEE;
+        display:flex;
+        justify-content:space-between;
+        position:fixed;
+        top:30px;
+        left:0;
+        right:0;
+        z-index:10;
+}
+toptext{
+        font-family: 'Rubik', sans-serif;
+        font-size:18px;
+        vertical-align:top;
+        font-weight:bold;
+        padding-left:1%;
+        color:white;
+}
+l{
+        margin-left:1%;
+        color:white;
+}
+m{
+        margin-left:1%;
+        color:white;
+}
+k{
+        position:fixed; top:0%; left:94.5%;
+        color:white;
+}
+.Button {
+        position:fixed; left:94%;
+        font-family:'Rubik', sans-serif;
+        font-size:18px;
+        background-color: rgba(255, 255, 255, 0.0);
+        cursor:pointer;
+        border:0px;
+        color:white;
+        font-weight:bold;
+}
+pmcontrolform{
+        position:fixed; top:35px; left:5px;
+        font-family: arial;
+        font-size:18px;
+        font-weight:bold;
+}
+#table_location{
+        position:fixed; top:60px; left:5px;
+}
+msg{
+        position:fixed; top:120px; left:5px;
+    	font-family: arial;
+        font-size:12px;
+        cursor:pointer;
+        color:blue;
+}
+#pmcontrolformtitle{
+        font-family: arial;
+        font-size:11px;
+        background-color:#6F6F6F;
+        color:white;
+        width:1093px;}
+
+.t1{width:150px;
+height:20px;}
+.t2{width:150px;
+height:20px;}
+.t3{width:300px;
+height:20px;}
+.t4{width:300px;
+height:20px;}
+.t5{width:150px;
+height:20px;}
+
+.t1-1{width:150px;
+height:21px;}
+.t2-1{width:50px;
+height:21px;}
+.t2-2{width:100px;
+height:21px;}
+.t3-1{width:300px;}
+.t4-1{width:300px;}
+.t5-1{width:150px;}
+
+#pmcontrolformtable{
+        font-size:11px;
+    	font-family: arial;
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+}
+</style>
+</head>
+
+<body>
+<header>
+<toptext>Welcome,&nbsp;{{loginid}}</toptext>
+
+<a><k></k></a>
+<input type="button"value="Close" class="Button" onclick="Close();">
+
+</header>
+<header2>
+</header2>
+<pmcontrolform>PM Control Form</pmcontrolform>
+<div id="table_location">
+   <table id="pmcontrolformtitle">
+        <tr>
+            <td align="center" class="t1">Division</td>
+            <td align="center" class="t2">Frequency</td>
+            <td align="center" class="t3">Maintenance Item</td>
+            <td align="center" class="t4">Check Standard</td>
+            <td align="center" class="t5">Change Information</td>
+        </tr>
+   </table>
+   <table id="pmcontrolformtable" border="1">
+    <tr>
+            <td align="center" class="t1-1">{{division}}</td>
+            <td align="center" class="t2-1">{{freq_no}}</td>
+            <td align="center" class="t2-2">{{freq_my}}</td>
+            <td align="left" class="t3-1">{{item}}</td>
+            <td align="left" class="t4-1">{{check}}</td>
+            <td align="center" class="t5-1">{{change}}</td>
+
+    </tr>
+</table>
+</div>
+<msg>PM Control Form registration is complete.</msg>
+<script>
+
+    function init(){
+        opener.document.location.reload();
+        setTimeout(function(){
+                if(opener){
+                self.close();
+                }
+            },5000);}
+
+    function Close(){
+    self.close();
+    }
+
+</script>
+</body>
+</html>

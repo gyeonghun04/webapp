@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<style>
+controlformtitle{
+        position:fixed;top:5.5%; left:72%;
+        font-size: 20px;
+        font-family: arial;
+        font-weight:bold;
+}
+#pmchecksheettitle{
+    	font-family: arial;
+        font-size:11px;
+        position:fixed;top:22.4%; left:63.4%;
+        width:36.3%;
+        background-color:#6F6F6F;
+        color:white;
+        height:20px;
+}
+#pmchecksheetdesc{
+        position:fixed; top:24.5%; left:63.4%;
+        width:46%;
+        width:36.3%;
+        overflow-y:scroll;
+        font-family: arial;
+        font-size:11px;
+}
+#pmchecksheettable{
+        font-size:11px;
+    	font-family: arial;
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+}
+.c1{padding-left:150px;}
+.c2{padding-left:260px;}
+
+.c1-1{width:400px; height:15px;}
+.c2-1{width:273px; height:15px;}
+
+</style>
+
+</head>
+<body>
+<controlformtitle>
+Preventive Maintenance Check Sheet
+</controlformtitle>
+
+<main>
+<div id="pmchecksheettitle" >
+     <table  style="word-break:break-all">
+        <thead>
+        <tr>
+            <td align="center" class="c1">Maintenance Item</td>
+            <td align="center" class="c2">Check Standard</td>
+        </tr>
+        </thead>
+     </table>
+</div>
+<div id="pmchecksheetdesc">
+ <table style="word-break:break-all" border="1" id="pmchecksheettable">
+     <tbody>
+                      {% for pmtabledb in pmtable %}
+        <tr>
+            <td align="center" class="c1-1">{{pmtabledb.item}}</td> <!--models.py에서 값받아오기-->
+            <td align="center" class="c2-1">{{pmtabledb.check}}</td>
+            </td>
+        </tr>
+                             {% endfor %}
+        </tbody>
+    </table>
+</div>
+</main>
+</body>
+</html>

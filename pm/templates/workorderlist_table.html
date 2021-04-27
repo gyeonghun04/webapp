@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+
+tr:nth-child(even){
+    background-color:#EEEEEE;
+}
+#tablemenu{
+    	font-family: arial;
+        font-size:11px;
+        position:fixed;top:7.5%; left:9%;
+        height:2.5%;
+        background-color:#6F6F6F;
+        color:white;
+
+}
+#tablemenu_top{
+        border:1px solid white;
+        border-collapse:collapse;
+}
+#tabledesc{
+        position:absolute;top:10.6%; left:9%;
+        z-index:10;
+        width:90.7%;
+        font-family: arial;
+        font-size:11px;
+        overflow:scroll;
+        height:89.8%;
+}
+.m1{width:87px;
+background-color:#6F6F6F;}
+.m2{width:45px;
+background-color:#6F6F6F;}
+.m3{width:72px;
+background-color:#6F6F6F;}
+.m4{width:122px;
+background-color:#6F6F6F;}
+.m5{width:70px;
+background-color:#6F6F6F;}
+.m6{width:222px;
+background-color:#6F6F6F;}
+.m7{width:160px;
+background-color:#6F6F6F;}
+.m8{width:80px;
+background-color:#6F6F6F;}
+.m9{width:82px;
+background-color:#6F6F6F;}
+.m10{width:82px;
+background-color:#6F6F6F;}
+.m11{width:220px;
+background-color:#6F6F6F;}
+.m12{width:182px;
+background-color:#6F6F6F;}
+.m13{width:92px;
+background-color:#6F6F6F;}
+.m14{width:82px;
+background-color:#6F6F6F;}
+.m15{width:100px;
+background-color:#6F6F6F;}
+.m16{width:80px;
+background-color:#6F6F6F;}
+
+.m1-1{width:88px;
+height:20px;}
+.m2-1{width:45px;}
+.m3-1{width:70px;}
+.m4-1{width:120px;}
+.m5-1{width:70px;}
+.m6-1{width:220px;}
+.m7-1{width:160px;}
+.m8-1{width:80px;}
+.m9-1{width:80px;}
+.m10-1{width:80px;}
+.m11-1{width:220px;}
+.m12-1{width:180px;}
+.m13-1{width:90px;}
+.m14-1{width:80px;}
+.m15-1{width:80px;}
+.m16-1{width:80px;}
+
+body{overflow:hidden;}
+
+#sideline2{
+        background:#EEEEEE;
+        position:fixed; left:99.7%;
+        height:100%;
+        width:5px;
+}
+.button_view{
+    	font-family: arial;
+        font-size:11px;
+        cursor:pointer;
+}
+</style>
+<body>
+<main>
+<div id="tablemenu">
+     <table  style="word-break:break-all" border="1" id="tablemenu_top">
+        <thead>
+        <tr>
+            <td align="center" class="c0" colspan="5">Informantion</td>
+            <td align="center" class="c1" colspan="5">Work Request</td>
+            <td align="center" class="c2" colspan="6">Work Order</td>
+        </tr>
+        <tr>
+            <td align="center" class="m1">Work Order No.</td>
+            <td align="center" class="m2">Team</td>
+            <td align="center" class="m3">Control No.</td>
+            <td align="center" class="m4">Equip. Name</td>
+            <td align="center" class="m16">Status</td>
+            <td align="center" class="m5">Requestor</td>
+            <td align="center" class="m6">Description</td>
+            <td align="center" class="m7">BreakDown Cause</td>
+            <td align="center" class="m8">Request Date</td>
+            <td align="center" class="m9">Click</td>
+            <td align="center" class="m10">Staff Name</td>
+            <td align="center" class="m11">Work Description</td>
+            <td align="center" class="m12">Test Result</td>
+            <td align="center" class="m13">Completed Date</td>
+            <td align="center" class="m14">Click</td>
+        </tr>
+        </thead>
+     </table>
+</div>
+<div id="tabledesc">
+ <table style="word-break:break-all">
+     <tbody>
+                {% for workorder in workorderlist %}
+        <tr>
+            <td align="center" class="m1-1">{{workorder.workorderno}}</td>
+            <td align="center" class="m2-1">{{workorder.team}}</td>
+            <td align="center" class="m3-1">{{workorder.controlno}}</td>
+            <td align="center" class="m4-1">{{workorder.equipname}}</td>
+            <td align="center" class="m16-1">{{workorder.status}}</td>
+            <td align="center" class="m5-1">{{workorder.requestor}}</td>
+            <td align="center" class="m6-1">{{workorder.description}}</td>
+            <td align="center" class="m7-1">{{workorder.description_info}}</td>
+            <td align="center" class="m8-1">{{workorder.date}}</td>
+            <td align="center" class="m9-1">
+                <input type="button" value="Click" class="button_view" onclick="Workrequest_view(this);">
+            </td>
+            <td align="center" class="m10-1">{{workorder.action_name}}</td>
+            <td align="center" class="m11-1">{{workorder.work_desc}}</td>
+            <td align="center" class="m12-1">{{workorder.test_result}}</td>
+            <td align="center" class="m13-1">{{workorder.action_date}}</td>
+            <td align="center" class="m14-1">
+                <input type="button" value="Click" class="button_view" onclick="Workorder_view(this);">
+            </td>
+            <input type="hidden" value={{workorder.workorderno}} name="workorderno_up">
+        </tr>
+
+                {% endfor %}
+        <form method="post" name="request">
+             {% csrf_token %}
+        <input type="hidden" name="workorderno" id="workorderno_up">
+        </form>
+
+        </tbody>
+ </table>
+</div>
+<div id="sideline2">
+<mainline>
+</mainline>
+</div>
+
+
+</main>
+<script>
+         function Workrequest_view(obj){
+            var i = obj.parentNode.parentNode.rowIndex;
+            var workorderno = document.getElementsByName('workorderno_up')[i].value;
+            document.request.workorderno.value = workorderno;
+                        // 팝업창열기
+            var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=200, height=80, left=50, top=400';
+            window.open("/workorderlist_request_main", "Work Request Form", settings);
+            }
+
+         function Workorder_view(obj){
+            var i = obj.parentNode.parentNode.rowIndex;
+            var workorderno = document.getElementsByName('workorderno_up')[i].value;
+            document.request.workorderno.value = workorderno;
+                        // 팝업창열기
+            var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=200, height=80, left=50, top=400';
+            window.open("/workorderlist_order_main", "Work Request Form", settings);
+            }
+</script>
+
+</body>
+</html>

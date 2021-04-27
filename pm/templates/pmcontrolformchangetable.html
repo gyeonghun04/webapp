@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<script language="javascript">
+
+function Itemcodedelete(obj){
+        var reason = window.prompt("Please enter the change information.","");
+        if (reason != null){
+        if (reason == ""){
+        alert("If you do not enter the change information, Unable to delete.");}
+        else{
+            var i = obj.parentNode.parentNode.rowIndex;
+            var itemcode_delete = document.getElementsByName('itemcode_delete')[i].value;
+            var amd_change = document.getElementsByName('amd_change')[i].value;
+            // html로 값보내기
+            document.itemdelete.itemcode_delete.value = itemcode_delete;
+            document.itemdelete.amd_change.value = amd_change;
+            document.itemdelete.delete_reason.value = reason;
+            // 서버로 전송
+            document.itemdelete.action="pmcontrolform_write_delete";
+            document.itemdelete.submit();
+            }
+        }}
+
+</script>
+<style>
+controlformtitle{
+        position:fixed;top:5.5%; left:58%;
+        font-size: 20px;
+        font-family: arial;
+        font-weight:bold;
+
+}
+controlformtext{
+        position:fixed;top:7.8%; left:53%;
+        font-size: 11px;
+}
+#pmcontrolformtitle{
+    	font-family: arial;
+        font-size:11px;
+        position:fixed;top:22%; left:39.6%;
+        width:59.98%;
+        background-color:#6F6F6F;
+        color:white;
+        height:20px;
+}
+#pmcontrolformdesc{
+        position:fixed; top:24%; left:39.6%;
+        width:59.98%;
+        height:61.1%;
+        overflow-y:scroll;
+}
+
+#pmtable{
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+        font-size:11px;
+        font-family: arial;
+}
+
+
+
+.c1{width:70px;}
+.c2{width:60px;}
+.c3{width:300px;}
+.c4{width:280px;}
+.c5{width:150px;}
+.c6{width:60px;}
+.c7{width:100px;}
+.c8{width:74px;}
+
+.c1-1{width:100px; height:15px;}
+.c2-1{width:80px; height:15px;}
+.c3-1{width:400px; height:15px;}
+.c4-1{width:400px; height:15px;}
+.c5-1{width:200px; height:15px;}
+.c6-1{width:100px; height:15px;}
+.c7-1{width:100px; height:15px;}
+.c8-1{width:100px; height:15px;}
+
+.check{
+width:260px;
+font-size:11px;
+padding:0px;
+}
+
+.information{
+width:120px;
+font-size:11px;
+margin:0px;
+}
+
+#pmsheet{
+    	font-family: arial;
+        font-size:11px;
+        height:20px;
+}
+
+#pmsheethead{
+        position:fixed; top:85.1%; left:39.6%;
+        width:59.98%;
+    	font-family: arial;
+        font-size:11px;
+        background-color:#6F6F6F;
+        color:white;
+        height:20px;
+}
+#pmsheetbody{
+        position:fixed; top:87.2%; left:39.6%;
+        height:61px;
+        width:59.98%;
+        overflow-y:scroll;
+}
+#pmsheettable{
+        font-size:11px;
+    	font-family: arial;
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+}
+
+.s1{width:150px;}
+.s2{width:400px;}
+.s3{width:360px;}
+.s4{width:240px;}
+.s1-1{width:150px;}
+.s2-1{width:400px;}
+.s3-1{width:360px;}
+.s4-1{width:240px;}
+
+.calendartext{
+height:14px;
+font-size:11px;
+font-family: arial;
+}
+
+#pmcontrolformchange{
+        position:fixed; top:93.5%; left:39.6%;
+        width:59.98%;
+    	font-family: arial;
+        font-size:11px;
+        background-color:#6F6F6F;
+        color:white;
+        height:20px;
+}
+
+#pmcontrolformchangeinput{
+        position:fixed; top:96.1%; left:39.6%;
+        width:59.98%;
+    	font-family: arial;
+        font-size:11px;
+        height:40px;
+}
+.t1{width:100px;}
+.t3{width:340px;}
+.t4{width:250px;}
+.t5{width:170px;}
+.t6{width:120px;}
+.t7{width:25px;}
+.t8{width:30px; padding-left:65px;}
+
+.t1-1{width:80px; font-size:11px; font-family:arial;}
+.t3-1{width:300px; font-size:11px; font-family:arial;}
+.t4-1{width:250px; font-size:11px; font-family:arial;}
+.t5-1{width:180px; font-size:11px; font-family:arial;}
+.t6-1{width:100px; font-size:11px; font-family:arial;}
+
+.division{
+    width:100px;
+    font-family: arial;
+    font-size:12px;
+}
+.button_new{
+    	font-family: arial;
+        font-size:11px;
+        cursor:pointer;
+        margin-left:10px;
+}
+.button_submit{
+    	font-family: arial;
+        font-size:11px;
+        cursor:pointer;
+        margin-left:50px;
+}
+.button_return{
+    	font-family: arial;
+        font-size:11px;
+        cursor:pointer;
+        margin-left:50px;
+        color:blue;
+}
+approve_text{
+        position: fixed; top:96.5%; left:93%;
+    	font-family: arial;
+        font-size:12px;
+        font-weight: bold;
+        color:white;
+        margin-left:50px;
+        animation-iteration-count:1000;
+	    animation-duration:2s;
+	    animation-name: textchangecolor;
+        z-index:100;
+}
+@keyframes textchangecolor{
+    from{
+       	  color:white;    }
+    to{
+          color:blue;    }
+}
+.freq_no{
+    width:40px;
+    font-family: arial;
+    font-size:12px;
+}
+.freq_my{
+    width:70px;
+    font-family: arial;
+    font-size:12px;
+}
+</style>
+
+</head>
+<body>
+<controlformtitle>
+Preventive Maintenance Program Control Form
+</controlformtitle>
+<controlformtext>
+(To be used initiate additions modifications, or deletions of tasks or equipment to/from the Preventive Maintenance System)
+</controlformtext>
+
+<main>
+<div id="pmcontrolformtitle" >
+     <table  style="word-break:break-all">
+        <thead>
+        <tr>
+            <td align="center" class="c1">Frequency</td>
+            <td align="center" class="c2">A / D</td>
+            <td align="center" class="c3">Maintenance Item</td>
+            <td align="center" class="c4">Check Standard</td>
+            <td align="center" class="c5">Change Information</td>
+            <td align="center" class="c6">Start Date</td>
+            <td align="center" class="c7">Division</td>
+            <td align="center" class="c8">Delete</td>
+        </tr>
+        </thead>
+     </table>
+</div>
+<div id="pmcontrolformdesc">
+ <table style="word-break:break-all" border="1" id="pmtable">
+     <tbody>
+                      {% for controlformdb in controlformdb %}
+        <tr>
+            <td align="center" class="c1-1">{{controlformdb.freq}}</td> <!--models.py에서 값받아오기-->
+            <td align="center" class="c2-1">{{controlformdb.amd}}</td>
+            <td align="left" class="c3-1">{{controlformdb.item}}</td>
+            <td align="left" class="c4-1">{{controlformdb.check}}</td>
+            <td align="center" class="c5-1">{{controlformdb.change}}</td>
+            <td align="center" class="c6-1">{{controlformdb.startdate}}</td>
+            <td align="center" class="c7-1">{{controlformdb.division}}</td>
+            <td align="center" class="c8-1">
+            <input type="button" value="Delete" class="button" onclick="Itemcodedelete(this);">
+                <input type="hidden" value={{loginid}} name="loginid">
+                <input type="hidden" value={{controlno}} name="controlno">
+                <input type="hidden" value={{controlformdb.amd}} name="amd_change">
+                <input type="hidden" value={{controlformdb.itemcode}} name="itemcode_delete">
+            </td>
+             </tr>
+                                {% endfor %}
+        </tbody>
+
+ </table>
+
+         <form action="" method="post" name="itemdelete">
+             {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="hidden" value={{controlno}} name="controlno">
+        <input type="hidden" name="delete_reason">
+        <input type="hidden" name="itemcode_delete">
+        <input type="hidden" name="amd_change">
+        </form>
+
+</div>
+
+ <div id="pmsheet">
+   <table id="pmsheethead">
+        <tr>
+            <td align="center" class="s1">Frequency</td>
+            <td align="center" class="s2">PM Sheet No.</td>
+            <td align="center" class="s3">Start Date (Y/M)</td>
+            <td align="center" class="s4">Fixed Date</td>
+        </tr>
+   </table>
+ </div>
+ <div id="pmsheetbody">
+   <table id="pmsheettable"  border="1">
+               {% for pmsheetdb in pmsheet_temp %}
+     <tr>
+            <td align="center" class="s1-1">{{pmsheetdb.freq_temp}}</td>
+            <td align="center" class="s2-1">{{pmsheetdb.pmsheetno_temp}}</td>
+            <td align="center" class="s3-1">{{pmsheetdb.startdate_temp}}</td>
+            <td align="center" class="s4-1">
+            <form action="pmsheet_startdate" method="post">
+               {% csrf_token %}
+            <input type="hidden" value={{loginid}} name="loginid">
+            <input type="hidden" value={{controlno}} name="controlno">
+            <input type="hidden" value={{pmsheetdb.pmsheetno_temp}} name="pmsheetno_temp">
+            <input type="hidden" value={{pmsheetdb.startdate}} name="startdate">
+            <input type="month"  class="calendartext" name="calendartext">
+            <input type="hidden" value={{selecttext}} name="selecttext">
+            <input type="hidden" value={{searchtext}} name="searchtext">
+            <input type="submit" class="button_new" value="Submit" class="button">
+            </form>
+            </td>
+     </tr>
+                   {% endfor %}
+   </table>
+ </div>
+ <div>
+ <table>
+   <thead id="pmcontrolformchange">
+        <tr>
+            <td align="center" class="t6">Division</td>
+            <td align="center" class="t1">Frequency</td>
+            <td align="center" class="t3">Maintenance Item</td>
+            <td align="center" class="t4">Check Standard</td>
+            <td align="center" class="t5">Change Information</td>
+            <td align="center" class="t7">New</td>
+            <td align="center" class="t8">Submit</td>
+        </tr>
+   </thead>
+   <tbody id="pmcontrolformchangeinput">
+     <tr>
+         <form action="pmcontrolform_write_new" method="post" >
+                {% csrf_token %}
+            <td align="center">
+            <select class="division" name="division">
+                {% for pm_reference in pmreference %}
+            <option value={{pm_reference.description}}>{{pm_reference.description}}</option>
+                {% endfor %}
+            </select></td>
+            <td align="center">
+            <select class="freq_no" name="freq_no">&nbsp;
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option></select></td>
+            <td align="center">
+            <select class="freq_my" name="freq_my">&nbsp;
+            <option value="Month">Month</option>
+            <option value="Year">Year</option></select></td>
+            <td align="left">
+                     <input type="text" name="item"  class="t3-1" required></td>
+            <td align="left">
+                     <input type="text" name="check"  class="t4-1" required></td>
+            <td align="center">
+                     <input type="text" name="change"  class="t5-1" required></td>
+            <td>
+            <input type="hidden" value={{loginid}} name="loginid">
+            <input type="hidden" value={{controlno}} name="controlno">
+            <input type="submit" class="button_new" value="New" class="button"></td>
+         </form>
+     {%if signal == "Complete" %}
+     <td><form action="pmcontrolform_submit" method="post" >
+                {% csrf_token %}
+     <input type="hidden" value={{loginid}} name="loginid">
+     <input type="hidden" value={{controlno}} name="controlno">
+     <input type="submit" class="button_submit" value="Submit" class="button">
+     </form></td>
+     {%elif signal == "New" %}
+      <td><form action="pmcontrolform_submit" method="post" >
+                {% csrf_token %}
+     <input type="hidden" value={{loginid}} name="loginid">
+     <input type="hidden" value={{controlno}} name="controlno">
+     <input type="submit" class="button_submit" value="Submit" class="button">
+     </form></td>
+      {%elif signal == "Reject" %}
+      <td><form action="pmcontrolform_submit" method="post" >
+                {% csrf_token %}
+     <input type="hidden" value={{loginid}} name="loginid">
+     <input type="hidden" value={{controlno}} name="controlno">
+     <input type="submit" class="button_submit" value="Submit" class="button">
+     </form></td>
+     {%elif signal == "Review" %}
+      <td><form action="pmcontrolform_submit" method="post" >
+                {% csrf_token %}
+     <input type="hidden" value={{loginid}} name="loginid">
+     <input type="hidden" value={{controlno}} name="controlno">
+     <input type="submit" class="button_submit" value="Submit" class="button">
+     </form></td>
+     {%else%}
+      <td><form action="pmcontrolform_return" method="post" >
+                {% csrf_token %}
+     <input type="hidden" value={{loginid}} name="loginid">
+     <input type="hidden" value={{controlno}} name="controlno">
+          <input type="submit" class="button_return" value="Return"></form></td>
+     {%endif%}
+     </tr>
+   </tbody>
+</table>
+
+        <form method="post" name="pmcontrolform_division">
+             {% csrf_token %}
+        <input type="hidden" value={{loginid}} id="loginid">
+        <input type="hidden" value={{controlno}} name="controlno">
+        <input type="hidden" name="division">
+        </form>
+ </div>
+</main>
+
+</body>
+</html>

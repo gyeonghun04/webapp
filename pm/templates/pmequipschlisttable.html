@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+
+#tablemenu{
+    	font-family: arial;
+        font-size:11px;
+        position:fixed;top:7.5%; left:9%;
+        height:2.5%;
+        width:30%;
+        background-color:#6F6F6F;
+        color:white;
+}
+#tabledesc{
+        position:absolute;top:10%; left:9%;
+        z-index:10;
+        width:30%;
+        font-family: arial;
+        font-size:11px;
+        overflow:scroll;
+        height:89.8%;
+}
+.m1{width:50px;}
+.m2{width:100px;}
+.m3{width:150px;}
+.m4{width:190px;}
+.m5{width:50px;}
+
+.m1-1{width:50px;}
+.m2-1{width:100px;}
+.m3-1{width:150px;}
+.m4-1{width:190px;}
+.m5-1{width:50px;}
+
+body{overflow:hidden;}
+
+#sideline2{
+        background:#EEEEEE;
+        position:fixed; right:60.8%;
+        height:100%;
+        width:5px;
+}
+.button{
+    	font-family: arial;
+        font-size:11px;
+        cursor:pointer;
+}
+tr:nth-child(even){
+    background-color:#EEEEEE;
+}
+</style>
+<body>
+<main>
+<div id="tablemenu">
+     <table  style="word-break:break-all">
+        <thead>
+        <tr>
+            <td align="center" class="m1">Team</td>
+            <td align="center" class="m2">Control No.</td>
+            <td align="center" class="m3">Equip. Name</td>
+            <td align="center" class="m4">Room Name(Room No.)</td>
+            <td align="center" class="m5">View</td>
+        </tr>
+        </thead>
+     </table>
+</div>
+<div id="tabledesc">
+ <table style="word-break:break-all">
+     <tbody>
+                           {% for equiplist in equipmentlist %}
+        <tr>
+            <td align="center" class="m1-1">{{equiplist.team}}</td> <!--models.py에서 값받아오기-->
+            <td align="center" class="m2-1">{{equiplist.controlno}}</td>
+            <td align="center" class="m3-1">{{equiplist.name}}</td>
+            <td align="center" class="m4-1">{{equiplist.roomname}} ({{equiplist.roomno}})</td>
+            <td align="center" class="m5-1">
+                <form action="pmequipsch_view" method="post" >
+                {% csrf_token %}
+                <input type="hidden" name="loginid" value={{loginid}}>
+                <input type="hidden" name="controlno" value={{equiplist.controlno}}>
+                <input type="submit" class="button" value="View">
+                </form>
+            </td>
+        </tr>
+                             {% endfor %}
+        </tbody>
+ </table>
+</div>
+<div id="sideline2">
+<mainline>
+</mainline>
+</div>
+</main>
+</body>
+</html>

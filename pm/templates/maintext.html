@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<style>
+
+#pm_radius{
+        box-shadow: 3px 4px 0px 0px #A9A9A9;
+        position:fixed;top:75px; left:180px;
+        border:2px solid #EEEEEE;
+        border-radius:5%;
+        width:500px;
+        height:400px;
+    }
+
+#month_table{
+        position:fixed;top:110px; left:210px;
+        font-size:14px;
+        font-color:black;
+        font-family:arial;
+}
+#today_table{
+        position:fixed;top:280px; left:210px;
+        font-size:14px;
+        font-color:black;
+        font-family:arial;
+}
+#month_percent{
+        position:fixed;top:210px; left:590px;
+        font-size:32px;
+        font-color:black;
+        font-family:arial;
+        font-weight:bold;
+        text-decoration: underline;}
+.t1-2{width:150px;
+height:20px;
+font-weight:bold;
+background-color:#EEEEEE;}
+.t2-2{width:200px;
+height:20px;
+font-weight:bold;
+background-color:#EEEEEE;}
+.t3-2{width:100px;
+height:20px;
+font-weight:bold;
+background-color:#EEEEEE;}
+.t1{width:150px;
+height:20px;}
+.t2{width:200px;
+height:20px;}
+.t1-1{width:150px;
+height:20px;
+font-weight:bold;
+text-decoration: underline;}
+.t2-1{width:200px;
+height:20px;
+font-weight:bold;
+text-decoration: underline;}
+
+
+#pm_app_radius{
+        box-shadow: 3px 4px 0px 0px #A9A9A9;
+        position:fixed;top:75px; left:700px;
+        border:2px solid #EEEEEE;
+        border-radius:5%;
+        width:500px;
+        height:400px;
+    }
+#pmra_table{
+        position:fixed;top:110px; left:730px;
+        font-size:14px;
+        font-color:black;
+        font-family:arial;
+     }
+#pmcontrol_table{
+        position:fixed;top:260px; left:730px;
+        font-size:14px;
+        font-color:black;
+        font-family:arial;
+     }
+#bm_radius{
+        box-shadow: 3px 4px 0px 0px #A9A9A9;
+        position:fixed;top:75px; left:1220px;
+        border:2px solid #EEEEEE;
+        border-radius:5%;
+        width:680px;
+        height:400px;
+    }
+.w1-2{width:100px;
+height:20px;
+font-weight:bold;
+background-color:#EEEEEE;}
+.w2-2{width:150px;
+height:20px;
+font-weight:bold;
+background-color:#EEEEEE;}
+.w1{width:100px;
+height:20px;}
+.w2{width:150px;
+height:20px;}
+.w1-1{width:100px;
+height:20px;
+font-weight:bold;
+text-decoration: underline;
+}
+.w2-1{width:150px;
+height:20px;
+font-weight:bold;
+text-decoration: underline;
+}
+.request{
+font-weight:bold;
+text-decoration: underline;
+}
+#bm_today_table{
+        position:fixed;top:110px; left:1250px;
+        font-size:14px;
+        font-color:black;
+        font-family:arial;
+}
+#bm_finish_table{
+        position:fixed;top:110px; left:1550px;
+        font-size:14px;
+        font-color:black;
+        font-family:arial;
+}
+#workrequst_table{
+        position:fixed;top:260px; left:1250px;
+        font-size:14px;
+        font-color:black;
+        font-family:arial;
+}
+#workorder_table{
+        position:fixed;top:277px; left:1570px;
+        font-size:14px;
+        font-color:black;
+        font-family:arial;
+}
+#not_comp_text{
+        position:fixed;top:420px; left:1250px;
+        font-size:16px;
+        font-color:black;
+        font-family:arial;
+        font-weight:bold;
+        color:darkblue;
+        text-decoration: underline;
+}
+
+#pmchart_radius{
+        box-shadow: 3px 4px 0px 0px #A9A9A9;
+        position:fixed;top:500px; left:180px;
+        border:2px solid #EEEEEE;
+        border-radius:5%;
+        width:600px;
+        height:450px;
+    }
+#bmchart_radius{
+        box-shadow: 3px 4px 0px 0px #A9A9A9;
+        position:fixed;top:500px; left:800px;
+        border:2px solid #EEEEEE;
+        border-radius:5%;
+        width:600px;
+        height:450px;
+    }
+#mypage_radius{
+        box-shadow: 3px 4px 0px 0px #A9A9A9;
+        position:fixed;top:500px; left:1420px;
+        border:2px solid #3DB7CC;
+        border-radius:5%;
+        width:480px;
+        height:180px;
+    }
+#my_auth{
+        position:fixed;top:535px; left:1450px;
+        }
+#my_approve{
+        position:fixed;top:535px; left:1570px;
+}
+
+#date{
+    position:fixed;top:700px; left:1700px;
+    box-shadow: 3px 4px 0px 0px #A9A9A9;
+    background-color:lightgrey;
+    width:200px;
+    height:250px;
+    border-radius:10%;
+}
+#date_title{
+    position:fixed;top:710px; left:1710px;
+    z-index:1000;
+    width:180px;
+}
+#main_month{
+    font-family:arial;
+    font-size:40px;
+    font-weight:bold;
+    color:black;
+}
+main_day{
+    position:fixed;top:780px; left:1730px;
+    font-family:arial;
+    font-size:130px;
+    font-weight:bold;
+    color:black;
+}
+table_title{
+        font-family:'Rubik', sans-serif;
+        font-size:15px;
+        font-color:black;
+        text-decoration: underline;
+}
+table_text{
+        font-family:'Rubik', sans-serif;
+        font-size:14px;
+        font-color:black;}
+text_main{
+        font-family:'Rubik', sans-serif;
+        font-size:16px;
+        font-color:black;
+}
+.m1-2{width:150px;
+height:16px;
+font-weight:bold;
+background-color:#EEEEEE;
+font-size:12px;}
+.m1{width:100px;
+height:16px;
+font-size:12px;}
+.m2-2{width:150px;
+height:16px;
+font-weight:bold;
+background-color:#EEEEEE;
+font-size:12px;}
+.m2{width:100px;
+height:16px;
+font-size:12px;}
+
+a{
+        margin-top:10px;
+        align-text:left;
+        color:black;
+}
+.my_button {
+        font-family:arial;
+        font-size:12px;
+        background-color: rgba(255, 255, 255, 0.0);
+        cursor:pointer;
+        border:0px;
+        padding-left:4%;
+        outline:0;
+}
+</style>
+
+</head>
+<body>
+
+<main>
+<div id="pm_radius" >
+
+&nbsp;&nbsp;<a class="xi-cog"><text_main>&nbsp;PM Check Sheet</text_main></a>
+</div>
+
+<div id="month_table">
+    <table_title>This Month's Preventive Maintenance</table_title>
+<table>
+<tr>
+    <td align="center" class="t1-2">PM Status</td>
+    <td align="center" class="t2-2">Number of PM</td>
+     <td align="center" class="t3-2">Percent</td>
+<tr>
+    <td align="center" class="t1">Completed</td>
+    <td align="center" class="t2">{{completed_len}}</td>
+</tr>
+<tr>
+    <td align="center" class="t1">Reviewed</td>
+    <td align="center" class="t2">{{reviewed_len}}</td>
+</tr>
+<tr>
+    <td align="center" class="t1">Performed</td>
+    <td align="center" class="t2">{{performed_len}}</td>
+</tr>
+<tr>
+    <td align="center" class="t1">Not Perform</td>
+    <td align="center" class="t2">{{fixed_date_len}}</td>
+</tr>
+<tr>
+    <td align="center" class="t1-1">Total</td>
+    <td align="center" class="t2-1">{{total_len}}</td>
+</tr>
+
+</table>
+</div>
+
+<div id="month_percent">
+    <input type="hidden" value="{{total_len}}" name="total_len">
+    <input type="hidden" value="{{completed_len}}" name="completed_len">
+</div>
+
+<div id="today_table">
+    <table_title>Today's Preventive Maintenance</table_title>
+<table>
+<tr>
+    <td align="center" class="t1-2">Team</td>
+    <td align="center" class="t2-2">Number of PM</td>
+</tr>
+    {% for team_info in today_info %}
+<tr>
+    <td align="center" class="t1">{{team_info.team}}</td>
+    <td align="center" class="t2">{{team_info.team__count}}</td>
+</tr>
+    {%endfor%}
+</table>
+</div>
+
+<div id="pm_app_radius" >
+    &nbsp;&nbsp;<a class="xi-library-books"><text_main>&nbsp;PM Document</text_main></a>
+</div>
+
+<div id="pmra_table">
+    <table_title>Assessment for Period of Preventive Maintenance</table_title>
+<table>
+<tr>
+    <td align="center" class="t1-2">Status</td>
+    <td align="center" class="t2-2">Number of Document</td>
+<tr>
+    <td align="center" class="t1">Completed</td>
+    <td align="center" class="t2">{{ra_completed_len}}</td>
+</tr>
+<tr>
+    <td align="center" class="t1">Prepared</td>
+    <td align="center" class="t2">{{ra_prepared_len}}</td>
+</tr>
+<tr>
+    <td align="center" class="t1">New</td>
+    <td align="center" class="t2">{{ra_new_len}}</td>
+</tr>
+<tr>
+    <td align="center" class="t1-1">Total</td>
+    <td align="center" class="t2-1">{{ra_total_len}}</td>
+</tr>
+</table>
+</div>
+
+<div id="pmcontrol_table">
+    <table_title>PM Control Form</table_title>
+<table>
+<tr>
+    <td align="center" class="t1-2">Status</td>
+    <td align="center" class="t2-2">Number of Document</td>
+<tr>
+    <td align="center" class="t1">Completed</td>
+    <td align="center" class="t2">{{cf_completed_len}}</td>
+</tr>
+<tr>
+    <td align="center" class="t1">Reviewed</td>
+    <td align="center" class="t2">{{cf_reviewed_len}}</td>
+</tr>
+<tr>
+    <td align="center" class="t1">Prepared</td>
+    <td align="center" class="t2">{{cf_prepared_len}}</td>
+</tr>
+<tr>
+    <td align="center" class="t1">New</td>
+    <td align="center" class="t2">{{cf_new_len}}</td>
+</tr>
+<tr>
+    <td align="center" class="t1">Reject</td>
+    <td align="center" class="t2">{{cf_reject_len}}</td>
+</tr>
+<tr>
+    <td align="center" class="t1-1">Total</td>
+    <td align="center" class="t2-1">{{cf_total_len}}</td>
+</tr>
+</table>
+</div>
+
+
+<div id="bm_radius" >
+    &nbsp;&nbsp;<a class="xi-wrench"><text_main>&nbsp;Work Order</text_main></a>
+</div>
+<div id="bm_today_table">
+    <table_title>Today's Work Request</table_title>
+<table>
+<tr>
+    <td align="center" class="w1-2">Team</td>
+    <td align="center" class="w2-2">Number of Request</td>
+</tr>
+    {% for bm_today in bm_today_info %}
+<tr>
+    <td align="center" class="w1">{{bm_today.team}}</td>
+    <td align="center" class="w2">{{bm_today.team__count}}</td>
+</tr>
+    {%endfor%}
+</table>
+</div>
+
+<div id="bm_finish_table">
+    <table_title>Today's Completed Work Order</table_title>
+<table>
+<tr>
+    <td align="center" class="w1-2">Team</td>
+    <td align="center" class="w2-2">Number of Request</td>
+</tr>
+    {% for wo_today in bm_finish_info %}
+<tr>
+    <td align="center" class="w1">{{wo_today.team}}</td>
+    <td align="center" class="w2">{{wo_today.team__count}}</td>
+</tr>
+    {%endfor%}
+</table>
+</div>
+
+<div id="workrequst_table">
+    <table_title>Status of Work Order</table_title>
+<table>
+<tr>
+    <td align="center" class="request" rowspan="7">Work<br>Request</td>
+</tr>
+<tr>
+    <td align="center" class="w1-2">Status</td>
+    <td align="center" class="w2-2">Number of Request</td>
+</tr>
+<tr>
+    <td align="center" class="w1">Approved</td>
+    <td align="center" class="w2">{{wr_approve_len}}</td>
+</tr>
+<tr>
+    <td align="center" class="w1">Received</td>
+    <td align="center" class="w2">{{receive}}</td>
+</tr>
+<tr>
+    <td align="center" class="w1">Not Receive</td>
+    <td align="center" class="w2">{{not_receive}}</td>
+</tr>
+<tr>
+    <td align="center" class="w1-1">Total</td>
+    <td align="center" class="w2-1">{{wr_total_len}}</td>
+</tr>
+</table>
+</div>
+
+<div id="workorder_table">
+<table>
+<tr>
+    <td align="center" class="request" rowspan="7">Work<br>Order</td>
+</tr>
+<tr>
+    <td align="center" class="w1-2">Status</td>
+    <td align="center" class="w2-2">Number of Order</td>
+</tr>
+<tr>
+    <td align="center" class="w1">Completed</td>
+    <td align="center" class="w2">{{wo_approve_len}}</td>
+</tr>
+<tr>
+    <td align="center" class="w1">Repaired</td>
+    <td align="center" class="w2">{{repaired}}</td>
+</tr>
+<tr>
+    <td align="center" class="w1">Not Complete</td>
+    <td align="center" class="w2">{{wo_not_len}}</td>
+</tr>
+<tr>
+    <td align="center" class="w1-1">Total</td>
+    <td align="center" class="w2-1">{{wo_total_len}}</td>
+</tr>
+</table>
+</div>
+
+<div id="not_comp_text">
+    <input type="hidden" value="{{wr_total_len}}" name="wr_total_len">
+    <input type="hidden" value="{{wo_not_len}}" name="wo_not_len">
+<div id="not_repair"></div></div>
+
+
+<div id="pmchart_radius" >
+    &nbsp;&nbsp;<a class="xi-chart-bar"><text_main>&nbsp;Preventive Maintenance Chart</text_main></a>
+    <br> &nbsp;&nbsp; &nbsp;&nbsp;(개발중)
+</div>
+
+<div id="bmchart_radius" >
+        &nbsp;&nbsp;<a class="xi-equalizer-thin"><text_main>&nbsp;Work Order Chart</text_main></a>
+     <br> &nbsp;&nbsp; &nbsp;&nbsp;(개발중)
+</div>
+
+<div id="mypage_radius" >
+        &nbsp;&nbsp;<a class="xi-profile"><text_main>&nbsp;My Page</text_main></a>
+</div>
+<div id="my_auth">
+        <table_title>My Authority</table_title>
+        <table_text><br>&nbsp;{{auth}}</table_text>
+</div>
+
+<div id="my_approve">
+    <table_title>My Approval</table_title>
+{% if auth == "SO_S" %}
+    <table>
+<tr>
+    <td align="center" class="m1-2">Document Name</td>
+    <td align="center" class="m2-2">Number of Approval</td>
+</tr>
+<tr>
+    <td align="center" class="m1">PM Check Sheet</td>
+    <td align="center" class="m2">
+        <form method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="button"value="{{performed_len}}" class="my_button"  onclick="Pmcheckapproval();"></form>
+    </td>
+</tr>
+<tr>
+    <td align="center" class="m1">Work Request</td>
+    <td align="center" class="m2">
+             <form action="workrequest_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit"value="{{wr_receive_len}}" class="my_button"></form></td>
+</tr>
+<tr>
+    <td align="center" class="m1">Work Order</td>
+    <td align="center" class="m2">
+            <form method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="button"value="{{wo_repair_len}}" class="my_button" onclick="Workorder_approval();"></form></td>
+</tr>
+</table>
+    {%endif%}
+
+{% if auth == "SO_M" %}
+    <table>
+<tr>
+    <td align="center" class="m1-2">Document Name</td>
+    <td align="center" class="m2-2">Number of Approval</td>
+</tr>
+<tr>
+    <td align="center" class="m1">PM Check Sheet</td>
+    <td align="center" class="m2">
+                <form method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="button" value="{{reviewed_len}}" class="my_button"  onclick="Pmcheckapproval();"></form></td>
+</tr>
+<tr>
+    <td align="center" class="m1">PM Period</td>
+    <td align="center" class="m2">
+            <form action="pmra_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="submit" value="{{ra_prepared_len}}" class="my_button"></form></td>
+</tr>
+<tr>
+    <td align="center" class="m1">PM Control Form</td>
+    <td align="center" class="m2">
+            <form method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="button" value="{{cf_prepared_len}}" class="my_button" onclick="Pmapproval();"></form></td>
+</tr>
+<tr>
+    <td align="center" class="m1">Work Request</td>
+    <td align="center" class="m2">
+                <form method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="button"value="{{wr_receive_len}}" class="my_button" onclick="Workrequest_approval();"></form></td>
+</tr>
+<tr>
+    <td align="center" class="m1">Work Order</td>
+    <td align="center" class="m2">
+                <form method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="button"value="{{wo_review_len}}" class="my_button" onclick="Workorder_approval();"></form></td>
+</tr>
+</table>
+    {%endif%}
+
+{% if auth == "QA_M" %}
+    <table>
+<tr>
+    <td align="center" class="m1-2">Document Name</td>
+    <td align="center" class="m2-2">Number of Approval</td>
+</tr>
+<tr>
+    <td align="center" class="m1">PM Control Form</td>
+    <td align="center" class="m2">
+                    <form method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="button" value="{{cf_reviewed_len}}" class="my_button" onclick="Pmapproval();"></form></td>
+</tr>
+<tr>
+    <td align="center" class="m1">Work Request</td>
+    <td align="center" class="m2">
+                        <form method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="button"value="{{wr_review_len}}" class="my_button" onclick="Workrequest_approval();"></form></td>
+</tr>
+<tr>
+    <td align="center" class="m1">Work Order</td>
+    <td align="center" class="m2">
+                        <form method="post">
+        {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="button"value="{{wo_check_len}}" class="my_button" onclick="Workorder_approval();"></form></td>
+</tr>
+</table>
+    {%endif%}
+</div>
+
+<div id="date">
+    </div>
+<table id="date_title">
+    <tr>
+        <td align="center" id="main_month"><div id="month_today"></div></td>
+    </tr>
+</table>
+    <main_day><div id="day_today"></div></main_day>
+
+
+</main>
+<script>
+         function init(){
+     ///월pm 퍼센트
+        total_len = document.getElementsByName("total_len")[0].value;
+        completed_len = document.getElementsByName("completed_len")[0].value;
+        percent = completed_len / total_len * 100;
+        percent = Math.round(percent);
+        percent = percent + "%";
+        document.getElementById("month_percent").innerHTML=percent;
+
+     ///잔여 수리대수
+        wr_total_len = document.getElementsByName("wr_total_len")[0].value;
+        wo_not_len = document.getElementsByName("wo_not_len")[0].value;
+        not_repair =  parseInt(wr_total_len) + parseInt(wo_not_len);
+        not_repair = "Not Complete of Equipment: " + not_repair;
+        document.getElementById("not_repair").innerHTML=not_repair;
+
+     ///달력 오늘날짜 산출
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth()+1; //January is 0!
+            if(dd<10) {
+                dd='0'+dd
+            }
+            if(mm<10) {
+                mm='0'+mm
+            }
+            month = mm;
+            if (month=="01"){
+            month="January";}
+            if (month=="02"){
+            month="February";}
+            if (month=="03"){
+            month="March";}
+            if (month=="04"){
+            month="April";}
+            if (month=="05"){
+            month="May";}
+            if (month=="06"){
+            month="June";}
+            if (month=="07"){
+            month="July";}
+            if (month=="08"){
+            month="August";}
+            if (month=="09"){
+            month="September";}
+            if (month=="10"){
+            month="October";}
+            if (month=="11"){
+            month="November";}
+            if (month=="12"){
+            month="December";}
+            day = dd;
+            document.getElementById("month_today").innerHTML=month;
+            document.getElementById("day_today").innerHTML=day;
+            }
+
+      onload=init
+
+</script>
+</body>
+</html>

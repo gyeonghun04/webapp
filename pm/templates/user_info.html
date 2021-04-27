@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+#tabletop{
+    	font-family: arial;
+        position:fixed;top:4%; left:9%;
+        height:5%;
+
+}
+titletext{
+    	font-family:'Rubik', sans-serif;
+        font-size:20px;
+        font-weight:bold;
+}
+.selecttext{
+        margin-left:1190px;
+        width:105px;
+        height:20px;
+}
+.searchtext{
+        width:200px;
+        height:20px;
+}
+.searchbutton{
+        width:60px;
+        cursor:pointer;
+        height:20px;
+}
+#searchbar{
+        padding-top:5px;
+        font-family:'Rubik', sans-serif;
+        font-size:10px;
+}
+
+#tablemenu{
+    	font-family: arial;
+        font-size:11px;
+        position:fixed;top:7.5%; left:9%;
+        height:2.5%;
+        width:90.7%;
+        background-color:#6F6F6F;
+        color:white;
+}
+#tabledesc{
+        position:absolute;top:10%; left:9%;
+        z-index:10;
+        width:90.7%;
+        font-family: arial;
+        font-size:11px;
+        overflow-y:scroll;
+        height:83.8%;
+}
+
+body{overflow:hidden;}
+
+tr:nth-child(even){
+    background-color:#EEEEEE;
+}
+#manualchange{
+        position:fixed; top:94%; left:9%;
+        width:90.7%;
+    	font-family: arial;
+        font-size:11px;
+        background-color:#6F6F6F;
+        color:white;
+        height:20px;
+}
+
+#manualchangeinput{
+        position:fixed; top:96.5%; left:9%;
+        width:80%;
+    	font-family: arial;
+        font-size:11px;
+        height:40px;
+}
+
+.m1{width:150px;}
+.m2{width:200px;}
+.m3{width:135px;}
+.m4{width:200px;}
+.m5{width:300px;}
+.m6{width:250px;}
+.m7{width:100px;}
+
+
+.m1-1{width:150px;}
+.m2-1{width:200px;}
+.m3-1{width:135px;}
+.m4-1{width:200px;}
+.m5-1{width:300px;}
+.m6-1{width:250px;}
+.m7-1{width:100px;}
+
+.delete_button{
+    	font-family: arial;
+        font-size:11px;
+        cursor:pointer;
+}
+
+.n1{width:120px;}
+.n2{width:200px;}
+.n3{width:60px;}
+.n4{width:200px;}
+.n5{width:200px;}
+.n6{width:150px;}
+.n7{width:140px;}
+
+.n1-1{width:100px;
+height:18px;}
+.n2-1{width:200px;
+height:18px;}
+.n3-1{width:60px;
+height:18px;}
+.n4-1{width:190px;
+height:18px;}
+.n5-1{width:200px;
+height:18px;}
+.n6-1{width:250px;
+height:18px;}
+.n7-1{
+    	font-family: arial;
+        padding-top:2px;
+        padding-bottom:3px;
+        width:140px;
+}
+.submit_button{
+    	font-family: arial;
+        cursor:pointer;
+        font-size:14px;
+        height:24px;
+        margin-left:1800px;
+        margin-top:930px;
+}
+
+.authtext{
+    	font-family: arial;
+        padding-top:2px;
+        padding-bottom:3px;
+        width:140px;
+        }
+</style>
+<body>
+<main>
+{% include "css.html"%}
+{% include "top.html"%}
+{% include "sidetap.html"%}
+
+<div id="tabletop" style="word-break:break-all">
+<table>
+    <tr>
+    <td><titletext>User Information</titletext></td>
+    <td>
+    <div id="searchbar">
+        <form action="search" method="post">
+            {% csrf_token %}
+            <select class="selecttext" name="selecttext">&nbsp;
+            <option value="userid">User ID</option>
+            <option value="username">User Name</option>
+            </select>
+            <input type="search"  class="searchtext" placeholder="Keywords" name="searchtext">
+            <input type="hidden" value={{loginid}} name="loginid">
+            <input type="submit"  class="searchbutton" value="Search"></form>
+    </div></td>
+    </tr>
+</table>
+</div>
+
+<div id="tablemenu">
+     <table  style="word-break:break-all">
+        <thead>
+        <tr>
+            <td align="center" class="m1">User ID</td>
+            <td align="center" class="m2">User Name</td>
+            <td align="center" class="m3">User Team</td>
+            <td align="center" class="m4">Password</td>
+            <td align="center" class="m5">User e-mail</td>
+            <td align="center" class="m6">Approval Authority</td>
+            <td align="center" class="m6">View Authority</td>
+            <td align="center" class="m7">Change</td>
+            <td align="center" class="m7">Delete</td>
+        </tr>
+        </thead>
+     </table>
+</div>
+<div id="tabledesc">
+ <table style="word-break:break-all">
+     <tbody>
+                      {% for user in user_info %}
+        <tr>
+            <td align="center" class="m1-1">{{user.userid}}</td>
+            <td align="center" class="m2-1">{{user.username}}</td>
+            <td align="center" class="m3-1">{{user.userteam}}</td>
+            <td align="center" class="m4-1">{{user.password}}</td>
+            <td align="center" class="m5-1">{{user.useremail}}</td>
+            <td align="center" class="m6-1">{{user.auth1}}</td>
+            <td align="center" class="m6-1">{{user.user_division}}</td>
+            <td align="center" class="m7-1">
+                <input type="hidden" value="{{user.userteam}}" name="userteam_give">
+                <input type="hidden" value="{{user.password}}" name="password_give">
+                <input type="hidden" value="{{user.useremail}}" name="useremail_give">
+                <input type="hidden" value="{{user.auth1}}" name="auth_1_give">
+                <input type="hidden" value="{{user.user_division}}" name="user_div_give">
+                <input type="hidden" value="{{loginid}}" name="loginid_give">
+                <input type="button" class="delete_button" value="Change" onclick="Id_change(this);"></td>
+            <td align="center" class="m7-1">
+                <input type="button" class="delete_button" value="Delete"></td>
+        </tr>
+                        {%endfor%}
+        </tbody>
+ </table>
+</div>
+ <div>
+ <table>
+   <thead id="manualchange">
+        <tr>
+            <td align="center" class="n1">User ID</td>
+            <td align="center" class="n2">User Name</td>
+            <td align="center" class="n3">User Team</td>
+            <td align="center" class="n4">Password</td>
+            <td align="center" class="n4">Password again</td>
+            <td align="center" class="n5">User e-mail</td>
+            <td align="center" class="n6">Approval Authority</td>
+            <td align="center" class="n7">View Authority</td>
+        </tr>
+   </thead>
+              <form action="user_info_new" method="post">
+         {% csrf_token %}
+   <tbody id="manualchangeinput">
+     <tr>
+            <td align="center">
+                <input type="text" name="userid" class="n1-1" required ></td>
+            <td align="center">
+                <input type="text" name="username"  class="n2-1" required></td>
+            <td align="center">
+                <input type="text" name="userteam"  class="n3-1" required></td>
+            <td align="center">
+                <input type="password" name="password"  class="n4-1" required></td>
+            <td align="center">
+                <input type="password" name="password_again"  class="n4-1" required></td>
+            <td align="center">
+                <input type="text" name="useremail"  class="n5-1" required></td>
+            <td align="center">
+                <select class="authtext" name="auth_1" required>
+                                     {% for approval_info in approval_infos %}
+                    <option value="{{approval_info.code_no}}">{{approval_info.code_no}}</option>
+                                     {%endfor%}
+                </select>
+            <td align="center">
+                <select class="n7-1" name="user_div" required>
+                    <option value="Admin">Admin</option>
+                    <option value="Engineer">Engineer</option>
+                    <option value="Staff">Staff</option>
+                    <option value="Manager">Manager</option>
+                    <option value="SO Manager">SO Manager</option>
+                    <option value="QA Manager">QA Manager</option>
+                </select>
+            </td>
+
+     </tr>
+   </tbody>
+      <input type="hidden" value={{loginid}} name="loginid">
+      <input type="submit" class="submit_button" value="Submit"></form>
+     </table>
+ </div>
+    <form name="user_info_change" method="post">
+                     {% csrf_token %}
+        <input type="hidden" name="userteam_up" id="userteam_up">
+        <input type="hidden" name="password_up" id="password_up">
+        <input type="hidden" name="useremail_up" id="useremail_up">
+        <input type="hidden" name="auth_1_up" id="auth_1_up">
+        <input type="hidden" value="{{loginid}}" id="loginid_up">
+        <input type="hidden" name="user_div_up" id="user_div_up"></form>
+</main>
+<script>
+    function Id_change(obj){
+                // 행위치값과 플랜데이트 받기
+            var i = obj.parentNode.parentNode.rowIndex;
+            var userteam= document.getElementsByName('userteam_give')[i].value;
+            var password= document.getElementsByName('password_give')[i].value;
+            var useremail= document.getElementsByName('useremail_give')[i].value;
+            var auth_1= document.getElementsByName('auth_1_give')[i].value;
+            var user_div= document.getElementsByName('user_div_give')[i].value;
+                // html로 값보내기
+            document.user_info_change.userteam_up.value = userteam;
+            document.user_info_change.password_up.value = password;
+            document.user_info_change.useremail_up.value = useremail;
+            document.user_info_change.auth_1_up.value = auth_1;
+            document.user_info_change.user_div_up.value = user_div;
+
+                        // 팝업창열기
+            var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=880, height=840, left=50, top=10';
+            window.open("/user_info_change", "User Information Change", settings);
+    }
+</script>
+</body>
+</html>

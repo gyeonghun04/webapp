@@ -1,0 +1,656 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+
+</head>
+<style>
+pmchecksheettitle{
+        position:fixed;top:5.5%; left:58%;
+        font-size: 25px;
+        font-family: arial;
+        font-weight:bold;
+}
+controlformtext{
+        position:fixed;top:7.8%; left:53%;
+        font-size: 11px;
+}
+#pmchecksheettitle{
+    	font-family: arial;
+        font-size:11px;
+        position:fixed;top:22%; left:39.6%;
+        width:59.98%;
+        background-color:#6F6F6F;
+        color:white;
+        height:35px;
+}
+.pmchecksheettop{
+        position:fixed; top:25.6%; left:39.6%;
+        width:59.90%;
+        height:52.6%;
+        overflow-y:scroll;
+}
+#pmchecksheettable{
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+        font-size:11px;
+        font-family: arial;
+}
+
+#usedparthead{
+        position:fixed; top:78.2%; left:39.6%;
+        width:60%;
+    	font-family: arial;
+        font-size:11px;
+        background-color:#6F6F6F;
+        color:white;
+        height:40px;
+        border:1px solid white;
+        border-collapse:collapse;
+        z-index:-10;
+}
+#usedpartbody{
+        position:fixed; top:82.4%; left:39.6%;
+        height:64px;
+        width:59.90%;
+        overflow-y:scroll;
+        height:7.9%;
+}
+#usedparttop{
+    	font-family: arial;
+        font-size:11px;
+        height:20px;
+}
+#usedparttable{
+        font-size:11px;
+    	font-family: arial;
+    	border:1px solid #6F6F6F;
+        border-collapse:collapse;
+}
+
+#pmremarktop{
+    	font-family: arial;
+        font-size:11px;
+        height:20px;
+}
+#pmremarkhead{
+        position:fixed; top:90.2%; left:39.6%;
+        width:59.98%;
+    	font-family: arial;
+        font-size:11px;
+        background-color:#6F6F6F;
+        color:white;
+        height:20px;
+}
+#pmremarkbody{
+        position:fixed; top:92.3%; left:39.6%;
+        height:64px;
+        width:59.98%;
+}
+
+#pmremarktable{
+        font-size:11px;
+    	font-family: arial;
+    	border:1px solid #6F6F6F;
+        border-collapse:collapse;
+}
+#pmcheck_submit{
+        position:fixed; top:97%; left:96.5%;
+}
+#pmcheck_preview{
+        position:fixed; top:97%; left:93%;
+}
+
+
+.r1{width:150px;}
+.r2{width:100px;}
+.r1-1{width:700px;}
+.r2-1{width:500px;}
+
+.c1{width:280px;}
+.c2{width:110px;}
+.c3{width:200px;}
+.c4{width:120px;}
+.c5{width:150px;}
+.c6{width:110px;}
+.c7{width:30px;
+    background-color:#6F6F6F;
+    font-size:9px;
+    font-family: arial;}
+.c8{width:130px;}
+
+.c1-1{width:280px;
+      padding-top:5px;
+      padding-bottom:5px;}
+.c2-1{width:140px;}
+.c3-1{width:200px;}
+.c4-1{width:120px;}
+.c5-1{width:150px;}
+.c6-1{width:130px;}
+.c7-1{width:30px;}
+.c8-1{width:130px;}
+
+.u1{width:13.2%;
+background-color:#6F6F6F;}
+.u2{width:17.6%;
+background-color:#6F6F6F;}
+.u3{width:13.3%;
+background-color:#6F6F6F;}
+.u4{width:26.3%;
+background-color:#6F6F6F;}
+.u5{width:10.7%;
+background-color:#6F6F6F;}
+.u6{width:;
+background-color:#6F6F6F;}
+
+.u1-1{width:150px;
+height:20px;}
+.u2-1{width:200px;}
+.u3-1{width:150px;}
+.u4-1{width:300px;}
+.u5-1{width:120px;}
+.u6-1{width:200px;}
+
+.check_result_css{
+        font-size:11px;
+        font-family: arial;
+        width:95%;
+}
+.action_detail_css{
+        font-size:11px;
+        font-family: arial;
+        width:94%;
+}
+.remark_css{
+        width:600px;
+        height:25px;
+        font-size:11px;
+        font-family: arial;
+}
+
+.usedpart_css{
+        font-size:11px;
+        cursor:pointer;
+        font-family: arial;
+        }
+.workrequest_css{
+        font-size:11px;
+        cursor:pointer;
+        font-family: arial;
+}
+.pmcheck_submit_css{
+        font-size:12px;
+        cursor:pointer;
+        font-family: arial;
+}
+.pmcheck_preview_css{
+        font-size:12px;
+        cursor:pointer;
+        font-family: arial;
+}
+.button_css1{
+    	font-family: arial;
+        font-size:11px;
+        cursor:pointer;
+}
+.button_css2{
+    	font-family: arial;
+        font-size:12px;
+        cursor:pointer;
+}
+.uploadfile{
+padding-left:10px;
+}
+.upload_complete_css{
+    	font-family: arial;
+        font-size:12px;
+        padding-left:10px;
+        }
+</style>
+<body>
+
+<pmchecksheettitle>
+Preventive Maintenance Check Sheet
+</pmchecksheettitle>
+
+<div id="pmchecksheettitle" >
+     <table  style="word-break:break-all">
+        <thead>
+        <tr>
+            <td align="center" class="c1" rowspan="2">Maintenance Item</td>
+            <td align="center" class="c2" rowspan="2">Check Standard</td>
+            <td align="center" class="c3" rowspan="2">Check Result</td>
+            <td align="center" class="c4" colspan="3">Judgement</td>
+            <td align="center" class="c5" rowspan="2">Repair Detail</td>
+            <td align="center" class="c6" rowspan="2">Work Request</td>
+            <td align="center" class="c8" rowspan="2">Used Parts</td>
+        </tr>
+        <tr>
+            <td align="center" class="c7">Pass</td>
+            <td align="center" class="c7">Fail_Y</td>
+            <td align="center" class="c7">Fail_N</td>
+        </tr>
+        </thead>
+     </table>
+</div>
+    <div class="pmchecksheettop">
+        <table id="pmchecksheettable" width="100%"  border="1">
+                <tbody>
+                      {% for pmlist in pmchecksheets  %}
+                      {% for equipinfo in pmchecksheet_info %}
+        <tr>
+           <td align="left" class="c1-1">{{pmlist.item}}</td> <!--models.py에서 값받아오기-->
+            <td align="left" class="c2-1">{{pmlist.check}}</td>
+            <td align="left" class="c3-1">
+                <input type="text" value="{{pmlist.result_temp}}" name="checkresult" class="check_result_css" onchange="Checkresult(this);" required>
+            </td>
+            <td align="center" class="c7-1">
+            <input type="checkbox" name="judpass" onchange="Checkboxpass(this);" {{pmlist.pass_y_temp}}>
+            </td>
+            <td align="center" class="c7-1">
+            <input type="checkbox" name="judfaily" onchange="Checkboxfaily(this);" {{pmlist.fail_y_temp}}>
+            </td>
+            <td align="center" class="c7-1">
+            <input type="checkbox" name="judfailn" onchange="Checkboxfailn(this);" {{pmlist.fail_n_temp}}>
+            </td>
+            <td align="left" class="c5-1">
+                <input type="text" name="actiondetail" value="{{pmlist.actiondetail_temp}}"
+                       class="action_detail_css" onchange="Actiondetail(this);">
+            </td>
+            <td align="right" class="c6-1">
+                {{pmlist.workrequest_temp}}
+                <input type="button" name="workrequest" class="workrequest_css" value="Click" onclick="workrequest(this);">
+            </td>
+            <td align="right" class="c8-1">
+                {{pmlist.usedpart_temp}}
+                <input type="button" name="usedpart" class="usedpart_css" value="Click" onclick="usedpart(this);">
+                <input type="hidden" name="pmcode_up" value={{pmlist.pmcode}}>
+                <input type="hidden" name="itemcode" value={{pmlist.itemcode}}>
+                <input type="hidden" name="controlnos" value={{pmlist.controlno}}>
+                <input type="hidden" name="pmsheetnos" value={{pmlist.pmsheetno}}>
+                <input type="hidden" name="equipname" value={{equipinfo.name}}>
+                <input type="hidden" name="equipteam" value={{equipinfo.team}}>
+                <input type="hidden" name="roomname" value={{equipinfo.roomname}}>
+                <input type="hidden" name="roomno" value={{equipinfo.roomno}}>
+            </td>
+        </tr>
+                       {% endfor %}
+                       {% endfor %}
+        </tbody>
+        </table>
+        <form action="" method="post" name="checkresultform">
+             {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="hidden" value={{pmcode}} name="pmcode">
+        <input type="hidden" value={{calendarsearch}} name="calendarsearch">
+        <input type="hidden" name="checkresultreturn">
+        <input type="hidden" name="itemcode">
+        <input type="hidden" name="controlno">
+        <input type="hidden" name="pmsheetno">
+        <input type="hidden" value={{searchtext}} name="searchtext">
+        <input type="hidden" value={{selecttext}} name="selecttext">
+        </form>
+
+        <form action="" method="post" name="actiondetailform">
+             {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="hidden" value={{pmcode}} name="pmcode">
+        <input type="hidden" value={{calendarsearch}} name="calendarsearch">
+        <input type="hidden" name="actiondetailreturn">
+        <input type="hidden" name="itemcode">
+        <input type="hidden" name="controlno">
+        <input type="hidden" name="pass_y">
+        <input type="hidden" name="fail_y">
+        <input type="hidden" name="fail_n">
+        <input type="hidden" name="pmsheetno">
+        <input type="hidden" value={{searchtext}} name="searchtext">
+        <input type="hidden" value={{selecttext}} name="selecttext">
+        </form>
+
+        <form action="" method="post" name="checkboxform">
+             {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="hidden" value={{pmcode}} name="pmcode">
+        <input type="hidden" value={{calendarsearch}} name="calendarsearch">
+        <input type="hidden" name="pass_y">
+        <input type="hidden" name="fail_y">
+        <input type="hidden" name="fail_n">
+        <input type="hidden" name="itemcode">
+        <input type="hidden" name="controlno">
+        <input type="hidden" name="pmsheetno">
+        <input type="hidden" value={{searchtext}} name="searchtext">
+        <input type="hidden" value={{selecttext}} name="selecttext">
+        </form>
+
+        <form action="" method="post" name="remarkform">
+             {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="hidden" value={{pmcode}} name="pmcode">
+        <input type="hidden" value={{calendarsearch}} name="calendarsearch">
+        <input type="hidden" name="remarkreturn">
+        <input type="hidden" name="controlno">
+        <input type="hidden" name="pmsheetno">
+        <input type="hidden" name="remark_na">
+        <input type="hidden" value={{searchtext}} name="searchtext">
+        <input type="hidden" value={{selecttext}} name="selecttext">
+        </form>
+
+        <form action="" method="post" name="remarkna">
+             {% csrf_token %}
+        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="hidden" value={{pmcode}} name="pmcode">
+        <input type="hidden" value={{calendarsearch}} name="calendarsearch">
+        <input type="hidden" name="controlno">
+        <input type="hidden" name="pmsheetno">
+        <input type="hidden" value={{searchtext}} name="searchtext">
+        <input type="hidden" value={{selecttext}} name="selecttext">
+        </form>
+
+        <form method="post" name="workrequestnew">
+             {% csrf_token %}
+        <input type="hidden" value={{searchtext}} name="searchtext">
+        <input type="hidden" value={{selecttext}} name="selecttext">
+        <input type="hidden" value={{loginid}} id="workloginid">
+        <input type="hidden" name="equipname" id="workequipname">
+        <input type="hidden" name="controlno" id="workcontrolno">
+        <input type="hidden" name="equipteam" id="workequipteam">
+        <input type="hidden" name="roomname" id="workroomname">
+        <input type="hidden" name="roomno" id="workroomno">
+        <input type="hidden" name="checkresult" id="workcheckresult">
+        <input type="hidden" name="pmcode" id="workpmcode">
+        <input type="hidden" name="itemcode" id="workitemcode">
+        </form>
+
+        <form method="post" name="usedpartup">
+             {% csrf_token %}
+        <input type="hidden" value={{loginid}} id="workloginid2">
+        <input type="hidden" name="pmcode" id="workpmcode2">
+        <input type="hidden" name="itemcode" id="workitemcode2">
+        </form>
+
+    </div>
+ <div id="usedparttop">
+   <table id="usedparthead" border="1">
+        <tr>
+            <td align="center" class="u7" colspan="6">Used Parts List</td>
+        </tr>
+       <tr>
+            <td align="center" class="u1">Code No.</td>
+            <td align="center" class="u2">Part Name</td>
+            <td align="center" class="u3">Vendor</td>
+            <td align="center" class="u4">Model Name</td>
+            <td align="center" class="u5">Quantity</td>
+            <td align="center" class="u6">Out Code</td>
+       </tr>
+   </table>
+ </div>
+ <div id="usedpartbody">
+   <table id="usedparttable" border="1">
+            {% for spare_out in spare_list %}
+       <tr>
+            <td align="center" class="u1-1">{{spare_out.codeno}}</td>
+            <td align="center" class="u2-1">{{spare_out.partname}}</td>
+            <td align="center" class="u3-1">{{spare_out.vendor}}</td>
+            <td align="center" class="u4-1">{{spare_out.modelno}}</td>
+            <td align="center" class="u5-1">{{spare_out.used_qy}}</td>
+            <td align="center" class="u6-1">{{spare_out.out_code}}</td>
+       </tr>
+            {% endfor %}
+   </table>
+ </div>
+
+</div>
+
+ <div id="pmremarktop">
+   <table id="pmremarkhead">
+        <tr>
+            <td align="center" class="r1">Remark</td>
+            <td align="center" class="r2">Attach File</td>
+        </tr>
+   </table>
+ </div>
+ <div id="pmremarkbody">
+
+   <table id="pmremarktable" border="1">
+                                   {% for pmlist in pmchecksheet_info  %}
+       <tr>
+            <td align="left"class="r1-1">
+            <input type="text" style="resize: none" name="pmchecksheet_remark" placeholder="Please enter additional description."
+                      value="{{pmlist.remark_temp}}"  class="remark_css" onchange="Remarkchange(this);">
+            <input type="checkbox" name="remark_na" value="remark_na" class="remark_na_css" onchange="Remarkna(this);" {{pmlist.remark_na_temp}}>N/A
+            </td>
+           <td align="left" class="r2-1">
+            {% if url_comp == "Y" %}
+            <a href="{{pmlist.attach_temp}}" target="_blank" class="upload_complete_css">Upload_ Complete</a>
+            {%else%}
+               <form method="post" name="uploadfile" enctype="multipart/form-data" class="uploadfile">
+            {% csrf_token %}
+            <input type="hidden" value={{loginid}} name="loginid">
+            <input type="hidden" value={{pmcode}} name="pmcode">
+            <input type="hidden" value={{calendarsearch}} name="calendarsearch">
+            <input type="hidden" name="controlno">
+            <input type="hidden" name="pmsheetno">
+            <input type="hidden" value={{searchtext}} name="searchtext">
+            <input type="hidden" value={{selecttext}} name="selecttext">
+            <input type="file" name="upload_file" id="upload_file" class="button_css1">
+            <input type="button" value="Upload" class="button_css2" onclick="Upload_file();"></form>
+            {% endif %}
+
+
+           </td>
+     </tr>
+                                  {% endfor  %}
+   </table>
+
+ </div>
+
+ <div id="pmcheck_submit">
+                           {% for pmlist in pmchecksheet_info  %}
+     <form action="pmchecksheet_submit" method="post">
+                {% csrf_token %}
+     <input type="hidden" value={{loginid}} name="loginid">
+     <input type="hidden" value={{calendarsearch}} name="calendarsearch">
+     <input type="hidden" value={{pmlist.pmcode}} name="pmcode">
+     <input type="hidden" value={{pmlist.controlno}} name="controlno">
+     <input type="hidden" value={{pmlist.pmsheetno}} name="pmsheetno">
+     <input type="hidden" value={{searchtext}} name="searchtext">
+     <input type="hidden" value={{selecttext}} name="selecttext">
+     <input type="submit" class="pmcheck_submit_css" value="Submit" onclick="this.disabled=true;this.value='Submit'; this.form.submit();">
+     </form>
+                            {% endfor  %}
+
+ </div>
+<script>
+
+        function Checkresult(obj){
+            // 행위치값과 플랜데이트 받기
+            var i = obj.parentNode.parentNode.rowIndex;
+            var checkresult= document.getElementsByName('checkresult')[i].value;
+            var itemcode= document.getElementsByName('itemcode')[i].value;
+            var controlno= document.getElementsByName('controlnos')[i].value;
+            var pmsheetno= document.getElementsByName('pmsheetnos')[i].value;
+            // html로 값보내기
+            document.checkresultform.checkresultreturn.value = checkresult;
+            document.checkresultform.itemcode.value = itemcode;
+            document.checkresultform.controlno.value = controlno;
+            document.checkresultform.pmsheetno.value = pmsheetno;
+            // 서버로 전송
+            document.checkresultform.action="pmchecksheet_checkresult";
+            document.checkresultform.submit();
+        }
+
+        function Actiondetail(obj){
+            // 행위치값과 플랜데이트 받기
+            var i = obj.parentNode.parentNode.rowIndex;
+            var actiondetail= document.getElementsByName('actiondetail')[i].value;
+            var itemcode= document.getElementsByName('itemcode')[i].value;
+            var controlno= document.getElementsByName('controlnos')[i].value;
+            var pmsheetno= document.getElementsByName('pmsheetnos')[i].value;
+            // 입력 시 체크박스 자동으로 변하기
+            document.getElementsByName('judpass')[i].checked=false;
+            document.getElementsByName('judfailn')[i].checked=false;
+            document.getElementsByName('judfaily')[i].checked=true;
+             // html로 값보내기
+            document.actiondetailform.actiondetailreturn.value = actiondetail;
+            document.actiondetailform.pass_y.value = "false";
+            document.actiondetailform.fail_y.value = "checked";
+            document.actiondetailform.fail_n.value = "false";
+            document.actiondetailform.itemcode.value = itemcode;
+            document.actiondetailform.controlno.value = controlno;
+            document.checkresultform.pmsheetno.value = pmsheetno;
+             // 서버로 전송
+            document.actiondetailform.action="pmchecksheet_actiondetail";
+            document.actiondetailform.submit();
+        }
+
+        function Checkboxpass(obj){
+            // 행위치값과 플랜데이트 받기
+            var i = obj.parentNode.parentNode.rowIndex;
+            var judgment= document.getElementsByName('judpass')[i].value;
+            var itemcode= document.getElementsByName('itemcode')[i].value;
+            var controlno= document.getElementsByName('controlnos')[i].value;
+            var pmsheetno= document.getElementsByName('pmsheetnos')[i].value;
+             // 체크박스 하나만 선택되게 하기
+            document.getElementsByName('judpass')[i].checked=true;
+            document.getElementsByName('judfailn')[i].checked=false;
+            document.getElementsByName('judfaily')[i].checked=false;
+            // html로 값보내기
+            document.checkboxform.pass_y.value = "checked";
+            document.checkboxform.fail_y.value = "false";
+            document.checkboxform.fail_n.value = "false";
+            document.checkboxform.itemcode.value = itemcode;
+            document.checkboxform.controlno.value = controlno;
+            document.checkboxform.pmsheetno.value = pmsheetno;
+            // 서버로 전송
+            document.checkboxform.action="pmchecksheet_checkboxform";
+            document.checkboxform.submit();
+        }
+
+        function Checkboxfaily(obj){
+            // 행위치값과 플랜데이트 받기
+            var i = obj.parentNode.parentNode.rowIndex;
+            var judgment= document.getElementsByName('judpass')[i].value;
+            var itemcode= document.getElementsByName('itemcode')[i].value;
+            var controlno= document.getElementsByName('controlnos')[i].value;
+            var pmsheetno= document.getElementsByName('pmsheetnos')[i].value;
+             // 체크박스 하나만 선택되게 하기
+            document.getElementsByName('judpass')[i].checked=false;
+            document.getElementsByName('judfailn')[i].checked=false;
+            document.getElementsByName('judfaily')[i].checked=true;
+            // 값보내기
+            document.checkboxform.pass_y.value = "false";
+            document.checkboxform.fail_y.value = "checked";
+            document.checkboxform.fail_n.value = "false";
+            document.checkboxform.itemcode.value = itemcode;
+            document.checkboxform.controlno.value = controlno;
+            document.checkboxform.pmsheetno.value = pmsheetno;
+            // 서버로 전송
+            document.checkboxform.action="pmchecksheet_checkboxform";
+            document.checkboxform.submit();
+        }
+
+        function Checkboxfailn(obj){
+            // 행위치값과 플랜데이트 받기
+            var i = obj.parentNode.parentNode.rowIndex;
+            var judgment= document.getElementsByName('judpass')[i].value;
+            var itemcode= document.getElementsByName('itemcode')[i].value;
+            var controlno= document.getElementsByName('controlnos')[i].value;
+            var pmsheetno= document.getElementsByName('pmsheetnos')[i].value;
+             // 체크박스 하나만 선택되게 하기
+            document.getElementsByName('judpass')[i].checked=false;
+            document.getElementsByName('judfailn')[i].checked=true;
+            document.getElementsByName('judfaily')[i].checked=false;
+            // 값보내기
+            document.checkboxform.pass_y.value = "false";
+            document.checkboxform.fail_y.value = "false";
+            document.checkboxform.fail_n.value = "checked";
+            document.checkboxform.itemcode.value = itemcode;
+            document.checkboxform.controlno.value = controlno;
+            document.checkboxform.pmsheetno.value = pmsheetno;
+            // 서버로 전송
+            document.checkboxform.action="pmchecksheet_checkboxform";
+            document.checkboxform.submit();
+        }
+
+        function Remarkchange(obj){
+            var remark= document.getElementsByName('pmchecksheet_remark')[0].value;
+            var controlno= document.getElementsByName('controlnos')[0].value;
+            var pmsheetno= document.getElementsByName('pmsheetnos')[0].value;
+             // 체크박스 자동해제되기
+            document.getElementsByName('remark_na')[0].checked=false;
+            // 값보내기
+            document.remarkform.remarkreturn.value = remark;
+            document.remarkform.controlno.value = controlno;
+            document.remarkform.pmsheetno.value = pmsheetno;
+            document.remarkform.remark_na.value = "false";
+            // 서버로 전송
+            document.remarkform.action="pmchecksheet_remark";
+            document.remarkform.submit();
+        }
+
+        function Remarkna(obj){
+                    // 행위치값과 정보값 받기
+            var i = obj.parentNode.parentNode.rowIndex;
+            var controlno= document.getElementsByName('controlnos')[0].value;
+            var pmsheetno= document.getElementsByName('pmsheetnos')[i].value;
+            // 값보내기
+            document.remarkna.controlno.value = controlno;
+            document.remarkna.pmsheetno.value = pmsheetno;
+            // 서버로 전송
+            document.remarkna.action="pmchecksheet_remark_na";
+            document.remarkna.submit();
+            }
+
+        function workrequest(obj){
+                    // 행위치값과 정보값 받기
+            var i = obj.parentNode.parentNode.rowIndex;
+            var equipname= document.getElementsByName('equipname')[i].value;
+            var equipteam= document.getElementsByName('equipteam')[i].value;
+            var controlno= document.getElementsByName('controlnos')[i].value;
+            var roomname= document.getElementsByName('roomname')[i].value;
+            var roomno= document.getElementsByName('roomno')[i].value;
+            var checkresult= document.getElementsByName('checkresult')[i].value;
+            var pmcode= document.getElementsByName('pmcode_up')[i].value;
+            var itemcode= document.getElementsByName('itemcode')[i].value;
+                        // 값보내기
+            document.workrequestnew.equipname.value = equipname;
+            document.workrequestnew.equipteam.value = equipteam;
+            document.workrequestnew.controlno.value = controlno;
+            document.workrequestnew.roomname.value = roomname;
+            document.workrequestnew.roomno.value = roomno;
+            document.workrequestnew.checkresult.value = checkresult;
+            document.workrequestnew.pmcode.value = pmcode;
+            document.workrequestnew.itemcode.value = itemcode;
+                        // 팝업창열기
+            var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=880, height=840, left=50, top=10';
+            window.open("/pmchecksheet_workrequest", "Work Request Form", settings);
+            }
+
+        function Upload_file(obj){
+            var controlno= document.getElementsByName('controlnos')[0].value;
+            var pmsheetno= document.getElementsByName('pmsheetnos')[0].value;
+            // 값보내기
+            document.uploadfile.controlno.value = controlno;
+            document.uploadfile.pmsheetno.value = pmsheetno;
+            document.uploadfile.action="pmchecksheet_upload";
+            document.uploadfile.submit();}
+
+        function usedpart(obj){
+            var i = obj.parentNode.parentNode.rowIndex;
+            var pmcode= document.getElementsByName('pmcode_up')[i].value;
+            var itemcode= document.getElementsByName('itemcode')[i].value;
+            document.usedpartup.pmcode.value = pmcode;
+            document.usedpartup.itemcode.value = itemcode;
+
+                        // 팝업창열기
+            var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=1320,height=800, left=50, top=10';
+            window.open("/used_parts_link", "Used Parts Link", settings);
+            }
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<style>
+pmchecksheettitle{
+        position:fixed;top:5.5%; left:58%;
+        font-size: 25px;
+        font-family: arial;
+        font-weight:bold;
+}
+controlformtext{
+        position:fixed;top:7.8%; left:53%;
+        font-size: 11px;
+}
+#pmchecksheettitle{
+    	font-family: arial;
+        font-size:11px;
+        position:fixed;top:22%; left:39.6%;
+        width:59.98%;
+        background-color:#6F6F6F;
+        color:white;
+        height:35px;
+}
+#pmchecksheetdesc{
+        position:fixed; top:25.6%; left:39.6%;
+        width:59.98%;
+        height:57.6%;
+        overflow-y:scroll;
+}
+
+.s1{width:150px;}
+
+#pmchecksheettop{
+        position:fixed; top:90%; left:39.6%;
+        width:59.98%;
+    	font-family: arial;
+        font-size:11px;
+        background-color:#6F6F6F;
+        color:white;
+        padding:1px;
+        }
+
+#pmchecksheetapproval{
+        position:fixed; top:92%; left:39.6%;
+        width:59.98%;
+        font-family: arial;
+        font-size:11px;
+        padding:10px;
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+        }
+#pmtable{
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+        font-size:11px;
+        font-family: arial;
+}
+
+.c1{width:280px;}
+.c2{width:110px;}
+.c3{width:200px;}
+.c4{width:120px;}
+.c5{width:150px;}
+.c6{width:110px;}
+.c7{width:30px;
+    background-color:#6F6F6F;
+    font-size:9px;
+    font-family: arial;}
+.c8{width:130px;}
+
+
+.c1-1{width:280px;
+      padding-top:5px;
+      padding-bottom:5px;}
+.c2-1{width:140px;}
+.c3-1{width:200px;}
+.c4-1{width:120px;}
+.c5-1{width:150px;}
+.c6-1{width:130px;}
+.c7-1{width:30px;}
+.c8-1{width:130px;}
+
+.c11{width:300px;
+    height:20px;
+    background-color: #EEEEEE;
+    font-weight:bold;}
+.c12{width:300px;
+    height:15px;
+    background-color:white;}
+.c13{width:300px;
+    height:15px;
+    background-color:white;}
+
+#pmremarktop{
+    	font-family: arial;
+        font-size:11px;
+        height:20px;
+}
+#pmremarkhead{
+        position:fixed; top:85.4%; left:39.6%;
+        width:59.98%;
+    	font-family: arial;
+        font-size:11px;
+        background-color:#6F6F6F;
+        color:white;
+        height:20px;
+}
+#pmremarkbody{
+        position:fixed; top:87.5%; left:39.6%;
+        height:64px;
+        width:59.98%;
+        overflow-y:auto;
+}
+
+#pmremarktable{
+        font-size:11px;
+    	font-family: arial;
+    	border:1px solid #6F6F6F;
+        border-collapse:collapse;
+}
+.r1{width:150px;}
+.r2{width:100px;}
+.r1-1{width:700px;
+height:20px;
+padding-left:10px;}
+.r2-1{width:500px;
+padding-left:10px;}
+</style>
+
+</head>
+<body>
+<pmchecksheettitle>
+Preventive Maintenance Check Sheet
+</pmchecksheettitle>
+
+<main>
+<div id="pmchecksheettitle" >
+     <table  style="word-break:break-all">
+        <thead>
+        <tr>
+            <td align="center" class="c1" rowspan="2">Maintenance Item</td>
+            <td align="center" class="c2" rowspan="2">Check Standard</td>
+            <td align="center" class="c3" rowspan="2">Check Result</td>
+            <td align="center" class="c4" colspan="3">Judgement</td>
+            <td align="center" class="c5" rowspan="2">Repair Detail</td>
+            <td align="center" class="c6" rowspan="2">Work Request</td>
+            <td align="center" class="c8" rowspan="2">Used Parts</td>
+        </tr>
+        <tr>
+            <td align="center" class="c7">Pass</td>
+            <td align="center" class="c7">Fail_Y</td>
+            <td align="center" class="c7">Fail_N</td>
+        </tr>
+        </thead>
+     </table>
+</div>
+<div id="pmchecksheetdesc">
+ <table style="word-break:break-all" border="1" id="pmtable">
+     <tbody>
+                      {% for pmlist in pmchecksheets  %}
+        <tr>
+            <td align="left" class="c1-1">{{pmlist.item}}</td> <!--models.py에서 값받아오기-->
+            <td align="left" class="c2-1">{{pmlist.check}}</td>
+            <td align="left" class="c3-1">{{pmlist.result_temp}}</td>
+            <td align="center" class="c7-1">
+            <input type="checkbox" name="judpass" {{pmlist.pass_y_temp}} onclick="return false">
+            </td>
+            <td align="center" class="c7-1">
+            <input type="checkbox" name="judfaily" {{pmlist.fail_y_temp}} onclick="return false">
+            </td>
+            <td align="center" class="c7-1">
+            <input type="checkbox" name="judfailn" {{pmlist.fail_n_temp}} onclick="return false">
+            </td>
+            <td align="left" class="c5-1">{{pmlist.actiondetail_temp}}</td>
+            <td align="center" class="c6-1">{{pmlist.workrequest_temp}}</td>
+            <td align="center" class="c6-1">{{pmlist.usedpart_temp}}</td>
+        </tr>
+                             {% endfor %}
+        </tbody>
+ </table>
+</div>
+
+  <div id="pmremarktop">
+   <table id="pmremarkhead">
+        <tr>
+            <td align="center" class="r1">Remark</td>
+            <td align="center" class="r2">Attach File</td>
+        </tr>
+   </table>
+ </div>
+
+ <div id="pmremarkbody">
+   <table id="pmremarktable"  border="1">
+                {% for pmlist in pmchecksheet_info  %}
+     <tr>
+            <td align="left" class="r1-1">{{pmlist.remark_temp}}</td>
+            {% if url_comp == "Y" %}
+            <td align="left" class="r2-1">
+           <a href="{{pmlist.attach_temp}}" target="_blank" class="upload_complete_css">Upload_ Complete</a>
+            </td>
+            {%else%}
+            <td align="left" class="r2-1">
+            <a class="upload_complete_css">N/A</a>
+            </td>
+            {% endif %}
+     </tr>
+                   {% endfor %}
+   </table>
+ </div>
+
+ <div>
+
+ <table style="word-break:break-all" id="pmchecksheettop">
+     <thead>
+         <tr>
+            <td align="center">Review & Approved</td>
+        </tr>
+     </thead>
+ </table>
+ <table style="word-break:break-all" id="pmchecksheetapproval" border="1">
+    <tbody>
+                      {% for pmlist in pmchecksheet_info  %}
+
+        <tr>
+            <td align="left" class="c11">Performed by:</td> <!--models.py에서 값받아오기-->
+            <td align="center" class="c12">{{pmlist.p_name}}</td>
+            <td align="center" class="c13">{{pmlist.p_date}}</td>
+        </tr>
+                     {%if review_signal == "N" %}
+        <tr>
+            <td align="left" class="c11">Reviewed by:</td> <!--models.py에서 값받아오기-->
+            <td align="center" class="c12">
+            <form action="pmcheckapproval_review_accept" method="post">
+                {% csrf_token %}
+                <input type="hidden" value={{loginid}} name="loginid">
+                <input type="hidden" value={{pmlist.pmsheetno}} name="pmsheetno">
+                <input type="hidden" value={{pmlist.pmcode}} name="pmcode">
+                <input type="hidden" value={{pmlist.controlno}} name="controlno">
+                <input type="hidden" value={{selecttext}} name="selecttext">
+                <input type="hidden" value={{searchtext}} name="searchtext">
+                <input type="hidden" value={{calendarsearch}} name="calendarsearch">
+            <input type="submit" class="button" value="Accept" onclick="this.disabled=true;this.value='Accept'; this.form.submit();">
+            </form>
+            </td>
+            <td align="center" class="c13">
+            <form action="pmcheckapproval_review_reject" method="post">
+                {% csrf_token %}
+                 <input type="hidden" value={{loginid}} name="loginid">
+                <input type="hidden" value={{pmlist.pmsheetno}} name="pmsheetno">
+                <input type="hidden" value={{pmlist.pmcode}} name="pmcode">
+                <input type="hidden" value={{pmlist.controlno}} name="controlno">
+                <input type="hidden" value={{selecttext}} name="selecttext">
+                <input type="hidden" value={{searchtext}} name="searchtext">
+                <input type="hidden" value={{calendarsearch}} name="calendarsearch">
+            <input type="submit" class="button" value="Reject" onclick="this.disabled=true;this.value='Reject'; this.form.submit();">
+            </form>
+            </td>
+        </tr>
+                 {%else%}
+        <tr>
+            <td align="left" class="c11">Reviewed by:</td> <!--models.py에서 값받아오기-->
+            <td align="center" class="c12">{{pmlist.r_name_temp}}</td>
+            <td align="center" class="c13">{{pmlist.r_date_temp}}</td>
+        </tr>
+                 {%endif%}
+                 {%endfor%}
+
+                 {% for pmlist in pmchecksheet_info  %}
+                 {%if review_signal == "N" %}
+         <tr>
+            <td align="left" class="c11">Reviewed by:</td> <!--models.py에서 값받아오기-->
+            <td align="center" class="c12"></td>
+            <td align="center" class="c13"></td>
+        </tr>
+                 {%elif approval_signal == "Y" %}
+        <tr>
+            <td align="left" class="c11">Reviewed by:</td> <!--models.py에서 값받아오기-->
+            <td align="center" class="c12">{{pmlist.a_name}}</td>
+            <td align="center" class="c13">{{pmlist.a_date}}</td>
+        </tr>
+
+                {%else%}
+        <tr>
+            <td align="left" class="c11">Approved by:</td> <!--models.py에서 값받아오기-->
+            <td align="center" class="c12">
+            <form action="pmcheckapproval_approve_accept" method="post">
+                {% csrf_token %}
+                <input type="hidden" value={{loginid}} name="loginid">
+                <input type="hidden" value={{pmlist.pmsheetno}} name="pmsheetno">
+                <input type="hidden" value={{pmlist.pmcode}} name="pmcode">
+                <input type="hidden" value={{pmlist.controlno}} name="controlno">
+                <input type="hidden" value={{selecttext}} name="selecttext">
+                <input type="hidden" value={{searchtext}} name="searchtext">
+                <input type="hidden" value={{calendarsearch}} name="calendarsearch">
+            <input type="submit" class="button" value="Accept" onclick="this.disabled=true;this.value='Accept'; this.form.submit();">
+            </form>
+            </td>
+            <td align="center" class="c13">
+            <form action="pmcheckapproval_approve_reject" method="post">
+                {% csrf_token %}
+                 <input type="hidden" value={{loginid}} name="loginid">
+                <input type="hidden" value={{pmlist.pmsheetno}} name="pmsheetno">
+                <input type="hidden" value={{pmlist.pmcode}} name="pmcode">
+                <input type="hidden" value={{pmlist.controlno}} name="controlno">
+                <input type="hidden" value={{selecttext}} name="selecttext">
+                <input type="hidden" value={{searchtext}} name="searchtext">
+                <input type="hidden" value={{calendarsearch}} name="calendarsearch">
+            <input type="submit" class="button" value="Reject" onclick="this.disabled=true;this.value='Reject'; this.form.submit();">
+            </form>
+            </td>
+        </tr>
+                 {%endif%}
+                 {%endfor%}
+     </tbody>
+ </table>
+ </div>
+</main>
+</body>
+</html>

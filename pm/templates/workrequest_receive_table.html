@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<style>
+workrequesttitle{
+        position:fixed;top:6%; left:56%;
+        font-size: 20px;
+        font-family: arial;
+        font-weight:bold;
+}
+workorderno{
+        position:fixed;top:8.5%; left:89%;
+        font-size: 12px;
+        font-family: arial;
+        font-weight:bold;
+}
+#workrequesttitle{
+    	font-family: arial;
+        font-size:11px;
+        position:fixed;top:21.7%; left:55.6%;
+        width:44.1%;
+        background-color:#6F6F6F;
+        color:white;
+        height:20px;
+}
+#workrequestdesc{
+        position:fixed; top:23.7%; left:55.65%;
+        width:46%;
+        width:36.3%;
+        font-family: arial;
+        font-size:11px;
+}
+#workrequesttable{
+        font-size:11px;
+    	font-family: arial;
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+}
+.c1{padding-left:400px;}
+.c1-1{width:400px; height:15px;}
+
+#workrequesttitle2{
+    	font-family: arial;
+        font-size:11px;
+        position:fixed;top:67.9%; left:55.6%;
+        width:44.1%;
+        background-color:#6F6F6F;
+        color:white;
+        height:20px;
+}
+#workrequesttable2{
+        position:fixed;top:70%; left:55.6%;
+        width:44.1%;
+        font-family: arial;
+        font-size:11px;
+}
+#workrequesttitle3{
+    	font-family: arial;
+        font-size:11px;
+        position:fixed;top:73%; left:55.6%;
+        width:44.1%;
+        background-color:#6F6F6F;
+        color:white;
+        height:20px;
+}
+#workrequesttable3{
+        position:fixed;top:75.1%; left:55.6%;
+        width:44.1%;
+        font-family: arial;
+        font-size:11px;
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+}
+#workrequesttitle4{
+    	font-family: arial;
+        font-size:11px;
+        position:fixed;top:78.1%; left:55.6%;
+        width:44.1%;
+        background-color:#6F6F6F;
+        color:white;
+        height:20px;
+}
+#workrequesttable4{
+        position:fixed;top:80.2%; left:55.6%;
+        width:44.1%;
+        font-family: arial;
+        font-size:11px;
+}
+#workrequesttitle5{
+    	font-family: arial;
+        font-size:11px;
+        position:fixed;top:87.5%; left:55.6%;
+        width:44.1%;
+        background-color:#6F6F6F;
+        color:white;
+        height:20px;
+}
+#workrequesttable5{
+        position:fixed;top:89.6%; left:55.6%;
+        width:44.1%;
+        font-family: arial;
+        font-size:11px;
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+}
+#workrequesttitle6{
+    	font-family: arial;
+        font-size:11px;
+        position:fixed;top:94.4%; left:55.6%;
+        width:44.1%;
+        background-color:#6F6F6F;
+        color:white;
+        height:20px;
+}
+
+#workrequesttable6{
+        position:fixed;top:96.5%; left:55.6%;
+        width:44.1%;
+        font-family: arial;
+        font-size:11px;
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+}
+
+.sign_division{
+    width:18%;
+    height:20px;
+    font-family: arial;
+    font-size:11px;
+    background-color:#EEEEEE;
+}
+.sign_name{
+    width:41%;
+    height:20px;
+    font-family: arial;
+    font-size:11px;
+    background-color:white;
+}
+.sign_date{
+    width:41%;
+    height:20px;
+    font-family: arial;
+    font-size:11px;
+    background-color:white;
+}
+.description_css{
+width:835px;
+height:417px;
+font-size:12px;
+font-family: arial;
+}
+</style>
+
+</head>
+<body>
+<workrequesttitle>
+Work Request Form
+</workrequesttitle>
+{% for workorder in workorder_table %}
+<workorderno>
+Work Order No. : {{workorder.workorderno}}
+</workorderno>
+{% endfor %}
+<main>
+<div id="workrequesttitle" >
+     <table  style="word-break:break-all">
+        <thead>
+        <tr>
+            <td align="center" class="c1">Description</td>
+        </tr>
+        </thead>
+     </table>
+</div>
+<div id="workrequestdesc">
+ <table style="word-break:break-all" border="1" id="workrequesttable">
+     <tbody>
+{% for workorder in workorder_table %}
+        <tr>
+            <td align="center" class="c1-1">
+                <textarea name="description" class="description_css" style="resize:none;" readonly>{{workorder.description}}</textarea></td> <!--models.py에서 값받아오기-->
+            </td>
+        </tr>
+{% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div id="workrequesttitle2" >
+     <table  style="word-break:break-all">
+        <thead>
+        <tr>
+            <td align="center" class="c2">Attached File</td>
+        </tr>
+        </thead>
+     </table>
+</div>
+
+<div id="workrequesttable2" >
+     <table  style="word-break:break-all">
+        <thead>
+{% for workorder in workorder_table %}
+        <tr>
+            <td align="center" class="c2-1">
+            {% if url_comp == "Y" %}
+            <a href="{{workorder.r_attach}}" target="_blank" class="upload_complete_css">Upload_ Complete</a>
+            {%else%}
+                N/A
+            {%endif%}
+                </td>
+        </tr>
+{% endfor %}
+        </thead>
+     </table>
+</div>
+
+<div id="workrequesttitle3" >
+     <table  style="word-break:break-all">
+        <thead>
+        <tr>
+            <td align="center" class="c3">Required Information</td>
+        </tr>
+        </thead>
+     </table>
+</div>
+ <table style="word-break:break-all" border="1" id="workrequesttable3">
+     <tbody>
+{% for workorder in workorder_table %}
+    <tr>
+        <td class="table1">
+            Date Required
+        </td>
+        <td class="table2">
+            {{workorder.req_date}}
+        </td>
+        <td class="table1">
+            Reason Required
+        </td>
+        <td class="table2">
+            {{workorder.req_reason}}
+        </td>
+    </tr>
+{% endfor %}
+        </tbody>
+</table>
+<div id="workrequesttitle4" >
+     <table  style="word-break:break-all">
+        <thead>
+        <tr>
+            <td align="center" class="c4">Breakdown Cause</td>
+        </tr>
+        </thead>
+     </table>
+</div>
+<div id="workrequesttable4" >
+     <table  style="word-break:break-all" >
+        <thead>
+{% for workorder in workorder_table %}
+        <tr>
+            <td align="center" class="c4-1">{{workorder.description_info}}</td>
+        </tr>
+{% endfor %}
+        </thead>
+     </table>
+</div>
+
+<div id="workrequesttitle5" >
+     <table  style="word-break:break-all">
+        <thead>
+        <tr>
+            <td align="center" class="c4">Written</td>
+        </tr>
+        </thead>
+     </table>
+</div>
+
+ <table style="word-break:break-all" border="1" id="workrequesttable5">
+{% for workorder in workorder_table %}
+     <tr>
+        <td class="sign_division">
+            Initiator
+        </td>
+        <td class="sign_name" align="center">
+            {{workorder.requestor}}
+        </td>
+        <td class="sign_date" align="center">
+            {{workorder.date}}
+        </td>
+    </tr>
+    <tr>
+        <td class="sign_division">
+            Team Manager
+        </td>
+        {% if r_t_name == "Y"%}
+        <td class="sign_name" align="center">
+            {{workorder.r_t_name}}
+        </td>
+        <td class="sign_date" align="center">
+            {{workorder.r_t_date}}
+        </td>
+        {%else%}
+        <td class="sign_name" align="center">
+            <form action="workrequest_r_t_accept" method="post">
+             {% csrf_token %}
+                <input type="hidden" value={{workorder.workorderno}} name="workorderno">
+                <input type="hidden" value={{loginid}} name="loginid">
+                <input type="hidden" value={{searchtext}} name="searchtext">
+                <input type="hidden" value={{selecttext}} name="selecttext">
+            <input type="submit" class="button" value="Accept"></form>
+        </td>
+        <td class="sign_date" align="center">
+            <form action="workrequest_r_t_reject" method="post">
+             {% csrf_token %}
+                <input type="hidden" value={{workorder.workorderno}} name="workorderno">
+                <input type="hidden" value={{searchtext}} name="searchtext">
+                <input type="hidden" value={{selecttext}} name="selecttext">
+                <input type="hidden" value={{loginid}} name="loginid">
+            <input type="submit" class="button" value="Reject"></form>
+        </td>
+        {%endif%}
+    </tr>
+</table>
+
+<div id="workrequesttitle6" >
+     <table  style="word-break:break-all">
+        <thead>
+        <tr>
+            <td align="center" class="c4">Received</td>
+        </tr>
+        </thead>
+     </table>
+</div>
+
+ <table style="word-break:break-all" border="1" id="workrequesttable6">
+    <tr>
+        <td class="sign_division">
+            Planner / Scheduler
+        </td>
+                 {% if r_t_name != "Y"%}
+        <td class="sign_name" align="center"></td>
+        <td class="sign_date" align="center"></td>
+                 {%else%}
+                 {% if r_s_name == "Y"%}
+        <td class="sign_name" align="center">
+            {{workorder.r_s_name}}
+        </td>
+        <td class="sign_date" align="center">
+            {{workorder.r_s_date}}
+        </td>
+                {%else%}
+        <td class="sign_name" align="center">
+            <form method="post" name="workrequest_r_s_accept">
+             {% csrf_token %}
+                <input type="hidden" value={{workorder.workorderno}} name="workorderno">
+                <input type="hidden" name="detail">
+                <input type="hidden" value={{loginid}} name="loginid">
+                <input type="hidden" value={{searchtext}} name="searchtext">
+                <input type="hidden" value={{selecttext}} name="selecttext">
+            <input type="button" class="button" value="Accept" onclick="Workrequest_detail();"></form>
+        </td>
+        <td class="sign_date" align="center">
+            <form action="workrequest_r_s_reject" method="post">
+             {% csrf_token %}
+                <input type="hidden" value={{workorder.workorderno}} name="workorderno">
+                <input type="hidden" value={{searchtext}} name="searchtext">
+                <input type="hidden" value={{selecttext}} name="selecttext">
+                <input type="hidden" value={{loginid}} name="loginid">
+            <input type="submit" class="button" value="Reject"></form>
+        </td>
+        {%endif%}
+        {%endif%}
+    </tr>
+
+      {% endfor %}
+</table>
+</main>
+<script>
+    function Workrequest_detail(){
+        var detail = window.prompt("Please enter the Breakdown Cause.","");
+        if (detail != null){
+        document.workrequest_r_s_accept.detail.value = detail;
+                    // 서버로 전송
+        document.workrequest_r_s_accept.action="workrequest_r_s_accept";
+        document.workrequest_r_s_accept.submit();}
+        }
+</script>
+</body>
+</html>
