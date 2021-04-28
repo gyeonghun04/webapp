@@ -64,9 +64,9 @@ titletext{
             <option value="team">Team</option>
             <option value="control_no">Control No.</option>
             <option value="equipname">Equipment</option></select>
-            <input type="search"  class="searchtext" placeholder="Keywords" name="searchtext" value={{searchtext}}>
-            <input type="hidden" value={{loginid}} name="loginid">
-            <input type="hidden" value={{calendarsearch}} name="calendarsearch">
+            <input type="search"  class="searchtext" placeholder="Keywords" name="searchtext" value="{{searchtext}}">
+            <input type="hidden" value="{{loginid}}" name="loginid">
+            <input type="hidden" value="{{calendarsearch}}" name="calendarsearch">
             <input type="submit"  class="searchbutton" value="Search"></form>
     </div></td>
     <tr>
@@ -76,9 +76,9 @@ titletext{
         <form action="pmchecksheet_main" method="post">
             {% csrf_token %}
             <input type="month"  class="calendartext" name="calendarsearch">
-            <input type="hidden" value={{loginid}} name="loginid">
-            <input type="hidden" value={{selecttext}} name="selecttext">
-            <input type="hidden" value={{searchtext}} name="searchtext">
+            <input type="hidden" value="{{loginid}}" name="loginid">
+            <input type="hidden" value="{{selecttext}}" name="selecttext">
+            <input type="hidden" value="{{searchtext}}" name="searchtext">
             <input type="submit"  class="searchbutton2" value="Search"></form>
     </div>
         </td>

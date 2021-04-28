@@ -101,10 +101,10 @@ Preventive Maintenance Equipment Schedule
             <td align="center" class="c9-1">
             <form action="pm_fullscreen" method="post" target="_blank">
                 {% csrf_token %}
-                <input type="hidden" name="pmsheetno" value={{pmsch.pmsheetno}}>
-                <input type="hidden" name="pmcode" value={{pmsch.pmcode}}>
-                <input type="hidden" name="loginid" value={{loginid}}>
-                <input type="hidden" name="controlno" value={{pmsch.controlno}}>
+                <input type="hidden" name="pmsheetno" value="{{pmsch.pmsheetno}}">
+                <input type="hidden" name="pmcode" value="{{pmsch.pmcode}}">
+                <input type="hidden" name="loginid" value="{{loginid}}">
+                <input type="hidden" name="controlno" value="{{pmsch.controlno}}">
                 <input type="submit" value="Check" class="button">
             </form>
             </td>

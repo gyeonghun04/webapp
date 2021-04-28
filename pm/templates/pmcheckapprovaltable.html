@@ -26,7 +26,7 @@ controlformtext{
 #pmchecksheetdesc{
         position:fixed; top:25.6%; left:39.6%;
         width:59.98%;
-        height:57.6%;
+        height:48%;
         overflow-y:scroll;
 }
 
@@ -127,6 +127,58 @@ height:20px;
 padding-left:10px;}
 .r2-1{width:500px;
 padding-left:10px;}
+
+#usedparthead{
+        position:fixed; top:73.5%; left:39.6%;
+        width:60%;
+    	font-family: arial;
+        font-size:11px;
+        background-color:#6F6F6F;
+        color:white;
+        height:40px;
+        border:1px solid white;
+        border-collapse:collapse;
+        z-index:-10;
+}
+#usedpartbody{
+        position:fixed; top:77.5%; left:39.6%;
+        height:64px;
+        width:59.90%;
+        overflow-y:scroll;
+        height:7.9%;
+}
+#usedparttop{
+    	font-family: arial;
+        font-size:11px;
+        height:20px;
+}
+#usedparttable{
+        font-size:11px;
+    	font-family: arial;
+    	border:1px solid #6F6F6F;
+        border-collapse:collapse;
+}
+.u1{width:13.2%;
+background-color:#6F6F6F;}
+.u2{width:17.6%;
+background-color:#6F6F6F;}
+.u3{width:13.3%;
+background-color:#6F6F6F;}
+.u4{width:26.3%;
+background-color:#6F6F6F;}
+.u5{width:10.7%;
+background-color:#6F6F6F;}
+.u6{width:;
+background-color:#6F6F6F;}
+
+.u1-1{width:150px;
+height:20px;}
+.u2-1{width:200px;}
+.u3-1{width:150px;}
+.u4-1{width:300px;}
+.u5-1{width:120px;}
+.u6-1{width:200px;}
+
 </style>
 
 </head>
@@ -181,6 +233,36 @@ Preventive Maintenance Check Sheet
         </tbody>
  </table>
 </div>
+ <div id="usedparttop">
+   <table id="usedparthead" border="1">
+        <tr>
+            <td align="center" class="u7" colspan="6">Used Parts List</td>
+        </tr>
+       <tr>
+            <td align="center" class="u1">Code No.</td>
+            <td align="center" class="u2">Part Name</td>
+            <td align="center" class="u3">Vendor</td>
+            <td align="center" class="u4">Model Name</td>
+            <td align="center" class="u5">Quantity</td>
+            <td align="center" class="u6">Out Code</td>
+       </tr>
+   </table>
+ </div>
+<div id="usedpartbody">
+   <table id="usedparttable" border="1">
+            {% for spare_out in spare_list %}
+       <tr>
+            <td align="center" class="u1-1">{{spare_out.codeno}}</td>
+            <td align="center" class="u2-1">{{spare_out.partname}}</td>
+            <td align="center" class="u3-1">{{spare_out.vendor}}</td>
+            <td align="center" class="u4-1">{{spare_out.modelno}}</td>
+            <td align="center" class="u5-1">{{spare_out.used_qy}}</td>
+            <td align="center" class="u6-1">{{spare_out.out_code}}</td>
+       </tr>
+            {% endfor %}
+   </table>
+</div>
+
 
   <div id="pmremarktop">
    <table id="pmremarkhead">
@@ -234,32 +316,38 @@ Preventive Maintenance Check Sheet
             <td align="center" class="c12">
             <form action="pmcheckapproval_review_accept" method="post">
                 {% csrf_token %}
-                <input type="hidden" value={{loginid}} name="loginid">
-                <input type="hidden" value={{pmlist.pmsheetno}} name="pmsheetno">
-                <input type="hidden" value={{pmlist.pmcode}} name="pmcode">
-                <input type="hidden" value={{pmlist.controlno}} name="controlno">
-                <input type="hidden" value={{selecttext}} name="selecttext">
-                <input type="hidden" value={{searchtext}} name="searchtext">
-                <input type="hidden" value={{calendarsearch}} name="calendarsearch">
+                <input type="hidden" value="{{loginid}}" name="loginid">
+                <input type="hidden" value="{{pmlist.pmsheetno}}" name="pmsheetno">
+                <input type="hidden" value="{{pmlist.pmcode}}" name="pmcode">
+                <input type="hidden" value="{{pmlist.controlno}}" name="controlno">
+                <input type="hidden" value="{{selecttext}}" name="selecttext">
+                <input type="hidden" value="{{searchtext}}" name="searchtext">
+                <input type="hidden" value="{{calendarsearch}}" name="calendarsearch">
             <input type="submit" class="button" value="Accept" onclick="this.disabled=true;this.value='Accept'; this.form.submit();">
             </form>
             </td>
             <td align="center" class="c13">
             <form action="pmcheckapproval_review_reject" method="post">
                 {% csrf_token %}
-                 <input type="hidden" value={{loginid}} name="loginid">
-                <input type="hidden" value={{pmlist.pmsheetno}} name="pmsheetno">
-                <input type="hidden" value={{pmlist.pmcode}} name="pmcode">
-                <input type="hidden" value={{pmlist.controlno}} name="controlno">
-                <input type="hidden" value={{selecttext}} name="selecttext">
-                <input type="hidden" value={{searchtext}} name="searchtext">
-                <input type="hidden" value={{calendarsearch}} name="calendarsearch">
+                 <input type="hidden" value="{{loginid}}" name="loginid">
+                <input type="hidden" value="{{pmlist.pmsheetno}}" name="pmsheetno">
+                <input type="hidden" value="{{pmlist.pmcode}}" name="pmcode">
+                <input type="hidden" value="{{pmlist.controlno}}" name="controlno">
+                <input type="hidden" value="{{selecttext}}" name="selecttext">
+                <input type="hidden" value="{{searchtext}}" name="searchtext">
+                <input type="hidden" value="{{calendarsearch}}" name="calendarsearch">
             <input type="submit" class="button" value="Reject" onclick="this.disabled=true;this.value='Reject'; this.form.submit();">
             </form>
             </td>
         </tr>
-                 {%else%}
+                 {%elif review_signal == "Y" %}
         <tr>
+            <td align="left" class="c11">Reviewed by:</td> <!--models.py에서 값받아오기-->
+            <td align="center" class="c12">{{pmlist.r_name_temp}}</td>
+            <td align="center" class="c13">{{pmlist.r_date_temp}}</td>
+        </tr>
+                 {%else%}
+         <tr>
             <td align="left" class="c11">Reviewed by:</td> <!--models.py에서 값받아오기-->
             <td align="center" class="c12">{{pmlist.r_name_temp}}</td>
             <td align="center" class="c13">{{pmlist.r_date_temp}}</td>
@@ -269,6 +357,12 @@ Preventive Maintenance Check Sheet
 
                  {% for pmlist in pmchecksheet_info  %}
                  {%if review_signal == "N" %}
+         <tr>
+            <td align="left" class="c11">Reviewed by:</td> <!--models.py에서 값받아오기-->
+            <td align="center" class="c12"></td>
+            <td align="center" class="c13"></td>
+        </tr>
+                 {%elif review_signal == "" %}
          <tr>
             <td align="left" class="c11">Reviewed by:</td> <!--models.py에서 값받아오기-->
             <td align="center" class="c12"></td>
@@ -287,26 +381,26 @@ Preventive Maintenance Check Sheet
             <td align="center" class="c12">
             <form action="pmcheckapproval_approve_accept" method="post">
                 {% csrf_token %}
-                <input type="hidden" value={{loginid}} name="loginid">
-                <input type="hidden" value={{pmlist.pmsheetno}} name="pmsheetno">
-                <input type="hidden" value={{pmlist.pmcode}} name="pmcode">
-                <input type="hidden" value={{pmlist.controlno}} name="controlno">
-                <input type="hidden" value={{selecttext}} name="selecttext">
-                <input type="hidden" value={{searchtext}} name="searchtext">
-                <input type="hidden" value={{calendarsearch}} name="calendarsearch">
+                <input type="hidden" value="{{loginid}}" name="loginid">
+                <input type="hidden" value="{{pmlist.pmsheetno}}" name="pmsheetno">
+                <input type="hidden" value="{{pmlist.pmcode}}" name="pmcode">
+                <input type="hidden" value="{{pmlist.controlno}}" name="controlno">
+                <input type="hidden" value="{{selecttext}}" name="selecttext">
+                <input type="hidden" value="{{searchtext}}" name="searchtext">
+                <input type="hidden" value="{{calendarsearch}}" name="calendarsearch">
             <input type="submit" class="button" value="Accept" onclick="this.disabled=true;this.value='Accept'; this.form.submit();">
             </form>
             </td>
             <td align="center" class="c13">
             <form action="pmcheckapproval_approve_reject" method="post">
                 {% csrf_token %}
-                 <input type="hidden" value={{loginid}} name="loginid">
-                <input type="hidden" value={{pmlist.pmsheetno}} name="pmsheetno">
-                <input type="hidden" value={{pmlist.pmcode}} name="pmcode">
-                <input type="hidden" value={{pmlist.controlno}} name="controlno">
-                <input type="hidden" value={{selecttext}} name="selecttext">
-                <input type="hidden" value={{searchtext}} name="searchtext">
-                <input type="hidden" value={{calendarsearch}} name="calendarsearch">
+                 <input type="hidden" value="{{loginid}}" name="loginid">
+                <input type="hidden" value="{{pmlist.pmsheetno}}" name="pmsheetno">
+                <input type="hidden" value="{{pmlist.pmcode}}" name="pmcode">
+                <input type="hidden" value="{{pmlist.controlno}}" name="controlno">
+                <input type="hidden" value="{{selecttext}}" name="selecttext">
+                <input type="hidden" value="{{searchtext}}" name="searchtext">
+                <input type="hidden" value="{{calendarsearch}}" name="calendarsearch">
             <input type="submit" class="button" value="Reject" onclick="this.disabled=true;this.value='Reject'; this.form.submit();">
             </form>
             </td>

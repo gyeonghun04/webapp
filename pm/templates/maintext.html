@@ -250,6 +250,16 @@ a{
         padding-left:4%;
         outline:0;
 }
+.hidden_btn_percent{
+ position:fixed; top:22%; left:30.6%;
+ background-color: rgba(0, 0, 0, 0.0);
+ width:66px;
+ height:30px;
+ cursor:pointer;
+ z-index:10;
+ border:0px;
+ outline:0;
+}
 </style>
 
 </head>
@@ -296,6 +306,13 @@ a{
     <input type="hidden" value="{{total_len}}" name="total_len">
     <input type="hidden" value="{{completed_len}}" name="completed_len">
 </div>
+
+<form action="pmchecksheet_main" method="post">
+{% csrf_token %}
+<input type="hidden" value="{{loginid}}" name="loginid">
+<input type="hidden" value="Fixed Date" name="searchtext">
+<input type="hidden" value="status" name="selecttext">
+<input type="submit" class="hidden_btn_percent" value=""></form>
 
 <div id="today_table">
     <table_title>Today's Preventive Maintenance</table_title>
@@ -505,7 +522,7 @@ a{
     <td align="center" class="m2">
         <form method="post">
         {% csrf_token %}
-        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="hidden" value="{{loginid}}" name="loginid">
         <input type="button"value="{{performed_len}}" class="my_button"  onclick="Pmcheckapproval();"></form>
     </td>
 </tr>
@@ -514,7 +531,7 @@ a{
     <td align="center" class="m2">
              <form action="workrequest_main" method="post">
         {% csrf_token %}
-        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="hidden" value="{{loginid}}" name="loginid">
         <input type="submit"value="{{wr_receive_len}}" class="my_button"></form></td>
 </tr>
 <tr>
@@ -522,7 +539,7 @@ a{
     <td align="center" class="m2">
             <form method="post">
         {% csrf_token %}
-        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="hidden" value="{{loginid}}" name="loginid">
         <input type="button"value="{{wo_repair_len}}" class="my_button" onclick="Workorder_approval();"></form></td>
 </tr>
 </table>
@@ -539,7 +556,7 @@ a{
     <td align="center" class="m2">
                 <form method="post">
         {% csrf_token %}
-        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="hidden" value="{{loginid}}" name="loginid">
         <input type="button" value="{{reviewed_len}}" class="my_button"  onclick="Pmcheckapproval();"></form></td>
 </tr>
 <tr>
@@ -547,7 +564,7 @@ a{
     <td align="center" class="m2">
             <form action="pmra_main" method="post">
         {% csrf_token %}
-        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="hidden" value="{{loginid}}" name="loginid">
         <input type="submit" value="{{ra_prepared_len}}" class="my_button"></form></td>
 </tr>
 <tr>
@@ -555,7 +572,7 @@ a{
     <td align="center" class="m2">
             <form method="post">
         {% csrf_token %}
-        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="hidden" value="{{loginid}}" name="loginid">
         <input type="button" value="{{cf_prepared_len}}" class="my_button" onclick="Pmapproval();"></form></td>
 </tr>
 <tr>
@@ -563,7 +580,7 @@ a{
     <td align="center" class="m2">
                 <form method="post">
         {% csrf_token %}
-        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="hidden" value="{{loginid}}" name="loginid">
         <input type="button"value="{{wr_receive_len}}" class="my_button" onclick="Workrequest_approval();"></form></td>
 </tr>
 <tr>
@@ -571,7 +588,7 @@ a{
     <td align="center" class="m2">
                 <form method="post">
         {% csrf_token %}
-        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="hidden" value="{{loginid}}" name="loginid">
         <input type="button"value="{{wo_review_len}}" class="my_button" onclick="Workorder_approval();"></form></td>
 </tr>
 </table>
@@ -588,7 +605,7 @@ a{
     <td align="center" class="m2">
                     <form method="post">
         {% csrf_token %}
-        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="hidden" value="{{loginid}}" name="loginid">
         <input type="button" value="{{cf_reviewed_len}}" class="my_button" onclick="Pmapproval();"></form></td>
 </tr>
 <tr>
@@ -596,7 +613,7 @@ a{
     <td align="center" class="m2">
                         <form method="post">
         {% csrf_token %}
-        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="hidden" value="{{loginid}}" name="loginid">
         <input type="button"value="{{wr_review_len}}" class="my_button" onclick="Workrequest_approval();"></form></td>
 </tr>
 <tr>
@@ -604,7 +621,7 @@ a{
     <td align="center" class="m2">
                         <form method="post">
         {% csrf_token %}
-        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="hidden" value="{{loginid}}" name="loginid">
         <input type="button"value="{{wo_check_len}}" class="my_button" onclick="Workorder_approval();"></form></td>
 </tr>
 </table>
@@ -636,7 +653,7 @@ a{
         wr_total_len = document.getElementsByName("wr_total_len")[0].value;
         wo_not_len = document.getElementsByName("wo_not_len")[0].value;
         not_repair =  parseInt(wr_total_len) + parseInt(wo_not_len);
-        not_repair = "Not Complete of Equipment: " + not_repair;
+        not_repair = "Not Complete of Repair: " + not_repair;
         document.getElementById("not_repair").innerHTML=not_repair;
 
      ///달력 오늘날짜 산출

@@ -748,7 +748,7 @@ Maintenance Work Order Form
 
     <form method="post" name="usedpartup">
              {% csrf_token %}
-        <input type="hidden" value={{loginid}} id="workloginid2">
+        <input type="hidden" value="{{loginid}}" id="workloginid2">
         <input type="hidden" value="{{workorderno}}" id="workorderno2">
         </form>
 

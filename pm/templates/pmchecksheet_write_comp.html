@@ -291,9 +291,9 @@ Preventive Maintenance Check Sheet
      {% for equipinfo in pmchecksheet_info  %}
      <form action="pmchecksheet_return" method="post" >
                 {% csrf_token %}
-     <input type="hidden" value={{equipinfo.controlno}} name="controlno">
-     <input type="hidden" value={{loginid}} name="loginid">
-     <input type="hidden" value={{pmcode}} name="pmcode">
+     <input type="hidden" value="{{equipinfo.controlno}}" name="controlno">
+     <input type="hidden" value="{{loginid}}" name="loginid">
+     <input type="hidden" value="{{pmcode}}" name="pmcode">
      <input type="submit" class="pmcheck_return_css" value="Return" onclick="this.disabled=true;this.value='Return'; this.form.submit();">
      </form>
      {%endfor%}

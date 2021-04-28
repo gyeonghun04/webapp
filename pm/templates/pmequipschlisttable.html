@@ -80,8 +80,8 @@ tr:nth-child(even){
             <td align="center" class="m5-1">
                 <form action="pmequipsch_view" method="post" >
                 {% csrf_token %}
-                <input type="hidden" name="loginid" value={{loginid}}>
-                <input type="hidden" name="controlno" value={{equiplist.controlno}}>
+                <input type="hidden" name="loginid" value="{{loginid}}">
+                <input type="hidden" name="controlno" value="{{equiplist.controlno}}">
                 <input type="submit" class="button" value="View">
                 </form>
             </td>

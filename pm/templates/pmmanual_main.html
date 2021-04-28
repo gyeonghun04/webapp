@@ -167,7 +167,7 @@ width:580px;
             <option value="partname">Parts Name</option>
             </select>
             <input type="search"  class="searchtext" placeholder="Keywords" name="searchtext">
-            <input type="hidden" value={{loginid}} name="loginid">
+            <input type="hidden" value="{{loginid}}" name="loginid">
             <input type="submit"  class="searchbutton" value="Search"></form>
     </div></td>
     </tr>
@@ -247,7 +247,7 @@ width:580px;
             <td class="n7-1">
                 <form method="post" name="upload_file" enctype="multipart/form-data">
                                 {% csrf_token %}
-                <input type="hidden" value={{loginid}} name="loginid">
+                <input type="hidden" value="{{loginid}}" name="loginid">
                 <input type="hidden" name="controlno">
                 <input type="hidden" name="team">
                 <input type="hidden" name="name">
@@ -272,20 +272,20 @@ width:580px;
 
         <form action="" method="post" name="control_no">
              {% csrf_token %}
-        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="hidden" value="{{loginid}}" name="loginid">
         <input type="hidden" name="controlno">
         </form>
 
         <form action="" method="post" name="fileupload_submit">
              {% csrf_token %}
-        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="hidden" value="{{loginid}}" name="loginid">
         <input type="hidden" name="controlno">
         <input type="hidden" name="team">
         <input type="hidden" name="name">
         <input type="hidden" name="division">
         <input type="hidden" name="partname">
         <input type="hidden" name="maker">
-        <input type="hidden" value={{url}} name="url">
+        <input type="hidden" value="{{url}}" name="url">
         </form>
 
 </main>

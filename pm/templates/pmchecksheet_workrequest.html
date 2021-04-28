@@ -144,13 +144,7 @@ cursor:pointer
 <div class="border">
 </div>
 
-<div id="messages_location">
-{%if messages %}
-{%for message in messages%}
-{{message}}
-{%endfor%}
-{%endif%}
-</div>
+{% include "pmchecksheet_workrequest_top.html"%}
 
 <workrequesttitle>
 Work Request Form
@@ -353,6 +347,7 @@ Work Request Form
             document.workrequest.roomno_up.value = roomno;
             checkresult = opener.document.getElementById("workcheckresult").value;
             document.workrequest.checkresult_up.value = checkresult;
+            document.getElementById("logindata").innerHTML=loginid;
             }
 
       onload=init

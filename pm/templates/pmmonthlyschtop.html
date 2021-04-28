@@ -41,7 +41,7 @@ titletext{
         <form action="pmmonthly_search" method="post">
             {% csrf_token %}
             <input type="month"  class="calendartext" name="calendarsearch">
-            <input type="hidden" value={{loginid}} name="loginid">
+            <input type="hidden" value="{{loginid}}" name="loginid">
             <input type="submit"  class="searchbutton" value="Search"></form>
     </div></td>
     </tr>

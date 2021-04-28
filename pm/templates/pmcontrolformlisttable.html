@@ -92,21 +92,21 @@ tr:nth-child(even){
             <td align="center" class="m4-1">
                 <form action="pmcontrolform_view" method="post" >
                 {% csrf_token %}
-                <input type="hidden" value={{loginid}} name="loginid">
-                <input type="hidden" value={{controlformlist.controlno}} name="controlno">
-                <input type="hidden" value={{controlformlist.revno}} name="rev_no_1">
-                <input type="hidden" value={{selecttext}} name="selecttext">
-                <input type="hidden" value={{searchtext}} name="searchtext">
+                <input type="hidden" value="{{loginid}}" name="loginid">
+                <input type="hidden" value="{{controlformlist.controlno}}" name="controlno">
+                <input type="hidden" value="{{controlformlist.revno}}" name="rev_no_1">
+                <input type="hidden" value="{{selecttext}}" name="selecttext">
+                <input type="hidden" value="{{searchtext}}" name="searchtext">
                 <input type="submit" class="button" value="View">
                 </form>
             </td>
             <td align="center" class="m5-1" >
                 <form action="pmcontrolform_write" method="post" >
                 {% csrf_token %}
-                <input type="hidden" value={{loginid}} name="loginid">
-                <input type="hidden" value={{controlformlist.controlno}} name="controlno">
-                <input type="hidden" value={{selecttext}} name="selecttext">
-                <input type="hidden" value={{searchtext}} name="searchtext">
+                <input type="hidden" value="{{loginid}}" name="loginid">
+                <input type="hidden" value="{{controlformlist.controlno}}" name="controlno">
+                <input type="hidden" value="{{selecttext}}" name="selecttext">
+                <input type="hidden" value="{{searchtext}}" name="searchtext">
                 <input type="submit" class="button" value="Write">
                 </form>
             </td>
@@ -115,11 +115,11 @@ tr:nth-child(even){
             <td align="center" class="m4-11">
                 <form action="pmcontrolform_view" method="post" >
                 {% csrf_token %}
-                <input type="hidden" value={{loginid}} name="loginid">
-                <input type="hidden" value={{controlformlist.controlno}} name="controlno">
-                <input type="hidden" value={{controlformlist.revno}} name="rev_no_1">
-                <input type="hidden" value={{selecttext}} name="selecttext">
-                <input type="hidden" value={{searchtext}} name="searchtext">
+                <input type="hidden" value="{{loginid}}" name="loginid">
+                <input type="hidden" value="{{controlformlist.controlno}}" name="controlno">
+                <input type="hidden" value="{{controlformlist.revno}}" name="rev_no_1">
+                <input type="hidden" value="{{selecttext}}" name="selecttext">
+                <input type="hidden" value="{{searchtext}}" name="searchtext">
                 <input type="submit" class="button" value="View">
                 </form>
             </td>

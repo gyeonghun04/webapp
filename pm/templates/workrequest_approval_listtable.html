@@ -90,8 +90,8 @@ tr:nth-child(even){
             <td align="center" class="m8-1" >
                 <form action="workrequest_approval" method="post" >
                 {% csrf_token %}
-                <input type="hidden" value={{loginid}} name="loginid">
-                <input type="hidden" value={{workorder.workorderno}} name="workorderno">
+                <input type="hidden" value="{{loginid}}" name="loginid">
+                <input type="hidden" value="{{workorder.workorderno}}" name="workorderno">
                 <input type="submit" class="button" value="Approval">
                 </form>
             </td>

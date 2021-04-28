@@ -154,16 +154,16 @@ tr:nth-child(even){
             <td align="right" class="m6-2">
                 <form action="spareparts_release_minus" method="post">
                     {% csrf_token %}
-                <input type="hidden" value={{sp_release.no}} name="no">
-                <input type="hidden" value={{loginid}} name="loginid">
+                <input type="hidden" value="{{sp_release.no}}" name="no">
+                <input type="hidden" value="{{loginid}}" name="loginid">
                 <input type="submit" value="-" class="qy_btn_minus"></form>
             </td>
             <td align="center" class="m6-1">{{sp_release.qy}}</td>
             <td align="left" class="m6-2">
                 <form action="spareparts_release_plus" method="post">
                     {% csrf_token %}
-                <input type="hidden" value={{sp_release.no}} name="no">
-                <input type="hidden" value={{loginid}} name="loginid">
+                <input type="hidden" value="{{sp_release.no}}" name="no">
+                <input type="hidden" value="{{loginid}}" name="loginid">
                 <input type="submit" value="+" class="qy_btn_plus"></form>
             </td>
             <td align="center" class="m7-1">{{sp_release.location}}</td>
@@ -174,8 +174,8 @@ tr:nth-child(even){
             <td align="center" class="m10-1">
                  <form action="spareparts_release_delete" method="post">
                     {% csrf_token %}
-                <input type="hidden" value={{sp_release.no}} name="no">
-                <input type="hidden" value={{loginid}} name="loginid">
+                <input type="hidden" value="{{sp_release.no}}" name="no">
+                <input type="hidden" value="{{loginid}}" name="loginid">
                 <input type="submit"  class="delete_btn" value="Delete"></form>
             </td>
         </tr>
@@ -192,7 +192,7 @@ tr:nth-child(even){
              {% csrf_token %}
         <input type="hidden" name="loginid" value="{{loginid}}">
         <input type="hidden" name="controlno">
-        <input type="hidden" value={{loginid}} id="loginid_up">
+        <input type="hidden" value="{{loginid}}" id="loginid_up">
         <input type="hidden" name="no_up"></form>
 
 <script>

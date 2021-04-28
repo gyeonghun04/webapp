@@ -232,8 +232,8 @@ Assessment for Period of Preventive Maintenance
             {%if pmok == "Y" %} Y
             {%elif pmok == "N" %} N
             {%else%}
-                <input type="hidden" value={{equipinfos.controlno}} name="controlno">
-                <input type="hidden" value={{loginid}} name="loginid">
+                <input type="hidden" value="{{equipinfos.controlno}}" name="controlno">
+                <input type="hidden" value="{{loginid}}" name="loginid">
                 <input type="submit" class="button" value="Submit">
             {%endif%}
             </td>
@@ -340,10 +340,10 @@ evaluation method Ⅱ below.)
                  {{score_result}}Point
                  {%else%}
                  {%if pmok == "Y" %}
-                <input type="hidden" value={{equipinfos.controlno}} name="controlno">
-                <input type="hidden" value={{pmreason}} name="pmreason">
-                <input type="hidden" value={{pmok}} name="pmok">
-                <input type="hidden" value={{loginid}} name="loginid">
+                <input type="hidden" value="{{equipinfos.controlno}}" name="controlno">
+                <input type="hidden" value="{{pmreason}}" name="pmreason">
+                <input type="hidden" value="{{pmok}}" name="pmok">
+                <input type="hidden" value="{{loginid}}" name="loginid">
                 <input type="button" class="button" value="Submit" onclick="scoreresult();">
                  {%endif%}
                  {%endif%}
@@ -440,14 +440,14 @@ evaluation method Ⅱ below.)
             <td align="center" class="c12">
             <form action="pmra_write_prepared" method="post">
                 {% csrf_token %}
-                <input type="hidden" value={{equipinfos.controlno}} name="controlno">
-                <input type="hidden" value={{pmreason}} name="pmreason">
-                <input type="hidden" value={{pmok}} name="pmok">
-                <input type="hidden" value={{score_y}} name="score_y">
-                <input type="hidden" value={{score_f}} name="score_f">
-                <input type="hidden" value={{score_result}} name="score_result">
-                <input type="hidden" value={{ra_result}} name="ra_result">
-                <input type="hidden" value={{loginid}} name="loginid">
+                <input type="hidden" value="{{equipinfos.controlno}}" name="controlno">
+                <input type="hidden" value="{{pmreason}}" name="pmreason">
+                <input type="hidden" value="{{pmok}}" name="pmok">
+                <input type="hidden" value="{{score_y}}" name="score_y">
+                <input type="hidden" value="{{score_f}}" name="score_f">
+                <input type="hidden" value="{{score_result}}" name="score_result">
+                <input type="hidden" value="{{ra_result}}" name="ra_result">
+                <input type="hidden" value="{{loginid}}" name="loginid">
                 <input type="submit" class="button" value="Accept" onclick="this.disabled=true;this.value='Accept'; this.form.submit();">
             </form></td>
             <td align="center" class="c13">
@@ -475,16 +475,16 @@ evaluation method Ⅱ below.)
             <td align="center" class="c12">
             <form action="pmra_write_approved" method="post" >
                 {% csrf_token %}
-                <input type="hidden" value={{equipinfos.controlno}} name="controlno">
-                <input type="hidden" value={{pmreason}} name="pmreason">
-                <input type="hidden" value={{pmok}} name="pmok">
-                <input type="hidden" value={{score_y}} name="score_y">
-                <input type="hidden" value={{score_f}} name="score_f">
-                <input type="hidden" value={{score_result}} name="score_result">
-                <input type="hidden" value={{ra_result}} name="ra_result">
-                <input type="hidden" value={{loginid}} name="loginid">
-                <input type="hidden" value={{p_name}} name="p_name">
-                <input type="hidden" value={{p_date}} name="p_date">
+                <input type="hidden" value="{{equipinfos.controlno}}" name="controlno">
+                <input type="hidden" value="{{pmreason}}" name="pmreason">
+                <input type="hidden" value="{{pmok}}" name="pmok">
+                <input type="hidden" value="{{score_y}}" name="score_y">
+                <input type="hidden" value="{{score_f}}" name="score_f">
+                <input type="hidden" value="{{score_result}}" name="score_result">
+                <input type="hidden" value="{{ra_result}}" name="ra_result">
+                <input type="hidden" value="{{loginid}}" name="loginid">
+                <input type="hidden" value="{{p_name}}" name="p_name">
+                <input type="hidden" value="{{p_date}}" name="p_date">
                 <input type="submit" class="button" value="Accept" onclick="this.disabled=true;this.value='Accept'; this.form.submit();">
             </form>
             </td>

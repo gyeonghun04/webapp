@@ -151,20 +151,20 @@ tr:nth-child(even){
             <td align="right" class="m6-2">
                 <form action="spareparts_incoming_minus" method="post">
                     {% csrf_token %}
-                <input type="hidden" value={{sp_incoming.no}} name="no">
-                <input type="hidden" value={{loginid}} name="loginid">
+                <input type="hidden" value="{{sp_incoming.no}}" name="no">
+                <input type="hidden" value="{{loginid}}" name="loginid">
                 <input type="submit" value="-" class="qy_btn_minus"></form>
             </td>
             <td align="center" class="m6-1">{{sp_incoming.qy}}</td>
             <td align="left" class="m6-2">
                 <form action="spareparts_incoming_plus" method="post">
                     {% csrf_token %}
-                <input type="hidden" value={{sp_incoming.no}} name="no">
-                <input type="hidden" value={{loginid}} name="loginid">
+                <input type="hidden" value="{{sp_incoming.no}}" name="no">
+                <input type="hidden" value="{{loginid}}" name="loginid">
                 <input type="submit" value="+" class="qy_btn_plus"></form>
             </td>
             <td align="center" class="m7-1">
-            <input type="hidden" value={{sp_incoming.no}} name="no_up">
+            <input type="hidden" value="{{sp_incoming.no}}" name="no_up">
             <input type="text" value="{{sp_incoming.location}}" name="location_up" class="location_text" onchange="Location_change(this);">
             </td>
             <td align="center" class="m8-1">{{sp_incoming.division}}</td>
@@ -190,7 +190,7 @@ tr:nth-child(even){
         <input type="hidden" name="no_up">
         <input type="hidden" name="location_up">
         </form>
-        <input type="hidden" value={{loginid}} id="loginid_up">
+        <input type="hidden" value="{{loginid}}" id="loginid_up">
 <script>
        function Incoming(){
             var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=1270,height=800,location=0,top=0,left=0';

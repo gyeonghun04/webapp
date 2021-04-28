@@ -194,14 +194,14 @@ tr:nth-child(even){
             <td align="right" class="m7-2">
                 <form action="used_parts_link_minus" method="post">
                     {% csrf_token %}
-                <input type="hidden" value={{spare_out.no}} name="no">
+                <input type="hidden" value="{{spare_out.no}}" name="no">
                 <input type="submit" value="-" class="qy_btn_minus"></form>
             </td>
             <td align="center" class="m7-1">{{spare_out.used_qy}}</td>
             <td align="left" class="m7-2">
                 <form action="used_parts_link_plus" method="post">
                     {% csrf_token %}
-                <input type="hidden" value={{spare_out.no}} name="no">
+                <input type="hidden" value="{{spare_out.no}}" name="no">
                 <input type="submit" value="+" class="qy_btn_plus"></form>
             </td>
             <td align="center" class="m8-1">{{spare_out.location}}</td>

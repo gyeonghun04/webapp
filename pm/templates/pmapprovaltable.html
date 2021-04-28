@@ -212,14 +212,14 @@ Preventive Maintenance Program Control Form
                 {%if r_name_signal == "None" %}
                 <form action="pmapproval_check_accept" method="post">
                 {% csrf_token %}
-                <input type="hidden" value={{loginid}} name="loginid">
-                <input type="hidden" value={{controlno}} name="controlno">
+                <input type="hidden" value="{{loginid}}" name="loginid">
+                <input type="hidden" value="{{controlno}}" name="controlno">
                 <input type="submit" class="button" value="Accept" onclick="this.disabled=true;this.value='Accept'; this.form.submit();"></form>
                 {%elif r_name_signal == "" %}
                 <form action="pmapproval_check_accept" method="post">
                 {% csrf_token %}
-                <input type="hidden" value={{loginid}} name="loginid">
-                <input type="hidden" value={{controlno}} name="controlno">
+                <input type="hidden" value="{{loginid}}" name="loginid">
+                <input type="hidden" value="{{controlno}}" name="controlno">
                 <input type="submit" class="button" value="Accept" onclick="this.disabled=true;this.value='Accept'; this.form.submit();"></form>
                 {%else%}
                 {{r_name_signal}}
@@ -229,14 +229,14 @@ Preventive Maintenance Program Control Form
                 {%if r_name_signal == "None" %}
                 <form action="pmapproval_check_reject" method="post">
                 {% csrf_token %}
-                <input type="hidden" value={{loginid}} name="loginid">
-                <input type="hidden" value={{controlno}} name="controlno">
+                <input type="hidden" value="{{loginid}}" name="loginid">
+                <input type="hidden" value="{{controlno}}" name="controlno">
                 <input type="submit" class="button" value="Reject" onclick="this.disabled=true;this.value='Reject'; this.form.submit();"></form>
                 {%elif r_name_signal == "" %}
                 <form action="pmapproval_check_reject" method="post">
                 {% csrf_token %}
-                <input type="hidden" value={{loginid}} name="loginid">
-                <input type="hidden" value={{controlno}} name="controlno">
+                <input type="hidden" value="{{loginid}}" name="loginid">
+                <input type="hidden" value="{{controlno}}" name="controlno">
                 <input type="submit" class="button" value="Reject" onclick="this.disabled=true;this.value='Reject'; this.form.submit();"></form>
                 {%else%}
                 {{r_date_signal}}
@@ -254,10 +254,10 @@ Preventive Maintenance Program Control Form
                 {%else%}
                 <form action="pmapproval_approved_accept" method="post">
                 {% csrf_token %}
-                <input type="hidden" value={{r_date}} name="r_date">
-                <input type="hidden" value={{r_name}} name="r_name">
-                <input type="hidden" value={{loginid}} name="loginid">
-                <input type="hidden" value={{controlno}} name="controlno">
+                <input type="hidden" value="{{r_date}}" name="r_date">
+                <input type="hidden" value="{{r_name}}" name="r_name">
+                <input type="hidden" value="{{loginid}}" name="loginid">
+                <input type="hidden" value="{{controlno}}" name="controlno">
                 <input type="submit" class="button" value="Accept" onclick="this.disabled=true;this.value='Accept'; this.form.submit();"></form>
                 {%endif%}
                 {%endif%}
@@ -271,10 +271,10 @@ Preventive Maintenance Program Control Form
                 {%else%}
              <form action="pmapproval_approved_reject" method="post">
                 {% csrf_token %}
-                <input type="hidden" value={{r_date}} name="r_date">
-                <input type="hidden" value={{r_name}} name="r_name">
-                <input type="hidden" value={{loginid}} name="loginid">
-                <input type="hidden" value={{controlno}} name="controlno">
+                <input type="hidden" value="{{r_date}}" name="r_date">
+                <input type="hidden" value="{{r_name}}" name="r_name">
+                <input type="hidden" value="{{loginid}}" name="loginid">
+                <input type="hidden" value="{{controlno}}" name="controlno">
                 <input type="submit" class="button" value="Reject"  onclick="this.disabled=true;this.value='Reject'; this.form.submit();"></form>
                 {%endif%}
                 {%endif%}

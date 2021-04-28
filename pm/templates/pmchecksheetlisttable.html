@@ -106,26 +106,26 @@ tr:nth-child(even){
             <td align="center" class="m7-1">
                 <form action="pmchecksheet_view" method="post" >
                 {% csrf_token %}
-                <input type="hidden" value={{loginid}} name="loginid">
-                <input type="hidden" value={{pmsheet_sch.pmsheetno}} name="pmsheetno">
-                <input type="hidden" value={{pmsheet_sch.pmcode}} name="pmcode">
-                <input type="hidden" value={{pmsheet_sch.controlno}} name="controlno">
-                <input type="hidden" value={{selecttext}} name="selecttext">
-                <input type="hidden" value={{searchtext}} name="searchtext">
-                <input type="hidden" value={{calendarsearch}} name="calendarsearch">
+                <input type="hidden" value="{{loginid}}" name="loginid">
+                <input type="hidden" value="{{pmsheet_sch.pmsheetno}}" name="pmsheetno">
+                <input type="hidden" value="{{pmsheet_sch.pmcode}}" name="pmcode">
+                <input type="hidden" value="{{pmsheet_sch.controlno}}" name="controlno">
+                <input type="hidden" value="{{selecttext}}" name="selecttext">
+                <input type="hidden" value="{{searchtext}}" name="searchtext">
+                <input type="hidden" value="{{calendarsearch}}" name="calendarsearch">
                 <input type="submit" class="button" value="View">
                 </form>
             </td>
             <td align="center" class="m8-1" >
                 <form action="pmchecksheet_write" method="post" >
                 {% csrf_token %}
-                <input type="hidden" value={{loginid}} name="loginid">
-                <input type="hidden" value={{pmsheet_sch.pmsheetno}} name="pmsheetno">
-                <input type="hidden" value={{pmsheet_sch.pmcode}} name="pmcode">
-                <input type="hidden" value={{pmsheet_sch.controlno}} name="controlno">
-                 <input type="hidden" value={{calendarsearch}} name="calendarsearch">
-                <input type="hidden" value={{selecttext}} name="selecttext">
-                <input type="hidden" value={{searchtext}} name="searchtext">
+                <input type="hidden" value="{{loginid}}" name="loginid">
+                <input type="hidden" value="{{pmsheet_sch.pmsheetno}}" name="pmsheetno">
+                <input type="hidden" value="{{pmsheet_sch.pmcode}}" name="pmcode">
+                <input type="hidden" value="{{pmsheet_sch.controlno}}" name="controlno">
+                 <input type="hidden" value="{{calendarsearch}}" name="calendarsearch">
+                <input type="hidden" value="{{selecttext}}" name="selecttext">
+                <input type="hidden" value="{{searchtext}}" name="searchtext">
                 <input type="submit" class="button" value="Write">
                 </form>
             </td>
@@ -135,13 +135,13 @@ tr:nth-child(even){
             <td align="center" class="m7-11">
                 <form action="pmchecksheet_view" method="post" >
                 {% csrf_token %}
-                <input type="hidden" value={{loginid}} name="loginid">
-                <input type="hidden" value={{pmsheet_sch.pmsheetno}} name="pmsheetno">
-                <input type="hidden" value={{pmsheet_sch.pmcode}} name="pmcode">
-                <input type="hidden" value={{pmsheet_sch.controlno}} name="controlno">
-                <input type="hidden" value={{selecttext}} name="selecttext">
-                <input type="hidden" value={{searchtext}} name="searchtext">
-                <input type="hidden" value={{calendarsearch}} name="calendarsearch">
+                <input type="hidden" value="{{loginid}}" name="loginid">
+                <input type="hidden" value="{{pmsheet_sch.pmsheetno}}" name="pmsheetno">
+                <input type="hidden" value="{{pmsheet_sch.pmcode}}" name="pmcode">
+                <input type="hidden" value="{{pmsheet_sch.controlno}}" name="controlno">
+                <input type="hidden" value="{{selecttext}}" name="selecttext">
+                <input type="hidden" value="{{searchtext}}" name="searchtext">
+                <input type="hidden" value="{{calendarsearch}}" name="calendarsearch">
                 <input type="submit" class="button" value="View">
                 </form>
             </td>

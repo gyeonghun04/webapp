@@ -130,7 +130,7 @@ title_text{
 <div id="search_main">
 <form name="scan_result" method="post">
                 {% csrf_token %}
-<input type="hidden" value={{loginid}} name="loginid">
+<input type="hidden" value="{{loginid}}" name="loginid">
 <input type="search" name="search_text" class="search_text" value="{{reset_text}}"placeholder="Please Scan Barcode">
 </form>
 </div>

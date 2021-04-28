@@ -28,7 +28,6 @@ urlpatterns = [
     path('auditrail_main', pm.views.auditrail_main, name='auditrail_main'),
     path('information_main', pm.views.information_main, name='information_main'),
 
-
 ##########################################################################################################################################
 ##########################################################################################################################################
 
@@ -59,6 +58,8 @@ urlpatterns = [
     path('pmcheckapproval_review_accept', pm.views.pmcheckapproval_review_accept, name='pmcheckapproval_review_accept'),
     path('pmcheckapproval_approve_accept', pm.views.pmcheckapproval_approve_accept, name='pmcheckapproval_approve_accept'),
     path('pmchecksheet_upload', pm.views.pmchecksheet_upload, name='pmchecksheet_upload'),
+    path('pmcheckapproval_review_reject', pm.views.pmcheckapproval_review_reject, name='pmcheckapproval_review_reject'),
+    path('pmcheckapproval_approve_reject', pm.views.pmcheckapproval_approve_reject,name='pmcheckapproval_approve_reject'),
 
 ####Equipment Schedule####
     path('pmequipsch_main', pm.views.pmequipsch_main, name='pmequipsch_main'),
@@ -192,6 +193,8 @@ urlpatterns = [
     path('spareparts_incoming_plus', pm.views.spareparts_incoming_plus, name='spareparts_incoming_plus'),
     path('spareparts_incoming_location', pm.views.spareparts_incoming_location, name='spareparts_incoming_location'),
     path('spareparts_incoming_list', pm.views.spareparts_incoming_list, name='spareparts_incoming_list'),
+    path('spareparts_cert_main', pm.views.spareparts_cert_main, name='spareparts_cert_main'),
+    path('spareparts_cert_upload', pm.views.spareparts_cert_upload, name='spareparts_cert_upload'),
 
 ##########################################################################################################################################
 ##########################################################################################################################################

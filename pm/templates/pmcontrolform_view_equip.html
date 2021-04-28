@@ -111,12 +111,12 @@
                 {% csrf_token %}
             <select class="rev_no_box" name="rev_no_2">
                         {% for count in rev_no_count%}
-            <option value={{count}}>Rev.{{count}}</option>
+            <option value="{{count}}">Rev.{{count}}</option>
                         {%endfor%}
-            <input type="hidden" value={{loginid}} name="loginid">
-            <input type="hidden" value={{controlno}} name="controlno">
-            <input type="hidden" value={{selecttext}} name="selecttext">
-            <input type="hidden" value={{searchtext}} name="searchtext">
+            <input type="hidden" value="{{loginid}}" name="loginid">
+            <input type="hidden" value="{{controlno}}" name="controlno">
+            <input type="hidden" value="{{selecttext}}" name="selecttext">
+            <input type="hidden" value="{{searchtext}}" name="searchtext">
                 <input type="submit" class="rev_no_button" value="Enter"></select></form>
         </td>
         <td class="table1">

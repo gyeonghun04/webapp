@@ -174,13 +174,7 @@ cursor:pointer
 <div class="border">
 </div>
 
-<div id="messages_location">
-{%if messages %}
-{%for message in messages%}
-{{message}}
-{%endfor%}
-{%endif%}
-</div>
+{% include "pmchecksheet_workrequest_top.html"%}
 
 <workrequesttitle>
 Work Request Form
@@ -333,7 +327,7 @@ Work Request Form
             Date Required
         </td>
         <td class="req_table2">
-            <input type="date" name="req_date_up" class="req_date" value={{req_date_return}} onchange="Req_date();">
+            <input type="date" name="req_date_up" class="req_date" value="{{req_date_return}}" onchange="Req_date();">
             <input type="checkbox" name="req_date_na" class="req_date_na" {{req_na_return}}>N/A
         </td>
         <td class="req_table1">
@@ -389,6 +383,7 @@ Work Request Form
             loginid = opener.document.getElementById("workloginid").value;
             document.workrequest.loginid_up.value = loginid;
             document.control_no.loginid.value = loginid;
+            document.getElementById("logindata").innerHTML=loginid;
             }
 
       onload=init

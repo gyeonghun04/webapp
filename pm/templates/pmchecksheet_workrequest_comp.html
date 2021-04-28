@@ -117,12 +117,6 @@ height:16px;
 font-size:11px;
 font-family: arial;
 }
-.pmcheck_submit_css{
-position:fixed;top:797.04px; left:806.4px;
-font-family: arial;
-font-size:12px;
-cursor:pointer;
-}
 .button_css2{
 font-family: arial;
 font-size:16px;
@@ -144,18 +138,19 @@ cursor:pointer
     to{
           color:red;    }
 }
+close_text{
+        position:fixed;top:797.04px; left:10px;
+        font-size:18px;
+        font-weight:bold;
+        font-family: arial;
+        color: blue;
+}
 </style>
 <body>
 <div class="border">
 </div>
 
-<div id="messages_location">
-{%if messages %}
-{%for message in messages%}
-{{message}}
-{%endfor%}
-{%endif%}
-</div>
+{% include "pmchecksheet_workrequest_top.html"%}
 
 <workrequesttitle>
 Work Request Form
@@ -287,7 +282,7 @@ Work Request Form
      </table>
 </div>
 </form>
-
+<close_text>Work Request registration is complete.</close_text>
 <script>
         //부모창 f5기능 추가
     function Closepage(){
@@ -295,6 +290,8 @@ Work Request Form
         self.close();}
 
     function init(){
+        loginid = opener.document.getElementById("workloginid").value;
+        document.getElementById("logindata").innerHTML=loginid;
         opener.document.location.reload();
         setTimeout(function(){
                 if(opener){

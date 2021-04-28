@@ -92,13 +92,13 @@ tr:nth-child(even){
             <td align="center" class="m7-1">
                 <form action="pmcheckapproval_check" method="post" >
                 {% csrf_token %}
-                <input type="hidden" value={{loginid}} name="loginid">
-                <input type="hidden" value={{pmsheet_sch.pmsheetno}} name="pmsheetno">
-                <input type="hidden" value={{pmsheet_sch.pmcode}} name="pmcode">
-                <input type="hidden" value={{pmsheet_sch.controlno}} name="controlno">
-                <input type="hidden" value={{selecttext}} name="selecttext">
-                <input type="hidden" value={{searchtext}} name="searchtext">
-                <input type="hidden" value={{calendarsearch}} name="calendarsearch">
+                <input type="hidden" value="{{loginid}}" name="loginid">
+                <input type="hidden" value="{{pmsheet_sch.pmsheetno}}" name="pmsheetno">
+                <input type="hidden" value="{{pmsheet_sch.pmcode}}" name="pmcode">
+                <input type="hidden" value="{{pmsheet_sch.controlno}}" name="controlno">
+                <input type="hidden" value="{{selecttext}}" name="selecttext">
+                <input type="hidden" value="{{searchtext}}" name="searchtext">
+                <input type="hidden" value="{{calendarsearch}}" name="calendarsearch">
                 <input type="submit" class="button" value="Check">
                 </form>
             </td>

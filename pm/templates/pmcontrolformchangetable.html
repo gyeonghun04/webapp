@@ -260,10 +260,10 @@ Preventive Maintenance Program Control Form
             <td align="center" class="c7-1">{{controlformdb.division}}</td>
             <td align="center" class="c8-1">
             <input type="button" value="Delete" class="button" onclick="Itemcodedelete(this);">
-                <input type="hidden" value={{loginid}} name="loginid">
-                <input type="hidden" value={{controlno}} name="controlno">
-                <input type="hidden" value={{controlformdb.amd}} name="amd_change">
-                <input type="hidden" value={{controlformdb.itemcode}} name="itemcode_delete">
+                <input type="hidden" value="{{loginid}}" name="loginid">
+                <input type="hidden" value="{{controlno}}" name="controlno">
+                <input type="hidden" value="{{controlformdb.amd}}" name="amd_change">
+                <input type="hidden" value="{{controlformdb.itemcode}}" name="itemcode_delete">
             </td>
              </tr>
                                 {% endfor %}
@@ -273,8 +273,8 @@ Preventive Maintenance Program Control Form
 
          <form action="" method="post" name="itemdelete">
              {% csrf_token %}
-        <input type="hidden" value={{loginid}} name="loginid">
-        <input type="hidden" value={{controlno}} name="controlno">
+        <input type="hidden" value="{{loginid}}" name="loginid">
+        <input type="hidden" value="{{controlno}}" name="controlno">
         <input type="hidden" name="delete_reason">
         <input type="hidden" name="itemcode_delete">
         <input type="hidden" name="amd_change">
@@ -302,13 +302,13 @@ Preventive Maintenance Program Control Form
             <td align="center" class="s4-1">
             <form action="pmsheet_startdate" method="post">
                {% csrf_token %}
-            <input type="hidden" value={{loginid}} name="loginid">
-            <input type="hidden" value={{controlno}} name="controlno">
-            <input type="hidden" value={{pmsheetdb.pmsheetno_temp}} name="pmsheetno_temp">
-            <input type="hidden" value={{pmsheetdb.startdate}} name="startdate">
+            <input type="hidden" value="{{loginid}}" name="loginid">
+            <input type="hidden" value="{{controlno}}" name="controlno">
+            <input type="hidden" value="{{pmsheetdb.pmsheetno_temp}}" name="pmsheetno_temp">
+            <input type="hidden" value="{{pmsheetdb.startdate}}" name="startdate">
             <input type="month"  class="calendartext" name="calendartext">
-            <input type="hidden" value={{selecttext}} name="selecttext">
-            <input type="hidden" value={{searchtext}} name="searchtext">
+            <input type="hidden" value="{{selecttext}}" name="selecttext">
+            <input type="hidden" value="{{searchtext}}" name="searchtext">
             <input type="submit" class="button_new" value="Submit" class="button">
             </form>
             </td>
@@ -336,7 +336,7 @@ Preventive Maintenance Program Control Form
             <td align="center">
             <select class="division" name="division">
                 {% for pm_reference in pmreference %}
-            <option value={{pm_reference.description}}>{{pm_reference.description}}</option>
+            <option value="{{pm_reference.description}}">{{pm_reference.description}}</option>
                 {% endfor %}
             </select></td>
             <td align="center">
@@ -363,43 +363,43 @@ Preventive Maintenance Program Control Form
             <td align="center">
                      <input type="text" name="change"  class="t5-1" required></td>
             <td>
-            <input type="hidden" value={{loginid}} name="loginid">
-            <input type="hidden" value={{controlno}} name="controlno">
+            <input type="hidden" value="{{loginid}}" name="loginid">
+            <input type="hidden" value="{{controlno}}" name="controlno">
             <input type="submit" class="button_new" value="New" class="button"></td>
          </form>
      {%if signal == "Complete" %}
      <td><form action="pmcontrolform_submit" method="post" >
                 {% csrf_token %}
-     <input type="hidden" value={{loginid}} name="loginid">
-     <input type="hidden" value={{controlno}} name="controlno">
+     <input type="hidden" value="{{loginid}}" name="loginid">
+     <input type="hidden" value="{{controlno}}" name="controlno">
      <input type="submit" class="button_submit" value="Submit" class="button">
      </form></td>
      {%elif signal == "New" %}
       <td><form action="pmcontrolform_submit" method="post" >
                 {% csrf_token %}
-     <input type="hidden" value={{loginid}} name="loginid">
-     <input type="hidden" value={{controlno}} name="controlno">
+     <input type="hidden" value="{{loginid}}" name="loginid">
+     <input type="hidden" value="{{controlno}}" name="controlno">
      <input type="submit" class="button_submit" value="Submit" class="button">
      </form></td>
       {%elif signal == "Reject" %}
       <td><form action="pmcontrolform_submit" method="post" >
                 {% csrf_token %}
-     <input type="hidden" value={{loginid}} name="loginid">
-     <input type="hidden" value={{controlno}} name="controlno">
+     <input type="hidden" value="{{loginid}}" name="loginid">
+     <input type="hidden" value="{{controlno}}" name="controlno">
      <input type="submit" class="button_submit" value="Submit" class="button">
      </form></td>
      {%elif signal == "Review" %}
       <td><form action="pmcontrolform_submit" method="post" >
                 {% csrf_token %}
-     <input type="hidden" value={{loginid}} name="loginid">
-     <input type="hidden" value={{controlno}} name="controlno">
+     <input type="hidden" value="{{loginid}}" name="loginid">
+     <input type="hidden" value="{{controlno}}" name="controlno">
      <input type="submit" class="button_submit" value="Submit" class="button">
      </form></td>
      {%else%}
       <td><form action="pmcontrolform_return" method="post" >
                 {% csrf_token %}
-     <input type="hidden" value={{loginid}} name="loginid">
-     <input type="hidden" value={{controlno}} name="controlno">
+     <input type="hidden" value="{{loginid}}" name="loginid">
+     <input type="hidden" value="{{controlno}}" name="controlno">
           <input type="submit" class="button_return" value="Return"></form></td>
      {%endif%}
      </tr>
@@ -408,8 +408,8 @@ Preventive Maintenance Program Control Form
 
         <form method="post" name="pmcontrolform_division">
              {% csrf_token %}
-        <input type="hidden" value={{loginid}} id="loginid">
-        <input type="hidden" value={{controlno}} name="controlno">
+        <input type="hidden" value="{{loginid}}" id="loginid">
+        <input type="hidden" value="{{controlno}}" name="controlno">
         <input type="hidden" name="division">
         </form>
  </div>

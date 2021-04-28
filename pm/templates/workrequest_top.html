@@ -6,7 +6,7 @@
 <style>
 #tabletop{
     	font-family: arial;
-        position:fixed;top:4%; left:9%;
+        position:fixed;top:4.3%; left:9.2%;
         height:5%;
         width:46%;
 }
@@ -40,28 +40,20 @@ titletext{
         cursor:pointer;
 }
 #searchbar{
-        padding-left:50px;
-        padding-top:5px;
-        font-family:'Rubik', sans-serif;
-        font-size:10px;
+        position:fixed;top:5%; left:35%;
 }
 b{
-        padding-top:10px;
-        padding-left:150px;
+        position:fixed;top:5.3%; left:32.5%;
         align-text:left;
         color:black;
+        z-index:10;
 }
 </style>
 </head>
 <body>
 <div id="tabletop" style="word-break:break-all">
-<table>
-    <tr>
-    <td><titletext>Work Request List</titletext></td>
-    <td>
-        <b class="xi-pen"><input type="button" value="New Request" class="request_new" onclick="Request_new();"></b>
-    </td>
-    <td>
+<titletext>Work Request List</titletext>
+<b class="xi-pen"><input type="button" value="New Request" class="request_new" onclick="Request_new();"></b>
     <div id="searchbar">
         <form action="workrequest_main" method="post">
             {% csrf_token %}
@@ -71,12 +63,10 @@ b{
             <option value="team">Team</option>
             <option value="controlno">Control No.</option></select>
             <input type="search"  class="searchtext" placeholder="Keywords" name="searchtext" value="{{searchtext}}">
-            <input type="hidden" value={{loginid}} id="workloginid">
-            <input type="hidden" value={{loginid}} name="loginid">
+            <input type="hidden" value="{{loginid}}" id="workloginid">
+            <input type="hidden" value="{{loginid}}" name="loginid">
             <input type="submit"  class="searchbutton" value="Search"></form>
-    </div></td>
-    </tr>
-</table>
+    </div>
 </div>
 
 <script>
@@ -85,6 +75,8 @@ b{
             var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=880, height=840, left=50, top=10';
             window.open("/workrequest_new", "Work Request Form", settings);
             }
+
+
 </script>
 </body>
 </html>

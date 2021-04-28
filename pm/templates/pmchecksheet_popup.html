@@ -308,8 +308,8 @@ Preventive Maintenance Check Sheet
         </table>
         <form action="" method="post" name="plandateform">
              {% csrf_token %}
-        <input type="hidden" value={{loginid}} name="loginid">
-        <input type="hidden" value={{calendarsearch}} name="calendarsearch">
+        <input type="hidden" value="{{loginid}}" name="loginid">
+        <input type="hidden" value="{{calendarsearch}}" name="calendarsearch">
         <input type="hidden" name="plandatereturn">
         <input type="hidden" name="pmsheetno">
         <input type="hidden" name="controlno">
@@ -358,8 +358,8 @@ Preventive Maintenance Check Sheet
  <div id="pmcheck_submit">
      <form action="" method="post" >
                 {% csrf_token %}
-     <input type="hidden" value={{equiplist.controlno}} name="controlno">
-     <input type="hidden" value={{loginid}} name="loginid">
+     <input type="hidden" value="{{equiplist.controlno}}" name="controlno">
+     <input type="hidden" value="{{loginid}}" name="loginid">
      <input type="submit" class="button" value="Write">
      </form>
  </div>

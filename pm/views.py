@@ -13,10 +13,10 @@ from dateutil.relativedelta import relativedelta
 from django.core.files.storage import FileSystemStorage
 from django.db.models import Count, Sum
 import re
-import pyzbar.pyzbar as pyzbar ##바코드 리더기
-import cv2 ##바코드 리더기
-import barcode ##바코드 생성기
-from barcode.writer import ImageWriter ##바코드 생성기
+#import pyzbar.pyzbar as pyzbar ##바코드 리더기
+#import cv2 ##바코드 리더기
+#import barcode ##바코드 생성기
+#from barcode.writer import ImageWriter ##바코드 생성기
 
 # Create your views here.
 
@@ -292,7 +292,6 @@ def pmchecksheet_main(request):
         table_signal = "table_signal"
     #####입력정보값 받기#####
         loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
-        calendarsearch = request.POST.get('calendarsearch')  # html 날짜 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -302,9 +301,8 @@ def pmchecksheet_main(request):
         user_div = users.user_division
         users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
         #####검색월 디폴트값#####
-        if str(calendarsearch) == "None":
-            today = date.datetime.today()
-            calendarsearch = "20" + today.strftime('%y') + "-" + today.strftime('%m')
+        today = date.datetime.today()
+        calendarsearch = "20" + today.strftime('%y') + "-" + today.strftime('%m')
 #################검색어 반영##################
         selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
         searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
@@ -346,7 +344,7 @@ def pmchecksheet_write(request):
         user_div = users.user_division
         users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
     #####검색월 디폴트값#####
-        if str(calendarsearch) == "None":
+        if str(calendarsearch) == "":
             today = date.datetime.today()
             calendarsearch = "20" + today.strftime('%y') + "-" + today.strftime('%m')
     #####첨부파일 시그널 주기#####
@@ -455,7 +453,7 @@ def pmchecksheet_checkresult(request):
         user_div = users.user_division
         users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
     #####검색월 디폴트값#####
-        if str(calendarsearch) == "None":
+        if str(calendarsearch) == "":
             today = date.datetime.today()
             calendarsearch = "20" + today.strftime('%y') + "-" + today.strftime('%m')
     #####체크시트 결과값 입시에 입력#####
@@ -534,7 +532,7 @@ def pmchecksheet_actiondetail(request):
         user_div = users.user_division
         users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
     #####검색월 디폴트값#####
-        if str(calendarsearch) == "None":
+        if str(calendarsearch) == "":
             today = date.datetime.today()
             calendarsearch = "20" + today.strftime('%y') + "-" + today.strftime('%m')
     #####체크시트 결과값 입시에 입력#####
@@ -615,7 +613,7 @@ def pmchecksheet_checkboxform(request):
         user_div = users.user_division
         users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
     #####검색월 디폴트값#####
-        if str(calendarsearch) == "None":
+        if str(calendarsearch) == "":
             today = date.datetime.today()
             calendarsearch = "20" + today.strftime('%y') + "-" + today.strftime('%m')
     #####체크시트 결과값 입시에 입력#####
@@ -693,7 +691,7 @@ def pmchecksheet_remark(request):
         user_div = users.user_division
         users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
     #####검색월 디폴트값#####
-        if str(calendarsearch) == "None":
+        if str(calendarsearch) == "":
             today = date.datetime.today()
             calendarsearch = "20" + today.strftime('%y') + "-" + today.strftime('%m')
     #####리마크 입력시에 입력#####
@@ -768,7 +766,7 @@ def pmchecksheet_remark_na(request):
         user_div = users.user_division
         users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
     #####검색월 디폴트값#####
-        if str(calendarsearch) == "None":
+        if str(calendarsearch) == "":
             today = date.datetime.today()
             calendarsearch = "20" + today.strftime('%y') + "-" + today.strftime('%m')
     #####리마크 입력시에 입력#####
@@ -844,7 +842,7 @@ def pmchecksheet_view(request):
         user_div = users.user_division
         users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
     #####검색월 디폴트값#####
-        if str(calendarsearch) == "None":
+        if str(calendarsearch) == "":
             today = date.datetime.today()
             calendarsearch = "20" + today.strftime('%y') + "-" + today.strftime('%m')
     #####완료 시그널 주기#####
@@ -1037,7 +1035,7 @@ def pmchecksheet_submit(request):
         user_div = users.user_division
         users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
     #####검색월 디폴트값#####
-        if str(calendarsearch) == "None":
+        if str(calendarsearch) == "":
             today = date.datetime.today()
             calendarsearch = "20" + today.strftime('%y') + "-" + today.strftime('%m')
     #####첨부파일 시그널 주기#####
@@ -1327,7 +1325,7 @@ def pmchecksheet_return(request):
         user_div = users.user_division
         users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
     #####검색월 디폴트값#####
-        if str(calendarsearch) == "None":
+        if str(calendarsearch) == "":
             today = date.datetime.today()
             calendarsearch = "20" + today.strftime('%y') + "-" + today.strftime('%m')
     #####첨부파일 시그널 주기#####
@@ -1453,7 +1451,7 @@ def pmchecksheet_upload(request):
         user_div = users.user_division
         users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
         #####검색월 디폴트값#####
-        if str(calendarsearch) == "None":
+        if str(calendarsearch) == "":
             today = date.datetime.today()
             calendarsearch = "20" + today.strftime('%y') + "-" + today.strftime('%m')
     #################검색어 반영##################
@@ -1640,7 +1638,7 @@ def pmcheckapproval_main(request):
         user_div = users.user_division
         users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
     #####검색월 디폴트값#####
-        if str(calendarsearch) == "None":
+        if str(calendarsearch) == "":
             today = date.datetime.today()
             calendarsearch = "20" + today.strftime('%y') + "-" + today.strftime('%m')
     #################검색어 반영##################
@@ -1768,7 +1766,7 @@ def pmcheckapproval_check(request):
         else:
             url_comp = "Y"
     #####검색월 디폴트값#####
-        if str(calendarsearch) == "None":
+        if str(calendarsearch) == "":
             today = date.datetime.today()
             calendarsearch = "20" + today.strftime('%y') + "-" + today.strftime('%m')
     #####Reviewed 신호주기#####
@@ -1877,6 +1875,7 @@ def pmcheckapproval_check(request):
         if str(searchtext) == "None":
             searchtext = ""
     #####equip info 정보 보내기#####
+        spare_list = spare_out.objects.filter(used_y_n=pmcode)
         equipinfo = equiplist.objects.filter(controlno = controlno)
         equipinforev = controlformlist.objects.filter(controlno = controlno, recent_y="Y")
         pmchecksheet_info = pm_sch.objects.filter(pmcode=pmcode)
@@ -1889,7 +1888,7 @@ def pmcheckapproval_check(request):
                    "equipinfo":equipinfo,"equipinforev":equipinforev, "plandate":plandate, "actiondate":actiondate,
                     "remark_get": remark_get,"pmchecksheet_info":pmchecksheet_info, "review_signal":review_signal,
                    "calendarsearch": calendarsearch, "selecttext": selecttext, "searchtext": searchtext,
-                    "url_comp":url_comp}
+                    "url_comp":url_comp,"spare_list":spare_list}
     context.update(users)
     return render(request, 'pmcheckapproval_main.html', context) #templates 내 html연결
 
@@ -1917,7 +1916,7 @@ def pmcheckapproval_review_accept(request):
         else:
             url_comp = "Y"
     #####검색월 디폴트값#####
-        if str(calendarsearch) == "None":
+        if str(calendarsearch) == "":
             today = date.datetime.today()
             calendarsearch = "20" + today.strftime('%y') + "-" + today.strftime('%m')
     #####승인권한 확인#####
@@ -2038,6 +2037,7 @@ def pmcheckapproval_review_accept(request):
         if str(searchtext) == "None":
             searchtext = ""
     #####equip info 정보 보내기#####
+        spare_list = spare_out.objects.filter(used_y_n=pmcode)
         equipinfo = equiplist.objects.filter(controlno = controlno)
         equipinforev = controlformlist.objects.filter(controlno = controlno, recent_y="Y")
         pmchecksheet_info = pm_sch.objects.filter(pmcode=pmcode)
@@ -2050,7 +2050,173 @@ def pmcheckapproval_review_accept(request):
                    "equipinfo":equipinfo,"equipinforev":equipinforev, "plandate":plandate, "actiondate":actiondate,
                     "remark_get": remark_get,"pmchecksheet_info":pmchecksheet_info, "review_signal":review_signal,
                    "calendarsearch": calendarsearch, "selecttext": selecttext, "searchtext": searchtext,
-                   "url_comp": url_comp}
+                   "url_comp": url_comp,"spare_list":spare_list}
+    context.update(users)
+    return render(request, 'pmcheckapproval_main.html', context) #templates 내 html연결
+
+def pmcheckapproval_review_reject(request):
+    if request.method =='POST': #매소드값이 post인 값만 받는다
+    #####입력정보값 받기#####
+        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        calendarsearch = request.POST.get('calendarsearch')  # html 날짜 값을 받는다
+        controlno = request.POST.get('controlno')  # html 날짜 값을 받는다
+        pmcode = request.POST.get('pmcode')  # html 날짜 값을 받는다
+    ##이름 및 권한 끌고다니기##
+        users = userinfo.objects.get(userid=loginid)
+        username = users.username
+        userteam = users.userteam
+        password = users.password
+        auth = users.auth1
+        user_div = users.user_division
+        users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
+    #####첨부파일 시그널 주기#####
+        url_comp = pm_sch.objects.get(pmcode=pmcode)  # plandate 보내기
+        if url_comp.attach_temp == "N/A":
+            url_comp = "N"
+        elif str(url_comp.attach_temp) == "None":
+            url_comp = "N"
+        else:
+            url_comp = "Y"
+    #####검색월 디폴트값#####
+        if str(calendarsearch) == "":
+            today = date.datetime.today()
+            calendarsearch = "20" + today.strftime('%y') + "-" + today.strftime('%m')
+    #####승인권한 확인#####
+        auth_check = approval_information.objects.get(description="Reviewed", division="PM Check Sheet")
+        if auth != auth_check.code_no:
+            messages.error(request, "You do not have permission to approve.")
+            review_signal = "N"
+        else:
+        #####status변경하기 업데이트#####
+            today = date.datetime.today()
+            review_today = "20" + today.strftime('%y') + "-" + today.strftime('%m') + "-" +today.strftime('%d')
+            reviwed_signal = pm_sch.objects.get(pmcode=pmcode)
+            reviwed_signal.p_name = ""
+            reviwed_signal.p_date = ""
+            reviwed_signal.status = "Fixed Date"
+            reviwed_signal.save()
+            review_signal = ""
+            #reviwed_signal = str(reviwed_signal.r_name_temp)
+            #if reviwed_signal == "":
+            #    review_signal = "N"
+            #elif reviwed_signal == "None":
+            #    review_signal = "N"
+            #else:
+            #    review_signal = "Y"
+    #################검색어 반영##################
+        auth_check = approval_information.objects.get(division="PM Check Sheet", description="Reviewed")
+        SO_S = auth_check.code_no
+        auth_check = approval_information.objects.get(division="PM Check Sheet", description="Checked")
+        SO_M = auth_check.code_no
+        selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
+        searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
+        if auth == SO_S:
+            try:
+                if selecttext == "status":
+                    pmchecksheet_sch = pm_sch.objects.filter(
+                        date=calendarsearch, sch_clear="Y", status="Performed", status__icontains=searchtext).order_by(
+                        'team', 'plandate')  # db 동기화
+                elif selecttext == "team":
+                    pmchecksheet_sch = pm_sch.objects.filter(
+                        date=calendarsearch, sch_clear="Y", status="Performed", team__icontains=searchtext).order_by(
+                        'team', 'plandate')  # db 동기화
+                elif selecttext == "control_no":
+                    pmchecksheet_sch = pm_sch.objects.filter(
+                        date=calendarsearch, sch_clear="Y", status="Reviewed", pmsheetno__icontains=searchtext).order_by(
+                        'team', 'plandate')  # db 동기화
+                elif selecttext == "equipname":
+                    pmchecksheet_sch = pm_sch.objects.filter(
+                        date=calendarsearch, sch_clear="Y", status="Performed", name__icontains=searchtext).order_by(
+                        'team', 'plandate')  # db 동기화
+                else:
+                    pmchecksheet_sch = pm_sch.objects.filter(
+                        date=calendarsearch, sch_clear="Y", status="Performed").order_by('team', 'plandate')  # db 동기화
+            except:
+                pmchecksheet_sch = pm_sch.objects.filter(
+                    date=calendarsearch, sch_clear="Y", status="Performed").order_by('team', 'plandate')  # db 동기화
+        elif auth == SO_M:
+            try:
+                if selecttext == "status":
+                    pmchecksheet_sch = pm_sch.objects.filter(
+                        date=calendarsearch, sch_clear="Y", status="Reviewed", status__icontains=searchtext).order_by(
+                        'team', 'plandate')  # db 동기화
+                elif selecttext == "team":
+                    pmchecksheet_sch = pm_sch.objects.filter(
+                        date=calendarsearch, sch_clear="Y", status="Reviewed", team__icontains=searchtext).order_by(
+                        'team', 'plandate')  # db 동기화
+                elif selecttext == "control_no":
+                    pmchecksheet_sch = pm_sch.objects.filter(
+                        date=calendarsearch, sch_clear="Y", status="Reviewed", pmsheetno__icontains=searchtext).order_by(
+                        'team', 'plandate')  # db 동기화
+                elif selecttext == "equipname":
+                    pmchecksheet_sch = pm_sch.objects.filter(
+                        date=calendarsearch, sch_clear="Y", status="Reviewed", name__icontains=searchtext).order_by(
+                        'team', 'plandate')  # db 동기화
+                else:
+                    pmchecksheet_sch = pm_sch.objects.filter(
+                        date=calendarsearch, sch_clear="Y", status="Reviewed").order_by('team', 'plandate')  # db 동기화
+            except:
+                pmchecksheet_sch = pm_sch.objects.filter(
+                    date=calendarsearch, sch_clear="Y", status="Reviewed").order_by('team', 'plandate')  # db 동기화
+        else:
+            try:
+                if selecttext == "status":
+                    pmchecksheet_sch = pm_sch.objects.filter(
+                        Q(date=calendarsearch, sch_clear="Y", status="Performed", status__icontains=searchtext) | Q(
+                            date=calendarsearch, sch_clear="Y", status="Reviewed",
+                            status__icontains=searchtext)).order_by(
+                        'team',
+                        'plandate')  # db 동기화
+                elif selecttext == "team":
+                    pmchecksheet_sch = pm_sch.objects.filter(
+                        Q(date=calendarsearch, sch_clear="Y", status="Performed", team__icontains=searchtext) | Q(
+                            date=calendarsearch, sch_clear="Y", status="Reviewed",
+                            team__icontains=searchtext)).order_by(
+                        'team',
+                        'plandate')  # db 동기화
+                elif selecttext == "control_no":
+                    pmchecksheet_sch = pm_sch.objects.filter(
+                        Q(date=calendarsearch, sch_clear="Y", status="Performed", pmsheetno__icontains=searchtext) | Q(
+                            date=calendarsearch, sch_clear="Y", status="Reviewed",
+                            pmsheetno__icontains=searchtext)).order_by('team',
+                                                                       'plandate')  # db 동기화
+                elif selecttext == "equipname":
+                    pmchecksheet_sch = pm_sch.objects.filter(
+                        Q(date=calendarsearch, sch_clear="Y", status="Performed", name__icontains=searchtext) | Q(
+                            date=calendarsearch, sch_clear="Y", status="Reviewed",
+                            name__icontains=searchtext)).order_by(
+                        'team',
+                        'plandate')  # db 동기화
+                else:
+                    pmchecksheet_sch = pm_sch.objects.filter(
+                        Q(date=calendarsearch, sch_clear="Y", status="Performed") | Q(
+                            date=calendarsearch, sch_clear="Y", status="Reviewed")).order_by('team',
+                                                                                             'plandate')  # db 동기화
+            except:
+                pmchecksheet_sch = pm_sch.objects.filter(
+                    Q(date=calendarsearch, sch_clear="Y", status="Performed") | Q(
+                        date=calendarsearch, sch_clear="Y", status="Reviewed")).order_by('team',
+                                                                                         'plandate')  # db 동기화
+        if str(searchtext) == "None":
+            searchtext = ""
+    #####반려사유 메일 보내기#####
+
+
+    #####equip info 정보 보내기#####
+        spare_list = spare_out.objects.filter(used_y_n=pmcode)
+        equipinfo = equiplist.objects.filter(controlno = controlno)
+        equipinforev = controlformlist.objects.filter(controlno = controlno, recent_y="Y")
+        pmchecksheet_info = pm_sch.objects.filter(pmcode=pmcode)
+        pmchecksheets = pmchecksheet.objects.filter(pmcode=pmcode)
+        pm_plandate = pm_sch.objects.get(pmcode=pmcode) #plandate 보내기
+        plandate = pm_plandate.plandate
+        actiondate = pm_plandate.actiondate_temp
+        remark_get = pm_plandate.remark_temp
+        context = {"pmchecksheets":pmchecksheets,"loginid":loginid, "pmchecksheet_sch":pmchecksheet_sch,
+                   "equipinfo":equipinfo,"equipinforev":equipinforev, "plandate":plandate, "actiondate":actiondate,
+                    "remark_get": remark_get,"pmchecksheet_info":pmchecksheet_info, "review_signal":review_signal,
+                   "calendarsearch": calendarsearch, "selecttext": selecttext, "searchtext": searchtext,
+                   "url_comp": url_comp,"spare_list":spare_list}
     context.update(users)
     return render(request, 'pmcheckapproval_main.html', context) #templates 내 html연결
 
@@ -2078,7 +2244,7 @@ def pmcheckapproval_approve_accept(request):
         else:
             url_comp = "Y"
     #####검색월 디폴트값#####
-        if str(calendarsearch) == "None":
+        if str(calendarsearch) == "":
             today = date.datetime.today()
             calendarsearch = "20" + today.strftime('%y') + "-" + today.strftime('%m')
     #####승인권한 확인#####
@@ -2149,31 +2315,32 @@ def pmcheckapproval_approve_accept(request):
                 ).save()
         except:
             pass
-        #####pm check sheet업데이트#####
-            pm_upload = pmchecksheet.objects.filter(pmcode=pmcode)
-            pmcode_upload = pm_upload.values('pmcode')  # sql문 dataframe으로 변경
-            df_pmcode_upload = pd.DataFrame.from_records(pmcode_upload)
-            df_pmcode_upload_len = len(df_pmcode_upload.index)  # 일정 숫자로 변환
-            for k in range(df_pmcode_upload_len):
-                pmcode_upload = df_pmcode_upload.iat[k, 0]
-                pm_upload_save = pmchecksheet.objects.get(pmcode=pmcode_upload)
-                pm_upload_save.result = pm_upload_save.result_temp
-                pm_upload_save.pass_y = pm_upload_save.pass_y_temp
-                pm_upload_save.fail_y = pm_upload_save.fail_y_temp
-                pm_upload_save.fail_n = pm_upload_save.fail_n_temp
-                pm_upload_save.actiondetail = pm_upload_save.actiondetail_temp
-                pm_upload_save.workrequest = pm_upload_save.workrequest_temp
-                pm_upload_save.usedpart = pm_upload_save.usedpart_temp
-                pm_upload_save.save()
+    #####pm check sheet업데이트#####
+        pm_upload = pmchecksheet.objects.filter(pmcode=pmcode)
+        pmcode_upload = pm_upload.values('pmcode')  # sql문 dataframe으로 변경
+        df_pmcode_upload = pd.DataFrame.from_records(pmcode_upload)
+        df_pmcode_upload_len = len(df_pmcode_upload.index)  # 일정 숫자로 변환
+        for k in range(df_pmcode_upload_len):
+            pmcode_upload = df_pmcode_upload.iat[k, 0]
+            pm_upload_save = pmchecksheet.objects.get(pmcode=pmcode_upload)
+            pm_upload_save.result = pm_upload_save.result_temp
+            pm_upload_save.pass_y = pm_upload_save.pass_y_temp
+            pm_upload_save.fail_y = pm_upload_save.fail_y_temp
+            pm_upload_save.fail_n = pm_upload_save.fail_n_temp
+            pm_upload_save.actiondetail = pm_upload_save.actiondetail_temp
+            pm_upload_save.workrequest = pm_upload_save.workrequest_temp
+            pm_upload_save.usedpart = pm_upload_save.usedpart_temp
+            pm_upload_save.save()
         #####reviwed/approval_signal#####
-            reviwed_signal = str(reviwed_signal.r_name_temp)
-            if reviwed_signal == "":
-                review_signal = "N"
-            elif reviwed_signal == "None":
-                review_signal = "N"
-            else:
-                review_signal = "Y"
-            approval_signal = "Y"
+        reviewed_chk = pm_sch.objects.get(pmcode=pmcode)
+        reviewed_signal = str(reviewed_chk.r_name_temp)
+        if reviewed_signal == "":
+            review_signal = "N"
+        elif reviewed_signal == "None":
+            review_signal = "N"
+        else:
+            review_signal = "Y"
+        approval_signal = "Y"
     #################검색어 반영##################
         auth_check = approval_information.objects.get(division="PM Check Sheet", description="Reviewed")
         SO_S = auth_check.code_no
@@ -2271,6 +2438,7 @@ def pmcheckapproval_approve_accept(request):
         if str(searchtext) == "None":
                 searchtext = ""
     #####equip info 정보 보내기#####
+        spare_list = spare_out.objects.filter(used_y_n=pmcode)
         equipinfo = equiplist.objects.filter(controlno = controlno)
         equipinforev = controlformlist.objects.filter(controlno = controlno, recent_y="Y")
         pmchecksheet_info = pm_sch.objects.filter(pmcode=pmcode)
@@ -2283,7 +2451,174 @@ def pmcheckapproval_approve_accept(request):
                    "equipinfo":equipinfo,"equipinforev":equipinforev, "plandate":plandate, "actiondate":actiondate,
                     "remark_get": remark_get,"pmchecksheet_info":pmchecksheet_info, "review_signal":review_signal,
                    "calendarsearch": calendarsearch, "selecttext": selecttext, "searchtext": searchtext,
-                   "approval_signal":approval_signal, "url_comp":url_comp}
+                   "approval_signal":approval_signal, "url_comp":url_comp,"spare_list":spare_list}
+    context.update(users)
+    return render(request, 'pmcheckapproval_main.html', context) #templates 내 html연결
+
+def pmcheckapproval_approve_reject(request):
+    if request.method =='POST': #매소드값이 post인 값만 받는다
+    #####입력정보값 받기#####
+        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        calendarsearch = request.POST.get('calendarsearch')  # html 날짜 값을 받는다
+        controlno = request.POST.get('controlno')  # html 날짜 값을 받는다
+        pmcode = request.POST.get('pmcode')  # html 날짜 값을 받는다
+    ##이름 및 권한 끌고다니기##
+        users = userinfo.objects.get(userid=loginid)
+        username = users.username
+        userteam = users.userteam
+        password = users.password
+        auth = users.auth1
+        user_div = users.user_division
+        users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
+    #####첨부파일 시그널 주기#####
+        url_comp = pm_sch.objects.get(pmcode=pmcode)  # plandate 보내기
+        if url_comp.attach_temp == "N/A":
+            url_comp = "N"
+        elif str(url_comp.attach_temp) == "None":
+            url_comp = "N"
+        else:
+            url_comp = "Y"
+    #####검색월 디폴트값#####
+        if str(calendarsearch) == "":
+            today = date.datetime.today()
+            calendarsearch = "20" + today.strftime('%y') + "-" + today.strftime('%m')
+    #####승인권한 확인#####
+        auth_check = approval_information.objects.get(description="Checked", division="PM Check Sheet")
+        if auth != auth_check.code_no:
+            messages.error(request, "You do not have permission to approve.")
+            review_signal = "Y"
+        else:
+        #####status변경하기 업데이트#####
+            reviwed_signal = pm_sch.objects.get(pmcode=pmcode)
+            reviwed_signal.p_name = ""
+            reviwed_signal.p_date = ""
+            reviwed_signal.r_name_temp = ""
+            reviwed_signal.r_date_temp = ""
+            reviwed_signal.status = "Fixed Date"
+            reviwed_signal.save()
+            review_signal = ""
+            #reviwed_signal = str(reviwed_signal.r_name_temp)
+            #if reviwed_signal == "":
+            #    review_signal = "N"
+            #elif reviwed_signal == "None":
+            #    review_signal = "N"
+            #else:
+            #    review_signal = "Y"
+    #################검색어 반영##################
+        auth_check = approval_information.objects.get(division="PM Check Sheet", description="Reviewed")
+        SO_S = auth_check.code_no
+        auth_check = approval_information.objects.get(division="PM Check Sheet", description="Checked")
+        SO_M = auth_check.code_no
+        selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
+        searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
+        if auth == SO_S:
+            try:
+                if selecttext == "status":
+                    pmchecksheet_sch = pm_sch.objects.filter(
+                        date=calendarsearch, sch_clear="Y", status="Performed", status__icontains=searchtext).order_by(
+                        'team', 'plandate')  # db 동기화
+                elif selecttext == "team":
+                    pmchecksheet_sch = pm_sch.objects.filter(
+                        date=calendarsearch, sch_clear="Y", status="Performed", team__icontains=searchtext).order_by(
+                        'team', 'plandate')  # db 동기화
+                elif selecttext == "control_no":
+                    pmchecksheet_sch = pm_sch.objects.filter(
+                        date=calendarsearch, sch_clear="Y", status="Reviewed", pmsheetno__icontains=searchtext).order_by(
+                        'team', 'plandate')  # db 동기화
+                elif selecttext == "equipname":
+                    pmchecksheet_sch = pm_sch.objects.filter(
+                        date=calendarsearch, sch_clear="Y", status="Performed", name__icontains=searchtext).order_by(
+                        'team', 'plandate')  # db 동기화
+                else:
+                    pmchecksheet_sch = pm_sch.objects.filter(
+                        date=calendarsearch, sch_clear="Y", status="Performed").order_by('team', 'plandate')  # db 동기화
+            except:
+                pmchecksheet_sch = pm_sch.objects.filter(
+                    date=calendarsearch, sch_clear="Y", status="Performed").order_by('team', 'plandate')  # db 동기화
+        elif auth == SO_M:
+            try:
+                if selecttext == "status":
+                    pmchecksheet_sch = pm_sch.objects.filter(
+                        date=calendarsearch, sch_clear="Y", status="Reviewed", status__icontains=searchtext).order_by(
+                        'team', 'plandate')  # db 동기화
+                elif selecttext == "team":
+                    pmchecksheet_sch = pm_sch.objects.filter(
+                        date=calendarsearch, sch_clear="Y", status="Reviewed", team__icontains=searchtext).order_by(
+                        'team', 'plandate')  # db 동기화
+                elif selecttext == "control_no":
+                    pmchecksheet_sch = pm_sch.objects.filter(
+                        date=calendarsearch, sch_clear="Y", status="Reviewed", pmsheetno__icontains=searchtext).order_by(
+                        'team', 'plandate')  # db 동기화
+                elif selecttext == "equipname":
+                    pmchecksheet_sch = pm_sch.objects.filter(
+                        date=calendarsearch, sch_clear="Y", status="Reviewed", name__icontains=searchtext).order_by(
+                        'team', 'plandate')  # db 동기화
+                else:
+                    pmchecksheet_sch = pm_sch.objects.filter(
+                        date=calendarsearch, sch_clear="Y", status="Reviewed").order_by('team', 'plandate')  # db 동기화
+            except:
+                pmchecksheet_sch = pm_sch.objects.filter(
+                    date=calendarsearch, sch_clear="Y", status="Reviewed").order_by('team', 'plandate')  # db 동기화
+        else:
+            try:
+                if selecttext == "status":
+                    pmchecksheet_sch = pm_sch.objects.filter(
+                        Q(date=calendarsearch, sch_clear="Y", status="Performed", status__icontains=searchtext) | Q(
+                            date=calendarsearch, sch_clear="Y", status="Reviewed",
+                            status__icontains=searchtext)).order_by(
+                        'team',
+                        'plandate')  # db 동기화
+                elif selecttext == "team":
+                    pmchecksheet_sch = pm_sch.objects.filter(
+                        Q(date=calendarsearch, sch_clear="Y", status="Performed", team__icontains=searchtext) | Q(
+                            date=calendarsearch, sch_clear="Y", status="Reviewed",
+                            team__icontains=searchtext)).order_by(
+                        'team',
+                        'plandate')  # db 동기화
+                elif selecttext == "control_no":
+                    pmchecksheet_sch = pm_sch.objects.filter(
+                        Q(date=calendarsearch, sch_clear="Y", status="Performed", pmsheetno__icontains=searchtext) | Q(
+                            date=calendarsearch, sch_clear="Y", status="Reviewed",
+                            pmsheetno__icontains=searchtext)).order_by('team',
+                                                                       'plandate')  # db 동기화
+                elif selecttext == "equipname":
+                    pmchecksheet_sch = pm_sch.objects.filter(
+                        Q(date=calendarsearch, sch_clear="Y", status="Performed", name__icontains=searchtext) | Q(
+                            date=calendarsearch, sch_clear="Y", status="Reviewed",
+                            name__icontains=searchtext)).order_by(
+                        'team',
+                        'plandate')  # db 동기화
+                else:
+                    pmchecksheet_sch = pm_sch.objects.filter(
+                        Q(date=calendarsearch, sch_clear="Y", status="Performed") | Q(
+                            date=calendarsearch, sch_clear="Y", status="Reviewed")).order_by('team',
+                                                                                             'plandate')  # db 동기화
+            except:
+                pmchecksheet_sch = pm_sch.objects.filter(
+                    Q(date=calendarsearch, sch_clear="Y", status="Performed") | Q(
+                        date=calendarsearch, sch_clear="Y", status="Reviewed")).order_by('team',
+                                                                                         'plandate')  # db 동기화
+        if str(searchtext) == "None":
+            searchtext = ""
+    #####반려사유 메일 보내기#####
+
+
+    #####equip info 정보 보내기#####
+        approval_signal = "N"
+        spare_list = spare_out.objects.filter(used_y_n=pmcode)
+        equipinfo = equiplist.objects.filter(controlno = controlno)
+        equipinforev = controlformlist.objects.filter(controlno = controlno, recent_y="Y")
+        pmchecksheet_info = pm_sch.objects.filter(pmcode=pmcode)
+        pmchecksheets = pmchecksheet.objects.filter(pmcode=pmcode)
+        pm_plandate = pm_sch.objects.get(pmcode=pmcode) #plandate 보내기
+        plandate = pm_plandate.plandate
+        actiondate = pm_plandate.actiondate_temp
+        remark_get = pm_plandate.remark_temp
+        context = {"pmchecksheets":pmchecksheets,"loginid":loginid, "pmchecksheet_sch":pmchecksheet_sch,
+                   "equipinfo":equipinfo,"equipinforev":equipinforev, "plandate":plandate, "actiondate":actiondate,
+                    "remark_get": remark_get,"pmchecksheet_info":pmchecksheet_info, "review_signal":review_signal,
+                   "calendarsearch": calendarsearch, "selecttext": selecttext, "searchtext": searchtext,
+                   "approval_signal":approval_signal, "url_comp":url_comp,"spare_list":spare_list}
     context.update(users)
     return render(request, 'pmcheckapproval_main.html', context) #templates 내 html연결
 
@@ -3535,7 +3870,7 @@ def pmmonthly_view(request):
         user_div = users.user_division
         users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
     #####검색월 디폴트값#####
-        if str(calendarsearch) == "None":
+        if str(calendarsearch) == "":
             today = date.datetime.today()
             calendarsearch = "20" + today.strftime('%y') + "-" + today.strftime('%m')
     #####입력정보값 테이블에서 불러오기#####
@@ -3574,7 +3909,7 @@ def pmmonthly_plandate(request):
         pm_sch_save.plandate_temp = plandate
         pm_sch_save.save()
     #####검색월 디폴트값#####
-        if str(calendarsearch) == "None":
+        if str(calendarsearch) == "":
             today = date.datetime.today()
             calendarsearch = "20" + today.strftime('%y') + "-" + today.strftime('%m')
     #####입력정보값 테이블에서 불러오기#####
@@ -3601,7 +3936,7 @@ def pmmonthly_submit(request):
         user_div = users.user_division
         users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
     #####검색월 디폴트값#####
-        if str(calendarsearch) == "None":
+        if str(calendarsearch) == "":
             today = date.datetime.today()
             calendarsearch = "20" + today.strftime('%y') + "-" + today.strftime('%m')
         pmmonthly_sch = pm_sch.objects.filter(date=calendarsearch).order_by('team', 'roomno')  # db 동기화
@@ -8221,37 +8556,115 @@ def spareparts_release_list(request):
     context = {"spareparts_release":spareparts_release, "selecttext":selecttext,"searchtext":searchtext}
     return render(request, 'spareparts_release_list.html', context) #templates 내 html연결
 
+def spareparts_cert_main(request):
+    if request.method == 'POST':  # 매소드값이 post인 값만 받는다
+        selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
+        searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
+        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        ##이름 및 권한 끌고다니기##
+        users = userinfo.objects.get(userid=loginid)
+        username = users.username
+        userteam = users.userteam
+        password = users.password
+        auth = users.auth1
+        user_div = users.user_division
+        users = {"auth": auth, "password": password, "username": username, "userteam": userteam, "user_div": user_div}
+        if selecttext == "partname":
+            spare_list = spare_parts_list.objects.filter(partname__icontains=searchtext).order_by('team','codeno')  # db 동기화
+        elif selecttext == "vendor":
+            spare_list = spare_parts_list.objects.filter(vendor__icontains=searchtext).order_by('team','codeno')  # db 동기화
+        elif selecttext == "team":
+            spare_list = spare_parts_list.objects.filter(team__icontains=searchtext).order_by('team','codeno')  # db 동기화
+        elif selecttext == "codeo":
+            spare_list = spare_parts_list.objects.filter(codeno__icontains=searchtext).order_by('team','codeno')  # db 동기화
+        elif selecttext == "stock":
+            spare_list = spare_parts_list.objects.filter(stock__icontains=searchtext).order_by('team','codeno')  # db 동기화
+        else:
+            spare_list = spare_parts_list.objects.all().order_by('team','codeno')  # db 동기화
+        context = {"spare_list": spare_list, "loginid": loginid}
+        context.update(users)
+        return render(request, 'spareparts_cert_main.html', context)  # templates 내 html연결
+
+def spareparts_cert_upload(request):
+    if request.method == 'POST':  # 매소드값이 post인 값만 받는다
+        selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
+        searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
+        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        codeno = request.POST.get('codeno')  # html Login id의 값을 받는다
+        upload_file = request.POST.get('upload_file')  # html Login id의 값을 받는다
+        print(upload_file)
+        ##이름 및 권한 끌고다니기##
+        users = userinfo.objects.get(userid=loginid)
+        username = users.username
+        userteam = users.userteam
+        password = users.password
+        auth = users.auth1
+        user_div = users.user_division
+        users = {"auth": auth, "password": password, "username": username, "userteam": userteam, "user_div": user_div}
+        if selecttext == "partname":
+            spare_list = spare_parts_list.objects.filter(partname__icontains=searchtext).order_by('team','codeno')  # db 동기화
+        elif selecttext == "vendor":
+            spare_list = spare_parts_list.objects.filter(vendor__icontains=searchtext).order_by('team','codeno')  # db 동기화
+        elif selecttext == "team":
+            spare_list = spare_parts_list.objects.filter(team__icontains=searchtext).order_by('team','codeno')  # db 동기화
+        elif selecttext == "codeo":
+            spare_list = spare_parts_list.objects.filter(codeno__icontains=searchtext).order_by('team','codeno')  # db 동기화
+        elif selecttext == "stock":
+            spare_list = spare_parts_list.objects.filter(stock__icontains=searchtext).order_by('team','codeno')  # db 동기화
+        else:
+            spare_list = spare_parts_list.objects.all().order_by('team','codeno')  # db 동기화
+    #################파일업로드하기##################
+        if "upload_file" in request.FILES:
+        # 파일 업로드 하기!!!
+            upload_file = request.FILES["upload_file"]
+            fs = FileSystemStorage()
+            name = fs.save(upload_file.name, upload_file)  # 파일저장 // 이름저장
+        # 파일 읽어오기!!!
+            url = fs.url(name)
+        else:
+            file_name = "-"
+            url="??"
+        print(url)
+        try:
+            upload_get = spare_parts_list.objects.get(codeno=codeno)
+            upload_get.attach = url
+            upload_get.save()
+        except:
+            pass
+        context = {"spare_list": spare_list, "loginid": loginid}
+        context.update(users)
+        return render(request, 'spareparts_cert_main.html', context)  # templates 내 html연결
 
 ##############################################################################################################
 #################################################Test########################################################
 ##############################################################################################################
 def temp(request):
-    cap = cv2.VideoCapture(0)
-    i = 0
-    while (cap.isOpened()):
-        ret, img = cap.read()
-        if not ret:
-            continue
-        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        decoded = pyzbar.decode(gray)
-        for d in decoded:
-            x, y, w, h = d.rect
-            barcode_data = d.data.decode("utf-8")
-            barcode_type = d.type
-            cv2.rectangle(img, (x, y), (x + w, y + h), (0, 0, 255), 2)
-            text = '%s (%s)' % (barcode_data, barcode_type)
-            cv2.putText(img, text, (x, y), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 255), 2, cv2.LINE_AA)
-        cv2.imshow('img', img)
-        key = cv2.waitKey(1)
-        if key == ord('q'):
-            break
-        elif key == ord('s'):
-            i += 1
-            cv2.imwrite('c_%03d.jpg' % i, img)
-    cap.release()
-    cv2.destroyAllWindows()
-    test= "111122223333"
-    ean = barcode.get('ean13', test, writer=ImageWriter())
-    fullname = ean.save(test)
+    #cap = cv2.VideoCapture(0)
+    #i = 0
+    #while (cap.isOpened()):
+    #    ret, img = cap.read()
+    #    if not ret:
+    #        continue
+    #    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    #    decoded = pyzbar.decode(gray)
+    #    for d in decoded:
+    #        x, y, w, h = d.rect
+    #        barcode_data = d.data.decode("utf-8")
+    #        barcode_type = d.type
+    #        cv2.rectangle(img, (x, y), (x + w, y + h), (0, 0, 255), 2)
+    #        text = '%s (%s)' % (barcode_data, barcode_type)
+    #        cv2.putText(img, text, (x, y), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 255), 2, cv2.LINE_AA)
+    #    cv2.imshow('img', img)
+    #    key = cv2.waitKey(1)
+    #    if key == ord('q'):
+    #        break
+    #    elif key == ord('s'):
+    #        i += 1
+    #        cv2.imwrite('c_%03d.jpg' % i, img)
+    #cap.release()
+    #cv2.destroyAllWindows()
+    #test= "111122223333"
+    #ean = barcode.get('ean13', test, writer=ImageWriter())
+    #fullname = ean.save(test)
     return render(request, 'temp.html') #templates 내 html연결
 

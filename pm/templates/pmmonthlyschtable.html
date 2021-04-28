@@ -78,7 +78,7 @@ mainfooter{
         color:white;
 }
 #buttonlocation{
-        margin-left:85%;
+        margin-left:92.5%;
 }
 .plandate_css{
         width:110px;
@@ -129,19 +129,19 @@ tr:nth-child(even){
             <td align="center" class="m6-1">{{pm_sch.roomname}}</td>
             <td align="center" class="m7-1">{{pm_sch.date}}</td>
             <td align="center" class="m8-1">
-            <input type="date" name="plandate" class="plandate_css" value={{pm_sch.plandate_temp}}>
+            <input type="date" name="plandate" class="plandate_css" value="{{pm_sch.plandate_temp}}">
             </td>
             <td align="center" class="m9-1">{{pm_sch.actiondate}}</td>
             <td align="center" class="m10-1">{{pm_sch.status}}</td>
             <td align="center" class="m11-1">
             <form action="pmmonthly_view" method="post" >
                 {% csrf_token %}
-                <input type="hidden" value={{loginid}} name="loginid">
-                <input type="hidden" value={{calendarsearch}} name="calendarsearch">
-                <input type="hidden" value={{pm_sch.pmsheetno}} name="pmsheetno">
-                <input type="hidden" value={{pm_sch.revno}} name="revno">
-                <input type="hidden" value={{pm_sch.controlno}} name="controlno">
-                <input type="hidden" value={{pm_sch.pmcode}} name="pmcode" >
+                <input type="hidden" value="{{loginid}}" name="loginid">
+                <input type="hidden" value="{{calendarsearch}}" name="calendarsearch">
+                <input type="hidden" value="{{pm_sch.pmsheetno}}" name="pmsheetno">
+                <input type="hidden" value="{{pm_sch.revno}}" name="revno">
+                <input type="hidden" value="{{pm_sch.controlno}}" name="controlno">
+                <input type="hidden" value="{{pm_sch.pmcode}}" name="pmcode" >
                 <input type="submit" class="button" value="View">
                 </form></td>
         </tr>
@@ -150,8 +150,8 @@ tr:nth-child(even){
         </table>
         <form action="" method="post" name="plandateform">
              {% csrf_token %}
-        <input type="hidden" value={{loginid}} name="loginid">
-        <input type="hidden" value={{calendarsearch}} name="calendarsearch">
+        <input type="hidden" value="{{loginid}}" name="loginid">
+        <input type="hidden" value="{{calendarsearch}}" name="calendarsearch">
         <input type="hidden" name="plandate">
         <input type="hidden" name="pmsheetno">
         <input type="hidden" name="controlno">
@@ -166,17 +166,10 @@ tr:nth-child(even){
 <mainfooter>
 <table id="buttonlocation">
     <tr>
-        <td><form action="" method="post">
-        {% csrf_token %}
-        <input type="hidden" value={{loginid}} name="loginid">
-        <input type="hidden" value={{calendarsearch}} name="calendarsearch">
-        <input type="submit" value="Preview" class="monButton"></form>
-        </td>
-
         <td><form action="pmmonthly_submit" method="post">
         {% csrf_token %}
-        <input type="hidden" value={{loginid}} name="loginid">
-        <input type="hidden" value={{calendarsearch}} name="calendarsearch">
+        <input type="hidden" value="{{loginid}}" name="loginid">
+        <input type="hidden" value="{{calendarsearch}}" name="calendarsearch">
         <input type="submit" value="Submit" class="monButton" onclick="this.disabled=true;this.value='Loading'; this.form.submit();"></form>
         </td>
     </tr>

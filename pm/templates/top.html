@@ -69,7 +69,7 @@ k{
         position:fixed; top:0.1%; left:96%;
         color:white;
 }
-.hidden_btn_home{
+.hidden_btn_home2{
  position:fixed; top:0.1%; left:1%;
  background-color: rgba(0, 0, 0, 0.0);
  width:32px;
@@ -107,14 +107,14 @@ k{
 <header>
 <form action="main" method="post">
 {% csrf_token %}
-<input type="hidden" value={{loginid}} name="loginid">
-<input type="hidden" value={{password}} name="pw">
-<input type="submit" class="hidden_btn_home" value=""></form>
+<input type="hidden" value="{{loginid}}" name="loginid">
+<input type="hidden" value="{{password}}" name="pw">
+<input type="submit" class="hidden_btn_home2" value=""></form>
 <l class="xi-home-o xi-2x"></l>
 <form action="auditrail_main" method="post" target="_blank">
 {% csrf_token %}
-<input type="hidden" value={{loginid}} name="loginid">
-<input type="hidden" value={{password}} name="pw">
+<input type="hidden" value="{{loginid}}" name="loginid">
+<input type="hidden" value="{{password}}" name="pw">
 <input type="submit" class="hidden_btn_audit" value=""></form>
 <m class="xi-align-justify xi-2x"></m>
 <toptext>Welcome,&nbsp;{{loginid}}</toptext>

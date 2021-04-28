@@ -92,7 +92,7 @@ main{
 
 <form action="" method="post" name="pmchecksheet">
              {% csrf_token %}
-        <input type="hidden" value={{loginid}} name="loginid">
+        <input type="hidden" value="{{loginid}}" name="loginid">
         <input type="hidden" name="calendar_day">
         <input type="hidden" name="calendar_month">
         <input type="hidden" name="calendar_year">

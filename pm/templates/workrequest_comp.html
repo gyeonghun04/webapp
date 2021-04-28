@@ -176,6 +176,13 @@ cursor:pointer
     to{
           color:red;    }
 }
+close_text{
+        position:fixed;top:797.04px; left:10px;
+        font-size:18px;
+        font-weight:bold;
+        font-family: arial;
+        color: blue;
+}
 </style>
 <body>
 <div class="border">
@@ -338,6 +345,7 @@ Work Request Form
         </tbody>
 </table>
 </form>
+<close_text>Work Request registration is complete.</close_text>
 <script>
         //부모창 f5기능 추가
     function Closepage(){
@@ -345,6 +353,8 @@ Work Request Form
         self.close();}
 
     function init(){
+        loginid = opener.document.getElementById("workloginid").value;
+        document.getElementById("logindata").innerHTML=loginid;
         opener.document.location.reload();
         setTimeout(function(){
                 if(opener){

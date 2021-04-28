@@ -303,19 +303,19 @@ Work Order No. : {{workorder.workorderno}}
         <td class="sign_name" align="center">
             <form action="workrequest_r_t_accept" method="post">
              {% csrf_token %}
-                <input type="hidden" value={{workorder.workorderno}} name="workorderno">
-                <input type="hidden" value={{loginid}} name="loginid">
-                <input type="hidden" value={{searchtext}} name="searchtext">
-                <input type="hidden" value={{selecttext}} name="selecttext">
+                <input type="hidden" value="{{workorder.workorderno}}" name="workorderno">
+                <input type="hidden" value="{{loginid}}" name="loginid">
+                <input type="hidden" value="{{searchtext}}" name="searchtext">
+                <input type="hidden" value="{{selecttext}}" name="selecttext">
             <input type="submit" class="button" value="Accept"></form>
         </td>
         <td class="sign_date" align="center">
             <form action="workrequest_r_t_reject" method="post">
              {% csrf_token %}
-                <input type="hidden" value={{workorder.workorderno}} name="workorderno">
-                <input type="hidden" value={{searchtext}} name="searchtext">
-                <input type="hidden" value={{selecttext}} name="selecttext">
-                <input type="hidden" value={{loginid}} name="loginid">
+                <input type="hidden" value="{{workorder.workorderno}}" name="workorderno">
+                <input type="hidden" value="{{searchtext}}" name="searchtext">
+                <input type="hidden" value="{{selecttext}}" name="selecttext">
+                <input type="hidden" value="{{loginid}}" name="loginid">
             <input type="submit" class="button" value="Reject"></form>
         </td>
         {%endif%}
@@ -352,20 +352,20 @@ Work Order No. : {{workorder.workorderno}}
         <td class="sign_name" align="center">
             <form method="post" name="workrequest_r_s_accept">
              {% csrf_token %}
-                <input type="hidden" value={{workorder.workorderno}} name="workorderno">
+                <input type="hidden" value="{{workorder.workorderno}}" name="workorderno">
                 <input type="hidden" name="detail">
-                <input type="hidden" value={{loginid}} name="loginid">
-                <input type="hidden" value={{searchtext}} name="searchtext">
-                <input type="hidden" value={{selecttext}} name="selecttext">
+                <input type="hidden" value="{{loginid}}" name="loginid">
+                <input type="hidden" value="{{searchtext}}" name="searchtext">
+                <input type="hidden" value="{{selecttext}}" name="selecttext">
             <input type="button" class="button" value="Accept" onclick="Workrequest_detail();"></form>
         </td>
         <td class="sign_date" align="center">
             <form action="workrequest_r_s_reject" method="post">
              {% csrf_token %}
-                <input type="hidden" value={{workorder.workorderno}} name="workorderno">
-                <input type="hidden" value={{searchtext}} name="searchtext">
-                <input type="hidden" value={{selecttext}} name="selecttext">
-                <input type="hidden" value={{loginid}} name="loginid">
+                <input type="hidden" value="{{workorder.workorderno}}" name="workorderno">
+                <input type="hidden" value="{{searchtext}}" name="searchtext">
+                <input type="hidden" value="{{selecttext}}" name="selecttext">
+                <input type="hidden" value="{{loginid}}" name="loginid">
             <input type="submit" class="button" value="Reject"></form>
         </td>
         {%endif%}

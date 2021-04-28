@@ -408,17 +408,17 @@ Maintenance Work Order Form
         <td class="c_info_2" align="center">
             <form action="workorder_w_s_accept" method="post" name="workrequest_w_m_accept">
              {% csrf_token %}
-                <input type="hidden" value={{workorder.workorderno}} name="workorderno">
-                <input type="hidden" value={{workorder.controlno}} name="controlno">
-                <input type="hidden" value={{loginid}} name="loginid">
+                <input type="hidden" value="{{workorder.workorderno}}" name="workorderno">
+                <input type="hidden" value="{{workorder.controlno}}" name="controlno">
+                <input type="hidden" value="{{loginid}}" name="loginid">
             <input type="submit" class="button" value="Accept"></form>
         </td>
         <td class="c_info_2" align="center">
             <form action="workorder_w_s_reject" method="post">
              {% csrf_token %}
-                <input type="hidden" value={{workorder.workorderno}} name="workorderno">
-                <input type="hidden" value={{workorder.controlno}} name="controlno">
-                <input type="hidden" value={{loginid}} name="loginid">
+                <input type="hidden" value="{{workorder.workorderno}}" name="workorderno">
+                <input type="hidden" value="{{workorder.controlno}}" name="controlno">
+                <input type="hidden" value="{{loginid}}" name="loginid">
             <input type="submit" class="button" value="Reject"></form>
         </td>
             {%endif%}
@@ -446,17 +446,17 @@ Maintenance Work Order Form
         <td class="c_info_2" align="center">
             <form action="workorder_w_m_accept" method="post" name="workrequest_w_m_accept">
              {% csrf_token %}
-                <input type="hidden" value={{workorder.workorderno}} name="workorderno">
-                <input type="hidden" value={{workorder.controlno}} name="controlno">
-                <input type="hidden" value={{loginid}} name="loginid">
+                <input type="hidden" value="{{workorder.workorderno}}" name="workorderno">
+                <input type="hidden" value="{{workorder.controlno}}" name="controlno">
+                <input type="hidden" value="{{loginid}}" name="loginid">
             <input type="submit" class="button" value="Accept"></form>
         </td>
         <td class="c_info_2" align="center">
             <form action="workorder_w_m_reject" method="post">
              {% csrf_token %}
-                <input type="hidden" value={{workorder.workorderno}} name="workorderno">
-                <input type="hidden" value={{workorder.controlno}} name="controlno">
-                <input type="hidden" value={{loginid}} name="loginid">
+                <input type="hidden" value="{{workorder.workorderno}}" name="workorderno">
+                <input type="hidden" value="{{workorder.controlno}}" name="controlno">
+                <input type="hidden" value="{{loginid}}" name="loginid">
             <input type="submit" class="button" value="Reject"></form>
         </td>
         {%endif%}
@@ -486,17 +486,17 @@ Maintenance Work Order Form
         <td class="c_info_2" align="center">
             <form action="workorder_w_q_accept" method="post" name="workrequest_w_q_accept">
              {% csrf_token %}
-                <input type="hidden" value={{workorder.workorderno}} name="workorderno">
-                <input type="hidden" value={{workorder.controlno}} name="controlno">
-                <input type="hidden" value={{loginid}} name="loginid">
+                <input type="hidden" value="{{workorder.workorderno}}" name="workorderno">
+                <input type="hidden" value="{{workorder.controlno}}" name="controlno">
+                <input type="hidden" value="{{loginid}}" name="loginid">
             <input type="submit" class="button" value="Accept"></form>
         </td>
         <td class="c_info_2" align="center">
             <form action="workorder_w_q_reject" method="post">
              {% csrf_token %}
-                <input type="hidden" value={{workorder.workorderno}} name="workorderno">
-                <input type="hidden" value={{workorder.controlno}} name="controlno">
-                <input type="hidden" value={{loginid}} name="loginid">
+                <input type="hidden" value="{{workorder.workorderno}}" name="workorderno">
+                <input type="hidden" value="{{workorder.controlno}}" name="controlno">
+                <input type="hidden" value="{{loginid}}" name="loginid">
             <input type="submit" class="button" value="Reject"></form>
         </td>
         {%endif%}

@@ -263,14 +263,14 @@ Preventive Maintenance Check Sheet
             <td align="right" class="c8-1">
                 {{pmlist.usedpart_temp}}
                 <input type="button" name="usedpart" class="usedpart_css" value="Click" onclick="usedpart(this);">
-                <input type="hidden" name="pmcode_up" value={{pmlist.pmcode}}>
-                <input type="hidden" name="itemcode" value={{pmlist.itemcode}}>
-                <input type="hidden" name="controlnos" value={{pmlist.controlno}}>
-                <input type="hidden" name="pmsheetnos" value={{pmlist.pmsheetno}}>
-                <input type="hidden" name="equipname" value={{equipinfo.name}}>
-                <input type="hidden" name="equipteam" value={{equipinfo.team}}>
-                <input type="hidden" name="roomname" value={{equipinfo.roomname}}>
-                <input type="hidden" name="roomno" value={{equipinfo.roomno}}>
+                <input type="hidden" name="pmcode_up" value="{{pmlist.pmcode}}">
+                <input type="hidden" name="itemcode" value="{{pmlist.itemcode}}">
+                <input type="hidden" name="controlnos" value="{{pmlist.controlno}}">
+                <input type="hidden" name="pmsheetnos" value="{{pmlist.pmsheetno}}">
+                <input type="hidden" name="equipname" value="{{equipinfo.name}}">
+                <input type="hidden" name="equipteam" value="{{equipinfo.team}}">
+                <input type="hidden" name="roomname" value="{{equipinfo.roomname}}">
+                <input type="hidden" name="roomno" value="{{equipinfo.roomno}}">
             </td>
         </tr>
                        {% endfor %}
@@ -279,9 +279,9 @@ Preventive Maintenance Check Sheet
         </table>
         <form action="" method="post" name="checkresultform">
              {% csrf_token %}
-        <input type="hidden" value={{loginid}} name="loginid">
-        <input type="hidden" value={{pmcode}} name="pmcode">
-        <input type="hidden" value={{calendar_date}} name="calendar_date">
+        <input type="hidden" value="{{loginid}}" name="loginid">
+        <input type="hidden" value="{{pmcode}}" name="pmcode">
+        <input type="hidden" value="{{calendar_date}}" name="calendar_date">
         <input type="hidden" name="checkresultreturn">
         <input type="hidden" name="itemcode">
         <input type="hidden" name="controlno">
@@ -290,9 +290,9 @@ Preventive Maintenance Check Sheet
 
         <form action="" method="post" name="actiondetailform">
              {% csrf_token %}
-        <input type="hidden" value={{loginid}} name="loginid">
-        <input type="hidden" value={{pmcode}} name="pmcode">
-        <input type="hidden" value={{calendar_date}} name="calendar_date">
+        <input type="hidden" value="{{loginid}}" name="loginid">
+        <input type="hidden" value="{{pmcode}}" name="pmcode">
+        <input type="hidden" value="{{calendar_date}}" name="calendar_date">
         <input type="hidden" name="actiondetailreturn">
         <input type="hidden" name="itemcode">
         <input type="hidden" name="controlno">
@@ -304,9 +304,9 @@ Preventive Maintenance Check Sheet
 
         <form action="" method="post" name="checkboxform">
              {% csrf_token %}
-        <input type="hidden" value={{loginid}} name="loginid">
-        <input type="hidden" value={{pmcode}} name="pmcode">
-        <input type="hidden" value={{calendar_date}} name="calendar_date">
+        <input type="hidden" value="{{loginid}}" name="loginid">
+        <input type="hidden" value="{{pmcode}}" name="pmcode">
+        <input type="hidden" value="{{calendar_date}}" name="calendar_date">
         <input type="hidden" name="pass_y">
         <input type="hidden" name="fail_y">
         <input type="hidden" name="fail_n">
@@ -317,9 +317,9 @@ Preventive Maintenance Check Sheet
 
         <form action="" method="post" name="remarkform">
              {% csrf_token %}
-        <input type="hidden" value={{loginid}} name="loginid">
-        <input type="hidden" value={{pmcode}} name="pmcode">
-        <input type="hidden" value={{calendar_date}} name="calendar_date">
+        <input type="hidden" value="{{loginid}}" name="loginid">
+        <input type="hidden" value="{{pmcode}}" name="pmcode">
+        <input type="hidden" value="{{calendar_date}}" name="calendar_date">
         <input type="hidden" name="remarkreturn">
         <input type="hidden" name="controlno">
         <input type="hidden" name="pmsheetno">
@@ -328,16 +328,16 @@ Preventive Maintenance Check Sheet
 
         <form action="" method="post" name="remarkna">
              {% csrf_token %}
-        <input type="hidden" value={{loginid}} name="loginid">
-        <input type="hidden" value={{pmcode}} name="pmcode">
-        <input type="hidden" value={{calendar_date}} name="calendar_date">
+        <input type="hidden" value="{{loginid}}" name="loginid">
+        <input type="hidden" value="{{pmcode}}" name="pmcode">
+        <input type="hidden" value="{{calendar_date}}" name="calendar_date">
         <input type="hidden" name="controlno">
         <input type="hidden" name="pmsheetno">
         </form>
 
         <form method="post" name="workrequestnew">
              {% csrf_token %}
-        <input type="hidden" value={{loginid}} id="workloginid">
+        <input type="hidden" value="{{loginid}}" id="workloginid">
         <input type="hidden" name="equipname" id="workequipname">
         <input type="hidden" name="controlno" id="workcontrolno">
         <input type="hidden" name="equipteam" id="workequipteam">
@@ -350,7 +350,7 @@ Preventive Maintenance Check Sheet
 
         <form method="post" name="usedpartup">
              {% csrf_token %}
-        <input type="hidden" value={{loginid}} id="workloginid2">
+        <input type="hidden" value="{{loginid}}" id="workloginid2">
         <input type="hidden" name="pmcode" id="workpmcode2">
         <input type="hidden" name="itemcode" id="workitemcode2">
         </form>
@@ -413,9 +413,9 @@ Preventive Maintenance Check Sheet
             {%else%}
                <form method="post" name="uploadfile" enctype="multipart/form-data" class="uploadfile">
             {% csrf_token %}
-            <input type="hidden" value={{loginid}} name="loginid">
-            <input type="hidden" value={{pmcode}} name="pmcode">
-            <input type="hidden" value={{calendar_date}} name="calendar_date">
+            <input type="hidden" value="{{loginid}}" name="loginid">
+            <input type="hidden" value="{{pmcode}}" name="pmcode">
+            <input type="hidden" value="{{calendar_date}}" name="calendar_date">
             <input type="hidden" name="controlno">
             <input type="hidden" name="pmsheetno">
             <input type="file" name="upload_file" id="upload_file" class="button_css1">
@@ -434,11 +434,11 @@ Preventive Maintenance Check Sheet
                            {% for pmlist in pmchecksheet_info  %}
      <form action="pmcalendar_submit" method="post">
                 {% csrf_token %}
-     <input type="hidden" value={{loginid}} name="loginid">
-     <input type="hidden" value={{pmlist.pmcode}} name="pmcode">
-     <input type="hidden" value={{pmlist.controlno}} name="controlno">
-     <input type="hidden" value={{pmlist.pmsheetno}} name="pmsheetno">
-     <input type="hidden" value={{calendar_date}} name="calendar_date">
+     <input type="hidden" value="{{loginid}}" name="loginid">
+     <input type="hidden" value="{{pmlist.pmcode}}" name="pmcode">
+     <input type="hidden" value="{{pmlist.controlno}}" name="controlno">
+     <input type="hidden" value="{{pmlist.pmsheetno}}" name="pmsheetno">
+     <input type="hidden" value="{{calendar_date}}" name="calendar_date">
      <input type="submit" class="pmcheck_submit_css" value="Submit" onclick="this.disabled=true;this.value='Submit'; this.form.submit();">
      </form>
                             {% endfor  %}

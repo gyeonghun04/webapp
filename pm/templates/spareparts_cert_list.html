@@ -1,10 +1,208 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<style>
+#tabletop{
+    	font-family: arial;
+        position:fixed;top:4%; left:9%;
+        height:5%;
+
+}
+titletext{
+    	font-family:'Rubik', sans-serif;
+        font-size:20px;
+        font-weight:bold;
+}
+.selecttext{
+
+        width:105px;
+        height:20px;
+}
+.searchtext{
+        width:200px;
+        height:20px;
+}
+.searchbutton{
+        width:60px;
+        height:20px;
+}
+#searchbar{
+        position:fixed;top:4%; left:80%;
+        padding-top:5px;
+        font-family:'Rubik', sans-serif;
+        font-size:10px;
+}
+.new{
+        font-family:'Rubik', sans-serif;
+        font-size:15px;
+        background-color: rgba(255, 255, 255, 0.0);
+        cursor:pointer;
+        border:0px;
+        font-color:black;
+        text-decoration:underline;
+}
+b{
+        position:fixed;top:4.9%; left:72%;
+        align-text:left;
+        color:black;
+}
+
+#tablemenu{
+    	font-family: arial;
+        font-size:11px;
+        position:fixed;top:7.5%; left:9%;
+        height:2.5%;
+        width:90.7%;
+        background-color:#6F6F6F;
+        color:white;
+}
+#tabledesc{
+        position:absolute;top:10%; left:9%;
+        z-index:10;
+        width:90.7%;
+        font-family: arial;
+        font-size:11px;
+        overflow:scroll;
+        height:89.8%;
+}
+.m1{width:100px;}
+.m2{width:80px;}
+.m3{width:200px;}
+.m4{width:200px;}
+.m5{width:250px;}
+.m6{width:250px;}
+.m7{width:100px;}
+.m8{width:100px;}
+.m9{width:100px;}
+.m10{width:300px;}
+
+.m1-1{width:100px;
+height:20px;}
+.m2-1{width:80px;}
+.m3-1{width:200px;}
+.m4-1{width:200px;}
+.m5-1{width:250px;}
+.m6-1{width:250px;}
+.m7-1{width:100px;}
+.m8-1{width:100px;}
+.m9-1{width:100px;}
+.m10-1{width:300px;}
+
+body{overflow:hidden;}
+
+#sideline2{
+        background:#EEEEEE;
+        position:fixed; left:99.7%;
+        height:100%;
+        width:5px;
+}
+
+tr:nth-child(even){
+    background-color:#EEEEEE;
+}
+.upload_btn{
+    	font-family: arial;
+        font-size:11px;
+        cursor:pointer;
+}
+.button_css1{
+    	font-family: arial;
+        font-size:10px;
+}
+</style>
 </head>
 <body>
-$END$
+<div id="tabletop" style="word-break:break-all">
+<table>
+    <tr>
+    <td><titletext>Spare Parts Certificate</titletext></td>
+        <td>
+    <div id="searchbar">
+        <form action="spareparts_main" method="post">
+            {% csrf_token %}
+            <select class="selecttext" name="selecttext">&nbsp;
+            <option value="partname">Parts Name</option>
+            <option value="vendor">Vendor</option>
+            <option value="team">Team</option>
+            <option value="codeno">Code No.</option>
+            <option value="stock">Stock</option>
+            </select>
+            <input type="search"  class="searchtext" placeholder="Keywords" name="searchtext">
+            <input type="hidden" value="{{loginid}}" name="loginid">
+            <input type="hidden" value="{{loginid}}" id="loginid_up">
+            <input type="submit"  class="searchbutton" value="Search"></form>
+    </div></td>
+    </tr>
+</table>
+</div>
+<div id="tablemenu">
+     <table  style="word-break:break-all">
+        <thead>
+        <tr>
+            <td align="center" class="m1">Code No.</td>
+            <td align="center" class="m2">Team</td>
+            <td align="center" class="m3">Parts Name</td>
+            <td align="center" class="m4">Vendor</td>
+            <td align="center" class="m5">Model Name</td>
+            <td align="center" class="m6">Spec</td>
+            <td align="center" class="m7">Location</td>
+            <td align="center" class="m8">Stock</td>
+            <td align="center" class="m9">Staff</td>
+            <td align="center" class="m10">Attached File</td>
+        </tr>
+        </thead>
+     </table>
+</div>
+<div id="tabledesc">
+ <table style="word-break:break-all">
+     <tbody>
+            {% for sp_list in spare_list %}
+        <tr>
+            <td align="center" class="m1-1">{{sp_list.codeno}}</td>
+            <td align="center" class="m2-1">{{sp_list.team}}</td>
+            <td align="center" class="m3-1">{{sp_list.partname}}</td>
+            <td align="center" class="m4-1">{{sp_list.vendor}}</td>
+            <td align="center" class="m5-1">{{sp_list.modelno}}</td>
+            <td align="center" class="m6-1">{{sp_list.spec}}</td>
+            <td align="center" class="m7-1">{{sp_list.location}}</td>
+            <td align="center" class="m8-1">{{sp_list.stock}}</td>
+            <td align="center" class="m9-1">{{sp_list.staff}}</td>
+            <td align="center" class="m10-1">
+            <form method="post" name="cert_upload_form" enctype="multipart/form-data">
+            {% csrf_token %}
+              <input type="file" name="upload_file" id="upload_file" class="button_css1">
+              <input type="hidden" name="codeno">
+              <input type="hidden" value="{{loginid}}" name="loginid">
+              <input type="button" value="Upload" class="upload_btn" onclick="Cert_upload(this);"></form>
+            </td>
+            <input type="hidden" value="{{sp_list.codeno}}" name="codeno_up">
+        </tr>
+            {%endfor%}
+        </tbody>
+ </table>
+</div>
+<div id="sideline2">
+<mainline>
+</mainline>
+</div>
+<script>
+      function Cert_upload(obj){
+              alert("dwqd");
+              var i = obj.parentNode.parentNode.rowIndex;
+              var codeno_up= document.getElementsByName('codeno_up')[i].value;
+              alert("dwqd");
+              var upload_file= document.getElementsByName('upload_file')[i].value;
+              document.cert_upload_form.codeno.value = codeno_up;
+              document.cert_upload_form.upload_file.value = upload_file;
+                            alert("dwqd");
+                // 서버로 전송
+              document.cert_upload_form.action="spareparts_cert_upload";
+              document.cert_upload_form.submit();
+                            alert("dwqd");
+      }
+
+</script>
 </body>
 </html>
