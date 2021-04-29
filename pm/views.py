@@ -295,6 +295,7 @@ def pmchecksheet_main(request):
         table_signal = "table_signal"
     #####입력정보값 받기#####
         loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        calendarsearch = request.POST.get('calendarsearch')
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -304,8 +305,9 @@ def pmchecksheet_main(request):
         user_div = users.user_division
         users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
         #####검색월 디폴트값#####
-        today = date.datetime.today()
-        calendarsearch = "20" + today.strftime('%y') + "-" + today.strftime('%m')
+        if (str(calendarsearch) == "None") or (str(calendarsearch) == ""):
+            today = date.datetime.today()
+            calendarsearch = "20" + today.strftime('%y') + "-" + today.strftime('%m')
 #################검색어 반영##################
         selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
         searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
@@ -365,7 +367,7 @@ def pmchecksheet_write(request):
         user_div = users.user_division
         users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
     #####검색월 디폴트값#####
-        if str(calendarsearch) == "":
+        if (str(calendarsearch) == "None") or (str(calendarsearch) == ""):
             today = date.datetime.today()
             calendarsearch = "20" + today.strftime('%y') + "-" + today.strftime('%m')
     #####첨부파일 시그널 주기#####
@@ -503,7 +505,7 @@ def pmchecksheet_checkresult(request):
         user_div = users.user_division
         users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
     #####검색월 디폴트값#####
-        if str(calendarsearch) == "":
+        if (str(calendarsearch) == "None") or (str(calendarsearch) == ""):
             today = date.datetime.today()
             calendarsearch = "20" + today.strftime('%y') + "-" + today.strftime('%m')
     #####체크시트 결과값 입시에 입력#####
@@ -611,7 +613,7 @@ def pmchecksheet_actiondetail(request):
         user_div = users.user_division
         users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
     #####검색월 디폴트값#####
-        if str(calendarsearch) == "":
+        if (str(calendarsearch) == "None") or (str(calendarsearch) == ""):
             today = date.datetime.today()
             calendarsearch = "20" + today.strftime('%y') + "-" + today.strftime('%m')
     #####체크시트 결과값 입시에 입력#####
@@ -721,7 +723,7 @@ def pmchecksheet_checkboxform(request):
         user_div = users.user_division
         users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
     #####검색월 디폴트값#####
-        if str(calendarsearch) == "":
+        if (str(calendarsearch) == "None") or (str(calendarsearch) == ""):
             today = date.datetime.today()
             calendarsearch = "20" + today.strftime('%y') + "-" + today.strftime('%m')
     #####체크시트 결과값 입시에 입력#####
@@ -828,7 +830,7 @@ def pmchecksheet_remark(request):
         user_div = users.user_division
         users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
     #####검색월 디폴트값#####
-        if str(calendarsearch) == "":
+        if (str(calendarsearch) == "None") or (str(calendarsearch) == ""):
             today = date.datetime.today()
             calendarsearch = "20" + today.strftime('%y') + "-" + today.strftime('%m')
     #####리마크 입력시에 입력#####
@@ -932,7 +934,7 @@ def pmchecksheet_remark_na(request):
         user_div = users.user_division
         users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
     #####검색월 디폴트값#####
-        if str(calendarsearch) == "":
+        if (str(calendarsearch) == "None") or (str(calendarsearch) == ""):
             today = date.datetime.today()
             calendarsearch = "20" + today.strftime('%y') + "-" + today.strftime('%m')
     #####리마크 입력시에 입력#####
@@ -1037,7 +1039,7 @@ def pmchecksheet_view(request):
         user_div = users.user_division
         users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
     #####검색월 디폴트값#####
-        if str(calendarsearch) == "":
+        if (str(calendarsearch) == "None") or (str(calendarsearch) == ""):
             today = date.datetime.today()
             calendarsearch = "20" + today.strftime('%y') + "-" + today.strftime('%m')
     #####완료 시그널 주기#####
@@ -1266,7 +1268,7 @@ def pmchecksheet_submit(request):
         user_div = users.user_division
         users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
     #####검색월 디폴트값#####
-        if str(calendarsearch) == "":
+        if (str(calendarsearch) == "None") or (str(calendarsearch) == ""):
             today = date.datetime.today()
             calendarsearch = "20" + today.strftime('%y') + "-" + today.strftime('%m')
     #####첨부파일 시그널 주기#####
@@ -1717,7 +1719,7 @@ def pmchecksheet_return(request):
         user_div = users.user_division
         users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
     #####검색월 디폴트값#####
-        if str(calendarsearch) == "":
+        if (str(calendarsearch) == "None") or (str(calendarsearch) == ""):
             today = date.datetime.today()
             calendarsearch = "20" + today.strftime('%y') + "-" + today.strftime('%m')
     #####첨부파일 시그널 주기#####
@@ -1901,7 +1903,7 @@ def pmchecksheet_upload(request):
         user_div = users.user_division
         users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
         #####검색월 디폴트값#####
-        if str(calendarsearch) == "":
+        if (str(calendarsearch) == "None") or (str(calendarsearch) == ""):
             today = date.datetime.today()
             calendarsearch = "20" + today.strftime('%y') + "-" + today.strftime('%m')
     #################검색어 반영##################
@@ -2117,7 +2119,7 @@ def pmcheckapproval_main(request):
         user_div = users.user_division
         users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
     #####검색월 디폴트값#####
-        if str(calendarsearch) == "":
+        if (str(calendarsearch) == "None") or (str(calendarsearch) == ""):
             today = date.datetime.today()
             calendarsearch = "20" + today.strftime('%y') + "-" + today.strftime('%m')
     #################검색어 반영##################
@@ -2245,7 +2247,7 @@ def pmcheckapproval_check(request):
         else:
             url_comp = "Y"
     #####검색월 디폴트값#####
-        if str(calendarsearch) == "":
+        if (str(calendarsearch) == "None") or (str(calendarsearch) == ""):
             today = date.datetime.today()
             calendarsearch = "20" + today.strftime('%y') + "-" + today.strftime('%m')
     #####Reviewed 신호주기#####
@@ -2395,7 +2397,7 @@ def pmcheckapproval_review_accept(request):
         else:
             url_comp = "Y"
     #####검색월 디폴트값#####
-        if str(calendarsearch) == "":
+        if (str(calendarsearch) == "None") or (str(calendarsearch) == ""):
             today = date.datetime.today()
             calendarsearch = "20" + today.strftime('%y') + "-" + today.strftime('%m')
     #####승인권한 확인#####
@@ -2557,7 +2559,7 @@ def pmcheckapproval_review_reject(request):
         else:
             url_comp = "Y"
     #####검색월 디폴트값#####
-        if str(calendarsearch) == "":
+        if (str(calendarsearch) == "None") or (str(calendarsearch) == ""):
             today = date.datetime.today()
             calendarsearch = "20" + today.strftime('%y') + "-" + today.strftime('%m')
     #####승인권한 확인#####
@@ -2723,7 +2725,7 @@ def pmcheckapproval_approve_accept(request):
         else:
             url_comp = "Y"
     #####검색월 디폴트값#####
-        if str(calendarsearch) == "":
+        if (str(calendarsearch) == "None") or (str(calendarsearch) == ""):
             today = date.datetime.today()
             calendarsearch = "20" + today.strftime('%y') + "-" + today.strftime('%m')
     #####승인권한 확인#####
@@ -2958,7 +2960,7 @@ def pmcheckapproval_approve_reject(request):
         else:
             url_comp = "Y"
     #####검색월 디폴트값#####
-        if str(calendarsearch) == "":
+        if (str(calendarsearch) == "None") or (str(calendarsearch) == ""):
             today = date.datetime.today()
             calendarsearch = "20" + today.strftime('%y') + "-" + today.strftime('%m')
     #####승인권한 확인#####
@@ -4382,7 +4384,7 @@ def pmmonthly_view(request):
         user_div = users.user_division
         users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
     #####검색월 디폴트값#####
-        if str(calendarsearch) == "":
+        if (str(calendarsearch) == "None") or (str(calendarsearch) == ""):
             today = date.datetime.today()
             calendarsearch = "20" + today.strftime('%y') + "-" + today.strftime('%m')
     #####입력정보값 테이블에서 불러오기#####
@@ -4421,7 +4423,7 @@ def pmmonthly_plandate(request):
         pm_sch_save.plandate_temp = plandate
         pm_sch_save.save()
     #####검색월 디폴트값#####
-        if str(calendarsearch) == "":
+        if (str(calendarsearch) == "None") or (str(calendarsearch) == ""):
             today = date.datetime.today()
             calendarsearch = "20" + today.strftime('%y') + "-" + today.strftime('%m')
     #####입력정보값 테이블에서 불러오기#####
@@ -4448,7 +4450,7 @@ def pmmonthly_submit(request):
         user_div = users.user_division
         users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
     #####검색월 디폴트값#####
-        if str(calendarsearch) == "":
+        if (str(calendarsearch) == "None") or (str(calendarsearch) == ""):
             today = date.datetime.today()
             calendarsearch = "20" + today.strftime('%y') + "-" + today.strftime('%m')
         pmmonthly_sch = pm_sch.objects.filter(date=calendarsearch).order_by('team', 'roomno')  # db 동기화
