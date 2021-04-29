@@ -52,30 +52,13 @@ titletext{
         font-family: arial;
         font-size:11px;
         overflow-y:scroll;
-        height:83.8%;
+        height:90%;
 }
 
 body{overflow:hidden;}
 
 tr:nth-child(even){
     background-color:#EEEEEE;
-}
-#manualchange{
-        position:fixed; top:94%; left:9%;
-        width:90.7%;
-    	font-family: arial;
-        font-size:11px;
-        background-color:#6F6F6F;
-        color:white;
-        height:20px;
-}
-
-#manualchangeinput{
-        position:fixed; top:96.5%; left:9%;
-        width:80%;
-    	font-family: arial;
-        font-size:11px;
-        height:40px;
 }
 
 .m1{width:240px;}
@@ -138,6 +121,21 @@ height:18px;}
         padding-bottom:3px;
         width:140px;
         }
+.new{
+        font-family:'Rubik', sans-serif;
+        font-size:15px;
+        background-color: rgba(255, 255, 255, 0.0);
+        cursor:pointer;
+        border:0px;
+        font-color:black;
+        text-decoration:underline;
+}
+b{
+        position:fixed;top:4.9%; left:91%;
+        align-text:left;
+        color:black;
+}
+
 </style>
 <body>
 <main>
@@ -152,7 +150,7 @@ height:18px;}
     </tr>
 </table>
 </div>
-
+        <b class="xi-pen"><input type="button" value="New Registration" class="new" onclick="Registration_new();"></b>
 <div id="tablemenu">
      <table  style="word-break:break-all">
         <thead>
@@ -179,42 +177,73 @@ height:18px;}
             <td align="center" class="m4-1">{{approval_info.auth_name}}</td>
             <td align="center" class="m5-1">{{approval_info.code_no}}</td>
             <td align="center" class="m6-1">
-                <input type="button" class="change_button" value="Change"></td>
+                <input type="hidden" value="{{loginid}}" id="loginid_up">
+                <input type="hidden" value="{{approval_info.division}}" name="division_up">
+                <input type="hidden" value="{{approval_info.description}}" name="description_up">
+                <input type="hidden" value="{{approval_info.auth_team}}" name="auth_team_up">
+                <input type="hidden" value="{{approval_info.auth_name}}" name="auth_name_up">
+                <input type="hidden" value="{{approval_info.code_no}}" name="code_no_up">
+                <input type="hidden" value="{{loginid}}" name="loginid">
+                <input type="button" class="change_button" value="Change" onclick="Auth_change(this);"></td>
             <td align="center" class="m7-1">
-                <input type="button" class="delete_button" value="Delete"></td>
+                <input type="button" class="delete_button" value="Delete" onclick="Auth_delete(this);"></td>
         </tr>
                         {%endfor%}
         </tbody>
  </table>
 </div>
- <div>
- <table>
-   <thead id="manualchange">
-        <tr>
-            <td align="center" class="n1">Division</td>
-            <td align="center" class="n2">Description</td>
-            <td align="center" class="n3">Auth. Name</td>
+        <form name="auth_info_change" method="post">
+                     {% csrf_token %}
+        <input type="hidden" name="code_no" id="code_no">
+        <input type="hidden" name="auth_name" id="auth_name">
+        <input type="hidden" name="description" id="description">
+        <input type="hidden" name="auth_team" id="auth_team">
+        <input type="hidden" name="division" id="division"></form>
 
-        </tr>
-   </thead>
-              <form action="user_info_new" method="post">
-         {% csrf_token %}
-   <tbody id="manualchangeinput">
-     <tr>
-            <td align="center">
-                <input type="text" name="division" class="n1-1" required ></td>
-            <td align="center">
-                <input type="text" name="description"  class="n2-1" required></td>
-            <td align="center">
-                <input type="text" name="auth_name"  class="n3-1" required></td>
-     </tr>
-   </tbody>
-      <input type="hidden" value="{{loginid}}" name="loginid">
-      <input type="submit" class="submit_button" value="Submit"></form>
-     </table>
- </div>
+        <form name="auth_info_delete" method="post">
+                     {% csrf_token %}
+       <input type="hidden" value="{{loginid}}" name="loginid">
+       <input type="hidden" name="division">
+       <input type="hidden" name="description"></form>
+
 </main>
 <script>
+            function Registration_new(){
+                        // 팝업창열기
+            var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=380, height=285, left=50, top=10';
+            window.open("/approval_info_new", "Authority Information Registration", settings);
+            }
+
+             function Auth_change(obj){
+                // 행위치값과 플랜데이트 받기
+            var i = obj.parentNode.parentNode.rowIndex;
+            var division= document.getElementsByName('division_up')[i].value;
+            var description= document.getElementsByName('description_up')[i].value;
+            var auth_team= document.getElementsByName('auth_team_up')[i].value;
+            var auth_name= document.getElementsByName('auth_name_up')[i].value;
+            var code_no= document.getElementsByName('code_no_up')[i].value;
+                // html로 값보내기
+            document.auth_info_change.code_no.value = code_no;
+            document.auth_info_change.auth_name.value = auth_name;
+            document.auth_info_change.description.value = description;
+            document.auth_info_change.auth_team.value = auth_team;
+            document.auth_info_change.division.value = division;
+                        // 팝업창열기
+            var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=550, height=280, left=50, top=10';
+            window.open("/approval_info_change", "Authority Information Change", settings);
+            }
+
+                function Auth_delete(obj){
+            var i = obj.parentNode.parentNode.rowIndex;
+            var division= document.getElementsByName('division_up')[i].value;
+            var description= document.getElementsByName('description_up')[i].value;
+            document.auth_info_delete.division.value = division;
+            document.auth_info_delete.description.value = description;
+            // 서버로 전송
+            document.auth_info_delete.action="approval_info_delete";
+            document.auth_info_delete.submit();
+            }
+
 </script>
 </body>
 </html>

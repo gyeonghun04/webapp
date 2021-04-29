@@ -1,10 +1,201 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Title</title>
 </head>
+<style>
+titletext{
+        position:fixed;top:4%; left:9.2%;
+    	font-family:'Rubik', sans-serif;
+        font-size:20px;
+        font-weight:bold;
+}
+.selecttext{
+        width:105px;
+        height:20px;
+}
+.searchtext{
+        width:200px;
+        height:20px;
+}
+.searchbutton{
+        width:60px;
+        cursor:pointer;
+        height:20px;
+}
+#searchbar{
+        position:fixed;top:4.9%; left:79.5%;
+    	font-family: arial;
+        font-family:arial;
+        font-size:10px;
+}
+
+#tablemenu{
+    	font-family: arial;
+        font-size:11px;
+        position:fixed;top:7.5%; left:9%;
+        width:90.7%;
+        background-color:#6F6F6F;
+        color:white;
+}
+#tabletop{
+        border:1px solid white;
+        border-collapse:collapse;}
+#tabledesc{
+        position:fixed;top:11.2%; left:9%;
+        z-index:10;
+        width:90.7%;
+        font-family: arial;
+        font-size:11px;
+        overflow-y:scroll;
+        height:88.5%;
+}
+
+body{overflow:hidden;}
+
+tr:nth-child(even){
+    background-color:#EEEEEE;
+}
+
+.m1{width:362px;
+height:15px;
+background-color:#6F6F6F;}
+.m2{width:300px;
+background-color:#6F6F6F;}
+.m3{width:200px;
+background-color:#6F6F6F;}
+.m4{height:15px;}
+
+.m1-1{width:362px;}
+.m2-1{width:300px;}
+.m3-1{width:200px;}
+
+
+.delete_button{
+    	font-family: arial;
+        font-size:11px;
+        cursor:pointer;
+}
+
+.submit_button{
+    	font-family: arial;
+        cursor:pointer;
+        font-size:14px;
+        height:24px;
+        margin-left:1800px;
+        margin-top:930px;
+}
+
+.authtext{
+    	font-family: arial;
+        padding-top:2px;
+        padding-bottom:3px;
+        width:140px;
+        }
+b{
+        position:fixed;top:5.2%; left:71.5%;
+        align-text:left;
+        color:black;
+}
+.new{
+        font-family:'Rubik', sans-serif;
+        font-size:15px;
+        background-color: rgba(255, 255, 255, 0.0);
+        cursor:pointer;
+        border:0px;
+        font-color:black;
+        text-decoration:underline;
+}
+.input_css1{width:320px;}
+.input_css2{width:300px;}
+</style>
 <body>
-$END$
+<main>
+{% include "css.html"%}
+{% include "top.html"%}
+{% include "sidetap.html"%}
+
+<titletext>Room List</titletext>
+<b class="xi-pen"><input type="button" value="New Registration" class="new" onclick="Registration_new();"></b>
+
+<div id="searchbar">
+        <form action="search" method="post">
+            {% csrf_token %}
+            <select class="selecttext" name="selecttext">&nbsp;
+            <option value="roomname">Room Name</option>
+            <option value="roomno">Room No.</option>
+            </select>
+            <input type="search"  class="searchtext" placeholder="Keywords" name="searchtext">
+            <input type="hidden" value="{{loginid}}" name="loginid">
+            <input type="submit"  class="searchbutton" value="Search"></form>
+</div>
+
+
+<div id="tablemenu">
+     <table  id="tabletop" style="word-break:break-all" border="1">
+        <thead>
+        <tr>
+        <td align="center" class="m4" colspan="2">Now</td>
+        <td align="center" class="m4" colspan="2">New</td>
+        <td align="center" class="m4" colspan="2">Button</td>
+        </tr>
+        <tr>
+            <td align="center" class="m1">Room Name</td>
+            <td align="center" class="m2">Room No.</td>
+            <td align="center" class="m1">Room Name</td>
+            <td align="center" class="m2">Room No.</td>
+            <td align="center" class="m3">Change</td>
+            <td align="center" class="m3">Delete</td>
+        </tr>
+        </thead>
+     </table>
+</div>
+<div id="tabledesc">
+ <table style="word-break:break-all">
+     <tbody>
+        <tr>
+            <td align="center" class="m1-1"></td>
+            <td align="center" class="m2-1"></td>
+            <td align="center" class="m1-1">
+                <input type="text" name="new_name" class="input_css1"></td>
+            <td align="center" class="m2-1">
+                <input type="text" name="new_no" class="input_css2"></td>
+            <td align="center" class="m3-1">
+                <input type="hidden" value="{{loginid}}" name="loginid_give">
+                <input type="button" class="delete_button" value="Change" onclick="Id_change(this);"></td>
+            <td align="center" class="m3-1">
+                <input type="button" class="delete_button" value="Delete" onclick="Id_delete(this);"></td>
+        </tr>
+        </tbody>
+ </table>
+</div>
+
+</div>
+    <form name="user_info_change" method="post">
+                     {% csrf_token %}
+        <input type="hidden" name="userteam_up" id="userteam_up">
+        <input type="hidden" name="password_up" id="password_up">
+        <input type="hidden" name="useremail_up" id="useremail_up">
+        <input type="hidden" name="auth_1_up" id="auth_1_up">
+        <input type="hidden" name="userid_up" id="userid_up">
+        <input type="hidden" value="{{loginid}}" id="loginid_up">
+        <input type="hidden" name="user_div_up" id="user_div_up"></form>
+
+    <form name="user_info_delete" method="post">
+                     {% csrf_token %}
+       <input type="hidden" value="{{loginid}}" name="loginid">
+       <input type="hidden" name="userid"></form>
+
+
+</main>
+<script>
+
+    function Registration_new(){
+                        // 팝업창열기
+            var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=380, height=380, left=50, top=10';
+            window.open("", "Room Information Registration", settings);
+    }
+</script>
 </body>
 </html>

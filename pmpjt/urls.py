@@ -214,8 +214,18 @@ urlpatterns = [
 ####admin####
     path('user_info', pm.views.user_info, name='user_info'),
     path('user_info_new', pm.views.user_info_new, name='user_info_new'),
+    path('user_info_new_submit', pm.views.user_info_new_submit, name='user_info_new_submit'),
     path('approval_info', pm.views.approval_info, name='approval_info'),
+    path('approval_info_new', pm.views.approval_info_new, name='approval_info_new'),
+    path('approval_info_new_submit', pm.views.approval_info_new_submit, name='approval_info_new_submit'),
+    path('approval_info_change', pm.views.approval_info_change, name='approval_info_change'),
+    path('approval_info_change_submit', pm.views.approval_info_change_submit, name='approval_info_change_submit'),
+    path('approval_info_delete', pm.views.approval_info_delete, name='approval_info_delete'),
     path('user_info_change', pm.views.user_info_change, name='user_info_change'),
+    path('user_info_change_submit', pm.views.user_info_change_submit, name='user_info_change_submit'),
+    path('user_info_change_delete', pm.views.user_info_change_delete, name='user_info_change_delete'),
+    path('roomlist_main', pm.views.roomlist_main, name='roomlist_main'),
+
 
 ]
 if settings.DEBUG:

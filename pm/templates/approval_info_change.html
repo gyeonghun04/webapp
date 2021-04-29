@@ -1,10 +1,254 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+    <title>Title</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap');
+
+header{
+        height:30px;
+        background:#6F6F6F;
+        justify-content:space-between;
+        align-items:center;
+        position:fixed;
+        top:0;
+        left:0;
+        right:0;
+        z-index:10;
+        }
+header2{
+        height:0.3px;
+        padding-top:3px;
+        background:#EEEEEE;
+        display:flex;
+        justify-content:space-between;
+        position:fixed;
+        top:30px;
+        left:0;
+        right:0;
+        z-index:10;
+}
+toptext{
+        font-family: 'Rubik', sans-serif;
+        font-size:18px;
+        vertical-align:top;
+        font-weight:bold;
+        padding-left:5px;
+        color:white;
+}
+#logindata{
+        position:fixed; top:1px; left:90px;
+        font-family: 'Rubik', sans-serif;
+        font-size:18px;
+        vertical-align:top;
+        font-weight:bold;
+        color:white;
+}
+l{
+        margin-left:1%;
+        color:white;
+}
+m{
+        margin-left:1%;
+        color:white;
+}
+k{
+        position:fixed; top:0%; left:94.5%;
+        color:white;
+}
+.Button {
+        position:fixed; left:470px;
+        font-family:'Rubik', sans-serif;
+        font-size:18px;
+        background-color: rgba(255, 255, 255, 0.0);
+        cursor:pointer;
+        border:0px;
+        color:white;
+        font-weight:bold;
+}
+spareparts{
+        position:fixed; top:35px; left:5px;
+        font-family: 'Rubik', sans-serif;
+        font-size:18px;
+        font-weight:bold;
+}
+#table_location{
+        position:fixed; top:70px; left:5px;
+}
+
+#sparepartstable{
+        border:1px solid white;
+        border-collapse:collapse;
+}
+.text_css{
+      font-family:'Rubik', sans-serif;
+      font-size:13px;
+      color:black;
+      background-color:#D8D8D8;
+      width:130px;
+      height:25px;
+      }
+.text_css2{
+      font-family:'Rubik', sans-serif;
+      font-size:13px;
+      color:black;
+      background-color:#D8D8D8;
+      width:170px;
+      height:25px;
+}
+.input_css{
+      width:220px;
+      height:20px;
+}
+.location_css{
+      width:120px;
+      height:25px;
+}
+.select_css{
+      font-size:13px;
+      width:125px;
+      height:27px;
+}
+.location_btn{
+        margin-top:11px;
+    	font-family: arial;
+        font-size:12px;
+        cursor:pointer;
+}
+.submit_btn{
+    	font-family: arial;
+        font-size:12px;
+        cursor:pointer;
+        position:fixed; top:250px; left:488px;
+}
+#division_get{
+    	font-family: arial;
+        font-size:13px;
+}
+#description_get{
+    	font-family: arial;
+        font-size:13px;
+}
+#auth_team_get{
+    	font-family: arial;
+        font-size:13px;
+}
+#auth_name_get{
+    	font-family: arial;
+        font-size:13px;
+}
+#code_no_get{
+    	font-family: arial;
+        font-size:13px;
+}
+.auth_text{
+        height:25px;
+        width:100px;
+        font-family: arial;
+        font-size:13px;
+}
+.div_text{
+        height:25px;
+        width:100px;
+        font-family: arial;
+        font-size:13px;
+}
+</style>
 </head>
+
 <body>
-$END$
+<header>
+<toptext>Welcome,&nbsp;</toptext>
+<div id="logindata"></div>
+
+<input type="button"value="Close" class="Button" onclick="Close();">
+
+</header>
+<header2>
+</header2>
+<spareparts>User Information</spareparts>
+
+<form action="approval_info_change_submit" method="post" name="auth_info_form">
+    {% csrf_token %}
+<div id="table_location">
+   <table id="sparepartstable" border="1">
+    <tr>
+        <td align="center" class="text_css">Description</td>
+        <td align="center" class="text_css2">Now Information</td>
+        <td align="center" class="text_css">Change Information</td>
+    </tr>
+    <tr>
+        <td align="center" class="text_css">Division</td>
+        <td><div id="division_get"></div></td>
+        <td><input type="text" name="division" class="input_css" readonly></td>
+    </tr>
+    <tr>
+        <td align="center" class="text_css">Description</td>
+        <td><div id="description_get"></div></td>
+        <td><input type="text" name="description" class="input_css" readonly></td>
+    </tr>
+    <tr>
+        <td align="center" class="text_css">Auth. Team</td>
+        <td><div id="auth_team_get"></div></td>
+        <td><input type="text" name="auth_team" class="input_css"></td>
+    </tr>
+    <tr>
+        <td align="center" class="text_css">Auth. Name</td>
+        <td><div id="auth_name_get"></div></td>
+        <td><input type="text" name="auth_name" class="input_css"></td>
+    </tr>
+    <tr>
+        <td align="center" class="text_css">Authority</td>
+        <td><div id="code_no_get"></div></td>
+        <td><input type="text" name="code_no" class="input_css"></td>
+    </tr>
+
+</table>
+</div>
+<input type="hidden" name="loginid">
+<input type="submit" class="submit_btn" value="Submit"></form>
+<input type="hidden" value="{{comp_signal}}" name="comp_signal">
+
+<script>
+
+     //////////// 기본초기값 불러오기//////////////
+     function init(){
+            loginid_up = opener.document.getElementById("loginid_up").value;
+            code_no = opener.document.getElementById("code_no").value;
+            auth_name = opener.document.getElementById("auth_name").value;
+            description = opener.document.getElementById("description").value;
+            division = opener.document.getElementById("division").value;
+            auth_team = opener.document.getElementById("auth_team").value;
+        // 기존값 보내기
+            document.auth_info_form.code_no.value = code_no;
+            document.auth_info_form.auth_name.value = auth_name;
+            document.auth_info_form.description.value = description;
+            document.auth_info_form.division.value = division;
+            document.auth_info_form.auth_team.value = auth_team;
+            document.auth_info_form.loginid.value = loginid_up;
+        // 값 표현하기
+            document.getElementById("code_no_get").innerHTML=code_no;
+            document.getElementById("auth_name_get").innerHTML=auth_name;
+            document.getElementById("description_get").innerHTML=description;
+            document.getElementById("division_get").innerHTML=division;
+            document.getElementById("auth_team_get").innerHTML=auth_team;
+            document.getElementById("logindata").innerHTML=loginid_up;
+        // 자동닫기
+            var close_signal= document.getElementsByName('comp_signal')[0].value;
+            if (close_signal=="Y"){
+                alert("User Information Change is complete.");
+               opener.document.location.reload();
+               self.close();}
+            }
+
+      onload=init
+
+     function Close(){
+            opener.document.location.reload();
+            self.close();
+        }
+</script>
 </body>
 </html>

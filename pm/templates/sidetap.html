@@ -412,7 +412,7 @@ i{
         {% csrf_token %}
         <input type="hidden" value="{{loginid}}" name="loginid">
         <input type="submit"value="Equipment List" class="Button"></form><br>
-    <form action="" method="post">
+    <form action="roomlist_main" method="post">
         {% csrf_token %}
         <input type="hidden" value="{{loginid}}" name="loginid">
         <input type="submit"value="Room List(개발중)" class="Button"></form>

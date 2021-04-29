@@ -7,7 +7,7 @@ import datetime as date
 from django.core.mail import send_mail, EmailMessage
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 from django.db.models import Q
 from dateutil.relativedelta import relativedelta
 from django.core.files.storage import FileSystemStorage
@@ -45,13 +45,16 @@ def main(request):
         loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
         userpassword = request.POST.get('pw')  # html Login id의 값을 받는다
     ##이름 및 권한 끌고다니기##
-        users = userinfo.objects.get(userid=loginid)
-        username = users.username
-        userteam = users.userteam
-        password = users.password
-        auth = users.auth1
-        user_div = users.user_division
-        users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
+        try:
+            users = userinfo.objects.get(userid=loginid)
+            username = users.username
+            userteam = users.userteam
+            password = users.password
+            auth = users.auth1
+            user_div = users.user_division
+            users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
+        except:
+            users={"loginid":loginid}
         try:
             login_info = userinfo.objects.get(userid=loginid) #아이디 일치여부 확인
             if login_info.password == userpassword: #비밀번호 일치여부 확인
@@ -306,22 +309,40 @@ def pmchecksheet_main(request):
 #################검색어 반영##################
         selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
         searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
-        try:
-            if selecttext == "status":
-                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y", status__icontains=searchtext).order_by('team', 'plandate')  # db 동기화
-            elif selecttext == "team":
-                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y", team__icontains=searchtext).order_by('team', 'plandate')  # db 동기화
-            elif selecttext == "control_no":
-                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y", pmsheetno__icontains=searchtext).order_by('team', 'plandate')  # db 동기화
-            elif selecttext == "equipname":
-                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y", name__icontains=searchtext).order_by('team', 'plandate')  # db 동기화
-            else:
-                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y").order_by('team', 'plandate')  # db 동기화
-        except:
-            pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y").order_by('team',
-                                                                                                  'plandate')  # db 동기
-        if str(searchtext) =="None":
-            searchtext=""
+        if (user_div == "Engineer") or (user_div == "SO Manager") or (user_div == "QA Manager"):
+            try:
+                if selecttext == "status":
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y", status__icontains=searchtext).order_by('team', 'plandate')  # db 동기화
+                elif selecttext == "team":
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y", team__icontains=searchtext).order_by('team', 'plandate')  # db 동기화
+                elif selecttext == "control_no":
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y", pmsheetno__icontains=searchtext).order_by('team', 'plandate')  # db 동기화
+                elif selecttext == "equipname":
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y", name__icontains=searchtext).order_by('team', 'plandate')  # db 동기화
+                else:
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y").order_by('team', 'plandate')  # db 동기화
+            except:
+                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y").order_by('team',
+                                                                                                      'plandate')  # db 동기
+            if str(searchtext) =="None":
+                searchtext=""
+        else:
+            try:
+                if selecttext == "status":
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y", status__icontains=searchtext).order_by('team', 'plandate')  # db 동기화
+                elif selecttext == "team":
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y", team__icontains=searchtext).order_by('team', 'plandate')  # db 동기화
+                elif selecttext == "control_no":
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y", pmsheetno__icontains=searchtext).order_by('team', 'plandate')  # db 동기화
+                elif selecttext == "equipname":
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y", name__icontains=searchtext).order_by('team', 'plandate')  # db 동기화
+                else:
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y").order_by('team', 'plandate')  # db 동기화
+            except:
+                pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y").order_by('team',
+                                                                                                      'plandate')  # db 동기
+            if str(searchtext) =="None":
+                searchtext=""
         context = {"pmmasterlists":pmmasterlists,"loginid":loginid, "pmchecksheet_sch":pmchecksheet_sch, "table_signal":table_signal,
                    "calendarsearch":calendarsearch,"selecttext":selecttext,"searchtext":searchtext}
         context.update(users)
@@ -395,29 +416,58 @@ def pmchecksheet_write(request):
 #################검색어 반영##################
         selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
         searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
-        try:
-            if selecttext == "status":
-                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                         status__icontains=searchtext).order_by('team',
-                                                                                                'plandate')  # db 동기화
-            elif selecttext == "team":
-                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                         team__icontains=searchtext).order_by('team', 'plandate')  # db 동기화
-            elif selecttext == "control_no":
-                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                         pmsheetno__icontains=searchtext).order_by('team',
-                                                                                                   'plandate')  # db 동기화
-            elif selecttext == "equipname":
-                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                         name__icontains=searchtext).order_by('team', 'plandate')  # db 동기화
-            else:
+        if (user_div == "Engineer") or (user_div == "SO Manager") or (user_div == "QA Manager"):
+            try:
+                if selecttext == "status":
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                             status__icontains=searchtext).order_by('team',
+                                                                                                    'plandate')  # db 동기화
+                elif selecttext == "team":
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                             team__icontains=searchtext).order_by('team',
+                                                                                                  'plandate')  # db 동기화
+                elif selecttext == "control_no":
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                             pmsheetno__icontains=searchtext).order_by('team',
+                                                                                                       'plandate')  # db 동기화
+                elif selecttext == "equipname":
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                             name__icontains=searchtext).order_by('team',
+                                                                                                  'plandate')  # db 동기화
+                else:
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y").order_by('team',
+                                                                                                          'plandate')  # db 동기화
+            except:
                 pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y").order_by('team',
-                                                                                                      'plandate')  # db 동기화
-        except:
-            pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y").order_by('team',
-                                                                                                  'plandate')  # db 동기
-        if str(searchtext) =="None":
-            searchtext=""
+                                                                                                      'plandate')  # db 동기
+            if str(searchtext) == "None":
+                searchtext = ""
+        else:
+            try:
+                if selecttext == "status":
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y",
+                                                             status__icontains=searchtext).order_by('team',
+                                                                                                    'plandate')  # db 동기화
+                elif selecttext == "team":
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y",
+                                                             team__icontains=searchtext).order_by('team',
+                                                                                                  'plandate')  # db 동기화
+                elif selecttext == "control_no":
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y",
+                                                             pmsheetno__icontains=searchtext).order_by('team',
+                                                                                                       'plandate')  # db 동기화
+                elif selecttext == "equipname":
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y",
+                                                             name__icontains=searchtext).order_by('team',
+                                                                                                  'plandate')  # db 동기화
+                else:
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y").order_by(
+                        'team', 'plandate')  # db 동기화
+            except:
+                pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y").order_by('team',
+                                                                                                                     'plandate')  # db 동기
+            if str(searchtext) == "None":
+                searchtext = ""
     #####equip info 정보 보내기#####
         spare_list = spare_out.objects.filter(used_y_n=pmcode)
         equipinfo=equiplist.objects.filter(controlno=controlno)
@@ -463,29 +513,58 @@ def pmchecksheet_checkresult(request):
 #################검색어 반영##################
         selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
         searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
-        try:
-            if selecttext == "status":
-                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                         status__icontains=searchtext).order_by('team',
-                                                                                                'plandate')  # db 동기화
-            elif selecttext == "team":
-                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                         team__icontains=searchtext).order_by('team', 'plandate')  # db 동기화
-            elif selecttext == "control_no":
-                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                         pmsheetno__icontains=searchtext).order_by('team',
-                                                                                                   'plandate')  # db 동기화
-            elif selecttext == "equipname":
-                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                         name__icontains=searchtext).order_by('team', 'plandate')  # db 동기화
-            else:
+        if (user_div == "Engineer") or (user_div == "SO Manager") or (user_div == "QA Manager"):
+            try:
+                if selecttext == "status":
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                             status__icontains=searchtext).order_by('team',
+                                                                                                    'plandate')  # db 동기화
+                elif selecttext == "team":
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                             team__icontains=searchtext).order_by('team',
+                                                                                                  'plandate')  # db 동기화
+                elif selecttext == "control_no":
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                             pmsheetno__icontains=searchtext).order_by('team',
+                                                                                                       'plandate')  # db 동기화
+                elif selecttext == "equipname":
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                             name__icontains=searchtext).order_by('team',
+                                                                                                  'plandate')  # db 동기화
+                else:
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y").order_by('team',
+                                                                                                          'plandate')  # db 동기화
+            except:
                 pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y").order_by('team',
-                                                                                                      'plandate')  # db 동기화
-        except:
-            pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y").order_by('team',
-                                                                                                  'plandate')  # db 동기
-        if str(searchtext) == "None":
-            searchtext = ""
+                                                                                                      'plandate')  # db 동기
+            if str(searchtext) == "None":
+                searchtext = ""
+        else:
+            try:
+                if selecttext == "status":
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y",
+                                                             status__icontains=searchtext).order_by('team',
+                                                                                                    'plandate')  # db 동기화
+                elif selecttext == "team":
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y",
+                                                             team__icontains=searchtext).order_by('team',
+                                                                                                  'plandate')  # db 동기화
+                elif selecttext == "control_no":
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y",
+                                                             pmsheetno__icontains=searchtext).order_by('team',
+                                                                                                       'plandate')  # db 동기화
+                elif selecttext == "equipname":
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y",
+                                                             name__icontains=searchtext).order_by('team',
+                                                                                                  'plandate')  # db 동기화
+                else:
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y").order_by(
+                        'team', 'plandate')  # db 동기화
+            except:
+                pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y").order_by('team',
+                                                                                                                     'plandate')  # db 동기
+            if str(searchtext) == "None":
+                searchtext = ""
     #####첨부파일 시그널 주기#####
         url_comp = pm_sch.objects.get(pmcode=pmcode)  # plandate 보내기
         if url_comp.attach_temp == "N/A":
@@ -545,29 +624,58 @@ def pmchecksheet_actiondetail(request):
     #################검색어 반영##################
         selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
         searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
-        try:
-            if selecttext == "status":
-                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                         status__icontains=searchtext).order_by('team',
-                                                                                                'plandate')  # db 동기화
-            elif selecttext == "team":
-                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                         team__icontains=searchtext).order_by('team', 'plandate')  # db 동기화
-            elif selecttext == "control_no":
-                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                         pmsheetno__icontains=searchtext).order_by('team',
-                                                                                                   'plandate')  # db 동기화
-            elif selecttext == "equipname":
-                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                         name__icontains=searchtext).order_by('team', 'plandate')  # db 동기화
-            else:
+        if (user_div == "Engineer") or (user_div == "SO Manager") or (user_div == "QA Manager"):
+            try:
+                if selecttext == "status":
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                             status__icontains=searchtext).order_by('team',
+                                                                                                    'plandate')  # db 동기화
+                elif selecttext == "team":
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                             team__icontains=searchtext).order_by('team',
+                                                                                                  'plandate')  # db 동기화
+                elif selecttext == "control_no":
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                             pmsheetno__icontains=searchtext).order_by('team',
+                                                                                                       'plandate')  # db 동기화
+                elif selecttext == "equipname":
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                             name__icontains=searchtext).order_by('team',
+                                                                                                  'plandate')  # db 동기화
+                else:
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y").order_by('team',
+                                                                                                          'plandate')  # db 동기화
+            except:
                 pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y").order_by('team',
-                                                                                                      'plandate')  # db 동기화
-        except:
-            pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y").order_by('team',
-                                                                                                  'plandate')  # db 동기
-        if str(searchtext) == "None":
-            searchtext = ""
+                                                                                                      'plandate')  # db 동기
+            if str(searchtext) == "None":
+                searchtext = ""
+        else:
+            try:
+                if selecttext == "status":
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y",
+                                                             status__icontains=searchtext).order_by('team',
+                                                                                                    'plandate')  # db 동기화
+                elif selecttext == "team":
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y",
+                                                             team__icontains=searchtext).order_by('team',
+                                                                                                  'plandate')  # db 동기화
+                elif selecttext == "control_no":
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y",
+                                                             pmsheetno__icontains=searchtext).order_by('team',
+                                                                                                       'plandate')  # db 동기화
+                elif selecttext == "equipname":
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y",
+                                                             name__icontains=searchtext).order_by('team',
+                                                                                                  'plandate')  # db 동기화
+                else:
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y").order_by(
+                        'team', 'plandate')  # db 동기화
+            except:
+                pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y").order_by('team',
+                                                                                                                     'plandate')  # db 동기
+            if str(searchtext) == "None":
+                searchtext = ""
     #####첨부파일 시그널 주기#####
         url_comp = pm_sch.objects.get(pmcode=pmcode)  # plandate 보내기
         if url_comp.attach_temp == "N/A":
@@ -625,29 +733,58 @@ def pmchecksheet_checkboxform(request):
     #################검색어 반영##################
         selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
         searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
-        try:
-            if selecttext == "status":
-                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                         status__icontains=searchtext).order_by('team',
-                                                                                                'plandate')  # db 동기화
-            elif selecttext == "team":
-                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                         team__icontains=searchtext).order_by('team', 'plandate')  # db 동기화
-            elif selecttext == "control_no":
-                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                         pmsheetno__icontains=searchtext).order_by('team',
-                                                                                                   'plandate')  # db 동기화
-            elif selecttext == "equipname":
-                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                         name__icontains=searchtext).order_by('team', 'plandate')  # db 동기화
-            else:
+        if (user_div == "Engineer") or (user_div == "SO Manager") or (user_div == "QA Manager"):
+            try:
+                if selecttext == "status":
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                             status__icontains=searchtext).order_by('team',
+                                                                                                    'plandate')  # db 동기화
+                elif selecttext == "team":
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                             team__icontains=searchtext).order_by('team',
+                                                                                                  'plandate')  # db 동기화
+                elif selecttext == "control_no":
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                             pmsheetno__icontains=searchtext).order_by('team',
+                                                                                                       'plandate')  # db 동기화
+                elif selecttext == "equipname":
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                             name__icontains=searchtext).order_by('team',
+                                                                                                  'plandate')  # db 동기화
+                else:
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y").order_by('team',
+                                                                                                          'plandate')  # db 동기화
+            except:
                 pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y").order_by('team',
-                                                                                                      'plandate')  # db 동기화
-        except:
-            pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y").order_by('team',
-                                                                                                  'plandate')  # db 동기
-        if str(searchtext) == "None":
-            searchtext = ""
+                                                                                                      'plandate')  # db 동기
+            if str(searchtext) == "None":
+                searchtext = ""
+        else:
+            try:
+                if selecttext == "status":
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y",
+                                                             status__icontains=searchtext).order_by('team',
+                                                                                                    'plandate')  # db 동기화
+                elif selecttext == "team":
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y",
+                                                             team__icontains=searchtext).order_by('team',
+                                                                                                  'plandate')  # db 동기화
+                elif selecttext == "control_no":
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y",
+                                                             pmsheetno__icontains=searchtext).order_by('team',
+                                                                                                       'plandate')  # db 동기화
+                elif selecttext == "equipname":
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y",
+                                                             name__icontains=searchtext).order_by('team',
+                                                                                                  'plandate')  # db 동기화
+                else:
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y").order_by(
+                        'team', 'plandate')  # db 동기화
+            except:
+                pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y").order_by('team',
+                                                                                                                     'plandate')  # db 동기
+            if str(searchtext) == "None":
+                searchtext = ""
     #####첨부파일 시그널 주기#####
         url_comp = pm_sch.objects.get(pmcode=pmcode)  # plandate 보내기
         if url_comp.attach_temp == "N/A":
@@ -702,29 +839,58 @@ def pmchecksheet_remark(request):
     #################검색어 반영##################
         selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
         searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
-        try:
-            if selecttext == "status":
-                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                         status__icontains=searchtext).order_by('team',
-                                                                                                'plandate')  # db 동기화
-            elif selecttext == "team":
-                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                         team__icontains=searchtext).order_by('team', 'plandate')  # db 동기화
-            elif selecttext == "control_no":
-                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                         pmsheetno__icontains=searchtext).order_by('team',
-                                                                                                   'plandate')  # db 동기화
-            elif selecttext == "equipname":
-                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                         name__icontains=searchtext).order_by('team', 'plandate')  # db 동기화
-            else:
+        if (user_div == "Engineer") or (user_div == "SO Manager") or (user_div == "QA Manager"):
+            try:
+                if selecttext == "status":
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                             status__icontains=searchtext).order_by('team',
+                                                                                                    'plandate')  # db 동기화
+                elif selecttext == "team":
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                             team__icontains=searchtext).order_by('team',
+                                                                                                  'plandate')  # db 동기화
+                elif selecttext == "control_no":
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                             pmsheetno__icontains=searchtext).order_by('team',
+                                                                                                       'plandate')  # db 동기화
+                elif selecttext == "equipname":
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                             name__icontains=searchtext).order_by('team',
+                                                                                                  'plandate')  # db 동기화
+                else:
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y").order_by('team',
+                                                                                                          'plandate')  # db 동기화
+            except:
                 pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y").order_by('team',
-                                                                                                      'plandate')  # db 동기화
-        except:
-            pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y").order_by('team',
-                                                                                                  'plandate')  # db 동기
-        if str(searchtext) == "None":
-            searchtext = ""
+                                                                                                      'plandate')  # db 동기
+            if str(searchtext) == "None":
+                searchtext = ""
+        else:
+            try:
+                if selecttext == "status":
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y",
+                                                             status__icontains=searchtext).order_by('team',
+                                                                                                    'plandate')  # db 동기화
+                elif selecttext == "team":
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y",
+                                                             team__icontains=searchtext).order_by('team',
+                                                                                                  'plandate')  # db 동기화
+                elif selecttext == "control_no":
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y",
+                                                             pmsheetno__icontains=searchtext).order_by('team',
+                                                                                                       'plandate')  # db 동기화
+                elif selecttext == "equipname":
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y",
+                                                             name__icontains=searchtext).order_by('team',
+                                                                                                  'plandate')  # db 동기화
+                else:
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y").order_by(
+                        'team', 'plandate')  # db 동기화
+            except:
+                pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y").order_by('team',
+                                                                                                                     'plandate')  # db 동기
+            if str(searchtext) == "None":
+                searchtext = ""
     #####첨부파일 시그널 주기#####
         url_comp = pm_sch.objects.get(pmcode=pmcode)  # plandate 보내기
         if url_comp.attach_temp == "N/A":
@@ -777,29 +943,58 @@ def pmchecksheet_remark_na(request):
     #################검색어 반영##################
         selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
         searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
-        try:
-            if selecttext == "status":
-                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                         status__icontains=searchtext).order_by('team',
-                                                                                                'plandate')  # db 동기화
-            elif selecttext == "team":
-                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                         team__icontains=searchtext).order_by('team', 'plandate')  # db 동기화
-            elif selecttext == "control_no":
-                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                         pmsheetno__icontains=searchtext).order_by('team',
-                                                                                                   'plandate')  # db 동기화
-            elif selecttext == "equipname":
-                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                         name__icontains=searchtext).order_by('team', 'plandate')  # db 동기화
-            else:
+        if (user_div == "Engineer") or (user_div == "SO Manager") or (user_div == "QA Manager"):
+            try:
+                if selecttext == "status":
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                             status__icontains=searchtext).order_by('team',
+                                                                                                    'plandate')  # db 동기화
+                elif selecttext == "team":
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                             team__icontains=searchtext).order_by('team',
+                                                                                                  'plandate')  # db 동기화
+                elif selecttext == "control_no":
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                             pmsheetno__icontains=searchtext).order_by('team',
+                                                                                                       'plandate')  # db 동기화
+                elif selecttext == "equipname":
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                             name__icontains=searchtext).order_by('team',
+                                                                                                  'plandate')  # db 동기화
+                else:
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y").order_by('team',
+                                                                                                          'plandate')  # db 동기화
+            except:
                 pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y").order_by('team',
-                                                                                                      'plandate')  # db 동기화
-        except:
-            pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y").order_by('team',
-                                                                                                  'plandate')  # db 동기
-        if str(searchtext) == "None":
-            searchtext = ""
+                                                                                                      'plandate')  # db 동기
+            if str(searchtext) == "None":
+                searchtext = ""
+        else:
+            try:
+                if selecttext == "status":
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y",
+                                                             status__icontains=searchtext).order_by('team',
+                                                                                                    'plandate')  # db 동기화
+                elif selecttext == "team":
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y",
+                                                             team__icontains=searchtext).order_by('team',
+                                                                                                  'plandate')  # db 동기화
+                elif selecttext == "control_no":
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y",
+                                                             pmsheetno__icontains=searchtext).order_by('team',
+                                                                                                       'plandate')  # db 동기화
+                elif selecttext == "equipname":
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y",
+                                                             name__icontains=searchtext).order_by('team',
+                                                                                                  'plandate')  # db 동기화
+                else:
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y").order_by(
+                        'team', 'plandate')  # db 동기화
+            except:
+                pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y").order_by('team',
+                                                                                                                     'plandate')  # db 동기
+            if str(searchtext) == "None":
+                searchtext = ""
     #####첨부파일 시그널 주기#####
         url_comp = pm_sch.objects.get(pmcode=pmcode)  # plandate 보내기
         if url_comp.attach_temp == "N/A":
@@ -862,22 +1057,58 @@ def pmchecksheet_view(request):
 #################검색어 반영##################
         selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
         searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
-        try:
-            if selecttext == "status":
-                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y", status__icontains=searchtext).order_by('team', 'plandate')  # db 동기화
-            elif selecttext == "team":
-                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y", team__icontains=searchtext).order_by('team', 'plandate')  # db 동기화
-            elif selecttext == "control_no":
-                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y", pmsheetno__icontains=searchtext).order_by('team', 'plandate')  # db 동기화
-            elif selecttext == "equipname":
-                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y", name__icontains=searchtext).order_by('team', 'plandate')  # db 동기화
-            else:
-                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y").order_by('team', 'plandate')  # db 동기화
-        except:
-            pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y").order_by('team',
-                                                                                                  'plandate')  # db 동기
-        if str(searchtext) =="None":
-            searchtext=""
+        if (user_div == "Engineer") or (user_div == "SO Manager") or (user_div == "QA Manager"):
+            try:
+                if selecttext == "status":
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                             status__icontains=searchtext).order_by('team',
+                                                                                                    'plandate')  # db 동기화
+                elif selecttext == "team":
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                             team__icontains=searchtext).order_by('team',
+                                                                                                  'plandate')  # db 동기화
+                elif selecttext == "control_no":
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                             pmsheetno__icontains=searchtext).order_by('team',
+                                                                                                       'plandate')  # db 동기화
+                elif selecttext == "equipname":
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                             name__icontains=searchtext).order_by('team',
+                                                                                                  'plandate')  # db 동기화
+                else:
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y").order_by('team',
+                                                                                                          'plandate')  # db 동기화
+            except:
+                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y").order_by('team',
+                                                                                                      'plandate')  # db 동기
+            if str(searchtext) == "None":
+                searchtext = ""
+        else:
+            try:
+                if selecttext == "status":
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y",
+                                                             status__icontains=searchtext).order_by('team',
+                                                                                                    'plandate')  # db 동기화
+                elif selecttext == "team":
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y",
+                                                             team__icontains=searchtext).order_by('team',
+                                                                                                  'plandate')  # db 동기화
+                elif selecttext == "control_no":
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y",
+                                                             pmsheetno__icontains=searchtext).order_by('team',
+                                                                                                       'plandate')  # db 동기화
+                elif selecttext == "equipname":
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y",
+                                                             name__icontains=searchtext).order_by('team',
+                                                                                                  'plandate')  # db 동기화
+                else:
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y").order_by(
+                        'team', 'plandate')  # db 동기화
+            except:
+                pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y").order_by('team',
+                                                                                                                     'plandate')  # db 동기
+            if str(searchtext) == "None":
+                searchtext = ""
     #####equip info 정보 보내기#####
         spare_list = spare_out.objects.filter(used_y_n=pmcode)
         equipinfo = equiplist.objects.filter(controlno = controlno)
@@ -1065,31 +1296,60 @@ def pmchecksheet_submit(request):
             #################검색어 반영##################
             selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
             searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
-            try:
-                if selecttext == "status":
-                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                             status__icontains=searchtext).order_by('team',
-                                                                                                    'plandate')  # db 동기화
-                elif selecttext == "team":
-                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                             team__icontains=searchtext).order_by('team',
-                                                                                                  'plandate')  # db 동기화
-                elif selecttext == "control_no":
-                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                             pmsheetno__icontains=searchtext).order_by('team',
-                                                                                                       'plandate')  # db 동기화
-                elif selecttext == "equipname":
-                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                             name__icontains=searchtext).order_by('team',
-                                                                                                  'plandate')  # db 동기화
-                else:
+            if (user_div == "Engineer") or (user_div == "SO Manager") or (user_div == "QA Manager"):
+                try:
+                    if selecttext == "status":
+                        pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                                 status__icontains=searchtext).order_by('team',
+                                                                                                        'plandate')  # db 동기화
+                    elif selecttext == "team":
+                        pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                                 team__icontains=searchtext).order_by('team',
+                                                                                                      'plandate')  # db 동기화
+                    elif selecttext == "control_no":
+                        pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                                 pmsheetno__icontains=searchtext).order_by('team',
+                                                                                                           'plandate')  # db 동기화
+                    elif selecttext == "equipname":
+                        pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                                 name__icontains=searchtext).order_by('team',
+                                                                                                      'plandate')  # db 동기화
+                    else:
+                        pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y").order_by('team',
+                                                                                                              'plandate')  # db 동기화
+                except:
                     pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y").order_by('team',
-                                                                                                          'plandate')  # db 동기화
-            except:
-                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y").order_by('team',
-                                                                                                      'plandate')  # db 동기
-            if str(searchtext) == "None":
-                searchtext = ""
+                                                                                                          'plandate')  # db 동기
+                if str(searchtext) == "None":
+                    searchtext = ""
+            else:
+                try:
+                    if selecttext == "status":
+                        pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y",
+                                                                 status__icontains=searchtext).order_by('team',
+                                                                                                        'plandate')  # db 동기화
+                    elif selecttext == "team":
+                        pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y",
+                                                                 team__icontains=searchtext).order_by('team',
+                                                                                                      'plandate')  # db 동기화
+                    elif selecttext == "control_no":
+                        pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y",
+                                                                 pmsheetno__icontains=searchtext).order_by('team',
+                                                                                                           'plandate')  # db 동기화
+                    elif selecttext == "equipname":
+                        pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y",
+                                                                 name__icontains=searchtext).order_by('team',
+                                                                                                      'plandate')  # db 동기화
+                    else:
+                        pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch,
+                                                                 sch_clear="Y").order_by(
+                            'team', 'plandate')  # db 동기화
+                except:
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch,
+                                                             sch_clear="Y").order_by('team',
+                                                                                     'plandate')  # db 동기
+                if str(searchtext) == "None":
+                    searchtext = ""
             spare_list = spare_out.objects.filter(used_y_n=pmcode)
             equipinfo = equiplist.objects.filter(controlno=controlno)
             equipinforev = controlformlist.objects.filter(controlno=controlno, recent_y="Y")
@@ -1115,31 +1375,68 @@ def pmchecksheet_submit(request):
                     #################검색어 반영##################
                     selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
                     searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
-                    try:
-                        if selecttext == "status":
-                            pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                                     status__icontains=searchtext).order_by('team',
-                                                                                                            'plandate')  # db 동기화
-                        elif selecttext == "team":
-                            pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                                     team__icontains=searchtext).order_by('team',
-                                                                                                          'plandate')  # db 동기화
-                        elif selecttext == "control_no":
-                            pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                                     pmsheetno__icontains=searchtext).order_by('team',
-                                                                                                               'plandate')  # db 동기화
-                        elif selecttext == "equipname":
-                            pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                                     name__icontains=searchtext).order_by('team',
-                                                                                                          'plandate')  # db 동기화
-                        else:
+                    if (user_div == "Engineer") or (user_div == "SO Manager") or (user_div == "QA Manager"):
+                        try:
+                            if selecttext == "status":
+                                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                                         status__icontains=searchtext).order_by('team',
+                                                                                                                'plandate')  # db 동기화
+                            elif selecttext == "team":
+                                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                                         team__icontains=searchtext).order_by('team',
+                                                                                                              'plandate')  # db 동기화
+                            elif selecttext == "control_no":
+                                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                                         pmsheetno__icontains=searchtext).order_by(
+                                    'team',
+                                    'plandate')  # db 동기화
+                            elif selecttext == "equipname":
+                                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                                         name__icontains=searchtext).order_by('team',
+                                                                                                              'plandate')  # db 동기화
+                            else:
+                                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y").order_by(
+                                    'team',
+                                    'plandate')  # db 동기화
+                        except:
                             pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y").order_by(
-                                'team', 'plandate')  # db 동기화
-                    except:
-                        pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y").order_by('team',
-                                                                                                              'plandate')  # db 동기
-                    if str(searchtext) == "None":
-                        searchtext = ""
+                                'team',
+                                'plandate')  # db 동기
+                        if str(searchtext) == "None":
+                            searchtext = ""
+                    else:
+                        try:
+                            if selecttext == "status":
+                                pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch,
+                                                                         sch_clear="Y",
+                                                                         status__icontains=searchtext).order_by('team',
+                                                                                                                'plandate')  # db 동기화
+                            elif selecttext == "team":
+                                pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch,
+                                                                         sch_clear="Y",
+                                                                         team__icontains=searchtext).order_by('team',
+                                                                                                              'plandate')  # db 동기화
+                            elif selecttext == "control_no":
+                                pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch,
+                                                                         sch_clear="Y",
+                                                                         pmsheetno__icontains=searchtext).order_by(
+                                    'team',
+                                    'plandate')  # db 동기화
+                            elif selecttext == "equipname":
+                                pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch,
+                                                                         sch_clear="Y",
+                                                                         name__icontains=searchtext).order_by('team',
+                                                                                                              'plandate')  # db 동기화
+                            else:
+                                pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch,
+                                                                         sch_clear="Y").order_by(
+                                    'team', 'plandate')  # db 동기화
+                        except:
+                            pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch,
+                                                                     sch_clear="Y").order_by('team',
+                                                                                             'plandate')  # db 동기
+                        if str(searchtext) == "None":
+                            searchtext = ""
                     spare_list = spare_out.objects.filter(used_y_n=pmcode)
                     equipinfo = equiplist.objects.filter(controlno=controlno)
                     equipinforev = controlformlist.objects.filter(controlno=controlno, recent_y="Y")
@@ -1166,31 +1463,68 @@ def pmchecksheet_submit(request):
                     #################검색어 반영##################
                     selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
                     searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
-                    try:
-                        if selecttext == "status":
-                            pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                                     status__icontains=searchtext).order_by('team',
-                                                                                                            'plandate')  # db 동기화
-                        elif selecttext == "team":
-                            pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                                     team__icontains=searchtext).order_by('team',
-                                                                                                          'plandate')  # db 동기화
-                        elif selecttext == "control_no":
-                            pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                                     pmsheetno__icontains=searchtext).order_by('team',
-                                                                                                               'plandate')  # db 동기화
-                        elif selecttext == "equipname":
-                            pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                                     name__icontains=searchtext).order_by('team',
-                                                                                                          'plandate')  # db 동기화
-                        else:
+                    if (user_div == "Engineer") or (user_div == "SO Manager") or (user_div == "QA Manager"):
+                        try:
+                            if selecttext == "status":
+                                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                                         status__icontains=searchtext).order_by('team',
+                                                                                                                'plandate')  # db 동기화
+                            elif selecttext == "team":
+                                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                                         team__icontains=searchtext).order_by('team',
+                                                                                                              'plandate')  # db 동기화
+                            elif selecttext == "control_no":
+                                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                                         pmsheetno__icontains=searchtext).order_by(
+                                    'team',
+                                    'plandate')  # db 동기화
+                            elif selecttext == "equipname":
+                                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                                         name__icontains=searchtext).order_by('team',
+                                                                                                              'plandate')  # db 동기화
+                            else:
+                                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y").order_by(
+                                    'team',
+                                    'plandate')  # db 동기화
+                        except:
                             pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y").order_by(
-                                'team', 'plandate')  # db 동기화
-                    except:
-                        pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y").order_by('team',
-                                                                                                              'plandate')  # db 동기
-                    if str(searchtext) == "None":
-                        searchtext = ""
+                                'team',
+                                'plandate')  # db 동기
+                        if str(searchtext) == "None":
+                            searchtext = ""
+                    else:
+                        try:
+                            if selecttext == "status":
+                                pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch,
+                                                                         sch_clear="Y",
+                                                                         status__icontains=searchtext).order_by('team',
+                                                                                                                'plandate')  # db 동기화
+                            elif selecttext == "team":
+                                pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch,
+                                                                         sch_clear="Y",
+                                                                         team__icontains=searchtext).order_by('team',
+                                                                                                              'plandate')  # db 동기화
+                            elif selecttext == "control_no":
+                                pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch,
+                                                                         sch_clear="Y",
+                                                                         pmsheetno__icontains=searchtext).order_by(
+                                    'team',
+                                    'plandate')  # db 동기화
+                            elif selecttext == "equipname":
+                                pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch,
+                                                                         sch_clear="Y",
+                                                                         name__icontains=searchtext).order_by('team',
+                                                                                                              'plandate')  # db 동기화
+                            else:
+                                pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch,
+                                                                         sch_clear="Y").order_by(
+                                    'team', 'plandate')  # db 동기화
+                        except:
+                            pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch,
+                                                                     sch_clear="Y").order_by('team',
+                                                                                             'plandate')  # db 동기
+                        if str(searchtext) == "None":
+                            searchtext = ""
                     spare_list = spare_out.objects.filter(used_y_n=pmcode)
                     equipinfo = equiplist.objects.filter(controlno=controlno)
                     equipinforev = controlformlist.objects.filter(controlno=controlno, recent_y="Y")
@@ -1215,31 +1549,60 @@ def pmchecksheet_submit(request):
                #################검색어 반영##################
                selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
                searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
-               try:
-                   if selecttext == "status":
-                       pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                                status__icontains=searchtext).order_by('team',
-                                                                                                       'plandate')  # db 동기화
-                   elif selecttext == "team":
-                       pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                                team__icontains=searchtext).order_by('team',
-                                                                                                     'plandate')  # db 동기화
-                   elif selecttext == "control_no":
-                       pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                                pmsheetno__icontains=searchtext).order_by('team',
-                                                                                                          'plandate')  # db 동기화
-                   elif selecttext == "equipname":
-                       pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                                name__icontains=searchtext).order_by('team',
-                                                                                                     'plandate')  # db 동기화
-                   else:
+               if (user_div == "Engineer") or (user_div == "SO Manager") or (user_div == "QA Manager"):
+                   try:
+                       if selecttext == "status":
+                           pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                                    status__icontains=searchtext).order_by('team',
+                                                                                                           'plandate')  # db 동기화
+                       elif selecttext == "team":
+                           pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                                    team__icontains=searchtext).order_by('team',
+                                                                                                         'plandate')  # db 동기화
+                       elif selecttext == "control_no":
+                           pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                                    pmsheetno__icontains=searchtext).order_by('team',
+                                                                                                              'plandate')  # db 동기화
+                       elif selecttext == "equipname":
+                           pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                                    name__icontains=searchtext).order_by('team',
+                                                                                                         'plandate')  # db 동기화
+                       else:
+                           pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y").order_by('team',
+                                                                                                                 'plandate')  # db 동기화
+                   except:
                        pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y").order_by('team',
-                                                                                                             'plandate')  # db 동기화
-               except:
-                   pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y").order_by('team',
-                                                                                                         'plandate')  # db 동기
-               if str(searchtext) == "None":
-                   searchtext = ""
+                                                                                                             'plandate')  # db 동기
+                   if str(searchtext) == "None":
+                       searchtext = ""
+               else:
+                   try:
+                       if selecttext == "status":
+                           pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y",
+                                                                    status__icontains=searchtext).order_by('team',
+                                                                                                           'plandate')  # db 동기화
+                       elif selecttext == "team":
+                           pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y",
+                                                                    team__icontains=searchtext).order_by('team',
+                                                                                                         'plandate')  # db 동기화
+                       elif selecttext == "control_no":
+                           pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y",
+                                                                    pmsheetno__icontains=searchtext).order_by('team',
+                                                                                                              'plandate')  # db 동기화
+                       elif selecttext == "equipname":
+                           pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y",
+                                                                    name__icontains=searchtext).order_by('team',
+                                                                                                         'plandate')  # db 동기화
+                       else:
+                           pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch,
+                                                                    sch_clear="Y").order_by(
+                               'team', 'plandate')  # db 동기화
+                   except:
+                       pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch,
+                                                                sch_clear="Y").order_by('team',
+                                                                                        'plandate')  # db 동기
+                   if str(searchtext) == "None":
+                       searchtext = ""
                spare_list = spare_out.objects.filter(used_y_n=pmcode)
                equipinfo = equiplist.objects.filter(controlno=controlno)
                equipinforev = controlformlist.objects.filter(controlno=controlno, recent_y="Y")
@@ -1271,29 +1634,58 @@ def pmchecksheet_submit(request):
     #################검색어 반영##################
         selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
         searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
-        try:
-            if selecttext == "status":
-                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                         status__icontains=searchtext).order_by('team',
-                                                                                                'plandate')  # db 동기화
-            elif selecttext == "team":
-                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                         team__icontains=searchtext).order_by('team', 'plandate')  # db 동기화
-            elif selecttext == "control_no":
-                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                         pmsheetno__icontains=searchtext).order_by('team',
-                                                                                                   'plandate')  # db 동기화
-            elif selecttext == "equipname":
-                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                         name__icontains=searchtext).order_by('team', 'plandate')  # db 동기화
-            else:
+        if (user_div == "Engineer") or (user_div == "SO Manager") or (user_div == "QA Manager"):
+            try:
+                if selecttext == "status":
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                             status__icontains=searchtext).order_by('team',
+                                                                                                    'plandate')  # db 동기화
+                elif selecttext == "team":
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                             team__icontains=searchtext).order_by('team',
+                                                                                                  'plandate')  # db 동기화
+                elif selecttext == "control_no":
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                             pmsheetno__icontains=searchtext).order_by('team',
+                                                                                                       'plandate')  # db 동기화
+                elif selecttext == "equipname":
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                             name__icontains=searchtext).order_by('team',
+                                                                                                  'plandate')  # db 동기화
+                else:
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y").order_by('team',
+                                                                                                          'plandate')  # db 동기화
+            except:
                 pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y").order_by('team',
-                                                                                                      'plandate')  # db 동기화
-        except:
-            pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y").order_by('team',
-                                                                                                  'plandate')  # db 동기
-        if str(searchtext) == "None":
-            searchtext = ""
+                                                                                                      'plandate')  # db 동기
+            if str(searchtext) == "None":
+                searchtext = ""
+        else:
+            try:
+                if selecttext == "status":
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y",
+                                                             status__icontains=searchtext).order_by('team',
+                                                                                                    'plandate')  # db 동기화
+                elif selecttext == "team":
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y",
+                                                             team__icontains=searchtext).order_by('team',
+                                                                                                  'plandate')  # db 동기화
+                elif selecttext == "control_no":
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y",
+                                                             pmsheetno__icontains=searchtext).order_by('team',
+                                                                                                       'plandate')  # db 동기화
+                elif selecttext == "equipname":
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y",
+                                                             name__icontains=searchtext).order_by('team',
+                                                                                                  'plandate')  # db 동기화
+                else:
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y").order_by(
+                        'team', 'plandate')  # db 동기화
+            except:
+                pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y").order_by('team',
+                                                                                                                     'plandate')  # db 동기
+            if str(searchtext) == "None":
+                searchtext = ""
     #####equip info 정보 보내기#####
         spare_list = spare_out.objects.filter(used_y_n=pmcode)
         equipinfo = equiplist.objects.filter(controlno = controlno)
@@ -1339,31 +1731,60 @@ def pmchecksheet_return(request):
             #################검색어 반영##################
             selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
             searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
-            try:
-                if selecttext == "status":
-                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                             status__icontains=searchtext).order_by('team',
-                                                                                                    'plandate')  # db 동기화
-                elif selecttext == "team":
-                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                             team__icontains=searchtext).order_by('team',
-                                                                                                  'plandate')  # db 동기화
-                elif selecttext == "control_no":
-                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                             pmsheetno__icontains=searchtext).order_by('team',
-                                                                                                       'plandate')  # db 동기화
-                elif selecttext == "equipname":
-                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                             name__icontains=searchtext).order_by('team',
-                                                                                                  'plandate')  # db 동기화
-                else:
+            if (user_div == "Engineer") or (user_div == "SO Manager") or (user_div == "QA Manager"):
+                try:
+                    if selecttext == "status":
+                        pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                                 status__icontains=searchtext).order_by('team',
+                                                                                                        'plandate')  # db 동기화
+                    elif selecttext == "team":
+                        pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                                 team__icontains=searchtext).order_by('team',
+                                                                                                      'plandate')  # db 동기화
+                    elif selecttext == "control_no":
+                        pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                                 pmsheetno__icontains=searchtext).order_by('team',
+                                                                                                           'plandate')  # db 동기화
+                    elif selecttext == "equipname":
+                        pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                                 name__icontains=searchtext).order_by('team',
+                                                                                                      'plandate')  # db 동기화
+                    else:
+                        pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y").order_by('team',
+                                                                                                              'plandate')  # db 동기화
+                except:
                     pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y").order_by('team',
-                                                                                                          'plandate')  # db 동기화
-            except:
-                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y").order_by('team',
-                                                                                                      'plandate')  # db 동기
-            if str(searchtext) == "None":
-                searchtext = ""
+                                                                                                          'plandate')  # db 동기
+                if str(searchtext) == "None":
+                    searchtext = ""
+            else:
+                try:
+                    if selecttext == "status":
+                        pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y",
+                                                                 status__icontains=searchtext).order_by('team',
+                                                                                                        'plandate')  # db 동기화
+                    elif selecttext == "team":
+                        pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y",
+                                                                 team__icontains=searchtext).order_by('team',
+                                                                                                      'plandate')  # db 동기화
+                    elif selecttext == "control_no":
+                        pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y",
+                                                                 pmsheetno__icontains=searchtext).order_by('team',
+                                                                                                           'plandate')  # db 동기화
+                    elif selecttext == "equipname":
+                        pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y",
+                                                                 name__icontains=searchtext).order_by('team',
+                                                                                                      'plandate')  # db 동기화
+                    else:
+                        pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch,
+                                                                 sch_clear="Y").order_by(
+                            'team', 'plandate')  # db 동기화
+                except:
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch,
+                                                             sch_clear="Y").order_by('team',
+                                                                                     'plandate')  # db 동기
+                if str(searchtext) == "None":
+                    searchtext = ""
             #####에러메세지 보내기#####
             messages.error(request, "PM Check Sheet that have been approved cannot be returned.")  # 경고
             #####equip info 정보 보내기#####
@@ -1395,29 +1816,58 @@ def pmchecksheet_return(request):
     #################검색어 반영##################
         selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
         searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
-        try:
-            if selecttext == "status":
-                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                         status__icontains=searchtext).order_by('team',
-                                                                                                'plandate')  # db 동기화
-            elif selecttext == "team":
-                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                         team__icontains=searchtext).order_by('team', 'plandate')  # db 동기화
-            elif selecttext == "control_no":
-                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                         pmsheetno__icontains=searchtext).order_by('team',
-                                                                                                   'plandate')  # db 동기화
-            elif selecttext == "equipname":
-                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                         name__icontains=searchtext).order_by('team', 'plandate')  # db 동기화
-            else:
+        if (user_div == "Engineer") or (user_div == "SO Manager") or (user_div == "QA Manager"):
+            try:
+                if selecttext == "status":
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                             status__icontains=searchtext).order_by('team',
+                                                                                                    'plandate')  # db 동기화
+                elif selecttext == "team":
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                             team__icontains=searchtext).order_by('team',
+                                                                                                  'plandate')  # db 동기화
+                elif selecttext == "control_no":
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                             pmsheetno__icontains=searchtext).order_by('team',
+                                                                                                       'plandate')  # db 동기화
+                elif selecttext == "equipname":
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                             name__icontains=searchtext).order_by('team',
+                                                                                                  'plandate')  # db 동기화
+                else:
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y").order_by('team',
+                                                                                                          'plandate')  # db 동기화
+            except:
                 pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y").order_by('team',
-                                                                                                      'plandate')  # db 동기화
-        except:
-            pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y").order_by('team',
-                                                                                                  'plandate')  # db 동기
-        if str(searchtext) == "None":
-            searchtext = ""
+                                                                                                      'plandate')  # db 동기
+            if str(searchtext) == "None":
+                searchtext = ""
+        else:
+            try:
+                if selecttext == "status":
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y",
+                                                             status__icontains=searchtext).order_by('team',
+                                                                                                    'plandate')  # db 동기화
+                elif selecttext == "team":
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y",
+                                                             team__icontains=searchtext).order_by('team',
+                                                                                                  'plandate')  # db 동기화
+                elif selecttext == "control_no":
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y",
+                                                             pmsheetno__icontains=searchtext).order_by('team',
+                                                                                                       'plandate')  # db 동기화
+                elif selecttext == "equipname":
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y",
+                                                             name__icontains=searchtext).order_by('team',
+                                                                                                  'plandate')  # db 동기화
+                else:
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y").order_by(
+                        'team', 'plandate')  # db 동기화
+            except:
+                pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y").order_by('team',
+                                                                                                                     'plandate')  # db 동기
+            if str(searchtext) == "None":
+                searchtext = ""
     #####equip info 정보 보내기#####
         spare_list = spare_out.objects.filter(used_y_n=pmcode)
         equipinfo=equiplist.objects.filter(controlno=controlno)
@@ -1457,30 +1907,59 @@ def pmchecksheet_upload(request):
     #################검색어 반영##################
         selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
         searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
-        try:
-            if selecttext == "status":
-                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                         status__icontains=searchtext).order_by('team',
-                                                                                                'plandate')  # db 동기화
-            elif selecttext == "team":
-                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                         team__icontains=searchtext).order_by('team',
-                                                                                              'plandate')  # db 동기화
-            elif selecttext == "control_no":
-                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                         pmsheetno__icontains=searchtext).order_by('team',
-                                                                                                   'plandate')  # db 동기화
-            elif selecttext == "equipname":
-                pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
-                                                         name__icontains=searchtext).order_by('team',
-                                                                                              'plandate')  # db 동기화
-            else:
+        if (user_div == "Engineer") or (user_div == "SO Manager") or (user_div == "QA Manager"):
+            try:
+                if selecttext == "status":
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                             status__icontains=searchtext).order_by('team',
+                                                                                                    'plandate')  # db 동기화
+                elif selecttext == "team":
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                             team__icontains=searchtext).order_by('team',
+                                                                                                  'plandate')  # db 동기화
+                elif selecttext == "control_no":
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                             pmsheetno__icontains=searchtext).order_by('team',
+                                                                                                       'plandate')  # db 동기화
+                elif selecttext == "equipname":
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y",
+                                                             name__icontains=searchtext).order_by('team',
+                                                                                                  'plandate')  # db 동기화
+                else:
+                    pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y").order_by('team',
+                                                                                                          'plandate')  # db 동기화
+            except:
                 pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y").order_by('team',
-                                                                                                      'plandate')  # db 동기화
-        except:
-            pmchecksheet_sch = pm_sch.objects.filter(date=calendarsearch, sch_clear="Y").order_by('team',
-                                                                                                  'plandate')  # db 동기
-        if str(searchtext) == "None":
+                                                                                                      'plandate')  # db 동기
+            if str(searchtext) == "None":
+                searchtext = ""
+        else:
+            try:
+                if selecttext == "status":
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y",
+                                                             status__icontains=searchtext).order_by('team',
+                                                                                                    'plandate')  # db 동기화
+                elif selecttext == "team":
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y",
+                                                             team__icontains=searchtext).order_by('team',
+                                                                                                  'plandate')  # db 동기화
+                elif selecttext == "control_no":
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y",
+                                                             pmsheetno__icontains=searchtext).order_by('team',
+                                                                                                       'plandate')  # db 동기화
+                elif selecttext == "equipname":
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y",
+                                                             name__icontains=searchtext).order_by('team',
+                                                                                                  'plandate')  # db 동기화
+                else:
+                    pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch,
+                                                             sch_clear="Y").order_by(
+                        'team', 'plandate')  # db 동기화
+            except:
+                pmchecksheet_sch = pm_sch.objects.filter(team=userteam, date=calendarsearch, sch_clear="Y").order_by(
+                    'team',
+                    'plandate')  # db 동기
+            if str(searchtext) == "None":
                 searchtext = ""
     #################파일업로드하기##################
         if "upload_file" in request.FILES:
@@ -3713,19 +4192,34 @@ def pmequipsch_main(request):
     #################검색어 반영##################
         selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
         searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
-        try:
-            if selecttext == "team":
-                equipmentlist = equiplist.objects.filter(team__icontains=searchtext, pmok = "Y").order_by('team', 'name')  # db 동기화
-            elif selecttext == "control_no":
-                equipmentlist = equiplist.objects.filter(controlno__icontains=searchtext, pmok = "Y").order_by('team','name')  # db 동기화
-            elif selecttext == "equipname":
-                equipmentlist = equiplist.objects.filter(name__icontains=searchtext, pmok = "Y").order_by('team', 'name')  # db 동기화
-            else:
-                equipmentlist = equiplist.objects.filter(pmok = "Y").order_by('team','name')  # db 동기화
-        except:
-                equipmentlist = equiplist.objects.filter(pmok="Y").order_by('team', 'name')  # db 동기화
-        if str(searchtext) == "None":
-            searchtext = ""
+        if (user_div == "Engineer") or (user_div == "SO Manager") or (user_div == "QA Manager"):
+            try:
+                if selecttext == "team":
+                    equipmentlist = equiplist.objects.filter(team__icontains=searchtext, pmok = "Y").order_by('team', 'name')  # db 동기화
+                elif selecttext == "control_no":
+                    equipmentlist = equiplist.objects.filter(controlno__icontains=searchtext, pmok = "Y").order_by('team','name')  # db 동기화
+                elif selecttext == "equipname":
+                    equipmentlist = equiplist.objects.filter(name__icontains=searchtext, pmok = "Y").order_by('team', 'name')  # db 동기화
+                else:
+                    equipmentlist = equiplist.objects.filter(pmok = "Y").order_by('team','name')  # db 동기화
+            except:
+                    equipmentlist = equiplist.objects.filter(pmok="Y").order_by('team', 'name')  # db 동기화
+            if str(searchtext) == "None":
+                searchtext = ""
+        else:
+            try:
+                if selecttext == "team":
+                    equipmentlist = equiplist.objects.filter(team=userteam, team__icontains=searchtext, pmok = "Y").order_by('team', 'name')  # db 동기화
+                elif selecttext == "control_no":
+                    equipmentlist = equiplist.objects.filter(team=userteam, controlno__icontains=searchtext, pmok = "Y").order_by('team','name')  # db 동기화
+                elif selecttext == "equipname":
+                    equipmentlist = equiplist.objects.filter(team=userteam, name__icontains=searchtext, pmok = "Y").order_by('team', 'name')  # db 동기화
+                else:
+                    equipmentlist = equiplist.objects.filter(team=userteam, pmok = "Y").order_by('team','name')  # db 동기화
+            except:
+                    equipmentlist = equiplist.objects.filter(team=userteam, pmok="Y").order_by('team', 'name')  # db 동기화
+            if str(searchtext) == "None":
+                searchtext = ""
         context = {"pmmasterlists": pmmasterlists, "loginid": loginid, "equipmentlist": equipmentlist,
                    "table_signal": table_signal, "selecttext": selecttext, "searchtext": searchtext}
         context.update(users)
@@ -3749,22 +4243,40 @@ def pmequipsch_view(request):
     #################검색어 반영##################
         selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
         searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
-        try:
-            if selecttext == "team":
-                equipmentlist = equiplist.objects.filter(team__icontains=searchtext, pmok="Y").order_by('team',
-                                                                                                        'name')  # db 동기화
-            elif selecttext == "control_no":
-                equipmentlist = equiplist.objects.filter(controlno__icontains=searchtext, pmok="Y").order_by('team',
-                                                                                                             'name')  # db 동기화
-            elif selecttext == "equipname":
-                equipmentlist = equiplist.objects.filter(name__icontains=searchtext, pmok="Y").order_by('team',
-                                                                                                        'name')  # db 동기화
-            else:
+        if (user_div == "Engineer") or (user_div == "SO Manager") or (user_div == "QA Manager"):
+            try:
+                if selecttext == "team":
+                    equipmentlist = equiplist.objects.filter(team__icontains=searchtext, pmok="Y").order_by('team',
+                                                                                                            'name')  # db 동기화
+                elif selecttext == "control_no":
+                    equipmentlist = equiplist.objects.filter(controlno__icontains=searchtext, pmok="Y").order_by('team',
+                                                                                                                 'name')  # db 동기화
+                elif selecttext == "equipname":
+                    equipmentlist = equiplist.objects.filter(name__icontains=searchtext, pmok="Y").order_by('team',
+                                                                                                            'name')  # db 동기화
+                else:
+                    equipmentlist = equiplist.objects.filter(pmok="Y").order_by('team', 'name')  # db 동기화
+            except:
                 equipmentlist = equiplist.objects.filter(pmok="Y").order_by('team', 'name')  # db 동기화
-        except:
-            equipmentlist = equiplist.objects.filter(pmok="Y").order_by('team', 'name')  # db 동기화
-        if str(searchtext) == "None":
-            searchtext = ""
+            if str(searchtext) == "None":
+                searchtext = ""
+        else:
+            try:
+                if selecttext == "team":
+                    equipmentlist = equiplist.objects.filter(team=userteam, team__icontains=searchtext, pmok="Y").order_by(
+                        'team', 'name')  # db 동기화
+                elif selecttext == "control_no":
+                    equipmentlist = equiplist.objects.filter(team=userteam, controlno__icontains=searchtext,
+                                                             pmok="Y").order_by('team', 'name')  # db 동기화
+                elif selecttext == "equipname":
+                    equipmentlist = equiplist.objects.filter(team=userteam, name__icontains=searchtext, pmok="Y").order_by(
+                        'team', 'name')  # db 동기화
+                else:
+                    equipmentlist = equiplist.objects.filter(team=userteam, pmok="Y").order_by('team', 'name')  # db 동기화
+            except:
+                equipmentlist = equiplist.objects.filter(team=userteam, pmok="Y").order_by('team', 'name')  # db 동기화
+            if str(searchtext) == "None":
+                searchtext = ""
     #####equip info 정보 보내기#####
         equipinfo = equiplist.objects.filter(controlno = controlno)
         equipinforev = controlformlist.objects.filter(controlno = controlno, recent_y="Y")
@@ -5642,7 +6154,9 @@ def equipmentlist_new(request):
                         pq=request.POST.get("pq"),
                         pmok=request.POST.get("pmok"),
                     ).save() #저장
-            messages.error(request, "New facility registration has been completed.")  # 등록완료
+            messages.error(request, "New facility registration has been completed.")
+
+    # 등록완료
             context = {"equiplists":equiplists, "loginid":loginid}
             context.update(users)
             return render(request, 'equipmentlist_main.html', context) #templates 내 html연결
@@ -5672,21 +6186,38 @@ def workrequest_main(request):
     #################검색어 반영##################
         selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
         searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
-        try:
-            if selecttext == "status":
-                workorderlist = workorder.objects.filter(workorder_y_n="N", status__icontains=searchtext).order_by('-date')  # db 동기화
-            elif selecttext == "requestor":
-                workorderlist = workorder.objects.filter(workorder_y_n="N", requestor__icontains=searchtext).order_by('-date')  # db 동기화
-            elif selecttext == "controlno":
-                workorderlist = workorder.objects.filter(workorder_y_n="N", controlno__icontains=searchtext).order_by('-date')  # db 동기화
-            elif selecttext == "team":
-                workorderlist = workorder.objects.filter(workorder_y_n="N", team__icontains=searchtext).order_by('-date')  # db 동기화
-            else:
+        if user_div == "Engineer":
+            try:
+                if selecttext == "status":
+                    workorderlist = workorder.objects.filter(workorder_y_n="N", status__icontains=searchtext).order_by('-date')  # db 동기화
+                elif selecttext == "requestor":
+                    workorderlist = workorder.objects.filter(workorder_y_n="N", requestor__icontains=searchtext).order_by('-date')  # db 동기화
+                elif selecttext == "controlno":
+                    workorderlist = workorder.objects.filter(workorder_y_n="N", controlno__icontains=searchtext).order_by('-date')  # db 동기화
+                elif selecttext == "team":
+                    workorderlist = workorder.objects.filter(workorder_y_n="N", team__icontains=searchtext).order_by('-date')  # db 동기화
+                else:
+                    workorderlist = workorder.objects.filter(workorder_y_n="N").order_by('-date')  # db 동기화
+            except:
                 workorderlist = workorder.objects.filter(workorder_y_n="N").order_by('-date')  # db 동기화
-        except:
-            workorderlist = workorder.objects.filter(workorder_y_n="N").order_by('-date')  # db 동기화
-        if str(searchtext) == "None":
-            searchtext = ""
+            if str(searchtext) == "None":
+                searchtext = ""
+        else:
+            try:
+                if selecttext == "status":
+                    workorderlist = workorder.objects.filter(workorder_y_n="N", status__icontains=searchtext, team=userteam).order_by('-date')  # db 동기화
+                elif selecttext == "requestor":
+                    workorderlist = workorder.objects.filter(workorder_y_n="N", requestor__icontains=searchtext, team=userteam).order_by('-date')  # db 동기화
+                elif selecttext == "controlno":
+                    workorderlist = workorder.objects.filter(workorder_y_n="N", controlno__icontains=searchtext, team=userteam).order_by('-date')  # db 동기화
+                elif selecttext == "team":
+                    workorderlist = workorder.objects.filter(workorder_y_n="N", team__icontains=searchtext, team=userteam).order_by('-date')  # db 동기화
+                else:
+                    workorderlist = workorder.objects.filter(workorder_y_n="N", team=userteam).order_by('-date')  # db 동기화
+            except:
+                workorderlist = workorder.objects.filter(workorder_y_n="N", team=userteam).order_by('-date')  # db 동기화
+            if str(searchtext) == "None":
+                searchtext = ""
         context = {"workorderlist": workorderlist, "loginid": loginid,"table_signal":table_signal,"selecttext":selecttext,"searchtext":searchtext}
         context.update(users)
     return render(request, 'workrequest_main.html', context) #templates 내 html연결
@@ -5938,25 +6469,49 @@ def workrequest_view(request):
     #################검색어 반영##################
         selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
         searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
-        try:
-            if selecttext == "status":
-                workorderlist = workorder.objects.filter(workorder_y_n="N", status__icontains=searchtext).order_by(
-                    '-date')  # db 동기화
-            elif selecttext == "requestor":
-                workorderlist = workorder.objects.filter(workorder_y_n="N", requestor__icontains=searchtext).order_by(
-                    '-date')  # db 동기화
-            elif selecttext == "controlno":
-                workorderlist = workorder.objects.filter(workorder_y_n="N", controlno__icontains=searchtext).order_by(
-                    '-date')  # db 동기화
-            elif selecttext == "team":
-                workorderlist = workorder.objects.filter(workorder_y_n="N", team__icontains=searchtext).order_by(
-                    '-date')  # db 동기화
-            else:
+        if user_div == "Engineer":
+            try:
+                if selecttext == "status":
+                    workorderlist = workorder.objects.filter(workorder_y_n="N", status__icontains=searchtext).order_by(
+                        '-date')  # db 동기화
+                elif selecttext == "requestor":
+                    workorderlist = workorder.objects.filter(workorder_y_n="N",
+                                                             requestor__icontains=searchtext).order_by(
+                        '-date')  # db 동기화
+                elif selecttext == "controlno":
+                    workorderlist = workorder.objects.filter(workorder_y_n="N",
+                                                             controlno__icontains=searchtext).order_by(
+                        '-date')  # db 동기화
+                elif selecttext == "team":
+                    workorderlist = workorder.objects.filter(workorder_y_n="N", team__icontains=searchtext).order_by(
+                        '-date')  # db 동기화
+                else:
+                    workorderlist = workorder.objects.filter(workorder_y_n="N").order_by('-date')  # db 동기화
+            except:
                 workorderlist = workorder.objects.filter(workorder_y_n="N").order_by('-date')  # db 동기화
-        except:
-            workorderlist = workorder.objects.filter(workorder_y_n="N").order_by('-date')  # db 동기화
-        if str(searchtext) == "None":
-            searchtext = ""
+            if str(searchtext) == "None":
+                searchtext = ""
+        else:
+            try:
+                if selecttext == "status":
+                    workorderlist = workorder.objects.filter(workorder_y_n="N", status__icontains=searchtext,
+                                                             team=userteam).order_by('-date')  # db 동기화
+                elif selecttext == "requestor":
+                    workorderlist = workorder.objects.filter(workorder_y_n="N", requestor__icontains=searchtext,
+                                                             team=userteam).order_by('-date')  # db 동기화
+                elif selecttext == "controlno":
+                    workorderlist = workorder.objects.filter(workorder_y_n="N", controlno__icontains=searchtext,
+                                                             team=userteam).order_by('-date')  # db 동기화
+                elif selecttext == "team":
+                    workorderlist = workorder.objects.filter(workorder_y_n="N", team__icontains=searchtext,
+                                                             team=userteam).order_by('-date')  # db 동기화
+                else:
+                    workorderlist = workorder.objects.filter(workorder_y_n="N", team=userteam).order_by(
+                        '-date')  # db 동기화
+            except:
+                workorderlist = workorder.objects.filter(workorder_y_n="N", team=userteam).order_by('-date')  # db 동기화
+            if str(searchtext) == "None":
+                searchtext = ""
         workorder_table = workorder.objects.filter(workorderno=workorderno)
         context = {"workorderlist": workorderlist, "loginid": loginid,"workorder_table":workorder_table,
                    "url_comp":url_comp,"selecttext":selecttext,"searchtext":searchtext}
@@ -6002,25 +6557,49 @@ def workrequest_receive(request):
     #################검색어 반영##################
         selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
         searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
-        try:
-            if selecttext == "status":
-                workorderlist = workorder.objects.filter(workorder_y_n="N", status__icontains=searchtext).order_by(
-                    '-date')  # db 동기화
-            elif selecttext == "requestor":
-                workorderlist = workorder.objects.filter(workorder_y_n="N", requestor__icontains=searchtext).order_by(
-                    '-date')  # db 동기화
-            elif selecttext == "controlno":
-                workorderlist = workorder.objects.filter(workorder_y_n="N", controlno__icontains=searchtext).order_by(
-                    '-date')  # db 동기화
-            elif selecttext == "team":
-                workorderlist = workorder.objects.filter(workorder_y_n="N", team__icontains=searchtext).order_by(
-                    '-date')  # db 동기화
-            else:
+        if user_div == "Engineer":
+            try:
+                if selecttext == "status":
+                    workorderlist = workorder.objects.filter(workorder_y_n="N", status__icontains=searchtext).order_by(
+                        '-date')  # db 동기화
+                elif selecttext == "requestor":
+                    workorderlist = workorder.objects.filter(workorder_y_n="N",
+                                                             requestor__icontains=searchtext).order_by(
+                        '-date')  # db 동기화
+                elif selecttext == "controlno":
+                    workorderlist = workorder.objects.filter(workorder_y_n="N",
+                                                             controlno__icontains=searchtext).order_by(
+                        '-date')  # db 동기화
+                elif selecttext == "team":
+                    workorderlist = workorder.objects.filter(workorder_y_n="N", team__icontains=searchtext).order_by(
+                        '-date')  # db 동기화
+                else:
+                    workorderlist = workorder.objects.filter(workorder_y_n="N").order_by('-date')  # db 동기화
+            except:
                 workorderlist = workorder.objects.filter(workorder_y_n="N").order_by('-date')  # db 동기화
-        except:
-            workorderlist = workorder.objects.filter(workorder_y_n="N").order_by('-date')  # db 동기화
-        if str(searchtext) == "None":
-            searchtext = ""
+            if str(searchtext) == "None":
+                searchtext = ""
+        else:
+            try:
+                if selecttext == "status":
+                    workorderlist = workorder.objects.filter(workorder_y_n="N", status__icontains=searchtext,
+                                                             team=userteam).order_by('-date')  # db 동기화
+                elif selecttext == "requestor":
+                    workorderlist = workorder.objects.filter(workorder_y_n="N", requestor__icontains=searchtext,
+                                                             team=userteam).order_by('-date')  # db 동기화
+                elif selecttext == "controlno":
+                    workorderlist = workorder.objects.filter(workorder_y_n="N", controlno__icontains=searchtext,
+                                                             team=userteam).order_by('-date')  # db 동기화
+                elif selecttext == "team":
+                    workorderlist = workorder.objects.filter(workorder_y_n="N", team__icontains=searchtext,
+                                                             team=userteam).order_by('-date')  # db 동기화
+                else:
+                    workorderlist = workorder.objects.filter(workorder_y_n="N", team=userteam).order_by(
+                        '-date')  # db 동기화
+            except:
+                workorderlist = workorder.objects.filter(workorder_y_n="N", team=userteam).order_by('-date')  # db 동기화
+            if str(searchtext) == "None":
+                searchtext = ""
         workorder_table = workorder.objects.filter(workorderno=workorderno)
         context = {"workorderlist": workorderlist, "loginid": loginid, "workorder_table": workorder_table,
                    "url_comp": url_comp, "r_t_name": r_t_name, "r_s_name": r_s_name, "r_m_name": r_m_name,
@@ -6085,29 +6664,52 @@ def workrequest_r_t_accept(request):
             #################검색어 반영##################
                 selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
                 searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
-                try:
-                    if selecttext == "status":
-                        workorderlist = workorder.objects.filter(workorder_y_n="N",
-                                                                 status__icontains=searchtext).order_by(
-                            '-date')  # db 동기화
-                    elif selecttext == "requestor":
-                        workorderlist = workorder.objects.filter(workorder_y_n="N",
-                                                                 requestor__icontains=searchtext).order_by(
-                            '-date')  # db 동기화
-                    elif selecttext == "controlno":
-                        workorderlist = workorder.objects.filter(workorder_y_n="N",
-                                                                 controlno__icontains=searchtext).order_by(
-                            '-date')  # db 동기화
-                    elif selecttext == "team":
-                        workorderlist = workorder.objects.filter(workorder_y_n="N",
-                                                                 team__icontains=searchtext).order_by(
-                            '-date')  # db 동기화
-                    else:
+                if user_div == "Engineer":
+                    try:
+                        if selecttext == "status":
+                            workorderlist = workorder.objects.filter(workorder_y_n="N",
+                                                                     status__icontains=searchtext).order_by(
+                                '-date')  # db 동기화
+                        elif selecttext == "requestor":
+                            workorderlist = workorder.objects.filter(workorder_y_n="N",
+                                                                     requestor__icontains=searchtext).order_by(
+                                '-date')  # db 동기화
+                        elif selecttext == "controlno":
+                            workorderlist = workorder.objects.filter(workorder_y_n="N",
+                                                                     controlno__icontains=searchtext).order_by(
+                                '-date')  # db 동기화
+                        elif selecttext == "team":
+                            workorderlist = workorder.objects.filter(workorder_y_n="N",
+                                                                     team__icontains=searchtext).order_by(
+                                '-date')  # db 동기화
+                        else:
+                            workorderlist = workorder.objects.filter(workorder_y_n="N").order_by('-date')  # db 동기화
+                    except:
                         workorderlist = workorder.objects.filter(workorder_y_n="N").order_by('-date')  # db 동기화
-                except:
-                    workorderlist = workorder.objects.filter(workorder_y_n="N").order_by('-date')  # db 동기화
-                if str(searchtext) == "None":
-                    searchtext = ""
+                    if str(searchtext) == "None":
+                        searchtext = ""
+                else:
+                    try:
+                        if selecttext == "status":
+                            workorderlist = workorder.objects.filter(workorder_y_n="N", status__icontains=searchtext,
+                                                                     team=userteam).order_by('-date')  # db 동기화
+                        elif selecttext == "requestor":
+                            workorderlist = workorder.objects.filter(workorder_y_n="N", requestor__icontains=searchtext,
+                                                                     team=userteam).order_by('-date')  # db 동기화
+                        elif selecttext == "controlno":
+                            workorderlist = workorder.objects.filter(workorder_y_n="N", controlno__icontains=searchtext,
+                                                                     team=userteam).order_by('-date')  # db 동기화
+                        elif selecttext == "team":
+                            workorderlist = workorder.objects.filter(workorder_y_n="N", team__icontains=searchtext,
+                                                                     team=userteam).order_by('-date')  # db 동기화
+                        else:
+                            workorderlist = workorder.objects.filter(workorder_y_n="N", team=userteam).order_by(
+                                '-date')  # db 동기화
+                    except:
+                        workorderlist = workorder.objects.filter(workorder_y_n="N", team=userteam).order_by(
+                            '-date')  # db 동기화
+                    if str(searchtext) == "None":
+                        searchtext = ""
                 workorder_table = workorder.objects.filter(workorderno=workorderno)
                 context = {"workorderlist": workorderlist, "loginid": loginid, "workorder_table": workorder_table,
                            "url_comp": url_comp,"r_t_name":r_t_name,"r_s_name":r_s_name,"r_m_name":r_m_name,
@@ -6119,25 +6721,49 @@ def workrequest_r_t_accept(request):
     #################검색어 반영##################
         selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
         searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
-        try:
-            if selecttext == "status":
-                workorderlist = workorder.objects.filter(workorder_y_n="N", status__icontains=searchtext).order_by(
-                    '-date')  # db 동기화
-            elif selecttext == "requestor":
-                workorderlist = workorder.objects.filter(workorder_y_n="N", requestor__icontains=searchtext).order_by(
-                    '-date')  # db 동기화
-            elif selecttext == "controlno":
-                workorderlist = workorder.objects.filter(workorder_y_n="N", controlno__icontains=searchtext).order_by(
-                    '-date')  # db 동기화
-            elif selecttext == "team":
-                workorderlist = workorder.objects.filter(workorder_y_n="N", team__icontains=searchtext).order_by(
-                    '-date')  # db 동기화
-            else:
+        if user_div == "Engineer":
+            try:
+                if selecttext == "status":
+                    workorderlist = workorder.objects.filter(workorder_y_n="N", status__icontains=searchtext).order_by(
+                        '-date')  # db 동기화
+                elif selecttext == "requestor":
+                    workorderlist = workorder.objects.filter(workorder_y_n="N",
+                                                             requestor__icontains=searchtext).order_by(
+                        '-date')  # db 동기화
+                elif selecttext == "controlno":
+                    workorderlist = workorder.objects.filter(workorder_y_n="N",
+                                                             controlno__icontains=searchtext).order_by(
+                        '-date')  # db 동기화
+                elif selecttext == "team":
+                    workorderlist = workorder.objects.filter(workorder_y_n="N", team__icontains=searchtext).order_by(
+                        '-date')  # db 동기화
+                else:
+                    workorderlist = workorder.objects.filter(workorder_y_n="N").order_by('-date')  # db 동기화
+            except:
                 workorderlist = workorder.objects.filter(workorder_y_n="N").order_by('-date')  # db 동기화
-        except:
-            workorderlist = workorder.objects.filter(workorder_y_n="N").order_by('-date')  # db 동기화
-        if str(searchtext) == "None":
-            searchtext = ""
+            if str(searchtext) == "None":
+                searchtext = ""
+        else:
+            try:
+                if selecttext == "status":
+                    workorderlist = workorder.objects.filter(workorder_y_n="N", status__icontains=searchtext,
+                                                             team=userteam).order_by('-date')  # db 동기화
+                elif selecttext == "requestor":
+                    workorderlist = workorder.objects.filter(workorder_y_n="N", requestor__icontains=searchtext,
+                                                             team=userteam).order_by('-date')  # db 동기화
+                elif selecttext == "controlno":
+                    workorderlist = workorder.objects.filter(workorder_y_n="N", controlno__icontains=searchtext,
+                                                             team=userteam).order_by('-date')  # db 동기화
+                elif selecttext == "team":
+                    workorderlist = workorder.objects.filter(workorder_y_n="N", team__icontains=searchtext,
+                                                             team=userteam).order_by('-date')  # db 동기화
+                else:
+                    workorderlist = workorder.objects.filter(workorder_y_n="N", team=userteam).order_by(
+                        '-date')  # db 동기화
+            except:
+                workorderlist = workorder.objects.filter(workorder_y_n="N", team=userteam).order_by('-date')  # db 동기화
+            if str(searchtext) == "None":
+                searchtext = ""
         workorder_table = workorder.objects.filter(workorderno=workorderno)
         context = {"workorderlist": workorderlist, "loginid": loginid, "workorder_table": workorder_table,
                  "url_comp": url_comp, "r_t_name": r_t_name, "r_s_name": r_s_name, "r_m_name": r_m_name,
@@ -6218,29 +6844,57 @@ def workrequest_r_s_accept(request):
                     #################검색어 반영##################
                         selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
                         searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
-                        try:
-                            if selecttext == "status":
-                                workorderlist = workorder.objects.filter(workorder_y_n="N",
-                                                                         status__icontains=searchtext).order_by(
-                                    '-date')  # db 동기화
-                            elif selecttext == "requestor":
-                                workorderlist = workorder.objects.filter(workorder_y_n="N",
-                                                                         requestor__icontains=searchtext).order_by(
-                                    '-date')  # db 동기화
-                            elif selecttext == "controlno":
-                                workorderlist = workorder.objects.filter(workorder_y_n="N",
-                                                                         controlno__icontains=searchtext).order_by(
-                                    '-date')  # db 동기화
-                            elif selecttext == "team":
-                                workorderlist = workorder.objects.filter(workorder_y_n="N",
-                                                                         team__icontains=searchtext).order_by(
-                                    '-date')  # db 동기화
-                            else:
+                        if user_div == "Engineer":
+                            try:
+                                if selecttext == "status":
+                                    workorderlist = workorder.objects.filter(workorder_y_n="N",
+                                                                             status__icontains=searchtext).order_by(
+                                        '-date')  # db 동기화
+                                elif selecttext == "requestor":
+                                    workorderlist = workorder.objects.filter(workorder_y_n="N",
+                                                                             requestor__icontains=searchtext).order_by(
+                                        '-date')  # db 동기화
+                                elif selecttext == "controlno":
+                                    workorderlist = workorder.objects.filter(workorder_y_n="N",
+                                                                             controlno__icontains=searchtext).order_by(
+                                        '-date')  # db 동기화
+                                elif selecttext == "team":
+                                    workorderlist = workorder.objects.filter(workorder_y_n="N",
+                                                                             team__icontains=searchtext).order_by(
+                                        '-date')  # db 동기화
+                                else:
+                                    workorderlist = workorder.objects.filter(workorder_y_n="N").order_by(
+                                        '-date')  # db 동기화
+                            except:
                                 workorderlist = workorder.objects.filter(workorder_y_n="N").order_by('-date')  # db 동기화
-                        except:
-                            workorderlist = workorder.objects.filter(workorder_y_n="N").order_by('-date')  # db 동기화
-                        if str(searchtext) == "None":
-                            searchtext = ""
+                            if str(searchtext) == "None":
+                                searchtext = ""
+                        else:
+                            try:
+                                if selecttext == "status":
+                                    workorderlist = workorder.objects.filter(workorder_y_n="N",
+                                                                             status__icontains=searchtext,
+                                                                             team=userteam).order_by('-date')  # db 동기화
+                                elif selecttext == "requestor":
+                                    workorderlist = workorder.objects.filter(workorder_y_n="N",
+                                                                             requestor__icontains=searchtext,
+                                                                             team=userteam).order_by('-date')  # db 동기화
+                                elif selecttext == "controlno":
+                                    workorderlist = workorder.objects.filter(workorder_y_n="N",
+                                                                             controlno__icontains=searchtext,
+                                                                             team=userteam).order_by('-date')  # db 동기화
+                                elif selecttext == "team":
+                                    workorderlist = workorder.objects.filter(workorder_y_n="N",
+                                                                             team__icontains=searchtext,
+                                                                             team=userteam).order_by('-date')  # db 동기화
+                                else:
+                                    workorderlist = workorder.objects.filter(workorder_y_n="N", team=userteam).order_by(
+                                        '-date')  # db 동기화
+                            except:
+                                workorderlist = workorder.objects.filter(workorder_y_n="N", team=userteam).order_by(
+                                    '-date')  # db 동기화
+                            if str(searchtext) == "None":
+                                searchtext = ""
                         workorder_table = workorder.objects.filter(workorderno=workorderno)
                         context = {"workorderlist": workorderlist, "loginid": loginid, "workorder_table": workorder_table,
                                        "url_comp": url_comp,"r_t_name":r_t_name,"r_s_name":r_s_name,"r_m_name":r_m_name,
@@ -6276,29 +6930,57 @@ def workrequest_r_s_accept(request):
                     #################검색어 반영##################
                        selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
                        searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
-                       try:
-                           if selecttext == "status":
-                               workorderlist = workorder.objects.filter(workorder_y_n="N",
-                                                                        status__icontains=searchtext).order_by(
-                                   '-date')  # db 동기화
-                           elif selecttext == "requestor":
-                               workorderlist = workorder.objects.filter(workorder_y_n="N",
-                                                                        requestor__icontains=searchtext).order_by(
-                                   '-date')  # db 동기화
-                           elif selecttext == "controlno":
-                               workorderlist = workorder.objects.filter(workorder_y_n="N",
-                                                                        controlno__icontains=searchtext).order_by(
-                                   '-date')  # db 동기화
-                           elif selecttext == "team":
-                               workorderlist = workorder.objects.filter(workorder_y_n="N",
-                                                                        team__icontains=searchtext).order_by(
-                                   '-date')  # db 동기화
-                           else:
+                       if user_div == "Engineer":
+                           try:
+                               if selecttext == "status":
+                                   workorderlist = workorder.objects.filter(workorder_y_n="N",
+                                                                            status__icontains=searchtext).order_by(
+                                       '-date')  # db 동기화
+                               elif selecttext == "requestor":
+                                   workorderlist = workorder.objects.filter(workorder_y_n="N",
+                                                                            requestor__icontains=searchtext).order_by(
+                                       '-date')  # db 동기화
+                               elif selecttext == "controlno":
+                                   workorderlist = workorder.objects.filter(workorder_y_n="N",
+                                                                            controlno__icontains=searchtext).order_by(
+                                       '-date')  # db 동기화
+                               elif selecttext == "team":
+                                   workorderlist = workorder.objects.filter(workorder_y_n="N",
+                                                                            team__icontains=searchtext).order_by(
+                                       '-date')  # db 동기화
+                               else:
+                                   workorderlist = workorder.objects.filter(workorder_y_n="N").order_by(
+                                       '-date')  # db 동기화
+                           except:
                                workorderlist = workorder.objects.filter(workorder_y_n="N").order_by('-date')  # db 동기화
-                       except:
-                           workorderlist = workorder.objects.filter(workorder_y_n="N").order_by('-date')  # db 동기화
-                       if str(searchtext) == "None":
-                           searchtext = ""
+                           if str(searchtext) == "None":
+                               searchtext = ""
+                       else:
+                           try:
+                               if selecttext == "status":
+                                   workorderlist = workorder.objects.filter(workorder_y_n="N",
+                                                                            status__icontains=searchtext,
+                                                                            team=userteam).order_by('-date')  # db 동기화
+                               elif selecttext == "requestor":
+                                   workorderlist = workorder.objects.filter(workorder_y_n="N",
+                                                                            requestor__icontains=searchtext,
+                                                                            team=userteam).order_by('-date')  # db 동기화
+                               elif selecttext == "controlno":
+                                   workorderlist = workorder.objects.filter(workorder_y_n="N",
+                                                                            controlno__icontains=searchtext,
+                                                                            team=userteam).order_by('-date')  # db 동기화
+                               elif selecttext == "team":
+                                   workorderlist = workorder.objects.filter(workorder_y_n="N",
+                                                                            team__icontains=searchtext,
+                                                                            team=userteam).order_by('-date')  # db 동기화
+                               else:
+                                   workorderlist = workorder.objects.filter(workorder_y_n="N", team=userteam).order_by(
+                                       '-date')  # db 동기화
+                           except:
+                               workorderlist = workorder.objects.filter(workorder_y_n="N", team=userteam).order_by(
+                                   '-date')  # db 동기화
+                           if str(searchtext) == "None":
+                               searchtext = ""
                        workorder_table = workorder.objects.filter(workorderno=workorderno)
                        context = {"workorderlist": workorderlist, "loginid": loginid, "workorder_table": workorder_table,
                                        "url_comp": url_comp, "r_t_name": r_t_name, "r_s_name": r_s_name, "r_m_name": r_m_name,
@@ -6310,29 +6992,49 @@ def workrequest_r_s_accept(request):
     #################검색어 반영##################
             selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
             searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
-            try:
-                if selecttext == "status":
-                    workorderlist = workorder.objects.filter(workorder_y_n="N",
-                                                             status__icontains=searchtext).order_by(
-                        '-date')  # db 동기화
-                elif selecttext == "requestor":
-                    workorderlist = workorder.objects.filter(workorder_y_n="N",
-                                                             requestor__icontains=searchtext).order_by(
-                        '-date')  # db 동기화
-                elif selecttext == "controlno":
-                    workorderlist = workorder.objects.filter(workorder_y_n="N",
-                                                             controlno__icontains=searchtext).order_by(
-                        '-date')  # db 동기화
-                elif selecttext == "team":
-                    workorderlist = workorder.objects.filter(workorder_y_n="N",
-                                                             team__icontains=searchtext).order_by(
-                        '-date')  # db 동기화
-                else:
+            if user_div == "Engineer":
+                try:
+                    if selecttext == "status":
+                        workorderlist = workorder.objects.filter(workorder_y_n="N", status__icontains=searchtext).order_by(
+                            '-date')  # db 동기화
+                    elif selecttext == "requestor":
+                        workorderlist = workorder.objects.filter(workorder_y_n="N",
+                                                                 requestor__icontains=searchtext).order_by(
+                            '-date')  # db 동기화
+                    elif selecttext == "controlno":
+                        workorderlist = workorder.objects.filter(workorder_y_n="N",
+                                                                 controlno__icontains=searchtext).order_by(
+                            '-date')  # db 동기화
+                    elif selecttext == "team":
+                        workorderlist = workorder.objects.filter(workorder_y_n="N", team__icontains=searchtext).order_by(
+                            '-date')  # db 동기화
+                    else:
+                        workorderlist = workorder.objects.filter(workorder_y_n="N").order_by('-date')  # db 동기화
+                except:
                     workorderlist = workorder.objects.filter(workorder_y_n="N").order_by('-date')  # db 동기화
-            except:
-                workorderlist = workorder.objects.filter(workorder_y_n="N").order_by('-date')  # db 동기화
-            if str(searchtext) == "None":
-                searchtext = ""
+                if str(searchtext) == "None":
+                    searchtext = ""
+            else:
+                try:
+                    if selecttext == "status":
+                        workorderlist = workorder.objects.filter(workorder_y_n="N", status__icontains=searchtext,
+                                                                 team=userteam).order_by('-date')  # db 동기화
+                    elif selecttext == "requestor":
+                        workorderlist = workorder.objects.filter(workorder_y_n="N", requestor__icontains=searchtext,
+                                                                 team=userteam).order_by('-date')  # db 동기화
+                    elif selecttext == "controlno":
+                        workorderlist = workorder.objects.filter(workorder_y_n="N", controlno__icontains=searchtext,
+                                                                 team=userteam).order_by('-date')  # db 동기화
+                    elif selecttext == "team":
+                        workorderlist = workorder.objects.filter(workorder_y_n="N", team__icontains=searchtext,
+                                                                 team=userteam).order_by('-date')  # db 동기화
+                    else:
+                        workorderlist = workorder.objects.filter(workorder_y_n="N", team=userteam).order_by(
+                            '-date')  # db 동기화
+                except:
+                    workorderlist = workorder.objects.filter(workorder_y_n="N", team=userteam).order_by('-date')  # db 동기화
+                if str(searchtext) == "None":
+                    searchtext = ""
             workorder_table = workorder.objects.filter(workorderno=workorderno)
             context = {"workorderlist": workorderlist, "loginid": loginid, "workorder_table": workorder_table,
                          "url_comp": url_comp, "r_t_name": r_t_name, "r_s_name": r_s_name, "r_m_name": r_m_name,
@@ -6344,29 +7046,49 @@ def workrequest_r_s_accept(request):
     #################검색어 반영##################
         selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
         searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
-        try:
-            if selecttext == "status":
-                workorderlist = workorder.objects.filter(workorder_y_n="N",
-                                                         status__icontains=searchtext).order_by(
-                    '-date')  # db 동기화
-            elif selecttext == "requestor":
-                workorderlist = workorder.objects.filter(workorder_y_n="N",
-                                                         requestor__icontains=searchtext).order_by(
-                    '-date')  # db 동기화
-            elif selecttext == "controlno":
-                workorderlist = workorder.objects.filter(workorder_y_n="N",
-                                                         controlno__icontains=searchtext).order_by(
-                    '-date')  # db 동기화
-            elif selecttext == "team":
-                workorderlist = workorder.objects.filter(workorder_y_n="N",
-                                                         team__icontains=searchtext).order_by(
-                    '-date')  # db 동기화
-            else:
+        if user_div == "Engineer":
+            try:
+                if selecttext == "status":
+                    workorderlist = workorder.objects.filter(workorder_y_n="N", status__icontains=searchtext).order_by(
+                        '-date')  # db 동기화
+                elif selecttext == "requestor":
+                    workorderlist = workorder.objects.filter(workorder_y_n="N",
+                                                             requestor__icontains=searchtext).order_by(
+                        '-date')  # db 동기화
+                elif selecttext == "controlno":
+                    workorderlist = workorder.objects.filter(workorder_y_n="N",
+                                                             controlno__icontains=searchtext).order_by(
+                        '-date')  # db 동기화
+                elif selecttext == "team":
+                    workorderlist = workorder.objects.filter(workorder_y_n="N", team__icontains=searchtext).order_by(
+                        '-date')  # db 동기화
+                else:
+                    workorderlist = workorder.objects.filter(workorder_y_n="N").order_by('-date')  # db 동기화
+            except:
                 workorderlist = workorder.objects.filter(workorder_y_n="N").order_by('-date')  # db 동기화
-        except:
-            workorderlist = workorder.objects.filter(workorder_y_n="N").order_by('-date')  # db 동기화
-        if str(searchtext) == "None":
-            searchtext = ""
+            if str(searchtext) == "None":
+                searchtext = ""
+        else:
+            try:
+                if selecttext == "status":
+                    workorderlist = workorder.objects.filter(workorder_y_n="N", status__icontains=searchtext,
+                                                             team=userteam).order_by('-date')  # db 동기화
+                elif selecttext == "requestor":
+                    workorderlist = workorder.objects.filter(workorder_y_n="N", requestor__icontains=searchtext,
+                                                             team=userteam).order_by('-date')  # db 동기화
+                elif selecttext == "controlno":
+                    workorderlist = workorder.objects.filter(workorder_y_n="N", controlno__icontains=searchtext,
+                                                             team=userteam).order_by('-date')  # db 동기화
+                elif selecttext == "team":
+                    workorderlist = workorder.objects.filter(workorder_y_n="N", team__icontains=searchtext,
+                                                             team=userteam).order_by('-date')  # db 동기화
+                else:
+                    workorderlist = workorder.objects.filter(workorder_y_n="N", team=userteam).order_by(
+                        '-date')  # db 동기화
+            except:
+                workorderlist = workorder.objects.filter(workorder_y_n="N", team=userteam).order_by('-date')  # db 동기화
+            if str(searchtext) == "None":
+                searchtext = ""
         workorder_table = workorder.objects.filter(workorderno=workorderno)
         context = {"workorderlist": workorderlist, "loginid": loginid, "workorder_table": workorder_table,
                    "url_comp": url_comp, "r_t_name": r_t_name, "r_s_name": r_s_name, "r_m_name": r_m_name,
@@ -6385,7 +7107,12 @@ def workorderlist_main(request):
         auth = users.auth1
         user_div = users.user_division
         users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
-        workorderlist = workorder.objects.all().order_by('-date')  # db 동기화
+        if user_div == "Engineer":
+            workorderlist = workorder.objects.all().order_by('-date')  # db 동기화
+        elif userteam == "QA":
+            workorderlist = workorder.objects.all().order_by('-date')  # db 동기화
+        else:
+            workorderlist = workorder.objects.filter(team=userteam).order_by('-date')  # db 동기화
         context = {"workorderlist": workorderlist, "loginid": loginid}
         context.update(users)
     return render(request, 'workorderlist_main.html', context) #templates 내 html연결
@@ -7719,6 +8446,11 @@ def user_info(request):
         return render(request, 'user_info.html', context) #templates 내 html연결
 
 def user_info_new(request):
+    approval_infos = approval_information.objects.all().values('code_no').annotate(Count('code_no'))
+    context = {"approval_infos": approval_infos}
+    return render(request, 'user_info_new.html', context)  # templates 내 html연결
+
+def user_info_new_submit(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
         loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
     ##이름 및 권한 끌고다니기##
@@ -7742,18 +8474,18 @@ def user_info_new(request):
         try:
             id_check= userinfo.objects.get(userid = userid_up)  # db 동기화
             messages.error(request, "ID already exists.")  # 아이디 중복
-            user_info = userinfo.objects.all() #db 동기화
-            context = {"user_info": user_info, "loginid":loginid}
+            approval_infos = approval_information.objects.all().values('code_no').annotate(Count('code_no'))
+            context = {"approval_infos": approval_infos, "loginid":loginid}
             context.update(users)
-            return render(request, 'user_info.html', context) #templates 내 html연결
+            return render(request, 'user_info_new.html', context) #templates 내 html연결
         except:
     # PASSWORD 일치여부 판단하기
             if password_up != password_again_up:
                 messages.error(request, "Passwords do not match.")  # 비번 불일치
-                user_info = userinfo.objects.all()  # db 동기화
-                context = {"user_info": user_info, "loginid": loginid}
+                approval_infos = approval_information.objects.all().values('code_no').annotate(Count('code_no'))
+                context = {"approval_infos": approval_infos, "loginid": loginid}
                 context.update(users)
-                return render(request, 'user_info.html', context)  # templates 내 html연결
+                return render(request, 'user_info_new.html', context)  # templates 내 html연결
             else:
     # PASSWORD 복잡도 판단하기
                 check = password_up
@@ -7779,15 +8511,16 @@ def user_info_new(request):
                                         useremail=useremail_up,
                                         auth1=auth_1_up,
                                         user_division=user_div_up).save()
-                                    user_info = userinfo.objects.all() #db 동기화
-                                    context = {"user_info": user_info, "loginid":loginid}
+                                    comp_signal="Y"
+                                    approval_infos = approval_information.objects.all().values('code_no').annotate(Count('code_no'))
+                                    context = {"approval_infos": approval_infos, "loginid":loginid,"comp_signal":comp_signal}
                                     context.update(users)
-                                    return render(request, 'user_info.html', context) #templates 내 html연결
+                                    return render(request, 'user_info_new.html', context) #templates 내 html연결
                 messages.error(request, "Password policy was violated.")  # 아이디 중복
-                user_info = userinfo.objects.all()  # db 동기화
-                context = {"user_info": user_info, "loginid": loginid}
+                approval_infos = approval_information.objects.all().values('code_no').annotate(Count('code_no'))
+                context = {"uapproval_infos": approval_infos, "loginid": loginid}
                 context.update(users)
-                return render(request, 'user_info.html', context)  # templates 내 html연결
+                return render(request, 'user_info_new.html', context)  # templates 내 html연결
 
 def user_info_change(request):
     approval_infos = approval_information.objects.all().values('code_no').annotate(Count('code_no'))
@@ -7809,6 +8542,148 @@ def approval_info(request):
         context = {"approval_infos": approval_infos, "loginid":loginid}
         context.update(users)
         return render(request, 'approval_info.html', context) #templates 내 html연결
+
+def approval_info_new(request):
+    return render(request, 'approval_info_new.html')  # templates 내 html연결
+
+def approval_info_new_submit(request):
+    if request.method == 'POST':  # 매소드값이 post인 값만 받는다
+        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        division_get = request.POST.get('division')  # html Login id의 값을 받는다
+        description_get = request.POST.get('description')  # html Login id의 값을 받는다
+        team_get = request.POST.get('team')  # html Login id의 값을 받는다
+        auth_name_get = request.POST.get('auth_name')  # html Login id의 값을 받는다
+        authority_get = request.POST.get('authority')  # html Login id의 값을 받는다
+    ##이름 및 권한 끌고다니기##
+        users = userinfo.objects.get(userid=loginid)
+        username = users.username
+        userteam = users.userteam
+        password = users.password
+        auth = users.auth1
+        user_div = users.user_division
+        users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
+    ##값저장하기##
+        approval_information(
+            division = division_get,
+            description = description_get,
+            auth_team = team_get,
+            auth_name = auth_name_get,
+            code_no = authority_get,
+        ).save()
+    ##정보보내기##
+        comp_signal="Y"
+        context = {"loginid":loginid,"comp_signal":comp_signal}
+        context.update(users)
+        return render(request, 'approval_info_new.html', context) #templates 내 html연결
+
+def approval_info_change(request):
+    return render(request, 'approval_info_change.html')  # templates 내 html연결
+
+def approval_info_change_submit(request):
+    if request.method == 'POST':  # 매소드값이 post인 값만 받는다
+        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        division_get = request.POST.get('division')  # html Login id의 값을 받는다
+        description_get = request.POST.get('description')  # html Login id의 값을 받는다
+        team_get = request.POST.get('auth_team')  # html Login id의 값을 받는다
+        auth_name_get = request.POST.get('auth_name')  # html Login id의 값을 받는다
+        authority_get = request.POST.get('code_no')  # html Login id의 값을 받는다
+    ##이름 및 권한 끌고다니기##
+        users = userinfo.objects.get(userid=loginid)
+        username = users.username
+        userteam = users.userteam
+        password = users.password
+        auth = users.auth1
+        user_div = users.user_division
+        users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
+    ##값변경하기##
+        try:
+            auth_change= approval_information.objects.get(division=division_get, description=description_get)
+            auth_change.division = division_get
+            auth_change.description = description_get
+            auth_change.auth_team = team_get
+            auth_change.auth_name = auth_name_get
+            auth_change.code_no = authority_get
+            auth_change.save()
+        except:
+            pass
+    ##정보보내기##
+        comp_signal="Y"
+        context = {"loginid":loginid,"comp_signal":comp_signal}
+        context.update(users)
+        return render(request, 'approval_info_new.html', context) #templates 내 html연결
+
+def approval_info_delete(request):
+    if request.method =='POST': #매소드값이 post인 값만 받는다
+        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        division_get = request.POST.get('division')  # html Login id의 값을 받는다
+        description_get = request.POST.get('description')  # html Login id의 값을 받는다
+    ##이름 및 권한 끌고다니기##
+        users = userinfo.objects.get(userid=loginid)
+        username = users.username
+        userteam = users.userteam
+        password = users.password
+        auth = users.auth1
+        user_div = users.user_division
+        users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
+    ##삭제하기##
+        delete_check = approval_information.objects.get(division=division_get, description=description_get)
+        delete_check.delete()
+        approval_infos = approval_information.objects.all().order_by('division') #db 동기화
+        context = {"approval_infos": approval_infos, "loginid":loginid}
+        context.update(users)
+        return render(request, 'approval_info.html', context) #templates 내 html연결
+
+def user_info_change_submit(request):
+    if request.method =='POST': #매소드값이 post인 값만 받는다
+        userteam_get = request.POST.get('userteam')  # html Login id의 값을 받는다
+        password_get = request.POST.get('password')  # html Login id의 값을 받는다
+        useremail_get = request.POST.get('useremail')  # html Login id의 값을 받는다
+        auth_1_get = request.POST.get('auth_1')  # html Login id의 값을 받는다
+        user_div_get = request.POST.get('user_div')  # html Login id의 값을 받는다
+        userid_get = request.POST.get('userid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+    ##이름 및 권한 끌고다니기##
+        users = userinfo.objects.get(userid=loginid)
+        username = users.username
+        userteam = users.userteam
+        password = users.password
+        auth = users.auth1
+        user_div = users.user_division
+        users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
+    ##이름 및 권한 끌고다니기##
+        info_change = userinfo.objects.get(userid=userid_get)
+        info_change.userteam = userteam_get
+        info_change.password = password_get
+        info_change.useremail = useremail_get
+        info_change.auth1 = auth_1_get
+        info_change.user_division = user_div_get
+        info_change.save()
+    ##자동클로우즈##
+        comp_signal = "Y"
+        context = {"loginid":loginid,"comp_signal":comp_signal}
+        context.update(users)
+        return render(request, 'user_info_change.html', context) #templates 내 html연결
+
+def user_info_change_delete(request):
+    if request.method =='POST': #매소드값이 post인 값만 받는다
+        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        userid_get = request.POST.get('userid')  # html Login id의 값을 받는다
+    ##이름 및 권한 끌고다니기##
+        users = userinfo.objects.get(userid=loginid)
+        username = users.username
+        userteam = users.userteam
+        password = users.password
+        auth = users.auth1
+        user_div = users.user_division
+        users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
+    ##내용삭제##
+        delete_check = userinfo.objects.get(userid=userid_get) #db 동기화
+        delete_check.delete()
+        user_info = userinfo.objects.all() #db 동기화
+        approval_infos = approval_information.objects.all().values('code_no').annotate(Count('code_no'))
+        context = {"user_info": user_info, "loginid":loginid,"approval_infos":approval_infos}
+        context.update(users)
+        return render(request, 'user_info.html', context) #templates 내 html연결
 
 ##############################################################################################################
 #############################################Spare Parts######################################################
@@ -7959,7 +8834,7 @@ def spareparts_incoming_select(request):
     ##검색테이블##
         if selecttext == "codeno":
             search_result = spare_parts_list.objects.filter(codeno__icontains=searchtext).order_by(
-                'codeno')  # db 동기화                                                                                'codeno')  # db 동기화
+                'codeno')
         elif selecttext == "partname":
             search_result = spare_parts_list.objects.filter(partname__icontains=searchtext).order_by('codeno')  # db 동기화
         elif selecttext == "team":
@@ -8635,6 +9510,22 @@ def spareparts_cert_upload(request):
         context.update(users)
         return render(request, 'spareparts_cert_main.html', context)  # templates 내 html연결
 
+def roomlist_main(request):
+    if request.method == 'POST':  # 매소드값이 post인 값만 받는다
+        selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
+        searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
+        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+    ##이름 및 권한 끌고다니기##
+        users = userinfo.objects.get(userid=loginid)
+        username = users.username
+        userteam = users.userteam
+        password = users.password
+        auth = users.auth1
+        user_div = users.user_division
+        users = {"auth": auth, "password": password, "username": username, "userteam": userteam, "user_div": user_div}
+        context = {"loginid": loginid}
+        context.update(users)
+        return render(request, 'roomlist_main.html', context)  # templates 내 html연결
 ##############################################################################################################
 #################################################Test########################################################
 ##############################################################################################################
