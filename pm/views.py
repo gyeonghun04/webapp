@@ -3534,7 +3534,7 @@ def pmsheet_startdate(request):
         startdate = str(request.POST.get('startdate'))
         pmreference = pm_reference.objects.all()
     #####신규날짜 받기#####
-        if startdate == "None":
+        if (startdate == "None") or (startdate == ""):
             pmsheetno_temp = request.POST.get('pmsheetno_temp')
             calendartext = request.POST.get('calendartext')
             today = date.datetime.today()
