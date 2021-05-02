@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<style>
+#tabletop{
+    	font-family: arial;
+        position:fixed;top:4.3%; left:9.2%;
+        height:5%;
+        width:46%;
+}
+titletext{
+    	font-family:'Rubik', sans-serif;
+        font-size:20px;
+        font-weight:bold;
+}
+
+.request_new{
+        font-family:'Rubik', sans-serif;
+        font-size:15px;
+        background-color: rgba(255, 255, 255, 0.0);
+        cursor:pointer;
+        border:0px;
+        font-color:black;
+        text-decoration:underline;
+}
+.selecttext{
+        margin-left:80px;
+        width:150px;
+        height:20px;
+}
+.searchtext{
+        width:110px;
+        height:20px;
+}
+.searchbutton{
+        width:60px;
+        height:20px;
+        cursor:pointer;
+}
+#searchbar{
+        position:fixed;top:5%; left:33%;
+}
+b{
+        position:fixed;top:5.3%; left:30.5%;
+        align-text:left;
+        color:black;
+        z-index:10;
+}
+</style>
+</head>
+<body>
+<div id="tabletop" style="word-break:break-all">
+<titletext>Parts List For PM</titletext>
+<b class="xi-pen"><input type="button" value="New Request" class="request_new"></b>
+    <div id="searchbar">
+        <form action="" method="post">
+            {% csrf_token %}
+            <select class="selecttext" name="selecttext">&nbsp;
+            <option value="controlno">Control No.</option>
+            <option value="team">Team</option>
+            <option value="item">Maintenance Item</option>
+            </select>
+            <input type="search"  class="searchtext" placeholder="Keywords" name="searchtext" value="{{searchtext}}">
+            <input type="hidden" value="{{loginid}}" id="workloginid">
+            <input type="hidden" value="{{loginid}}" name="loginid">
+            <input type="submit"  class="searchbutton" value="Search"></form>
+    </div>
+</div>
+
+<script>
+            function Request_new(){
+                        // 팝업창열기
+            var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=880, height=840, left=50, top=10';
+            window.open("/workrequest_new", "Work Request Form", settings);
+            }
+
+
+</script>
+</body>
+</html>

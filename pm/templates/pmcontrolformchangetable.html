@@ -3,28 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-<script language="javascript">
 
-function Itemcodedelete(obj){
-        var reason = window.prompt("Please enter the change information.","");
-        if (reason != null){
-        if (reason == ""){
-        alert("If you do not enter the change information, Unable to delete.");}
-        else{
-            var i = obj.parentNode.parentNode.rowIndex;
-            var itemcode_delete = document.getElementsByName('itemcode_delete')[i].value;
-            var amd_change = document.getElementsByName('amd_change')[i].value;
-            // html로 값보내기
-            document.itemdelete.itemcode_delete.value = itemcode_delete;
-            document.itemdelete.amd_change.value = amd_change;
-            document.itemdelete.delete_reason.value = reason;
-            // 서버로 전송
-            document.itemdelete.action="pmcontrolform_write_delete";
-            document.itemdelete.submit();
-            }
-        }}
-
-</script>
 <style>
 controlformtitle{
         position:fixed;top:5.5%; left:58%;
@@ -59,8 +38,6 @@ controlformtext{
         font-size:11px;
         font-family: arial;
 }
-
-
 
 .c1{width:70px;}
 .c2{width:60px;}
@@ -109,7 +86,7 @@ margin:0px;
 }
 #pmsheetbody{
         position:fixed; top:87.2%; left:39.6%;
-        height:61px;
+        height:85px;
         width:59.98%;
         overflow-y:scroll;
 }
@@ -177,19 +154,7 @@ font-family: arial;
         cursor:pointer;
         margin-left:10px;
 }
-.button_submit{
-    	font-family: arial;
-        font-size:11px;
-        cursor:pointer;
-        margin-left:50px;
-}
-.button_return{
-    	font-family: arial;
-        font-size:11px;
-        cursor:pointer;
-        margin-left:50px;
-        color:blue;
-}
+
 approve_text{
         position: fixed; top:96.5%; left:93%;
     	font-family: arial;
@@ -218,6 +183,30 @@ approve_text{
     font-family: arial;
     font-size:12px;
 }
+#btn_location{
+        position:fixed; top:96.8%; left:75.7%;
+}
+.button_submit{
+        font-size:12px;
+        cursor:pointer;
+        font-family: arial;
+}
+.button_return{
+        color:blue;
+        font-size:12px;
+        cursor:pointer;
+        font-family: arial;
+}
+.new{
+        font-family:'Rubik', sans-serif;
+        font-size:15px;
+        background-color: rgba(255, 255, 255, 0.0);
+        cursor:pointer;
+        border:0px;
+        font-color:black;
+        text-decoration:underline;
+}
+
 </style>
 
 </head>
@@ -316,57 +305,13 @@ Preventive Maintenance Program Control Form
                    {% endfor %}
    </table>
  </div>
- <div>
- <table>
-   <thead id="pmcontrolformchange">
-        <tr>
-            <td align="center" class="t6">Division</td>
-            <td align="center" class="t1">Frequency</td>
-            <td align="center" class="t3">Maintenance Item</td>
-            <td align="center" class="t4">Check Standard</td>
-            <td align="center" class="t5">Change Information</td>
-            <td align="center" class="t7">New</td>
-            <td align="center" class="t8">Submit</td>
-        </tr>
-   </thead>
-   <tbody id="pmcontrolformchangeinput">
-     <tr>
-         <form action="pmcontrolform_write_new" method="post" >
-                {% csrf_token %}
-            <td align="center">
-            <select class="division" name="division">
-                {% for pm_reference in pmreference %}
-            <option value="{{pm_reference.description}}">{{pm_reference.description}}</option>
-                {% endfor %}
-            </select></td>
-            <td align="center">
-            <select class="freq_no" name="freq_no">&nbsp;
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-            <option value="9">9</option>
-            <option value="10">10</option>
-            <option value="11">11</option></select></td>
-            <td align="center">
-            <select class="freq_my" name="freq_my">&nbsp;
-            <option value="Month">Month</option>
-            <option value="Year">Year</option></select></td>
-            <td align="left">
-                     <input type="text" name="item"  class="t3-1" required></td>
-            <td align="left">
-                     <input type="text" name="check"  class="t4-1" required></td>
-            <td align="center">
-                     <input type="text" name="change"  class="t5-1" required></td>
-            <td>
-            <input type="hidden" value="{{loginid}}" name="loginid">
-            <input type="hidden" value="{{controlno}}" name="controlno">
-            <input type="submit" class="button_new" value="New" class="button"></td>
-         </form>
+<div id="btn_location">
+<table>
+    <tr>
+        <td>
+    <b class="xi-central-signal"><input type="button" value="Link To Other Equip." class="new" onclick="Link_of_equip();"></b>&emsp;</td>
+        <td>
+    <b class="xi-pen"><input type="button" value="New Maintnance Item" class="new" onclick="Registration_new();"></b>&emsp;</td>
      {%if signal == "Complete" %}
      <td><form action="pmcontrolform_submit" method="post" >
                 {% csrf_token %}
@@ -403,17 +348,43 @@ Preventive Maintenance Program Control Form
           <input type="submit" class="button_return" value="Return"></form></td>
      {%endif%}
      </tr>
-   </tbody>
 </table>
-
-        <form method="post" name="pmcontrolform_division">
-             {% csrf_token %}
-        <input type="hidden" value="{{loginid}}" id="loginid">
-        <input type="hidden" value="{{controlno}}" name="controlno">
-        <input type="hidden" name="division">
-        </form>
- </div>
+</div>
+     <input type="hidden" value="{{loginid}}" id="loginid_up">
+     <input type="hidden" value="{{controlno}}" id="controlno_up">
 </main>
+<script language="javascript">
 
+function Itemcodedelete(obj){
+        var reason = window.prompt("Please enter the change information.","");
+        if (reason != null){
+        if (reason == ""){
+        alert("If you do not enter the change information, Unable to delete.");}
+        else{
+            var i = obj.parentNode.parentNode.rowIndex;
+            var itemcode_delete = document.getElementsByName('itemcode_delete')[i].value;
+            var amd_change = document.getElementsByName('amd_change')[i].value;
+            // html로 값보내기
+            document.itemdelete.itemcode_delete.value = itemcode_delete;
+            document.itemdelete.amd_change.value = amd_change;
+            document.itemdelete.delete_reason.value = reason;
+            // 서버로 전송
+            document.itemdelete.action="pmcontrolform_write_delete";
+            document.itemdelete.submit();
+            }
+        }}
+
+function Registration_new(){
+                        // 팝업창열기
+            var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=510, height=270, left=50, top=400';
+            window.open("/pmcontrolform_change_new", "PM Maintnance Item Registration", settings);
+}
+
+function Link_of_equip(){
+                        // 팝업창열기
+            var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=740, height=650, left=50, top=200';
+            window.open("/pmcontrolform_change_link", "Link To Other Equipment", settings);
+}
+</script>
 </body>
 </html>

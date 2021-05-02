@@ -42,8 +42,8 @@ def information_main(request):
 
 def main(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
-        userpassword = request.POST.get('pw')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        userpassword = request.POST.get('pw')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         try:
             users = userinfo.objects.get(userid=loginid)
@@ -294,7 +294,7 @@ def pmchecksheet_main(request):
     ####테이블 감추기 신호####
         table_signal = "table_signal"
     #####입력정보값 받기#####
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
         calendarsearch = request.POST.get('calendarsearch')
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
@@ -353,7 +353,7 @@ def pmchecksheet_main(request):
 def pmchecksheet_write(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
     #####입력정보값 받기#####
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
         calendarsearch = request.POST.get('calendarsearch')  # html 날짜 값을 받는다
         controlno = request.POST.get('controlno')  # html 날짜 값을 받는다
         pmsheetno = request.POST.get('pmsheetno')  # html 날짜 값을 받는다
@@ -490,7 +490,7 @@ def pmchecksheet_write(request):
 def pmchecksheet_checkresult(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
     #####입력정보값 받기#####
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
         calendarsearch = request.POST.get('calendarsearch')  # html 날짜 값을 받는다
         controlno = request.POST.get('controlno')  # html 날짜 값을 받는다
         pmcode = request.POST.get('pmcode')  # html 날짜 값을 받는다
@@ -595,7 +595,7 @@ def pmchecksheet_checkresult(request):
 def pmchecksheet_actiondetail(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
     #####입력정보값 받기#####
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
         calendarsearch = request.POST.get('calendarsearch')  # html 날짜 값을 받는다
         controlno = request.POST.get('controlno')  # html 날짜 값을 받는다
         pmcode = request.POST.get('pmcode')  # html 날짜 값을 받는다
@@ -706,7 +706,7 @@ def pmchecksheet_actiondetail(request):
 def pmchecksheet_checkboxform(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
     #####입력정보값 받기#####
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
         calendarsearch = request.POST.get('calendarsearch')  # html 날짜 값을 받는다
         controlno = request.POST.get('controlno')  # html 날짜 값을 받는다
         pmcode = request.POST.get('pmcode')  # html 날짜 값을 받는다
@@ -815,7 +815,7 @@ def pmchecksheet_checkboxform(request):
 def pmchecksheet_remark(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
     #####입력정보값 받기#####
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
         calendarsearch = request.POST.get('calendarsearch')  # html 날짜 값을 받는다
         controlno = request.POST.get('controlno')  # html 날짜 값을 받는다
         pmcode = request.POST.get('pmcode')  # html 날짜 값을 받는다
@@ -921,7 +921,7 @@ def pmchecksheet_remark(request):
 def pmchecksheet_remark_na(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
     #####입력정보값 받기#####
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
         calendarsearch = request.POST.get('calendarsearch')  # html 날짜 값을 받는다
         controlno = request.POST.get('controlno')  # html 날짜 값을 받는다
         pmcode = request.POST.get('pmcode')  # html 날짜 값을 받는다
@@ -1025,7 +1025,7 @@ def pmchecksheet_remark_na(request):
 def pmchecksheet_view(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
     #####입력정보값 받기#####
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
         calendarsearch = request.POST.get('calendarsearch')  # html 날짜 값을 받는다
         controlno = request.POST.get('controlno')  # html 날짜 값을 받는다
         pmcode = request.POST.get('pmcode')  # html 날짜 값을 받는다
@@ -1133,15 +1133,15 @@ def pmchecksheet_view(request):
 def pmcheck_workrequest_up(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
         #####입력정보값 받기#####
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
         capa = request.POST.get('capa')  # html 날짜 값을 받는다
         controlno = request.POST.get('controlno')  # html 날짜 값을 받는다
         requestor = request.POST.get('requestor')  # html 날짜 값을 받는다
-        equipteam = request.POST.get('team')  # html Login id의 값을 받는다
+        equipteam = request.POST.get('team')  # html에서 해당 값을 받는다
         description = request.POST.get('description')  # html 날짜 값을 받는다
         date = request.POST.get('date')  # html 날짜 값을 받는다
         equipname = request.POST.get('equipname')  # html 날짜 값을 받는다
-        roomname = request.POST.get('roomname')  # html Login id의 값을 받는다
+        roomname = request.POST.get('roomname')  # html에서 해당 값을 받는다
         roomno = request.POST.get('roomno')  # html 날짜 값을 받는다
         description_info = request.POST.get('description_info')  # html 날짜 값을 받는다
     ##이름 및 권한 끌고다니기##
@@ -1174,17 +1174,17 @@ def pmcheck_workrequest_up(request):
 def pmcheck_workrequest_submit(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
     #####입력정보값 받기#####
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
         capa = request.POST.get('capa')  # html 날짜 값을 받는다
-        pmcode= request.POST.get('pmcode')  # html Login id의 값을 받는다
+        pmcode= request.POST.get('pmcode')  # html에서 해당 값을 받는다
         itemcode = request.POST.get('itemcode')  # html 날짜 값을 받는다
         controlno = request.POST.get('controlno')  # html 날짜 값을 받는다
         requestor = request.POST.get('requestor')  # html 날짜 값을 받는다
-        equipteam = request.POST.get('team')  # html Login id의 값을 받는다
+        equipteam = request.POST.get('team')  # html에서 해당 값을 받는다
         description = request.POST.get('description')  # html 날짜 값을 받는다
         request_date = request.POST.get('date')  # html 날짜 값을 받는다
         equipname = request.POST.get('equipname')  # html 날짜 값을 받는다
-        roomname = request.POST.get('roomname')  # html Login id의 값을 받는다
+        roomname = request.POST.get('roomname')  # html에서 해당 값을 받는다
         roomno = request.POST.get('roomno')  # html 날짜 값을 받는다
         description_info = request.POST.get('description_info')  # html 날짜 값을 받는다
         url = request.POST.get('url')  # html 날짜 값을 받는다
@@ -1255,7 +1255,7 @@ def pmcheck_workrequest_submit(request):
 def pmchecksheet_submit(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
     #####입력정보값 받기#####
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
         calendarsearch = request.POST.get('calendarsearch')  # html 날짜 값을 받는다
         controlno = request.POST.get('controlno')  # html 날짜 값을 받는다
         pmcode = request.POST.get('pmcode')  # html 날짜 값을 받는다
@@ -1706,7 +1706,7 @@ def pmchecksheet_submit(request):
 def pmchecksheet_return(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
     #####입력정보값 받기#####
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
         calendarsearch = request.POST.get('calendarsearch')  # html 날짜 값을 받는다
         controlno = request.POST.get('controlno')  # html 날짜 값을 받는다
         pmcode = request.POST.get('pmcode')  # html 날짜 값을 받는다
@@ -1891,9 +1891,9 @@ def pmchecksheet_return(request):
 def pmchecksheet_upload(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
         controlno = request.POST.get("controlno")
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
         pmcode = request.POST.get("pmcode")
-        calendarsearch = request.POST.get('calendarsearch')  # html Login id의 값을 받는다
+        calendarsearch = request.POST.get('calendarsearch')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -2108,7 +2108,7 @@ def pmcheckapproval_main(request):
     ####테이블 감추기 신호####
         table_signal = "table_signal"
     #####입력정보값 받기#####
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
         calendarsearch = request.POST.get('calendarsearch')  # html 날짜 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
@@ -2226,7 +2226,7 @@ def pmcheckapproval_main(request):
 def pmcheckapproval_check(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
     #####입력정보값 받기#####
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
         calendarsearch = request.POST.get('calendarsearch')  # html 날짜 값을 받는다
         controlno = request.POST.get('controlno')  # html 날짜 값을 받는다
         pmcode = request.POST.get('pmcode')  # html 날짜 값을 받는다
@@ -2376,7 +2376,7 @@ def pmcheckapproval_check(request):
 def pmcheckapproval_review_accept(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
     #####입력정보값 받기#####
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
         calendarsearch = request.POST.get('calendarsearch')  # html 날짜 값을 받는다
         controlno = request.POST.get('controlno')  # html 날짜 값을 받는다
         pmcode = request.POST.get('pmcode')  # html 날짜 값을 받는다
@@ -2538,7 +2538,7 @@ def pmcheckapproval_review_accept(request):
 def pmcheckapproval_review_reject(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
     #####입력정보값 받기#####
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
         calendarsearch = request.POST.get('calendarsearch')  # html 날짜 값을 받는다
         controlno = request.POST.get('controlno')  # html 날짜 값을 받는다
         pmcode = request.POST.get('pmcode')  # html 날짜 값을 받는다
@@ -2704,7 +2704,7 @@ def pmcheckapproval_review_reject(request):
 def pmcheckapproval_approve_accept(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
     #####입력정보값 받기#####
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
         calendarsearch = request.POST.get('calendarsearch')  # html 날짜 값을 받는다
         controlno = request.POST.get('controlno')  # html 날짜 값을 받는다
         pmcode = request.POST.get('pmcode')  # html 날짜 값을 받는다
@@ -2939,7 +2939,7 @@ def pmcheckapproval_approve_accept(request):
 def pmcheckapproval_approve_reject(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
     #####입력정보값 받기#####
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
         calendarsearch = request.POST.get('calendarsearch')  # html 날짜 값을 받는다
         controlno = request.POST.get('controlno')  # html 날짜 값을 받는다
         pmcode = request.POST.get('pmcode')  # html 날짜 값을 받는다
@@ -3130,7 +3130,7 @@ def pmcontrolform_main(request):
             controlformlists = controlformlist.objects.filter(recent_y="Y").order_by('team', 'controlno')  # db 동기화
         if str(searchtext) == "None":
             searchtext = ""
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -3146,7 +3146,7 @@ def pmcontrolform_main(request):
 def pmcontrolform_view(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
         controlno = request.POST.get('controlno')  # html controlform의 값을 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
     ####검색어 반영####
         selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
         searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
@@ -3203,7 +3203,7 @@ def pmcontrolform_view(request):
 def pmcontrolform_write(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
         controlno = request.POST.get('controlno')  # html controlform의 값을 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
         controlformdb_temp = pmmasterlist_temp.objects.filter(controlno=controlno).order_by('freq')
         pmsheet_temp = pmsheetdb.objects.filter(controlno=controlno).order_by('freq_temp')
     ####검색어 반영####
@@ -3249,34 +3249,50 @@ def pmcontrolform_write(request):
         context.update(users)
         return render(request, 'pmcontrolform_write.html', context)  # templates 내 html연결
 
+def pmcontrolform_change_new(request):
+    pmreference = pm_reference.objects.all()
+    frequency = ""
+    context = {"pmreference": pmreference,"frequency":frequency}
+    return render(request, 'pmcontrolform_change_new.html', context)  # templates 내 html연결
+
+def pmcontrolform_change_division(request):
+    if request.method == 'POST':  # 매소드값이 post인 값만 받는다
+        controlno = request.POST.get('controlno')  # html controlform의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        division = request.POST.get('division')  # html에서 해당 값을 받는다
+    ##이름 및 권한 끌고다니기##
+        users = userinfo.objects.get(userid=loginid)
+        username = users.username
+        userteam = users.userteam
+        password = users.password
+        auth = users.auth1
+        user_div = users.user_division
+        users = {"auth": auth, "password": password, "username": username, "userteam": userteam, "user_div": user_div}
+        if division == "Manual":
+                frequency = ""
+                freq_no = ""
+                freq_my = ""
+        elif division == "Standard":
+                freq_get = equiplist.objects.get(controlno=controlno)
+                frequency = freq_get.ra + "Month"
+                freq_no = freq_get.ra
+                freq_my = "Month"
+        else:
+                freq_get = pm_reference.objects.get(description=division)
+                freq_no = freq_get.freq_m_y
+                freq_my = freq_get.m_y
+                frequency = freq_no + freq_my
+        pmreference = pm_reference.objects.all()
+        division_get = division
+        context = {"pmreference": pmreference,"loginid":loginid, "frequency":frequency,"division_get":division_get,
+                   "freq_no":freq_no,"freq_my":freq_my}
+        context.update(users)
+        return render(request, 'pmcontrolform_change_new.html', context)  # templates 내 html연결
+
 def pmcontrolform_write_new(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
         controlno = request.POST.get('controlno')  # html controlform의 값을 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
-        controlformdb_temp = pmmasterlist_temp.objects.filter(controlno = controlno).order_by('freq')
-        pmsheet_temp = pmsheetdb.objects.filter(controlno = controlno).order_by('freq_temp')
-        ####검색어 반영####
-        selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
-        searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
-        try:
-            if selecttext == "status":
-                controlformlists = controlformlist.objects.filter(status__icontains=searchtext, recent_y="Y").order_by(
-                    'team', 'controlno')  # db 동기화
-            elif selecttext == "team":
-                controlformlists = controlformlist.objects.filter(team__icontains=searchtext, recent_y="Y").order_by(
-                    'team', 'controlno')  # db 동기화
-            elif selecttext == "controlno":
-                controlformlists = controlformlist.objects.filter(controlno__icontains=searchtext,
-                                                                  recent_y="Y").order_by('team', 'controlno')  # db 동기화
-            elif selecttext == "equipname":
-                controlformlists = controlformlist.objects.filter(name__icontains=searchtext, recent_y="Y").order_by(
-                    'team', 'controlno')  # db 동기화
-            else:
-                controlformlists = controlformlist.objects.filter(recent_y="Y").order_by('team', 'controlno')  # db 동기화
-        except:
-            controlformlists = controlformlist.objects.filter(recent_y="Y").order_by('team', 'controlno')  # db 동기화
-        if str(searchtext) == "None":
-            searchtext = ""
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -3286,68 +3302,36 @@ def pmcontrolform_write_new(request):
         user_div = users.user_division
         users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
     #####equip info 정보 보내기#####
-        equipinfo = equiplist.objects.filter(controlno=controlno)
-        equipinforev = controlformlist.objects.filter(controlno=controlno, recent_y="Y")
         equiptable = equiplist.objects.get(controlno=controlno)
         equiptablerev = controlformlist.objects.get(controlno=controlno, recent_y="Y")
         pmreference = pm_reference.objects.all()
-    #####주기 인터락#####
-        division = request.POST.get('division')  # html Login id의 값을 받는다
-        freq_no = request.POST.get('freq_no')  # html Login id의 값을 받는다
-        freq_my = request.POST.get('freq_my')  # html Login id의 값을 받는다
-        if division != "Standard":
-            if division != "Manual":
-                frequency = pm_reference.objects.get(description=division)
-                if frequency.freq_m_y != freq_no:
-                    messages.error(request, "Period is entered incorrectly.")  # 경고
-        #####signal 정보 보내기#####
-                    pmreference = pm_reference.objects.all()
-                    signalinfo = controlformlist.objects.get(controlno=controlno, recent_y="Y")
-                    signal = [signalinfo.status][0]
-                    context = {"controlformdb": controlformdb_temp, "controlformlists": controlformlists,
-                               "equipinfo": equipinfo,
-                               "equipinforev": equipinforev, "loginid": loginid, "controlno": controlno,
-                               "pmsheet_temp": pmsheet_temp,
-                               "signal": signal, "pmreference": pmreference}
-                    context.update(users)
-                    return render(request, 'pmcontrolform_write.html', context)  # templates 내 html연결
-                if frequency.m_y != freq_my:
-                    messages.error(request, "Period is entered incorrectly.")  # 경고
+    #####주기 미입력확인#####
+        division = request.POST.get('division')  # html에서 해당 값을 받는다
+        freq_no = request.POST.get('freq_no')  # html에서 해당 값을 받는다
+        freq_my = request.POST.get('freq_my')  # html에서 해당 값을 받는다
+        frequency = request.POST.get('frequency')
+        if division == "Manual":
+            if (freq_no == "None") or (freq_my == "None"):
+                messages.error(request, "입력안했다~")  # 경고
                 #####signal 정보 보내기#####
-                    pmreference = pm_reference.objects.all()
-                    signalinfo = controlformlist.objects.get(controlno=controlno, recent_y="Y")
-                    signal = [signalinfo.status][0]
-                    context = {"controlformdb": controlformdb_temp, "controlformlists": controlformlists,
-                                   "equipinfo": equipinfo,
-                                   "equipinforev": equipinforev, "loginid": loginid, "controlno": controlno,
-                                   "pmsheet_temp": pmsheet_temp,
-                                   "signal": signal, "pmreference": pmreference,"selecttext": selecttext, "searchtext": searchtext}
-                    context.update(users)
-                    return render(request, 'pmcontrolform_write.html', context)  # templates 내 html연결
-        if division == "Standard":
-            ra_freq = equiplist.objects.get(controlno=controlno)
-            if ra_freq.ra != freq_no:
-                messages.error(request, "Period is entered incorrectly.")  # 경고
-                #####signal 정보 보내기#####
-                pmreference = pm_reference.objects.all()
-                signalinfo = controlformlist.objects.get(controlno=controlno, recent_y="Y")
-                signal = [signalinfo.status][0]
-                context = {"controlformdb": controlformdb_temp, "controlformlists": controlformlists,
-                           "equipinfo": equipinfo,
-                           "equipinforev": equipinforev, "loginid": loginid, "controlno": controlno,
-                           "pmsheet_temp": pmsheet_temp,
-                           "signal": signal, "pmreference": pmreference,"selecttext": selecttext, "searchtext": searchtext}
+                division_get = division
+                context = {"pmreference": pmreference, "loginid": loginid, "frequency": frequency,
+                           "division_get": division_get,
+                           "freq_no": freq_no, "freq_my": freq_my}
                 context.update(users)
-                return render(request, 'pmcontrolform_write.html', context)  # templates 내 html연결
+                return render(request, 'pmcontrolform_change_new.html', context)  # templates 내 html연결
     #####데이터 가공하기#####
         ######sheet No. 만들기#####
         freq_no=request.POST.get('freq_no')
         freq_my=request.POST.get('freq_my')
-        if freq_my == "Month":
-            freq_my = "M"
+        if int(freq_no) == 12:
+            sheetno = str(controlno) + "-1Y"
         else:
-            freq_my = "Y"
-        sheetno = str(controlno) + "-" + str(freq_no) + freq_my
+            if freq_my == "Month":
+                freq_my = "M"
+            else:
+                freq_my = "Y"
+            sheetno = str(controlno) + "-" + str(freq_no) + freq_my
     ######주기만들기#####
         freq_no=request.POST.get('freq_no')
         freq_my=request.POST.get('freq_my')
@@ -3393,22 +3377,192 @@ def pmcontrolform_write_new(request):
             division=request.POST.get('division'),
         ).save()
     #####signal 정보 보내기#####
-        pmreference = pm_reference.objects.all()
-        signalinfo = controlformlist.objects.get(controlno=controlno, recent_y="Y")
-        signal = [signalinfo.status][0]
-        context = {"controlformdb": controlformdb_temp, "controlformlists": controlformlists, "equipinfo": equipinfo,
-                   "equipinforev": equipinforev,"loginid":loginid, "controlno":controlno, "pmsheet_temp":pmsheet_temp,
-                   "signal":signal,"pmreference":pmreference,"selecttext": selecttext, "searchtext": searchtext}
+        #####완료 시그널 주기#####
+        comp_signal = "Y"
+        division_get = division
+        context = {"pmreference": pmreference, "loginid": loginid, "frequency": frequency,
+                   "division_get": division_get,"comp_signal":comp_signal,
+                   "freq_no": freq_no, "freq_my": freq_my}
         context.update(users)
-        return render(request, 'pmcontrolform_write.html', context)  # templates 내 html연결
+        return render(request, 'pmcontrolform_change_new.html', context)  # templates 내 html연결
+
+def pmcontrolform_change_link(request):
+    return render(request, 'pmcontrolform_change_link.html')  # templates 내 html연결
+
+def pmcontrolform_change_controlno(request):
+    if request.method =='POST': #매소드값이 post인 값만 받는다
+        controlno = request.POST.get('controlno')  # html controlform의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+ ##이름 및 권한 끌고다니기##
+        users = userinfo.objects.get(userid=loginid)
+        username = users.username
+        userteam = users.userteam
+        password = users.password
+        auth = users.auth1
+        user_div = users.user_division
+        users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
+ ##컨트롤넘버 정보 불러오기##
+        try:
+            equip_info = equiplist.objects.get(controlno=controlno)
+            team_get = equip_info.team
+            equip_get = equip_info.name
+            controlno_get = controlno
+            pm_list = pmmasterlist.objects.filter(controlno=controlno, amd="A", pm_y_n="Y")
+            view_signal="Y"
+            context = {"team_get": team_get, "loginid": loginid, "pm_list": pm_list,"controlno_get":controlno_get,
+                       "equip_get":equip_get,"view_signal":view_signal}
+            context.update(users)
+        except:
+            messages.error(request, "No such equipment exist.")  # 경고
+            context = {"loginid": loginid}
+        return render(request, 'pmcontrolform_change_link.html', context)  # templates 내 html연결
+
+def pmcontrolform_change_link_submit(request):
+    if request.method =='POST': #매소드값이 post인 값만 받는다
+        controlno = request.POST.get('controlno')  # html controlform의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        controlno_get = request.POST.get('controlno_get')
+    ##이름 및 권한 끌고다니기##
+        users = userinfo.objects.get(userid=loginid)
+        username = users.username
+        userteam = users.userteam
+        password = users.password
+        auth = users.auth1
+        user_div = users.user_division
+        users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
+    #####equip info 정보 보내기#####
+        equiptable = equiplist.objects.get(controlno=controlno)
+        equiptablerev = controlformlist.objects.get(controlno=controlno, recent_y="Y")
+    ###새로운 컨트롤폼 여부확인하기###
+        new_check = pmmasterlist_temp.objects.filter(controlno=controlno)
+        new_check = new_check.values('controlno')
+        df_new_check = pd.DataFrame.from_records(new_check)
+        df_new_check_len = len(df_new_check.index)  # itemcode 하나씩 넘기기
+        if int(df_new_check_len) > 0:
+            messages.error(request, "PM Maintenance Item already exists.")  # 경고
+        else:
+    ##컨트롤넘버 DB불러오기##
+            db_call = pmmasterlist.objects.filter(controlno=controlno_get, amd="A", pm_y_n="Y")
+            db_call = db_call.values('itemcode')
+            df_db_call = pd.DataFrame.from_records(db_call)
+            df_db_call_len = len(df_db_call.index)  # itemcode 하나씩 넘기기
+            for j in range(df_db_call_len):
+                itemcode_call = df_db_call.iat[j, 0]
+                item_call = pmmasterlist.objects.get(controlno=controlno_get, amd="A", pm_y_n="Y", itemcode=itemcode_call)
+                ra_call = equiplist.objects.get(controlno=controlno)
+                if str(item_call.division) != "Standard":
+                    ###sheet_no만들기###
+                    if (str(item_call.freq[:2]) == "10") or (str(item_call.freq[:2]) == "11") or (str(item_call.freq[:2]) == "12"):
+                        sheet_no = str(controlno) + "-" + str(item_call.freq[:3])
+                    else:
+                        sheet_no = str(controlno) + "-" + str(item_call.freq[:2])
+                    try:
+                        item_no_call = pmmasterlist_temp.objects.filter(controlno=controlno, sheetno=sheet_no)
+                        item_no_call = item_no_call.values('sheetno')
+                        df_item_no_call = pd.DataFrame.from_records(item_no_call)
+                        item_no = len(df_item_no_call.index)  # itemcode 하나씩 넘기기
+                        item_no = int(item_no) + 1
+                    except:
+                        item_no = 1
+                #####새로운 값 저장하기#####
+                    pmmasterlist_temp(  # 컨트롤폼에 신규등록하기
+                        team=equiptable.team,  # 팀명
+                        controlno=controlno,  # 컨트롤넘버
+                        name=equiptable.name,  # 설비명
+                        model=equiptable.model,  # 모델명
+                        serial=equiptable.serial,  # 시리얼넘버
+                        maker=equiptable.maker,  # 제조사
+                        roomname=equiptable.roomname,  # 룸명
+                        roomno=equiptable.roomno,  # 룸넘버
+                        revno=equiptablerev.revno,  # 리비젼넘버
+                        date=equiptablerev.revdate,  # 리비젼날짜
+                        freq=item_call.freq,  # 주기
+                        ra=ra_call.ra,  # ra결과
+                        sheetno=sheet_no,  # 시트넘버
+                        amd="A",  # a/m/d
+                        itemno=item_no,  # 순번
+                        item=item_call.item,  # 점검내용
+                        check=item_call.check,  # 점검기준
+                        startdate="New",  # 시트시작일
+                        change="신규등록",  # 변경사유
+                        itemcode=str(sheet_no) + str(item_no),  # 점검내용 구분좌
+                        division=item_call.division,
+                    ).save()
+                ####PM_SCH 저장하기###
+                    try:
+                        pm_sch_check = pmsheetdb.objects.get(pmsheetno=sheet_no)
+                    except:
+                        pmsheetdb(
+                            controlno=controlno,
+                            pmsheetno_temp=sheet_no,  # 신규Sheet No. 임시입력
+                            freq_temp=item_call.freq,  # 신규주기 임시입력
+                            startdate_temp="New",  # 시작일자 입력
+                        ).save()
+                else:
+                    ###주기만들기###
+                    frequency = str(ra_call.ra) + "Month"
+                    ###sheet_no만들기###
+                    sheet_no = str(controlno) + "-" + str(ra_call.ra) + "M"
+                    print(sheet_no)
+                    try:
+                        item_no_call = pmmasterlist_temp.objects.filter(controlno=controlno, sheetno=sheet_no)
+                        item_no_call = item_no_call.values('sheetno')
+                        df_item_no_call = pd.DataFrame.from_records(item_no_call)
+                        item_no = len(df_item_no_call.index)  # itemcode 하나씩 넘기기
+                        item_no = int(item_no) + 1
+                    except:
+                        item_no = 1
+                    #####새로운 값 저장하기#####
+                    pmmasterlist_temp(  # 컨트롤폼에 신규등록하기
+                        team=equiptable.team,  # 팀명
+                        controlno=controlno,  # 컨트롤넘버
+                        name=equiptable.name,  # 설비명
+                        model=equiptable.model,  # 모델명
+                        serial=equiptable.serial,  # 시리얼넘버
+                        maker=equiptable.maker,  # 제조사
+                        roomname=equiptable.roomname,  # 룸명
+                        roomno=equiptable.roomno,  # 룸넘버
+                        revno=equiptablerev.revno,  # 리비젼넘버
+                        date=equiptablerev.revdate,  # 리비젼날짜
+                        freq=frequency,  # 주기
+                        ra=ra_call.ra,  # ra결과
+                        sheetno=sheet_no,  # 시트넘버
+                        amd="A",  # a/m/d
+                        itemno=item_no,  # 순번
+                        item=item_call.item,  # 점검내용
+                        check=item_call.check,  # 점검기준
+                        startdate="New",  # 시트시작일
+                        change="신규등록",  # 변경사유
+                        itemcode=str(sheet_no) + str(item_no) ,  # 점검내용 구분좌
+                        division=item_call.division,
+                    ).save()
+                    ####PM_SCH 저장하기###
+                    try:
+                        pm_sch_check = pmsheetdb.objects.get(pmsheetno=sheet_no)
+                    except:
+                        pmsheetdb(
+                            controlno=controlno,
+                            pmsheetno_temp=sheet_no,  # 신규Sheet No. 임시입력
+                            freq_temp=item_call.freq,  # 신규주기 임시입력
+                            startdate_temp="New",  # 시작일자 입력
+                        ).save()
+        equip_info = equiplist.objects.get(controlno=controlno_get)
+        team_get = equip_info.team
+        equip_get = equip_info.name
+        pm_list = pmmasterlist.objects.filter(controlno=controlno, amd="A", pm_y_n="Y")
+        view_signal = "Y"
+        context = {"team_get": team_get, "loginid": loginid, "pm_list": pm_list, "controlno_get": controlno_get,
+                    "equip_get": equip_get, "view_signal": view_signal}
+        return render(request, 'pmcontrolform_change_link.html', context)  # templates 내 html연결
+
 
 def pmcontrolform_write_delete(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
         controlno = request.POST.get('controlno')  # html controlform의 값을 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
-        itemcode_delete = request.POST.get('itemcode_delete')  # html Login id의 값을 받는다
-        delete_reason = request.POST.get('delete_reason')  # html Login id의 값을 받는다
-        amd_change = request.POST.get('amd_change')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        itemcode_delete = request.POST.get('itemcode_delete')  # html에서 해당 값을 받는다
+        delete_reason = request.POST.get('delete_reason')  # html에서 해당 값을 받는다
+        amd_change = request.POST.get('amd_change')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -3497,7 +3651,7 @@ def pmsheet_startdate(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
     #####기본 창 정보 보내기#####
         controlno = request.POST.get('controlno')  # html controlform의 값을 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
         controlformdb_temp = pmmasterlist_temp.objects.filter(controlno=controlno).order_by('freq')
         pmsheet_temp = pmsheetdb.objects.filter(controlno=controlno).order_by('freq_temp')
     ####검색어 반영####
@@ -3563,7 +3717,7 @@ def pmcontrolform_submit(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
     #####기본 창 정보 보내기#####
         controlno = request.POST.get('controlno')  # html controlform의 값을 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
         controlformdb_temp = pmmasterlist_temp.objects.filter(controlno=controlno).order_by('freq')
         pmsheet_temp = pmsheetdb.objects.filter(controlno=controlno).order_by('freq_temp')
     ####검색어 반영####
@@ -3673,7 +3827,7 @@ def pmcontrolform_return(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
     #####기본 창 정보 보내기#####
         controlno = request.POST.get('controlno')  # html controlform의 값을 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
         controlformdb_temp = pmmasterlist_temp.objects.filter(controlno=controlno).order_by('freq')
         pmsheet_temp = pmsheetdb.objects.filter(controlno=controlno).order_by('freq_temp')
     ####검색어 반영####
@@ -3750,7 +3904,7 @@ def pmcontrolform_return(request):
 
 def pmra_main(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -3785,7 +3939,7 @@ def pmra_main(request):
 def pmra_view(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
         controlno = request.POST.get('controlno')  # html controlform의 값을 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -3824,7 +3978,7 @@ def pmra_view(request):
 def pmra_write(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
         controlno = request.POST.get('controlno')  # html controlform의 값을 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -3888,7 +4042,7 @@ def pmra_write(request):
 def pm_write_standard(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
         controlno = request.POST.get('controlno')  # html controlform의 값을 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -3944,7 +4098,7 @@ def pm_write_standard(request):
 def pmwritescore(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
         controlno = request.POST.get('controlno')  # html controlform의 값을 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
         pmok = request.POST.get('pmok')  # html PM진행유무의 값을 받는다
         pmreason = request.POST.get('pmreason')  # html PM진행사유의 값을 받는다
     ##이름 및 권한 끌고다니기##
@@ -4017,7 +4171,7 @@ def pmra_write_prepared(request):
         score_f = request.POST.get('score_f')  # html score_f의 값을 받는다
         score_result = request.POST.get('score_result')  # html score 결과을 받는다
         ra_result = request.POST.get('ra_result')  # html ra 주기결과값을 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -4082,9 +4236,9 @@ def pmra_write_approved(request):
         score_f = request.POST.get('score_f')  # html score_f의 값을 받는다
         score_result = request.POST.get('score_result')  # html score 결과을 받는다
         ra_result = request.POST.get('ra_result')  # html ra 주기결과값을 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
         p_name = request.POST.get('p_name')  # html ra 주기결과값을 받는다
-        p_date = request.POST.get('p_date')  # html Login id의 값을 받는다
+        p_date = request.POST.get('p_date')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -4182,7 +4336,7 @@ def pmequipsch_main(request):
     ####테이블 감추기 신호####
         table_signal = "table_signal"
     #####입력정보값 받기#####
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -4230,7 +4384,7 @@ def pmequipsch_main(request):
 def pmequipsch_view(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
     #####입력정보값 받기#####
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
         controlno = request.POST.get('controlno')  # html 날짜 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
@@ -4291,10 +4445,10 @@ def pmequipsch_view(request):
 
 def pm_fullscreen(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
-        pmcode = request.POST.get('pmcode')  # html Login id의 값을 받는다
-        controlno = request.POST.get('controlno')  # html Login id의 값을 받는다
-        pmsheetno = request.POST.get('pmsheetno')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        pmcode = request.POST.get('pmcode')  # html에서 해당 값을 받는다
+        controlno = request.POST.get('controlno')  # html에서 해당 값을 받는다
+        pmsheetno = request.POST.get('pmsheetno')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -4333,7 +4487,7 @@ def pmmonthly_main(request):
         calendarsearch = "20" + today.strftime('%y') + "-" + today.strftime('%m')
     #####입력정보값 테이블에서 불러오기#####
         pmmonthly_sch = pm_sch.objects.filter(date=calendarsearch).order_by('team', 'roomno')  # db 동기화
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -4348,7 +4502,7 @@ def pmmonthly_main(request):
 
 def pmmonthly_search(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -4371,7 +4525,7 @@ def pmmonthly_search(request):
 def pmmonthly_view(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
     #####입력정보값 받기#####
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
         calendarsearch = request.POST.get('calendarsearch')  # html 날짜 값을 받는다
         pmsheetno = request.POST.get('pmsheetno')  # html 날짜 값을 받는다
         controlno = request.POST.get('controlno')  # html 날짜 값을 받는다
@@ -4404,7 +4558,7 @@ def pmmonthly_view(request):
 def pmmonthly_plandate(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
     #####입력정보값 받기#####
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
         calendarsearch = request.POST.get('calendarsearch')  # html 날짜 값을 받는다
         pmsheetno = request.POST.get('pmsheetno')   # html 날짜 값을 받는다
         controlno = request.POST.get('controlno')  # html 날짜 값을 받는다
@@ -4439,7 +4593,7 @@ def pmmonthly_plandate(request):
 def pmmonthly_submit(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
     #####입력정보값 받기#####
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
         calendarsearch = request.POST.get('calendarsearch')  # html 날짜 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
@@ -4530,7 +4684,7 @@ def pmmonthly_submit(request):
 
 def pmcalendar_main(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -4579,10 +4733,10 @@ def pmcalendar_main(request):
 
 def pmcalendar_view(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
-        calendar_day = request.POST.get('calendar_day')  # html Login id의 값을 받는다
-        calendar_month = request.POST.get('calendar_month')  # html Login id의 값을 받는다
-        calendar_year = request.POST.get('calendar_year')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        calendar_day = request.POST.get('calendar_day')  # html에서 해당 값을 받는다
+        calendar_month = request.POST.get('calendar_month')  # html에서 해당 값을 받는다
+        calendar_year = request.POST.get('calendar_year')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -4637,12 +4791,12 @@ def pmcalendar_view(request):
 
 def pmcalendar_write(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
-        calendar_date = request.POST.get('calendar_date')  # html Login id의 값을 받는다
-        pmsheetno = request.POST.get('pmsheetno')  # html Login id의 값을 받는다
-        pmcode = request.POST.get('pmcode')  # html Login id의 값을 받는다
-        controlno = request.POST.get('controlno')  # html Login id의 값을 받는다
-        table_signal = request.POST.get('table_signal')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        calendar_date = request.POST.get('calendar_date')  # html에서 해당 값을 받는다
+        pmsheetno = request.POST.get('pmsheetno')  # html에서 해당 값을 받는다
+        pmcode = request.POST.get('pmcode')  # html에서 해당 값을 받는다
+        controlno = request.POST.get('controlno')  # html에서 해당 값을 받는다
+        table_signal = request.POST.get('table_signal')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -4739,8 +4893,8 @@ def pmcalendar_write(request):
 def pmcalendar_checkresult(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
         #####입력정보값 받기#####
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
-        calendar_date = request.POST.get('calendar_date')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        calendar_date = request.POST.get('calendar_date')  # html에서 해당 값을 받는다
         controlno = request.POST.get('controlno')  # html 날짜 값을 받는다
         pmcode = request.POST.get('pmcode')  # html 날짜 값을 받는다
         checkresult = request.POST.get('checkresultreturn')  # html 날짜 값을 받는다
@@ -4808,8 +4962,8 @@ def pmcalendar_checkresult(request):
 def pmcalendar_actiondetail(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
     #####입력정보값 받기#####
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
-        calendar_date = request.POST.get('calendar_date')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        calendar_date = request.POST.get('calendar_date')  # html에서 해당 값을 받는다
         controlno = request.POST.get('controlno')  # html 날짜 값을 받는다
         pmcode = request.POST.get('pmcode')  # html 날짜 값을 받는다
         actiondetail = request.POST.get('actiondetailreturn')  # html 날짜 값을 받는다
@@ -4882,8 +5036,8 @@ def pmcalendar_actiondetail(request):
 def pmcalendar_checkboxform(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
     #####입력정보값 받기#####
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
-        calendar_date = request.POST.get('calendar_date')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        calendar_date = request.POST.get('calendar_date')  # html에서 해당 값을 받는다
         controlno = request.POST.get('controlno')  # html 날짜 값을 받는다
         pmcode = request.POST.get('pmcode')  # html 날짜 값을 받는다
         pass_y = request.POST.get('pass_y')  # html 날짜 값을 받는다
@@ -4954,7 +5108,7 @@ def pmcalendar_checkboxform(request):
 def pmcalendar_remark(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
     #####입력정보값 받기#####
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
         calendar_date = request.POST.get('calendar_date')  # html 날짜 값을 받는다
         controlno = request.POST.get('controlno')  # html 날짜 값을 받는다
         pmcode = request.POST.get('pmcode')  # html 날짜 값을 받는다
@@ -5023,7 +5177,7 @@ def pmcalendar_remark(request):
 def pmcalendar_remark_na(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
     #####입력정보값 받기#####
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
         calendar_date = request.POST.get('calendar_date')  # html 날짜 값을 받는다
         controlno = request.POST.get('controlno')  # html 날짜 값을 받는다
         pmcode = request.POST.get('pmcode')  # html 날짜 값을 받는다
@@ -5090,7 +5244,7 @@ def pmcalendar_remark_na(request):
 def pmcalendar_submit(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
     #####입력정보값 받기#####
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
         calendar_date = request.POST.get('calendar_date')  # html 날짜 값을 받는다
         controlno = request.POST.get('controlno')  # html 날짜 값을 받는다
         pmcode = request.POST.get('pmcode')  # html 날짜 값을 받는다
@@ -5271,7 +5425,7 @@ def pmcalendar_submit(request):
 def pmcalendar_return(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
     #####입력정보값 받기#####
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
         calendar_date = request.POST.get('calendar_date')  # html 날짜 값을 받는다
         controlno = request.POST.get('controlno')  # html 날짜 값을 받는다
         pmcode = request.POST.get('pmcode')  # html 날짜 값을 받는다
@@ -5362,9 +5516,9 @@ def pmcalendar_return(request):
 def pmcalendar_upload(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
         controlno = request.POST.get("controlno")
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
         pmcode = request.POST.get("pmcode")
-        calendar_date = request.POST.get('calendar_date')  # html Login id의 값을 받는다
+        calendar_date = request.POST.get('calendar_date')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -5446,7 +5600,7 @@ def pmmasterlist_main(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
         selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
         searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -5474,7 +5628,7 @@ def pmmasterlist_main(request):
 ####PM CONTROL FORM Approval####
 def pmapproval_main(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -5507,7 +5661,7 @@ def pmapproval_main(request):
 def pmapproval_view(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
         controlno = request.POST.get('controlno')  # html controlform의 값을 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
         controlformdb = pmmasterlist_temp.objects.filter(controlno = controlno).order_by('freq')
         pmsheet = pmsheetdb.objects.filter(controlno=controlno).order_by('freq_temp')
     ##이름 및 권한 끌고다니기##
@@ -5549,7 +5703,7 @@ def pmapproval_view(request):
 def pmapproval_check_accept(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
         controlno = request.POST.get('controlno')  # html controlform의 값을 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
         controlformdb = pmmasterlist_temp.objects.filter(controlno = controlno).order_by('freq')
         pmsheet = pmsheetdb.objects.filter(controlno=controlno).order_by('freq_temp')
     ##이름 및 권한 끌고다니기##
@@ -5614,7 +5768,7 @@ def pmapproval_check_accept(request):
 def pmapproval_check_reject(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
         controlno = request.POST.get('controlno')  # html controlform의 값을 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
         controlformdb = pmmasterlist_temp.objects.filter(controlno = controlno).order_by('freq')
         pmsheet = pmsheetdb.objects.filter(controlno=controlno).order_by('freq_temp')
     ##이름 및 권한 끌고다니기##
@@ -5672,7 +5826,7 @@ def pmapproval_check_reject(request):
 def pmapproval_approved_accept(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
         controlno = request.POST.get('controlno')  # html controlform의 값을 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
         controlformdb = pmmasterlist_temp.objects.filter(controlno = controlno).order_by('freq')
         pmsheet = pmsheetdb.objects.filter(controlno=controlno).order_by('freq_temp')
     ##이름 및 권한 끌고다니기##
@@ -5865,11 +6019,11 @@ def pmapproval_approved_accept(request):
 def pmapproval_approved_reject(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
         controlno = request.POST.get('controlno')  # html controlform의 값을 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
         controlformdb = pmmasterlist_temp.objects.filter(controlno = controlno).order_by('freq')
         pmsheet = pmsheetdb.objects.filter(controlno=controlno).order_by('freq_temp')
-        r_name = request.POST.get('r_name')  # html Login id의 값을 받는다
-        r_date = request.POST.get('r_date')  # html Login id의 값을 받는다
+        r_name = request.POST.get('r_name')  # html에서 해당 값을 받는다
+        r_date = request.POST.get('r_date')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -5957,7 +6111,7 @@ def pmmanual_main(request):
             pmmanual = pm_manual.objects.all().order_by('controlno')  # db 동기화
         if str(searchtext) == "None":
             searchtext = ""
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -5972,8 +6126,8 @@ def pmmanual_main(request):
 
 def pmmanual_new(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
-        controlno = request.POST.get('controlno')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        controlno = request.POST.get('controlno')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -5998,20 +6152,20 @@ def pmmanual_new(request):
         except:
             messages.error(request, "Equipment information does not exist.")  # 경고
             pmmanual = pm_manual.objects.all().order_by('controlno')  # db 동기화
-            loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+            loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
             context = {"pmmanual": pmmanual, "loginid": loginid}
             context.update(users)
             return render(request, 'pmmanual_main.html', context)  # templates 내 html연결
 
 def pmmanual_upload(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
-        controlno = request.POST.get('controlno')  # html Login id의 값을 받는다
-        equipteam = request.POST.get('team')  # html Login id의 값을 받는다
-        equipname = request.POST.get('name')  # html Login id의 값을 받는다
-        division = request.POST.get('division')  # html Login id의 값을 받는다
-        partname = request.POST.get('partname')  # html Login id의 값을 받는다
-        maker = request.POST.get('maker')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        controlno = request.POST.get('controlno')  # html에서 해당 값을 받는다
+        equipteam = request.POST.get('team')  # html에서 해당 값을 받는다
+        equipname = request.POST.get('name')  # html에서 해당 값을 받는다
+        division = request.POST.get('division')  # html에서 해당 값을 받는다
+        partname = request.POST.get('partname')  # html에서 해당 값을 받는다
+        maker = request.POST.get('maker')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -6048,14 +6202,14 @@ def pmmanual_upload(request):
 
 def pmmanual_submit(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
-        controlno = request.POST.get('controlno')  # html Login id의 값을 받는다
-        equipteam = request.POST.get('team')  # html Login id의 값을 받는다
-        equipname = request.POST.get('name')  # html Login id의 값을 받는다
-        division = request.POST.get('division')  # html Login id의 값을 받는다
-        partname = request.POST.get('partname')  # html Login id의 값을 받는다
-        maker = request.POST.get('maker')  # html Login id의 값을 받는다
-        url = request.POST.get('url')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        controlno = request.POST.get('controlno')  # html에서 해당 값을 받는다
+        equipteam = request.POST.get('team')  # html에서 해당 값을 받는다
+        equipname = request.POST.get('name')  # html에서 해당 값을 받는다
+        division = request.POST.get('division')  # html에서 해당 값을 받는다
+        partname = request.POST.get('partname')  # html에서 해당 값을 받는다
+        maker = request.POST.get('maker')  # html에서 해당 값을 받는다
+        url = request.POST.get('url')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -6104,7 +6258,7 @@ def pmmanual_submit(request):
 def equipmentlist_main(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
         equiplists = equiplist.objects.all().order_by('no') #db 동기화
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -6121,7 +6275,7 @@ def equipmentlist_new(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
         equiplists = equiplist.objects.all().order_by('no') #db 동기화
         controlno = request.POST.get("controlno")
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -6173,7 +6327,7 @@ def workrequest_new(request):
 
 def workrequest_main(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -6226,8 +6380,8 @@ def workrequest_main(request):
 
 def workrequest_controlno(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
-        controlno = request.POST.get('controlno')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        controlno = request.POST.get('controlno')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -6252,25 +6406,25 @@ def workrequest_controlno(request):
     # equip 없을때
         except:
             messages.error(request, "Equipment information does not exist.")  # 경고
-            loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+            loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
             context = {"loginid": loginid}
             context.update(users)
             return render(request, 'workrequest_new.html', context)  # templates 내 html연결
 
 def workrequest_upload(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
-        controlno = request.POST.get('controlno')  # html Login id의 값을 받는다
-        capa = request.POST.get('capa')  # html Login id의 값을 받는다
-        equipteam = request.POST.get('equipteam')  # html Login id의 값을 받는다
-        description = request.POST.get('description')  # html Login id의 값을 받는다
-        req_date = request.POST.get('req_date')  # html Login id의 값을 받는다
-        req_reason = request.POST.get('req_reason')  # html Login id의 값을 받는다
-        request_date = request.POST.get('date')  # html Login id의 값을 받는다
-        equipname = request.POST.get('equipname')  # html Login id의 값을 받는다
-        roomname = request.POST.get('roomname')  # html Login id의 값을 받는다
-        roomno = request.POST.get('roomno')  # html Login id의 값을 받는다
-        type = request.POST.get('type')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        controlno = request.POST.get('controlno')  # html에서 해당 값을 받는다
+        capa = request.POST.get('capa')  # html에서 해당 값을 받는다
+        equipteam = request.POST.get('equipteam')  # html에서 해당 값을 받는다
+        description = request.POST.get('description')  # html에서 해당 값을 받는다
+        req_date = request.POST.get('req_date')  # html에서 해당 값을 받는다
+        req_reason = request.POST.get('req_reason')  # html에서 해당 값을 받는다
+        request_date = request.POST.get('date')  # html에서 해당 값을 받는다
+        equipname = request.POST.get('equipname')  # html에서 해당 값을 받는다
+        roomname = request.POST.get('roomname')  # html에서 해당 값을 받는다
+        roomno = request.POST.get('roomno')  # html에서 해당 값을 받는다
+        type = request.POST.get('type')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -6334,19 +6488,19 @@ def workrequest_upload(request):
 
 def workrequest_submit(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
-        controlno = request.POST.get('controlno')  # html Login id의 값을 받는다
-        capa = request.POST.get('capa')  # html Login id의 값을 받는다
-        equipteam = request.POST.get('equipteam')  # html Login id의 값을 받는다
-        description = request.POST.get('description')  # html Login id의 값을 받는다
-        req_date = request.POST.get('req_date')  # html Login id의 값을 받는다
-        req_reason = request.POST.get('req_reason')  # html Login id의 값을 받는다
-        request_date = request.POST.get('date')  # html Login id의 값을 받는다
-        equipname = request.POST.get('equipname')  # html Login id의 값을 받는다
-        roomname = request.POST.get('roomname')  # html Login id의 값을 받는다
-        roomno = request.POST.get('roomno')  # html Login id의 값을 받는다
-        type = request.POST.get('type')  # html Login id의 값을 받는다
-        url = request.POST.get('url')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        controlno = request.POST.get('controlno')  # html에서 해당 값을 받는다
+        capa = request.POST.get('capa')  # html에서 해당 값을 받는다
+        equipteam = request.POST.get('equipteam')  # html에서 해당 값을 받는다
+        description = request.POST.get('description')  # html에서 해당 값을 받는다
+        req_date = request.POST.get('req_date')  # html에서 해당 값을 받는다
+        req_reason = request.POST.get('req_reason')  # html에서 해당 값을 받는다
+        request_date = request.POST.get('date')  # html에서 해당 값을 받는다
+        equipname = request.POST.get('equipname')  # html에서 해당 값을 받는다
+        roomname = request.POST.get('roomname')  # html에서 해당 값을 받는다
+        roomno = request.POST.get('roomno')  # html에서 해당 값을 받는다
+        type = request.POST.get('type')  # html에서 해당 값을 받는다
+        url = request.POST.get('url')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -6452,8 +6606,8 @@ def workrequest_comp(request):
 
 def workrequest_view(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
-        workorderno = request.POST.get('workorderno')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        workorderno = request.POST.get('workorderno')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -6522,8 +6676,8 @@ def workrequest_view(request):
 
 def workrequest_receive(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
-        workorderno = request.POST.get('workorderno')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        workorderno = request.POST.get('workorderno')  # html에서 해당 값을 받는다
         ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -6611,8 +6765,8 @@ def workrequest_receive(request):
 
 def workrequest_r_t_accept(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
-        workorderno = request.POST.get('workorderno')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        workorderno = request.POST.get('workorderno')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -6775,9 +6929,9 @@ def workrequest_r_t_accept(request):
 
 def workrequest_r_s_accept(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
-        workorderno = request.POST.get('workorderno')  # html Login id의 값을 받는다
-        detail = request.POST.get('detail')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        workorderno = request.POST.get('workorderno')  # html에서 해당 값을 받는다
+        detail = request.POST.get('detail')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -7100,7 +7254,7 @@ def workrequest_r_s_accept(request):
 
 def workorderlist_main(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -7121,7 +7275,7 @@ def workorderlist_main(request):
 
 def workorder_main(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -7137,8 +7291,8 @@ def workorder_main(request):
 
 def workorder_form(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
-        workorderno = request.POST.get('workorderno')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        workorderno = request.POST.get('workorderno')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -7195,19 +7349,19 @@ def workorder_form(request):
 
 def workorder_submit(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
-        workorderno = request.POST.get('workorderno')  # html Login id의 값을 받는다
-        action_name = request.POST.get('action_name')  # html Login id의 값을 받는다
-        action_company = request.POST.get('action_company')  # html Login id의 값을 받는다
-        work_desc = request.POST.get('work_desc')  # html Login id의 값을 받는다
-        test_result = request.POST.get('test_result')  # html Login id의 값을 받는다
-        detail_type = request.POST.get('detail_type')  # html Login id의 값을 받는다
-        repair_method = request.POST.get('repair_method')  # html Login id의 값을 받는다
-        pm_trans = request.POST.get('pm_trans')  # html Login id의 값을 받는다
-        repair_type = request.POST.get('repair_type')  # html Login id의 값을 받는다
-        action_date = request.POST.get('action_date')  # html Login id의 값을 받는다
-        url = request.POST.get('url_up')  # html Login id의 값을 받는다
-        usedparts_na = request.POST.get('usedparts_na')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        workorderno = request.POST.get('workorderno')  # html에서 해당 값을 받는다
+        action_name = request.POST.get('action_name')  # html에서 해당 값을 받는다
+        action_company = request.POST.get('action_company')  # html에서 해당 값을 받는다
+        work_desc = request.POST.get('work_desc')  # html에서 해당 값을 받는다
+        test_result = request.POST.get('test_result')  # html에서 해당 값을 받는다
+        detail_type = request.POST.get('detail_type')  # html에서 해당 값을 받는다
+        repair_method = request.POST.get('repair_method')  # html에서 해당 값을 받는다
+        pm_trans = request.POST.get('pm_trans')  # html에서 해당 값을 받는다
+        repair_type = request.POST.get('repair_type')  # html에서 해당 값을 받는다
+        action_date = request.POST.get('action_date')  # html에서 해당 값을 받는다
+        url = request.POST.get('url_up')  # html에서 해당 값을 받는다
+        usedparts_na = request.POST.get('usedparts_na')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -7278,17 +7432,17 @@ def workorder_pmcontrolform(request):
 
 def workorder_upload(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
-        workorderno = request.POST.get('workorderno')  # html Login id의 값을 받는다
-        action_name = request.POST.get('action_name')  # html Login id의 값을 받는다
-        action_company = request.POST.get('action_company')  # html Login id의 값을 받는다
-        work_desc = request.POST.get('work_desc')  # html Login id의 값을 받는다
-        test_result = request.POST.get('test_result')  # html Login id의 값을 받는다
-        detail_type = request.POST.get('detail_type')  # html Login id의 값을 받는다
-        repair_method = request.POST.get('repair_method')  # html Login id의 값을 받는다
-        pm_trans = request.POST.get('pm_trans')  # html Login id의 값을 받는다
-        repair_type = request.POST.get('repair_type')  # html Login id의 값을 받는다
-        action_date = request.POST.get('action_date')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        workorderno = request.POST.get('workorderno')  # html에서 해당 값을 받는다
+        action_name = request.POST.get('action_name')  # html에서 해당 값을 받는다
+        action_company = request.POST.get('action_company')  # html에서 해당 값을 받는다
+        work_desc = request.POST.get('work_desc')  # html에서 해당 값을 받는다
+        test_result = request.POST.get('test_result')  # html에서 해당 값을 받는다
+        detail_type = request.POST.get('detail_type')  # html에서 해당 값을 받는다
+        repair_method = request.POST.get('repair_method')  # html에서 해당 값을 받는다
+        pm_trans = request.POST.get('pm_trans')  # html에서 해당 값을 받는다
+        repair_type = request.POST.get('repair_type')  # html에서 해당 값을 받는다
+        action_date = request.POST.get('action_date')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -7388,7 +7542,7 @@ def workorder_upload(request):
 
 def workorder_approval_main(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -7423,9 +7577,9 @@ def workorder_approval_main(request):
 
 def workorder_approval_view(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
-        workorderno = request.POST.get('workorderno')  # html Login id의 값을 받는다
-        controlno = request.POST.get('controlno')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        workorderno = request.POST.get('workorderno')  # html에서 해당 값을 받는다
+        controlno = request.POST.get('controlno')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -7484,7 +7638,7 @@ def workorder_approval_view(request):
 
 def workrequest_approval_main(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -7515,8 +7669,8 @@ def workrequest_approval_main(request):
 
 def workrequest_approval(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
-        workorderno = request.POST.get('workorderno')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        workorderno = request.POST.get('workorderno')  # html에서 해당 값을 받는다
         ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -7571,8 +7725,8 @@ def workrequest_approval(request):
 
 def workrequest_r_m_accept(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
-        workorderno = request.POST.get('workorderno')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        workorderno = request.POST.get('workorderno')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -7672,8 +7826,8 @@ def workrequest_r_m_accept(request):
 
 def workrequest_r_q_accept(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
-        workorderno = request.POST.get('workorderno')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        workorderno = request.POST.get('workorderno')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -7770,9 +7924,9 @@ def workrequest_r_q_accept(request):
 
 def workorder_w_s_accept(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
-        workorderno = request.POST.get('workorderno')  # html Login id의 값을 받는다
-        controlno = request.POST.get('controlno')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        workorderno = request.POST.get('workorderno')  # html에서 해당 값을 받는다
+        controlno = request.POST.get('controlno')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -7878,9 +8032,9 @@ def workorder_w_s_accept(request):
 
 def workorder_w_m_accept(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
-        workorderno = request.POST.get('workorderno')  # html Login id의 값을 받는다
-        controlno = request.POST.get('controlno')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        workorderno = request.POST.get('workorderno')  # html에서 해당 값을 받는다
+        controlno = request.POST.get('controlno')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -7964,9 +8118,9 @@ def workorder_w_m_accept(request):
 
 def workorder_w_q_accept(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
-        workorderno = request.POST.get('workorderno')  # html Login id의 값을 받는다
-        controlno = request.POST.get('controlno')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        workorderno = request.POST.get('workorderno')  # html에서 해당 값을 받는다
+        controlno = request.POST.get('controlno')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -8051,18 +8205,18 @@ def workorder_w_q_accept(request):
 
 def workorder_return(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
-        workorderno = request.POST.get('workorderno')  # html Login id의 값을 받는다
-        action_name = request.POST.get('action_name')  # html Login id의 값을 받는다
-        action_company = request.POST.get('action_company')  # html Login id의 값을 받는다
-        work_desc = request.POST.get('work_desc')  # html Login id의 값을 받는다
-        test_result = request.POST.get('test_result')  # html Login id의 값을 받는다
-        detail_type = request.POST.get('detail_type')  # html Login id의 값을 받는다
-        repair_method = request.POST.get('repair_method')  # html Login id의 값을 받는다
-        pm_trans = request.POST.get('pm_trans')  # html Login id의 값을 받는다
-        repair_type = request.POST.get('repair_type')  # html Login id의 값을 받는다
-        action_date = request.POST.get('action_date')  # html Login id의 값을 받는다
-        url = request.POST.get('url_up')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        workorderno = request.POST.get('workorderno')  # html에서 해당 값을 받는다
+        action_name = request.POST.get('action_name')  # html에서 해당 값을 받는다
+        action_company = request.POST.get('action_company')  # html에서 해당 값을 받는다
+        work_desc = request.POST.get('work_desc')  # html에서 해당 값을 받는다
+        test_result = request.POST.get('test_result')  # html에서 해당 값을 받는다
+        detail_type = request.POST.get('detail_type')  # html에서 해당 값을 받는다
+        repair_method = request.POST.get('repair_method')  # html에서 해당 값을 받는다
+        pm_trans = request.POST.get('pm_trans')  # html에서 해당 값을 받는다
+        repair_type = request.POST.get('repair_type')  # html에서 해당 값을 받는다
+        action_date = request.POST.get('action_date')  # html에서 해당 값을 받는다
+        url = request.POST.get('url_up')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -8152,7 +8306,7 @@ def workorder_return(request):
 
 def history_of_repair_main(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -8188,7 +8342,7 @@ def history_of_repair_main(request):
 
 def workorderlist_request(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
-        workorderno = request.POST.get('workorderno_get')  # html Login id의 값을 받는다
+        workorderno = request.POST.get('workorderno_get')  # html에서 해당 값을 받는다
     ##url_SIGNAL보내기##
         url_check = workorder.objects.get(workorderno=workorderno)
         if url_check.r_attach == "":
@@ -8204,7 +8358,7 @@ def workorderlist_request(request):
 
 def workorderlist_request_print(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
-        workorderno = request.POST.get('workorderno_trans')  # html Login id의 값을 받는다
+        workorderno = request.POST.get('workorderno_trans')  # html에서 해당 값을 받는다
     ##정보보내기##
         workorder_table = workorder.objects.filter(workorderno=workorderno)
         context = {"workorder_table": workorder_table}
@@ -8215,7 +8369,7 @@ def workorderlist_request_main(request):
 
 def workorderlist_order(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
-        workorderno = request.POST.get('workorderno_get')  # html Login id의 값을 받는다
+        workorderno = request.POST.get('workorderno_get')  # html에서 해당 값을 받는다
         controlno_get = workorder.objects.get(workorderno=workorderno)
         controlno = controlno_get.controlno
         ##url_SIGNAL보내기##
@@ -8234,7 +8388,7 @@ def workorderlist_order(request):
 
 def workorderlist_order_print(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
-        workorderno = request.POST.get('workorderno_trans')  # html Login id의 값을 받는다
+        workorderno = request.POST.get('workorderno_trans')  # html에서 해당 값을 받는다
     ##정보보내기##
         workorder_table = workorder.objects.filter(workorderno=workorderno)
         context = {"workorder_table": workorder_table}
@@ -8246,7 +8400,7 @@ def workorderlist_order_main(request):
 def workorder_pmcontrolform_submit(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
         controlno = request.POST.get('controlno')  # html controlform의 값을 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -8432,7 +8586,7 @@ def workorder_used_plus(request):
 
 def user_info(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -8454,7 +8608,7 @@ def user_info_new(request):
 
 def user_info_new_submit(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -8531,7 +8685,7 @@ def user_info_change(request):
 
 def approval_info(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -8550,12 +8704,12 @@ def approval_info_new(request):
 
 def approval_info_new_submit(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
-        division_get = request.POST.get('division')  # html Login id의 값을 받는다
-        description_get = request.POST.get('description')  # html Login id의 값을 받는다
-        team_get = request.POST.get('team')  # html Login id의 값을 받는다
-        auth_name_get = request.POST.get('auth_name')  # html Login id의 값을 받는다
-        authority_get = request.POST.get('authority')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        division_get = request.POST.get('division')  # html에서 해당 값을 받는다
+        description_get = request.POST.get('description')  # html에서 해당 값을 받는다
+        team_get = request.POST.get('team')  # html에서 해당 값을 받는다
+        auth_name_get = request.POST.get('auth_name')  # html에서 해당 값을 받는다
+        authority_get = request.POST.get('authority')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -8583,12 +8737,12 @@ def approval_info_change(request):
 
 def approval_info_change_submit(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
-        division_get = request.POST.get('division')  # html Login id의 값을 받는다
-        description_get = request.POST.get('description')  # html Login id의 값을 받는다
-        team_get = request.POST.get('auth_team')  # html Login id의 값을 받는다
-        auth_name_get = request.POST.get('auth_name')  # html Login id의 값을 받는다
-        authority_get = request.POST.get('code_no')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        division_get = request.POST.get('division')  # html에서 해당 값을 받는다
+        description_get = request.POST.get('description')  # html에서 해당 값을 받는다
+        team_get = request.POST.get('auth_team')  # html에서 해당 값을 받는다
+        auth_name_get = request.POST.get('auth_name')  # html에서 해당 값을 받는다
+        authority_get = request.POST.get('code_no')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -8616,9 +8770,9 @@ def approval_info_change_submit(request):
 
 def approval_info_delete(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
-        division_get = request.POST.get('division')  # html Login id의 값을 받는다
-        description_get = request.POST.get('description')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        division_get = request.POST.get('division')  # html에서 해당 값을 받는다
+        description_get = request.POST.get('description')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -8637,13 +8791,13 @@ def approval_info_delete(request):
 
 def user_info_change_submit(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
-        userteam_get = request.POST.get('userteam')  # html Login id의 값을 받는다
-        password_get = request.POST.get('password')  # html Login id의 값을 받는다
-        useremail_get = request.POST.get('useremail')  # html Login id의 값을 받는다
-        auth_1_get = request.POST.get('auth_1')  # html Login id의 값을 받는다
-        user_div_get = request.POST.get('user_div')  # html Login id의 값을 받는다
-        userid_get = request.POST.get('userid')  # html Login id의 값을 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        userteam_get = request.POST.get('userteam')  # html에서 해당 값을 받는다
+        password_get = request.POST.get('password')  # html에서 해당 값을 받는다
+        useremail_get = request.POST.get('useremail')  # html에서 해당 값을 받는다
+        auth_1_get = request.POST.get('auth_1')  # html에서 해당 값을 받는다
+        user_div_get = request.POST.get('user_div')  # html에서 해당 값을 받는다
+        userid_get = request.POST.get('userid')  # html에서 해당 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -8668,8 +8822,8 @@ def user_info_change_submit(request):
 
 def user_info_change_delete(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
-        userid_get = request.POST.get('userid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        userid_get = request.POST.get('userid')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -8694,7 +8848,7 @@ def spareparts_main(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
         selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
         searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
         ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -8726,10 +8880,10 @@ def spareparts_new_submit(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
         team = request.POST.get('team')  # html 선택조건의 값을 받는다
         partsname = request.POST.get('partsname')  # html 입력 값을 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
         vendor = request.POST.get('vendor')  # html 선택조건의 값을 받는다
         modelno = request.POST.get('modelno')  # html 입력 값을 받는다
-        spec = request.POST.get('spec')  # html Login id의 값을 받는다
+        spec = request.POST.get('spec')  # html에서 해당 값을 받는다
         location = request.POST.get('location')  # html 선택조건의 값을 받는다
         safety_stock = request.POST.get('safety_stock')  # html 입력 값을 받는다
     ##이름 및 권한 끌고다니기##
@@ -8771,7 +8925,7 @@ def spareparts_new_submit(request):
 
 def spareparts_incoming_main(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -8787,9 +8941,9 @@ def spareparts_incoming_main(request):
 
 def spareparts_incoming_search(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
-        searchtext = request.POST.get('search_text')  # html Login id의 값을 받는다
-        selecttext = request.POST.get('select_text')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        searchtext = request.POST.get('search_text')  # html에서 해당 값을 받는다
+        selecttext = request.POST.get('select_text')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -8821,10 +8975,10 @@ def spareparts_incoming_search(request):
 
 def spareparts_incoming_select(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
-        searchtext = request.POST.get('search_text')  # html Login id의 값을 받는다
-        selecttext = request.POST.get('select_text')  # html Login id의 값을 받는다
-        codeno = request.POST.get('codeno')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        searchtext = request.POST.get('search_text')  # html에서 해당 값을 받는다
+        selecttext = request.POST.get('select_text')  # html에서 해당 값을 받는다
+        codeno = request.POST.get('codeno')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -8861,10 +9015,10 @@ def spareparts_incoming_select(request):
 
 def spareparts_incoming_sel_submit(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
-        qy_text = request.POST.get('qy_text')  # html Login id의 값을 받는다
-        division_text = request.POST.get('division_text')  # html Login id의 값을 받는다
-        codeno = request.POST.get('codeno')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        qy_text = request.POST.get('qy_text')  # html에서 해당 값을 받는다
+        division_text = request.POST.get('division_text')  # html에서 해당 값을 받는다
+        codeno = request.POST.get('codeno')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -8901,8 +9055,8 @@ def spareparts_incoming_sel_submit(request):
 
 def spareparts_incoming_delete(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
-        no = request.POST.get('no')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        no = request.POST.get('no')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -8924,8 +9078,8 @@ def spareparts_incoming_delete(request):
 
 def spareparts_incoming_plus(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
-        no = request.POST.get('no')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        no = request.POST.get('no')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -8947,8 +9101,8 @@ def spareparts_incoming_plus(request):
 
 def spareparts_incoming_minus(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
-        no = request.POST.get('no')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        no = request.POST.get('no')  # html에서 해당 값을 받는다
         ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -8973,7 +9127,7 @@ def spareparts_incoming_minus(request):
 
 def spareparts_incoming_reset(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -8998,9 +9152,9 @@ def spareparts_incoming_reset(request):
 
 def spareparts_incoming_location(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
-        location_up = request.POST.get('location_up')  # html Login id의 값을 받는다
-        no = request.POST.get('no_up')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        location_up = request.POST.get('location_up')  # html에서 해당 값을 받는다
+        no = request.POST.get('no_up')  # html에서 해당 값을 받는다
         ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -9020,7 +9174,7 @@ def spareparts_incoming_location(request):
 
 def spareparts_incoming_submit(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -9112,7 +9266,7 @@ def spareparts_incoming_list(request):
 
 def spareparts_release_main(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -9129,8 +9283,8 @@ def spareparts_release_main(request):
 
 def spareparts_release_scan(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
-        search_text = request.POST.get('search_text')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        search_text = request.POST.get('search_text')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -9167,8 +9321,8 @@ def spareparts_release_scan(request):
 
 def spareparts_release_minus(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
-        no = request.POST.get('no')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        no = request.POST.get('no')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -9194,8 +9348,8 @@ def spareparts_release_minus(request):
 
 def spareparts_release_plus(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
-        no = request.POST.get('no')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        no = request.POST.get('no')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -9218,8 +9372,8 @@ def spareparts_release_plus(request):
 
 def spareparts_release_delete(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
-        no = request.POST.get('no')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        no = request.POST.get('no')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -9242,8 +9396,8 @@ def spareparts_release_delete(request):
 
 def spareparts_release_controlno(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
-        controlno = request.POST.get('controlno')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        controlno = request.POST.get('controlno')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -9268,9 +9422,9 @@ def spareparts_release_controlno(request):
 
 def spareparts_release_table_controlno(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
-        controlno = request.POST.get('controlno')  # html Login id의 값을 받는다
-        no_up = request.POST.get('no_up')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        controlno = request.POST.get('controlno')  # html에서 해당 값을 받는다
+        no_up = request.POST.get('no_up')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -9301,7 +9455,7 @@ def spareparts_release_table_controlno(request):
 
 def spareparts_release_submit(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -9389,7 +9543,7 @@ def spareparts_release_submit(request):
 
 def spareparts_release_reset(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -9437,7 +9591,7 @@ def spareparts_cert_main(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
         selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
         searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
         ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -9466,9 +9620,9 @@ def spareparts_cert_upload(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
         selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
         searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
-        codeno = request.POST.get('codeno')  # html Login id의 값을 받는다
-        upload_file = request.POST.get('upload_file')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        codeno = request.POST.get('codeno')  # html에서 해당 값을 받는다
+        upload_file = request.POST.get('upload_file')  # html에서 해당 값을 받는다
         print(upload_file)
         ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
@@ -9512,11 +9666,32 @@ def spareparts_cert_upload(request):
         context.update(users)
         return render(request, 'spareparts_cert_main.html', context)  # templates 내 html연결
 
+def partslist_pm_main(request):
+    if request.method == 'POST':  # 매소드값이 post인 값만 받는다
+        selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
+        searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        ##이름 및 권한 끌고다니기##
+        users = userinfo.objects.get(userid=loginid)
+        username = users.username
+        userteam = users.userteam
+        password = users.password
+        auth = users.auth1
+        user_div = users.user_division
+        users = {"auth": auth, "password": password, "username": username, "userteam": userteam, "user_div": user_div}
+        context = {"loginid": loginid}
+        context.update(users)
+    return render(request, 'partslist_pm_main.html', context)  # templates 내 html연결
+
+##############################################################################################################
+#################################################Test########################################################
+##############################################################################################################
+
 def roomlist_main(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
         selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
         searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
-        loginid = request.POST.get('loginid')  # html Login id의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username

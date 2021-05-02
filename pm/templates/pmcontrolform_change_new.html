@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+    <title>Title</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap');
+
+header{
+        height:30px;
+        background:#6F6F6F;
+        justify-content:space-between;
+        align-items:center;
+        position:fixed;
+        top:0;
+        left:0;
+        right:0;
+        z-index:10;
+        }
+header2{
+        height:0.3px;
+        padding-top:3px;
+        background:#EEEEEE;
+        display:flex;
+        justify-content:space-between;
+        position:fixed;
+        top:30px;
+        left:0;
+        right:0;
+        z-index:10;
+}
+toptext{
+        font-family: 'Rubik', sans-serif;
+        font-size:18px;
+        vertical-align:top;
+        font-weight:bold;
+        padding-left:5px;
+        color:white;
+}
+#logindata{
+        position:fixed; top:1px; left:90px;
+        font-family: 'Rubik', sans-serif;
+        font-size:18px;
+        vertical-align:top;
+        font-weight:bold;
+        color:white;
+}
+l{
+        margin-left:1%;
+        color:white;
+}
+m{
+        margin-left:1%;
+        color:white;
+}
+k{
+        position:fixed; top:0%; left:94.5%;
+        color:white;
+}
+.Button {
+        position:fixed; left:445px;
+        font-family:'Rubik', sans-serif;
+        font-size:18px;
+        background-color: rgba(255, 255, 255, 0.0);
+        cursor:pointer;
+        border:0px;
+        color:white;
+        font-weight:bold;
+}
+pm{
+        position:fixed; top:35px; left:5px;
+        font-family: 'Rubik', sans-serif;
+        font-size:18px;
+        font-weight:bold;
+}
+#table_location{
+        position:fixed; top:70px; left:5px;
+}
+
+#pm_table{
+        border:1px solid white;
+        border-collapse:collapse;
+}
+.text_css{
+      font-family:'Rubik', sans-serif;
+      font-size:13px;
+      color:black;
+      background-color:#D8D8D8;
+      width:130px;
+      height:25px;
+      }
+.input_css{
+      font-size:13px;
+      width:350px;
+      height:25px;
+}
+.location_btn{
+        margin-top:11px;
+    	font-family: arial;
+        font-size:12px;
+        cursor:pointer;
+}
+.submit_btn{
+    	font-family: arial;
+        font-size:12px;
+        cursor:pointer;
+        position:fixed; top:240px; left:445px;
+}
+.authtext{
+    	font-family: arial;
+        padding-top:2px;
+        padding-bottom:3px;
+        width:140px;
+        }
+.freq_no{
+    width:150px;
+    font-family: arial;
+    font-size:13px;
+    height: 25px;
+}
+.freq_my{
+    width:150px;
+    font-family: arial;
+    font-size:13px;
+    height: 25px;
+}
+.division{
+    width:150px;
+    font-family: arial;
+    font-size:13px;
+    height:31px;
+}
+.division_css{
+    width:142px;
+    font-family: arial;
+    font-size:13px;
+    height: 25px;}
+</style>
+</head>
+
+<body>
+<header>
+<toptext>Welcome,&nbsp;</toptext>
+<div id="logindata"></div>
+
+<input type="button"value="Close" class="Button" onclick="Close();">
+
+</header>
+<header2>
+</header2>
+<pm>PM Maintenance Item Registration</pm>
+<form action="pmcontrolform_write_new" method="post" name="pm_check_new_form">
+    {% csrf_token %}
+<div id="table_location">
+   <table id="pm_table" border="1">
+        <tr>
+            <td align="center" class="text_css">Division</td>
+            <td align="left">
+            <input type="text" name="division_get"  value="{{division_get}}" class="division_css" readonly>
+            <select class="division" name="division" onchange="Division_select();">
+            <option value="None"></option>
+                {% for pm_reference in pmreference %}
+            <option value="{{pm_reference.description}}">{{pm_reference.description}}</option>
+                {% endfor %}
+            </select></td>
+        </tr>
+        <tr>
+            <td align="center" class="text_css">Frequency</td>
+            {% if frequency == "" %}
+            <td align="left">
+            <select class="freq_no" name="freq_no">&nbsp;
+            <option value="None"></option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option></select>
+            <select class="freq_my" name="freq_my">&nbsp;
+            <option value="None"></option>
+            <option value="Month">Month</option>
+            <option value="Year">Year</option></select>
+            </td>
+            {%else%}
+            <td align="left" class="input_css">{{frequency}}</td>
+            {%endif%}
+        </tr>
+        <tr>
+            <td align="center" class="text_css">Maintenance Item</td>
+            <td align="center">
+            <input type="text" name="item"  class="input_css" required></td>
+        </tr>
+        <tr>
+            <td align="center" class="text_css">Check Standard</td>
+            <td align="center">
+            <input type="text" name="check"  class="input_css" required></td>
+        </tr>
+        <tr>
+            <td align="center" class="text_css">Change Information</td>
+            <td align="center">
+            <input type="text" name="change"  class="input_css" required></td>
+        </tr>
+   </table>
+</div>
+    <input type="hidden" name="loginid">
+    <input type="hidden" name="controlno">
+    <input type="hidden" name="freq_my" value="{{freq_my}}">
+    <input type="hidden" name="freq_no" value="{{freq_no}}">
+    <input type="hidden" name="frequency" value="{{frequency}}">
+<input type="submit" class="submit_btn" value="Submit"></form>
+<input type="hidden" value="{{comp_signal}}" name="comp_signal">
+
+<form name="division_select_form" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="loginid">
+    <input type="hidden" name="controlno">
+    <input type="hidden" name="division">
+</form>
+<input type="hidden" name="comp_signal" value="{{comp_signal}}">
+<script>
+    //////////// 기본초기값 불러오기//////////////
+     function init(){
+            loginid = opener.document.getElementById("loginid_up").value;
+            controlno = opener.document.getElementById("controlno_up").value;
+            document.pm_check_new_form.loginid.value = loginid;
+            document.pm_check_new_form.controlno.value = controlno;
+       ////아이디 정보 보내기
+            var loginid_up = loginid;
+            document.getElementById("logindata").innerHTML=loginid_up;
+            var close_signal= document.getElementsByName('comp_signal')[0].value;
+            if (close_signal=="Y"){
+                alert("PM Maintenance Item Registration is complete.");
+               opener.document.location.reload();
+               self.close();}
+            }
+
+      onload=init
+
+    function Close(){
+    self.close();
+    }
+
+    function Division_select(){
+            var division= document.getElementsByName('division')[0].value;
+            loginid = opener.document.getElementById("loginid_up").value;
+            controlno = opener.document.getElementById("controlno_up").value;
+                // 값보내기
+            document.division_select_form.division.value = division;
+            document.division_select_form.loginid.value = loginid;
+            document.division_select_form.controlno.value = controlno;
+
+                // 서버연결
+            document.division_select_form.action="pmcontrolform_change_division";
+            document.division_select_form.submit();
+                }
+
+</script>
+</body>
+</html>

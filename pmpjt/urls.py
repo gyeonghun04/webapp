@@ -98,6 +98,12 @@ urlpatterns = [
     path('pmsheet_startdate', pm.views.pmsheet_startdate, name='pmsheet_startdate'),
     path('pmcontrolform_submit', pm.views.pmcontrolform_submit, name='pmcontrolform_submit'),
     path('pmcontrolform_return', pm.views.pmcontrolform_return, name='pmcontrolform_return'),
+    path('pmcontrolform_change_new', pm.views.pmcontrolform_change_new, name='pmcontrolform_change_new'),
+    path('pmcontrolform_change_division', pm.views.pmcontrolform_change_division, name='pmcontrolform_change_division'),
+    path('pmcontrolform_change_link', pm.views.pmcontrolform_change_link, name='pmcontrolform_change_link'),
+    path('pmcontrolform_change_controlno', pm.views.pmcontrolform_change_controlno, name='pmcontrolform_change_controlno'),
+    path('pmcontrolform_change_link_submit', pm.views.pmcontrolform_change_link_submit,
+         name='pmcontrolform_change_link_submit'),
 
 ####PM Assessment of Period####
     path('pmra_main', pm.views.pmra_main, name='pmra_main'),
@@ -195,6 +201,7 @@ urlpatterns = [
     path('spareparts_incoming_list', pm.views.spareparts_incoming_list, name='spareparts_incoming_list'),
     path('spareparts_cert_main', pm.views.spareparts_cert_main, name='spareparts_cert_main'),
     path('spareparts_cert_upload', pm.views.spareparts_cert_upload, name='spareparts_cert_upload'),
+    path('partslist_pm_main', pm.views.partslist_pm_main, name='partslist_pm_main'),
 
 ##########################################################################################################################################
 ##########################################################################################################################################

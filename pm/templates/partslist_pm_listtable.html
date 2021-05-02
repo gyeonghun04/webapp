@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+
+#tablemenu{
+    	font-family: arial;
+        font-size:11px;
+        position:fixed;top:7.5%; left:9%;
+        height:3%;
+        width:46%;
+        background-color:#6F6F6F;
+        color:white;
+}
+#tabledesc{
+        position:absolute;top:10.5%; left:9%;
+        z-index:10;
+        width:46%;
+        font-family: arial;
+        font-size:11px;
+        height:89.3%;
+        overflow-y:scroll;
+}
+.m1{width:40px;}
+.m2{width:110px;}
+.m3{width:150px;}
+.m4{width:100px;}
+.m5{width:300px;}
+.m6{width:80px;}
+.m7{width:60px;}
+
+.m1-1{width:40px;}
+.m2-1{width:110px;}
+.m3-1{width:150px;}
+.m4-1{width:100px;}
+.m5-1{width:300px;}
+.m6-1{width:80px;}
+.m7-1{width:60px;}
+
+body{overflow:hidden;}
+
+#sideline2{
+        background:#EEEEEE;
+        position:fixed; right:44.8%;
+        height:100%;
+        width:5px;
+}
+
+tr:nth-child(even){
+    background-color:#EEEEEE;
+}
+.button{
+    	font-family: arial;
+        font-size:11px;
+        cursor:pointer;
+}
+
+</style>
+<body>
+<main>
+<div id="tablemenu">
+     <table  style="word-break:break-all">
+        <thead>
+        <tr>
+            <td align="center" class="m1">Team</td>
+            <td align="center" class="m2">Control No.</td>
+            <td align="center" class="m3">Equip. Name</td>
+            <td align="center" class="m4">Frequency</td>
+            <td align="center" class="m5">Maintenance Item</td>
+            <td align="center" class="m6">View</td>
+            <td align="center" class="m7">Delete</td>
+        </tr>
+        </thead>
+     </table>
+</div>
+<div id="tabledesc">
+ <table style="word-break:break-all">
+     <tbody>
+                      {% for pm_list in maint_list %}
+        <tr>
+            <td align="center" class="m1-1">{{pm_list.team}}</td>
+            <td align="center" class="m2-1">{{pm_list.controlno}}</td>
+            <td align="center" class="m3-1">{{pm_list.name}}</td>
+            <td align="center" class="m4-1">{{pm_list.freq}}</td>
+            <td align="center" class="m5-1">{{pm_list.item}}</td>
+            <td align="center" class="m6-1">
+                <form action="" method="post" >
+                {% csrf_token %}
+                <input type="hidden" value="{{loginid}}" name="loginid">
+                <input type="hidden" value="{{workorder.workorderno}}" name="workorderno">
+                <input type="hidden" value="{{searchtext}}" name="searchtext">
+                <input type="hidden" value="{{selecttext}}" name="selecttext">
+                <input type="submit" class="button" value="View">
+                </form>
+            </td>
+            <td align="center" class="m7-1">
+                <form action="" method="post" >
+                {% csrf_token %}
+                <input type="hidden" value="{{loginid}}" name="loginid">
+                <input type="hidden" value="{{workorder.workorderno}}" name="workorderno">
+                <input type="hidden" value="{{searchtext}}" name="searchtext">
+                <input type="hidden" value="{{selecttext}}" name="selecttext">
+                <input type="submit" class="button" value="Delete">
+                </form>
+            </td>
+        </tr>
+                        {% endfor %}
+        </tbody>
+ </table>
+</div>
+<div id="sideline2">
+<mainline>
+</mainline>
+</div>
+</main>
+</body>
+</html>

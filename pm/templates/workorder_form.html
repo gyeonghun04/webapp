@@ -674,7 +674,7 @@ Maintenance Work Order Form
             <br><br><br>
               <info_title>Used Parts</info_title><br>
                     {%for workrequest in workorder_call %}
-              <info_text>{{workrequest.usedpart}}&emsp;
+                <info_text>{{workrequest.usedpart}}&emsp;</info_text>
                                   {%endfor%}
               <info_text><select class="selecttext" name="usedparts_na" onchange="Usedpart_na();">
                     <option value="Y" {{usedpart_Y}}>Y</option>

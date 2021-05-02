@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+#equipinfo{
+    	font-family: arial;
+        font-size:11px;
+        position:fixed;top:10%; left:39.6%;
+        color:black;
+        width:59.98%;
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+}
+.table1{
+        background-color: #EEEEEE;
+        width:17%;
+        height:20px;
+        font-weight:bold;
+}
+.table2{
+        background-color: white;
+        width:30%;
+}
+.border {
+        position:fixed;top:3.5%; left:39.2%;
+        border:8px solid #6F6F6F;
+        width:59.9%;
+        height:91.7%;
+    }
+.rev_no_button{
+        margin-left:255px;
+        font-size:11px;
+        cursor:pointer;
+        font-family: arial;}
+.rev_no_box{
+        font-family: arial;
+        font-size:11px;}
+
+</style>
+<body>
+<div class="border">
+</div>
+<table id="equipinfo" border= "1">
+                      {% for equipinfos in equipinfo %}
+                      {% for equipinforevs in equipinforev %}
+    <tr>
+        <td class="table1">
+            Control No.
+        </td>
+        <td class="table2">
+            {{equipinfos.controlno}}
+        </td>
+        <td class="table1">
+            Equipment. Name
+        </td>
+        <td class="table2">
+            {{equipinfos.name}}
+        </td>
+    </tr>
+    <tr>
+        <td class="table1">
+            Model Name
+        </td>
+        <td class="table2">
+            {{equipinfos.model}}
+        </td>
+        <td class="table1">
+            Serial No.
+        </td>
+        <td class="table2">
+            {{equipinfos.serial}}
+        </td>
+    </tr>
+    <tr>
+        <td class="table1">
+            Manufacturer
+        </td>
+        <td class="table2">
+            {{equipinfos.maker}}
+        </td>
+        <td class="table1">
+            Team
+        </td>
+        <td class="table2">
+            {{equipinfos.team}}
+        </td>
+    </tr>
+    <tr>
+        <td class="table1">
+            Room Name&nbsp;(Room No.)
+        </td>
+        <td class="table2">
+            {{equipinfos.roomname}}&nbsp;({{equipinfos.roomno}})
+        </td>
+        <td class="table1">
+            Revision Date
+        </td>
+        <td class="table2">
+            {{equipinforevs.revdate}}
+        </td>
+    </tr>
+    <tr>
+        <td class="table1">
+             Revision No.
+        </td>
+        <td class="table2">
+            Rev.{{equipinforevs.revno}}
+        </td>
+        <td class="table1">
+            Assessment of Period
+        </td>
+        <td class="table2">
+            {{equipinfos.ra}}Month(s)
+        </td>
+    </tr>
+                                 {% endfor %}
+                                 {% endfor %}
+</table>
+</body>
+</html>
