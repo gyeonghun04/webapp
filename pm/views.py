@@ -1,7 +1,7 @@
 from django.shortcuts import render, HttpResponseRedirect, reverse, HttpResponse
 from .models import pmmasterlist, equiplist, controlformlist, pmmasterlist_temp, \
     pmsheetdb, pm_sch, pmchecksheet, pm_reference, pm_manual, userinfo, workorder, approval_information, \
-    spare_parts_list, spare_in, spare_out
+    spare_parts_list, spare_in, spare_out, parts_pm
 from django.contrib import messages
 import datetime as date
 from django.core.mail import send_mail, EmailMessage
@@ -9679,9 +9679,134 @@ def partslist_pm_main(request):
         auth = users.auth1
         user_div = users.user_division
         users = {"auth": auth, "password": password, "username": username, "userteam": userteam, "user_div": user_div}
-        context = {"loginid": loginid}
+        parts_pm_list = parts_pm.objects.all()
         context.update(users)
     return render(request, 'partslist_pm_main.html', context)  # templates 내 html연결
+
+def partslist_pm_new(request):
+    return render(request, 'partslist_pm_new.html')  # templates 내 html연결
+
+def partslist_pm_controlno(request):
+    if request.method == 'POST':  # 매소드값이 post인 값만 받는다
+        controlno = request.POST.get('controlno')  # html controlform의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        ##이름 및 권한 끌고다니기##
+        users = userinfo.objects.get(userid=loginid)
+        username = users.username
+        userteam = users.userteam
+        password = users.password
+        auth = users.auth1
+        user_div = users.user_division
+        users = {"auth": auth, "password": password, "username": username, "userteam": userteam, "user_div": user_div}
+        ##컨트롤넘버 정보 불러오기##
+        try:
+            equip_info = equiplist.objects.get(controlno=controlno)
+            equip_get = equip_info.name
+            controlno_get = controlno
+            pm_list = pmmasterlist.objects.filter(controlno=controlno, amd="A", pm_y_n="Y")
+            context = {"loginid": loginid, "pm_list": pm_list, "controlno_get": controlno_get, "equip_get": equip_get}
+            context.update(users)
+        except:
+            messages.error(request, "No such equipment exist.")  # 경고
+            context = {"loginid": loginid}
+        return render(request, 'partslist_pm_new.html', context)  # templates 내 html연결
+
+def partslist_pm_maint_item(request):
+    if request.method == 'POST':  # 매소드값이 post인 값만 받는다
+        controlno = request.POST.get('controlno')  # html controlform의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        maint_item = request.POST.get('maint_item')  # html에서 해당 값을 받는다
+        equipname = request.POST.get('equipname')  # html에서 해당 값을 받는다
+        ##이름 및 권한 끌고다니기##
+        users = userinfo.objects.get(userid=loginid)
+        username = users.username
+        userteam = users.userteam
+        password = users.password
+        auth = users.auth1
+        user_div = users.user_division
+        users = {"auth": auth, "password": password, "username": username, "userteam": userteam, "user_div": user_div}
+        ##컨트롤넘버 정보 불러오기##
+        equip_get = equipname
+        controlno_get = controlno
+        freq_trans = pmmasterlist.objects.get(controlno=controlno, amd="A", pm_y_n="Y", itemcode=maint_item)
+        freq_get = freq_trans.freq
+        item_get = freq_trans.item
+        pm_list = pmmasterlist.objects.filter(controlno=controlno, amd="A", pm_y_n="Y")
+        spare_list = spare_parts_list.objects.all().order_by('team', 'codeno')
+        view_signal = "Y"
+        context = {"loginid": loginid, "pm_list": pm_list, "controlno_get": controlno_get, "equip_get": equip_get,
+                   "freq_get":freq_get,"item_get":item_get,"spare_list":spare_list,"view_signal":view_signal,
+                   "maint_item":maint_item}
+        context.update(users)
+        return render(request, 'partslist_pm_new.html', context)  # templates 내 html연결
+
+def partslist_pm_maint_submit(request):
+    if request.method == 'POST':  # 매소드값이 post인 값만 받는다
+        controlno = request.POST.get('controlno')  # html controlform의 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        maint_item = request.POST.get('maint_item')  # html에서 해당 값을 받는다
+        equip_get = request.POST.get('equipname')  # html에서 해당 값을 받는다
+        item_get = request.POST.get('item_get')  # html에서 해당 값을 받는다
+        freq_get = request.POST.get('freq_get')  # html에서 해당 값을 받는다
+        checks_var = request.POST.getlist('checks[]')
+        qy_var = request.POST.getlist('qy_get[]')
+        ##이름 및 권한 끌고다니기##
+        users = userinfo.objects.get(userid=loginid)
+        username = users.username
+        userteam = users.userteam
+        password = users.password
+        auth = users.auth1
+        user_div = users.user_division
+        users = {"auth": auth, "password": password, "username": username, "userteam": userteam, "user_div": user_div}
+    ##컨트롤넘버 정보 불러오기##
+        controlno_get = controlno
+        freq_trans = pmmasterlist.objects.get(controlno=controlno, amd="A", pm_y_n="Y", itemcode=maint_item)
+        freq_get = freq_trans.freq
+        item_get = freq_trans.item
+        pm_list = pmmasterlist.objects.filter(controlno=controlno, amd="A", pm_y_n="Y")
+        spare_list = spare_parts_list.objects.all().order_by('team', 'codeno')
+    ##저장하기##
+        qy_len = len(qy_var)
+        for j in range(qy_len):
+            if qy_var[j] == "":
+               qy_var[j] = "N/A"
+        while 'N/A' in qy_var:
+            qy_var.remove('N/A')  # 'N/A' 삭제
+        code_len = len(checks_var)
+        qy_var_len = len(qy_var)
+        if int(code_len) != int(qy_var_len):
+            messages.error(request, "미입력되었네~")  # 경고
+            view_signal = "Y"
+            context = {"loginid": loginid, "pm_list": pm_list, "controlno_get": controlno_get, "equip_get": equip_get,
+                       "freq_get":freq_get,"item_get":item_get,"spare_list":spare_list,"view_signal":view_signal}
+            context.update(users)
+            return render(request, 'partslist_pm_new.html', context)  # templates 내 html연결
+        else:
+            for i in range(code_len):
+                code_no= checks_var[i]
+                qy=qy_var[i]
+                spare_get = spare_parts_list.objects.get(codeno=code_no)
+                parts_pm(
+                    team=freq_trans.team,
+                    controlno=controlno,
+                    equipname=equip_get,
+                    freq=freq_get,
+                    itemcode=maint_item,
+                    item=item_get,
+                    codeno=code_no,
+                    partname=spare_get.partname,
+                    vendor=spare_get.vendor,
+                    modelno=spare_get.modelno,
+                    qy=qy,
+                    staff=username,
+                ).save()
+            part_list = parts_pm.objects.filter(itemcode=maint_item)
+            view_signal = "Comp"
+            context = {"loginid": loginid, "pm_list": pm_list, "controlno_get": controlno_get, "equip_get": equip_get,
+                       "freq_get":freq_get,"item_get":item_get,"spare_list":spare_list,"view_signal":view_signal,
+                       "part_list":part_list}
+            context.update(users)
+            return render(request, 'partslist_pm_new.html', context)  # templates 내 html연결
 
 ##############################################################################################################
 #################################################Test########################################################

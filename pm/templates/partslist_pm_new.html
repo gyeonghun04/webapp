@@ -111,6 +111,11 @@ pm{
 #pmcontrol_call_top{
         position:fixed; top:240px; left:6px;
 }
+#pmcontrol_call_comp{
+        position:fixed; top:266px; left:6px;
+        height:400px;
+        overflow-y:scroll;
+        }
 #pmcontrol_call{
         position:fixed; top:266px; left:6px;
         height:400px;
@@ -166,6 +171,12 @@ tr:nth-child(even){
       font-size:13px;
       width:30px;
 }
+comp_text{
+      font-family:'Rubik', sans-serif;
+      font-size:13px;
+      color:blue;
+      position:fixed; top:680px; left:5px;
+      }
 </style>
 </head>
 
@@ -235,6 +246,8 @@ tr:nth-child(even){
     </table>
 </div>
  {% if view_signal == "Y" %}
+<form action="partslist_pm_maint_submit" method="post">
+        {% csrf_token %}
 <div id="pmcontrol_call">
     <table class="pm_table" border="1">
                 {% for pm_call in spare_list %}
@@ -244,18 +257,43 @@ tr:nth-child(even){
             <td align="center" class="t3-1">{{pm_call.vendor}}</td>
             <td align="center" class="t4-1">{{pm_call.modelno}}</td>
             <td align="center" class="t6-1">
-                <input type="checkbox" name="used_part" onclick="Used_part(this);" {{spare_out.check_y_n_temp}}>
+                <input type="checkbox" name="checks[]" value="{{pm_call.codeno}}">
                 <input type="hidden" value="" name="no_up">
             </td>
             <td align="center" class="t5-1">
-              <input type="text" name="freq_get"  value="" class="no_css">
+              <input type="text" name="qy_get[]"  class="no_css">
             </td>
         </tr>
                 {% endfor %}
    </table>
 </div>
+<input type="hidden" value="{{controlno_get}}" name="controlno">
+<input type="hidden" value="{{item_get}}" name="item_get">
+<input type="hidden" value="{{loginid}}" name="loginid">
+<input type="hidden" value="{{equip_get}}" name="equipname">
+<input type="hidden" value="{{maint_item}}" name="maint_item">
+<input type="hidden" value="{{freq_get}}" name="freq_get">
+<input type="submit" class="submit_btn" value="Submit"></form>
+ {% elif view_signal == "Comp" %}
+<div id="pmcontrol_call_comp">
+    <table class="pm_table" border="1">
+                {% for pm_call in part_list %}
+        <tr>
+            <td align="center" class="t1-1">{{pm_call.codeno}}</td>
+            <td align="center" class="t2-1">{{pm_call.partname}}</td>
+            <td align="center" class="t3-1">{{pm_call.vendor}}</td>
+            <td align="center" class="t4-1">{{pm_call.modelno}}</td>
+            <td align="center" class="t6-1">
+            <input type="checkbox" checked>
+            </td>
+            <td align="center" class="t5-1">{{pm_call.qy}}</td>
+        </tr>
+                {% endfor %}
+   </table>
+</div>
+<comp_text>Registration is complete.</comp_text>
+
     {%endif%}
-<input type="button" class="submit_btn" value="Submit" onclick="Control_submit();">
 <input type="hidden" value="{{comp_signal}}" name="comp_signal">
 
 <form name="controlno_form" method="post">

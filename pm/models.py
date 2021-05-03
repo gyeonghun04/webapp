@@ -317,7 +317,8 @@ class spare_parts_list(models.Model): #spare_parts_list
     attach = models.CharField(max_length=255) #첨부파일
     pm_link = models.CharField(max_length=255) #pm링크
     safety_stock = models.CharField(max_length=255) #안전재고
-    
+    check_y_n_temp = models.CharField(max_length=255)  #사용여부
+
     class Meta:
         managed = False
         db_table = 'spare_parts_list'
@@ -366,3 +367,21 @@ class spare_out(models.Model): #spare_out
         managed = False
         db_table = 'spare_out'
 
+class parts_pm(models.Model): #spare_out
+    no = models.AutoField(primary_key=True) #순번
+    team = models.CharField(max_length=255)  # 담당자
+    controlno = models.CharField(max_length=255) #설비명
+    equipname = models.CharField(max_length=255)  # 설비명
+    freq = models.CharField(max_length=255)  # 설비명
+    itemcode = models.CharField(max_length=255)  # 설비명
+    item = models.TextField()  # 메인트넌스 아이템
+    codeno= models.CharField(max_length=255) #코드넘버
+    partname = models.CharField(max_length=255)  # 부품명
+    vendor = models.CharField(max_length=255)  # 업체명
+    modelno = models.TextField()  # 모델명
+    qy = models.CharField(max_length=255) #입고수량
+    staff = models.CharField(max_length=255)  # 담당자
+
+    class Meta:
+        managed = False
+        db_table = 'parts_pm'

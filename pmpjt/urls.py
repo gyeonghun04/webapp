@@ -202,6 +202,11 @@ urlpatterns = [
     path('spareparts_cert_main', pm.views.spareparts_cert_main, name='spareparts_cert_main'),
     path('spareparts_cert_upload', pm.views.spareparts_cert_upload, name='spareparts_cert_upload'),
     path('partslist_pm_main', pm.views.partslist_pm_main, name='partslist_pm_main'),
+    path('partslist_pm_controlno', pm.views.partslist_pm_controlno, name='partslist_pm_controlno'),
+    path('partslist_pm_new', pm.views.partslist_pm_new, name='partslist_pm_new'),
+    path('partslist_pm_maint_item', pm.views.partslist_pm_maint_item, name='partslist_pm_maint_item'),
+    path('partslist_pm_maint_submit', pm.views.partslist_pm_maint_submit, name='partslist_pm_maint_submit'),
+
 
 ##########################################################################################################################################
 ##########################################################################################################################################

@@ -53,7 +53,7 @@ b{
 <body>
 <div id="tabletop" style="word-break:break-all">
 <titletext>Parts List For PM</titletext>
-<b class="xi-pen"><input type="button" value="New Request" class="request_new"></b>
+<b class="xi-pen"><input type="button" value="New Request" class="request_new" onclick="Request_new();"></b>
     <div id="searchbar">
         <form action="" method="post">
             {% csrf_token %}
@@ -63,7 +63,7 @@ b{
             <option value="item">Maintenance Item</option>
             </select>
             <input type="search"  class="searchtext" placeholder="Keywords" name="searchtext" value="{{searchtext}}">
-            <input type="hidden" value="{{loginid}}" id="workloginid">
+            <input type="hidden" value="{{loginid}}" id="loginid_up">
             <input type="hidden" value="{{loginid}}" name="loginid">
             <input type="submit"  class="searchbutton" value="Search"></form>
     </div>
@@ -72,10 +72,9 @@ b{
 <script>
             function Request_new(){
                         // 팝업창열기
-            var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=880, height=840, left=50, top=10';
-            window.open("/workrequest_new", "Work Request Form", settings);
+            var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=820, height=720, left=50, top=10';
+            window.open("/partslist_pm_new", "PM Parts Registration", settings);
             }
-
 
 </script>
 </body>
