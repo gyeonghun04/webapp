@@ -9680,6 +9680,7 @@ def partslist_pm_main(request):
         user_div = users.user_division
         users = {"auth": auth, "password": password, "username": username, "userteam": userteam, "user_div": user_div}
         parts_pm_list = parts_pm.objects.all()
+        context = {"loginid": loginid,"parts_pm_list":parts_pm_list}
         context.update(users)
     return render(request, 'partslist_pm_main.html', context)  # templates 내 html연결
 
