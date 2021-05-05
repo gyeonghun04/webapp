@@ -172,57 +172,6 @@ tr:nth-child(even){
         </tbody>
  </table>
 </div>
- <div>
- <table>
-   <thead id="manualchange">
-        <tr>
-            <td align="center" class="n2">Control No.</td>
-            <td align="center" class="n3">Team</td>
-            <td align="center" class="n4">Equip. Name</td>
-            <td align="center" class="n5">Model Name</td>
-            <td align="center" class="n6">Serial No.</td>
-            <td align="center" class="n7">Manufacturer</td>
-            <td align="center" class="n8">Room Name</td>
-            <td align="center" class="n9">Room No.</td>
-            <td align="center" class="n10">Setup Year</td>
-            <td align="center" class="n11">PQ</td>
-            <td align="center" class="n12">New</td>
-        </tr>
-   </thead>
-   <tbody id="manualchangeinput">
-     <tr>
-     <form action="equipmentlist_new" method="post" >
-         {% csrf_token %}
-            <td align="center">
-            <input type="text" name="controlno"  class="m2-2" required></td>
-            <td align="center">
-                     <input type="text" name="team"  class="m3-2" required></td>
-            <td align="left">
-                     <input type="text" name="name"  class="m4-2" required></td>
-            <td align="left">
-                     <input type="text" name="model"  class="m5-2" required></td>
-            <td align="center">
-                     <input type="text" name="serial"  class="m6-2" required></td>
-            <td align="center">
-                     <input type="text" name="maker"  class="m7-2" required></td>
-            <td align="center">
-                     <input type="text" name="roomname"  class="m8-2" required></td>
-            <td align="center">
-                     <input type="text" name="roomno"  class="m9-2" required></td>
-            <td align="center">
-                     <input type="text" name="setupdate"  class="m10-2" placeholder="YYYY" required></td>
-            <td align="center">
-                 <select class="m11-2" name="pq">&nbsp;
-                 <option value="Y">Y</option>
-                 <option value="N">N</option>
-            <td>
-            <input type="hidden" value="{{loginid}}" name="loginid">
-            <input type="submit" class="button" value="New"></td>
-            </form>
-     </tr>
-   </tbody>
-</table>
- </div>
     <form name="Info_change.form" method="post">
                      {% csrf_token %}
         <input type="hidden" name="controlno" id="controlno_up">
@@ -236,7 +185,6 @@ tr:nth-child(even){
         <input type="hidden" name="{{auth}}" id="auth_up">
         <input type="hidden" value="{{loginid}}" id="loginid_up"></form>
 </main>
-
 <script>
         function Info_change(obj){
                 // 행위치값과 플랜데이트 받기

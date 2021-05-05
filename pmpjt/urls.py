@@ -206,6 +206,9 @@ urlpatterns = [
     path('partslist_pm_new', pm.views.partslist_pm_new, name='partslist_pm_new'),
     path('partslist_pm_maint_item', pm.views.partslist_pm_maint_item, name='partslist_pm_maint_item'),
     path('partslist_pm_maint_submit', pm.views.partslist_pm_maint_submit, name='partslist_pm_maint_submit'),
+    path('partslist_pm_view', pm.views.partslist_pm_view, name='partslist_pm_view'),
+    path('partslist_pm_delete', pm.views.partslist_pm_delete, name='partslist_pm_delete'),
+    path('partslist_pm_cal', pm.views.partslist_pm_cal, name='partslist_pm_cal'),
 
 
 ##########################################################################################################################################
@@ -217,8 +220,9 @@ urlpatterns = [
 ####Information####
     path('equipmentlist_main', pm.views.equipmentlist_main, name='equipmentlist_main'),
     path('equipmentlist_new', pm.views.equipmentlist_new, name='equipmentlist_new'),
+    path('equipmentlist_new_submit', pm.views.equipmentlist_new_submit, name='equipmentlist_new_submit'),
 
-####테스트용####
+    ####테스트용####
     path('temp', pm.views.temp, name='temp'),
 
 ##########################################################################################################################################

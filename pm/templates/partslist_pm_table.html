@@ -24,30 +24,80 @@
         background-color: white;
         width:30%;
 }
+.table3{
+        background-color: white;
+}
 .border {
         position:fixed;top:3.5%; left:55.2%;
         border:8px solid #6F6F6F;
         width:44%;
         height:94.5%;
     }
+pm_spare_title{
+        position:fixed;top:6%; left:68%;
+        font-size: 24px;
+        font-family: arial;
+        font-weight:bold;
+}
+#partslist_top{
+        position:fixed;top:24.5%; left:55.6%;
+}
+#partslist{
+        position:fixed;top:27.08%; left:55.6%;
+        overflow-y:scroll;
+}
+.top_css{
+        height:25px;
+        font-family: arial;
+        font-size:11px;
+        font-weight:bold;
+        color:white;
+        background-color:#6F6F6F;
+        }
+#parts_info{
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+        height:25px;
+        font-family: arial;
+        font-size:11px;
+}
+
+.p1{width:100px;}
+.p2{width:170px;}
+.p3{width:150px;}
+.p4{width:250px;}
+.p5{width:80px;}
+.p6{width:70px;}
+
+.p1-1{width:100px;
+height:20px;}
+.p2-1{width:170px;}
+.p3-1{width:150px;}
+.p4-1{width:250px;}
+.p5-1{width:88px;}
+.p6-1{width:50px;}
+
 </style>
 <body>
+<pm_spare_title>
+Parts List for Preventive Maintenance
+</pm_spare_title>
 <div class="border">
 </div>
 <table id="equipinfo" border= "1">
         {% for pm_list in maint_list %}
     <tr>
         <td class="table1">
-            Control No.
+            Equip. Name&nbsp;(Control No.)
         </td>
         <td class="table2">
-            {{pm_list.controlno}}
+            {{pm_list.equipname}}&nbsp;({{pm_list.controlno}})
         </td>
         <td class="table1">
-            Equipment. Name
+            Staff Name
         </td>
         <td class="table2">
-            {{pm_list.name}}
+            {{pm_list.staff}}
         </td>
     </tr>
     <tr>
@@ -55,33 +105,49 @@
             Room Name&nbsp;(Room No.)
         </td>
         <td class="table2">
-            {{pm_list.roomname}}&nbsp;({{pm_list.roomno}})
+            {{roomname}}&nbsp;({{roomno}})
         </td>
         <td class="table1">
              Sheet No.
         </td>
         <td class="table2">
-            {{pm_list.sheetno}}
+            {{sheetno}}
+        </td>
+    </tr>
+     <tr>
+        <td class="table1">
+            Frequency
+        </td>
+        <td class="table2">
+            {{pm_list.freq}}
+        </td>
+        <td class="table1">
+             Next Plan Date
+        </td>
+        <td class="table2">
+            {{pm_list.sch}}
         </td>
     </tr>
     <tr>
         <td class="table1">
             Maintenance Item
         </td>
-        <td class="table2">
+        <td class="table3" colspan="3">
             {{pm_list.item}}
         </td>
-        <td class="table1">
+    </tr>
+    <tr>
+        <td class="table1" >
             Check Stansdard
         </td>
-        <td class="table2">
-            {{pm_list.check}}
+        <td class="table3" colspan="3">
+            {{check}}
         </td>
     </tr>
         {%endfor%}
 </table>
 <div id="partslist_top">
-<table>
+<table class="top_css">
     <tr>
         <td align="center" class="p1">
             Code No.
@@ -98,8 +164,8 @@
         <td align="center" class="p5">
             Location
         </td>
-        <td align="center" class="p6">
-            Quantity
+        <td align="left" class="p6">
+            QY
         </td>
     </tr>
 </table>
@@ -107,6 +173,7 @@
 
 <div id="partslist">
 <table id="parts_info" border= "1">
+                {% for sp_list in parts_list %}
     <tr>
         <td align="center" class="p1-1">
             {{sp_list.codeno}}
@@ -127,6 +194,7 @@
             {{sp_list.qy}}
         </td>
     </tr>
+            {%endfor%}
 </table>
 </div>
 </div>

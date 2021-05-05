@@ -6,9 +6,8 @@
 <style>
 #tabletop{
     	font-family: arial;
-        position:fixed;top:4%; left:9%;
+        position:fixed;top:4%; left:9.2%;
         height:5%;
-
 }
 titletext{
     	font-family:'Rubik', sans-serif;
@@ -16,7 +15,6 @@ titletext{
         font-weight:bold;
 }
 .selecttext{
-        margin-left:1210px;
         width:105px;
         height:20px;
 }
@@ -29,20 +27,33 @@ titletext{
         height:20px;
 }
 #searchbar{
-
+        position:fixed;top:4%; left:80%;
         padding-top:5px;
         font-family:'Rubik', sans-serif;
         font-size:10px;
+}
+b{
+        position:fixed;top:4.9%; left:72%;
+        align-text:left;
+        color:black;
+}
+.new{
+        font-family:'Rubik', sans-serif;
+        font-size:15px;
+        background-color: rgba(255, 255, 255, 0.0);
+        cursor:pointer;
+        border:0px;
+        font-color:black;
+        text-decoration:underline;
 }
 </style>
 </head>
 <body>
 <div id="tabletop" style="word-break:break-all">
-<table>
-    <tr>
-    <td><titletext>Equipment List</titletext></td>
-    <td>
-    <div id="searchbar">
+    <titletext>Equipment List</titletext>
+</div>
+<b class="xi-pen"><input type="button" value="New Registration" class="new" onclick="Registration_new();"></b>
+<div id="searchbar">
         <form action="search" method="post">
             {% csrf_token %}
             <select class="selecttext" name="selecttext">&nbsp;
@@ -55,10 +66,16 @@ titletext{
             </select>
             <input type="search"  class="searchtext" placeholder="Keywords" name="searchtext">
             <input type="hidden" value="{{loginid}}" name="loginid">
+            <input type="hidden" value="{{loginid}}" id="loginid_up">
+
             <input type="submit"  class="searchbutton" value="Search"></form>
-    </div></td>
-    </tr>
-</table>
 </div>
 </body>
+<script>
+            function Registration_new(){
+                        // 팝업창열기
+            var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=380, height=440, left=50, top=10';
+            window.open("/equipmentlist_new", "Equipment List Registration", settings);
+            }
+</script>
 </html>

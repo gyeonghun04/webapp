@@ -10,13 +10,13 @@
     	font-family: arial;
         font-size:11px;
         position:fixed;top:7.5%; left:9%;
-        height:3%;
+        height:2.5%;
         width:46%;
         background-color:#6F6F6F;
         color:white;
 }
 #tabledesc{
-        position:absolute;top:10.5%; left:9%;
+        position:absolute;top:10%; left:9%;
         z-index:10;
         width:46%;
         font-family: arial;
@@ -83,24 +83,24 @@ tr:nth-child(even){
         <tr>
             <td align="center" class="m1-1">{{pm_list.team}}</td>
             <td align="center" class="m2-1">{{pm_list.controlno}}</td>
-            <td align="center" class="m3-1">{{pm_list.name}}</td>
+            <td align="center" class="m3-1">{{pm_list.equipname}}</td>
             <td align="center" class="m4-1">{{pm_list.freq}}</td>
             <td align="center" class="m5-1">{{pm_list.item}}</td>
             <td align="center" class="m6-1">
-                <form action="" method="post" >
+                <form action="partslist_pm_view" method="post" >
                 {% csrf_token %}
                 <input type="hidden" value="{{loginid}}" name="loginid">
-                <input type="hidden" value="{{workorder.workorderno}}" name="workorderno">
+                <input type="hidden" value="{{pm_list.itemcode}}" name="itemcode">
                 <input type="hidden" value="{{searchtext}}" name="searchtext">
                 <input type="hidden" value="{{selecttext}}" name="selecttext">
                 <input type="submit" class="button" value="View">
                 </form>
             </td>
             <td align="center" class="m7-1">
-                <form action="" method="post" >
+                <form action="partslist_pm_delete" method="post" >
                 {% csrf_token %}
                 <input type="hidden" value="{{loginid}}" name="loginid">
-                <input type="hidden" value="{{workorder.workorderno}}" name="workorderno">
+                <input type="hidden" value="{{pm_list.itemcode}}" name="itemcode">
                 <input type="hidden" value="{{searchtext}}" name="searchtext">
                 <input type="hidden" value="{{selecttext}}" name="selecttext">
                 <input type="submit" class="button" value="Delete">

@@ -24,7 +24,6 @@ z-index:100;
 #sidetap{
 height:100%;
 position:fixed; right:91.8%; top:7%;
-
 overflow-y:auto;}
 
 
@@ -372,14 +371,11 @@ i{
         {% csrf_token %}
         <input type="hidden" value="{{loginid}}" name="loginid">
         <input type="submit"value="Incoming" class="Button"></form><br>
-    <form action="" method="post">
+    <form action="partslist_pm_main" method="post">
         {% csrf_token %}
         <input type="hidden" value="{{loginid}}" name="loginid">
-        <input type="submit"value="Parts List for PM(개발중)" class="Button"></form><br>
-    <form action="" method="post">
-        {% csrf_token %}
-        <input type="hidden" value="{{loginid}}" name="loginid">
-        <input type="submit"value="Certficate(개발중)" class="Button"></form>
+        <input type="submit"value="Parts List for PM" class="Button"></form>
+
 </tr><br>
         {% elif user_div == "Engineer"%}
         <tr>
@@ -399,11 +395,7 @@ i{
     <form action="partslist_pm_main" method="post">
         {% csrf_token %}
         <input type="hidden" value="{{loginid}}" name="loginid">
-        <input type="submit"value="Parts List for PM(개발중)" class="Button"></form><br>
-    <form action="" method="post">
-        {% csrf_token %}
-        <input type="hidden" value="{{loginid}}" name="loginid">
-        <input type="submit"value="Certficate(개발중)" class="Button"></form>
+        <input type="submit"value="Parts List for PM" class="Button"></form>
 </tr><br>
           {%endif%}
         <tr>

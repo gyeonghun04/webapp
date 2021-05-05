@@ -48,11 +48,20 @@ b{
         color:black;
         z-index:10;
 }
+c{
+        position:fixed;top:5.3%; left:21.5%;
+        align-text:left;
+        color:black;
+        z-index:10;
+}
 </style>
 </head>
 <body>
 <div id="tabletop" style="word-break:break-all">
 <titletext>Parts List For PM</titletext>
+
+
+<c class="xi-calculator"><input type="button" value="Check Spare Parts" class="request_new" onclick="Cal_parts();"></c>
 <b class="xi-pen"><input type="button" value="New Request" class="request_new" onclick="Request_new();"></b>
     <div id="searchbar">
         <form action="" method="post">
@@ -76,6 +85,10 @@ b{
             window.open("/partslist_pm_new", "PM Parts Registration", settings);
             }
 
+            function Cal_parts(){
+            var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=1270,height=900, left=50, top=10';
+            window.open("/partslist_pm_cal", "Check Parts List", settings);
+            }
 </script>
 </body>
 </html>

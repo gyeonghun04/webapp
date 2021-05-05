@@ -6,7 +6,7 @@
 <style>
 #tabletop{
     	font-family: arial;
-        position:fixed;top:4%; left:9%;
+        position:fixed;top:4.4%; left:9.2%;
         height:5%;
         width:30%;
 }
@@ -16,7 +16,7 @@ titletext{
         font-weight:bold;
 }
 .selecttext{
-        margin-left:55px;
+        margin-left:
         width:105px;
         height:20px;
 }
@@ -29,20 +29,34 @@ titletext{
         height:20px;
 }
 #searchbar{
+        position:fixed;top:4.4%; left:23.5%;
         padding-left:5px;
         padding-top:5px;
         font-family:'Rubik', sans-serif;
         font-size:10px;
 }
+b{
+        position:fixed;top:5.2%; left:19.5%;
+        align-text:left;
+        color:black;
+}
+.new{
+        font-family:'Rubik', sans-serif;
+        font-size:15px;
+        background-color: rgba(255, 255, 255, 0.0);
+        cursor:pointer;
+        border:0px;
+        font-color:black;
+        text-decoration:underline;
+}
 </style>
 </head>
 <body>
 <div id="tabletop">
-<table>
-    <tr>
-    <td><titletext>PM Assessment Period</titletext></td>
-    <td>
-    <div id="searchbar">
+<titletext>PM Period</titletext></td>
+</div>
+<b class="xi-rotate-right"><input type="button" value="Review" class="new" onclick="Review();"></b>
+<div id="searchbar">
         <form action="pmra_main" method="post">
             {% csrf_token %}
             <select class="selecttext" name="selecttext">&nbsp;
@@ -53,9 +67,6 @@ titletext{
             <input type="search"  class="searchtext" placeholder="Keywords" name="searchtext" value="{{searchtext}}">
             <input type="hidden" value="{{loginid}}" name="loginid">
             <input type="submit"  class="searchbutton" value="Search"></form>
-    </div></td>
-    </tr>
-</table>
 </div>
 </body>
 </html>

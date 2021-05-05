@@ -8,7 +8,7 @@ from django.core.mail import send_mail, EmailMessage
 import pandas as pd
 import numpy as np
 #import matplotlib.pyplot as plt
-from django.db.models import Q
+from django.db.models import Q, Max
 from dateutil.relativedelta import relativedelta
 from django.core.files.storage import FileSystemStorage
 from django.db.models import Count, Sum
@@ -2757,7 +2757,7 @@ def pmcheckapproval_approve_accept(request):
                 frequency= frequency.freq
                 frequency = frequency[:3]
                 f_m_y = frequency[2:]
-                if f_m_y == "o" or f_m_y == "e": #주기숫자 구분 반환
+                if (f_m_y == "o") or (f_m_y == "e"): #주기숫자 구분 반환
                     f_num = frequency[:1]
                 else:
                     f_num = frequency[:2]
@@ -2768,7 +2768,7 @@ def pmcheckapproval_approve_accept(request):
                 now_plandate_m = now_plandate[5:]
                 now_plandate = date.datetime(int(now_plandate_y), int(now_plandate_m), 1)
             #####다음 계획 치환####
-                if f_m_y == "o" or f_m_y == "M":
+                if (f_m_y == "o") or (f_m_y == "M"):
                     next_plan = now_plandate + relativedelta(months=int(f_num))
                     next_plandate = "20" + next_plan.strftime('%y') + "-" + next_plan.strftime('%m')
                 else:
@@ -3306,7 +3306,7 @@ def pmcontrolform_write_new(request):
         equiptablerev = controlformlist.objects.get(controlno=controlno, recent_y="Y")
         pmreference = pm_reference.objects.all()
     #####주기 미입력확인#####
-        division = request.POST.get('division')  # html에서 해당 값을 받는다
+        division = request.POST.get('division_get')  # html에서 해당 값을 받는다
         freq_no = request.POST.get('freq_no')  # html에서 해당 값을 받는다
         freq_my = request.POST.get('freq_my')  # html에서 해당 값을 받는다
         frequency = request.POST.get('frequency')
@@ -3322,19 +3322,33 @@ def pmcontrolform_write_new(request):
                 return render(request, 'pmcontrolform_change_new.html', context)  # templates 내 html연결
     #####데이터 가공하기#####
         ######sheet No. 만들기#####
-        freq_no=request.POST.get('freq_no')
-        freq_my=request.POST.get('freq_my')
-        if int(freq_no) == 12:
-            sheetno = str(controlno) + "-1Y"
-        else:
-            if freq_my == "Month":
-                freq_my = "M"
+        try:
+            freq_no = request.POST.get('freq_no')  # html에서 해당 값을 받는다
+            freq_my = request.POST.get('freq_my')  # html에서 해당 값을 받는다
+            if int(freq_no) == 12:
+                sheetno = str(controlno) + "-1Y"
             else:
-                freq_my = "Y"
-            sheetno = str(controlno) + "-" + str(freq_no) + freq_my
+                if freq_my == "Month":
+                    freq_my = "M"
+                else:
+                    freq_my = "Y"
+                sheetno = str(controlno) + "-" + str(freq_no) + freq_my
+        except:
+            freq_no = request.POST.get('freq_no_give')  # html에서 해당 값을 받는다
+            freq_my = request.POST.get('freq_my_give')  # html에서 해당 값을 받는다
+            if int(freq_no) == 12:
+                sheetno = str(controlno) + "-1Y"
+            else:
+                if freq_my == "Month":
+                    freq_my = "M"
+                else:
+                    freq_my = "Y"
+                sheetno = str(controlno) + "-" + str(freq_no) + freq_my
     ######주기만들기#####
-        freq_no=request.POST.get('freq_no')
-        freq_my=request.POST.get('freq_my')
+        if str(freq_my) == "Y":
+            freq_my = "Year"
+        else:
+            freq_my = "Month"
         freq = str(freq_no) + str(freq_my)
     ######itemno 만들기#####
         itemno_make = pmmasterlist_temp.objects.filter(sheetno = sheetno).values('sheetno')
@@ -3343,14 +3357,16 @@ def pmcontrolform_write_new(request):
     ######itemcode 만들기#####
         itemcode = sheetno + str(itemno)
     ######시트시작일 만들기#####
-        try:
-            chk = pmsheetdb.objects.get(pmsheetno_temp=sheetno)
-        except:
+        pm_sch_check = pmsheetdb.objects.filter(pmsheetno_temp=sheetno)
+        pm_sch_check = pm_sch_check.values('pmsheetno_temp')
+        df_pm_sch_check = pd.DataFrame.from_records(pm_sch_check)
+        pm_sch_len = len(df_pm_sch_check.index)
+        if int(pm_sch_len) == 0:
             pmsheetdb(
                 controlno=controlno,
-                pmsheetno_temp = sheetno, #신규Sheet No. 임시입력
-                freq_temp= freq, #신규주기 임시입력
-                startdate_temp= "New", #시작일자 입력
+                pmsheetno_temp=sheetno,  # 신규Sheet No. 임시입력
+                freq_temp=freq,  # 신규주기 임시입력
+                startdate_temp="New",  # 시작일자 입력
             ).save()
     #####새로운 값 저장하기#####
         pmmasterlist_temp(  # 컨트롤폼에 신규등록하기
@@ -3374,7 +3390,7 @@ def pmcontrolform_write_new(request):
             startdate= "New",  # 시트시작일
             change=request.POST.get('change'),  # 변경사유
             itemcode=itemcode,  # 점검내용 구분좌
-            division=request.POST.get('division'),
+            division=request.POST.get('division_get'),
         ).save()
     #####signal 정보 보내기#####
         #####완료 시그널 주기#####
@@ -3451,7 +3467,7 @@ def pmcontrolform_change_link_submit(request):
                 item_call = pmmasterlist.objects.get(controlno=controlno_get, amd="A", pm_y_n="Y", itemcode=itemcode_call)
                 ra_call = equiplist.objects.get(controlno=controlno)
                 if str(item_call.division) != "Standard":
-                    ###sheet_no만들기###
+                ###sheet_no만들기###
                     if (str(item_call.freq[:2]) == "10") or (str(item_call.freq[:2]) == "11") or (str(item_call.freq[:2]) == "12"):
                         sheet_no = str(controlno) + "-" + str(item_call.freq[:3])
                     else:
@@ -3489,21 +3505,25 @@ def pmcontrolform_change_link_submit(request):
                         division=item_call.division,
                     ).save()
                 ####PM_SCH 저장하기###
-                    try:
-                        pm_sch_check = pmsheetdb.objects.get(pmsheetno=sheet_no)
-                    except:
+                    pm_sch_check = pmsheetdb.objects.filter(pmsheetno_temp=sheet_no)
+                    pm_sch_check = pm_sch_check.values('pmsheetno_temp')
+                    df_pm_sch_check = pd.DataFrame.from_records(pm_sch_check)
+                    pm_sch_len = len(df_pm_sch_check.index)
+                    if int(pm_sch_len) == 0:
                         pmsheetdb(
                             controlno=controlno,
                             pmsheetno_temp=sheet_no,  # 신규Sheet No. 임시입력
                             freq_temp=item_call.freq,  # 신규주기 임시입력
                             startdate_temp="New",  # 시작일자 입력
                         ).save()
-                else:
-                    ###주기만들기###
+                else:##스탠다드일때
+                ###주기만들기###
                     frequency = str(ra_call.ra) + "Month"
-                    ###sheet_no만들기###
+                ###sheet_no만들기###
                     sheet_no = str(controlno) + "-" + str(ra_call.ra) + "M"
-                    print(sheet_no)
+                    if int(ra_call.ra) == 12:
+                        sheet_no = str(controlno) + "-1Y"
+                        frequency = "1Year"
                     try:
                         item_no_call = pmmasterlist_temp.objects.filter(controlno=controlno, sheetno=sheet_no)
                         item_no_call = item_no_call.values('sheetno')
@@ -3537,13 +3557,15 @@ def pmcontrolform_change_link_submit(request):
                         division=item_call.division,
                     ).save()
                     ####PM_SCH 저장하기###
-                    try:
-                        pm_sch_check = pmsheetdb.objects.get(pmsheetno=sheet_no)
-                    except:
+                    pm_sch_check = pmsheetdb.objects.filter(pmsheetno_temp=sheet_no)
+                    pm_sch_check = pm_sch_check.values('pmsheetno_temp')
+                    df_pm_sch_check = pd.DataFrame.from_records(pm_sch_check)
+                    pm_sch_len = len(df_pm_sch_check.index)
+                    if int(pm_sch_len) == 0:
                         pmsheetdb(
                             controlno=controlno,
                             pmsheetno_temp=sheet_no,  # 신규Sheet No. 임시입력
-                            freq_temp=item_call.freq,  # 신규주기 임시입력
+                            freq_temp=frequency,  # 신규주기 임시입력
                             startdate_temp="New",  # 시작일자 입력
                         ).save()
         equip_info = equiplist.objects.get(controlno=controlno_get)
@@ -3551,8 +3573,9 @@ def pmcontrolform_change_link_submit(request):
         equip_get = equip_info.name
         pm_list = pmmasterlist.objects.filter(controlno=controlno, amd="A", pm_y_n="Y")
         view_signal = "Y"
+        comp_signal = "Y"
         context = {"team_get": team_get, "loginid": loginid, "pm_list": pm_list, "controlno_get": controlno_get,
-                    "equip_get": equip_get, "view_signal": view_signal}
+                    "equip_get": equip_get, "view_signal": view_signal,"comp_signal":comp_signal}
         return render(request, 'pmcontrolform_change_link.html', context)  # templates 내 html연결
 
 
@@ -4459,7 +4482,7 @@ def pm_fullscreen(request):
         users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
         #####완료 시그널 주기#####
         pm_comp = pm_sch.objects.get(pmcode=pmcode)  # plandate 보내기
-        if pm_comp.status == "Performed" or pm_comp.status == "Reviewed"  or pm_comp.status == "Complete" :
+        if (pm_comp.status == "Performed") or (pm_comp.status == "Reviewed")  or (pm_comp.status == "Complete") :
             comp_signal = "Y"
         else:
             comp_signal = "N"
@@ -6272,8 +6295,10 @@ def equipmentlist_main(request):
         return render(request, 'equipmentlist_main.html', context) #templates 내 html연결
 
 def equipmentlist_new(request):
+    return render(request, 'equipmentlist_new.html')  # templates 내 html연결
+
+def equipmentlist_new_submit(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
-        equiplists = equiplist.objects.all().order_by('no') #db 동기화
         controlno = request.POST.get("controlno")
         loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
@@ -6288,7 +6313,7 @@ def equipmentlist_new(request):
         try:
             equiplist.objects.get(controlno=controlno)
             messages.error(request, "The Control No. of facility is duplicated.")  # 경고
-            context = {"equiplists":equiplists, "loginid":loginid}
+            context = {"loginid":loginid}
             context.update(users)
             return render(request, 'equipmentlist_main.html', context)  # templates 내 html연결
         except:
@@ -6310,12 +6335,11 @@ def equipmentlist_new(request):
                         pq=request.POST.get("pq"),
                         pmok=request.POST.get("pmok"),
                     ).save() #저장
-            messages.error(request, "New facility registration has been completed.")
-
+            comp_signal="Y"
     # 등록완료
-            context = {"equiplists":equiplists, "loginid":loginid}
+            context = {"loginid":loginid, "comp_signal":comp_signal}
             context.update(users)
-            return render(request, 'equipmentlist_main.html', context) #templates 내 html연결
+            return render(request, 'equipmentlist_new.html', context) #templates 내 html연결
 
 
 ##############################################################################################################
@@ -6969,7 +6993,7 @@ def workrequest_r_s_accept(request):
         today_check = "20" + today.strftime('%y') + "-" + today.strftime('%m') + "-" + today.strftime('%d')
     ##설비 고장원인 사전 입력 유무 확인하기##
         detail_check = workorder.objects.get(workorderno=workorderno)
-        if detail_check.description_info != "" or detail !="":
+        if (detail_check.description_info != "") or (detail !=""):
     ##권한일치여부 확인하기##
             auth_checked = approval_information.objects.get(description="Planner", division="Work Request")
             auth_check = workorder.objects.get(workorderno=workorderno)
@@ -8441,9 +8465,11 @@ def workorder_pmcontrolform_submit(request):
         ######itemcode 만들기#####
             itemcode = sheetno + str(itemno)
         ######시트시작일 만들기#####
-            try:
-                chk = pmsheetdb.objects.get(pmsheetno_temp=sheetno)
-            except:
+            pm_sch_check = pmsheetdb.objects.filter(pmsheetno_temp=sheetno)
+            pm_sch_check = pm_sch_check.values('pmsheetno_temp')
+            df_pm_sch_check = pd.DataFrame.from_records(pm_sch_check)
+            pm_sch_len = len(df_pm_sch_check.index)
+            if int(pm_sch_len) == 0:
                 pmsheetdb(
                     controlno=controlno,
                     pmsheetno_temp = sheetno, #신규Sheet No. 임시입력
@@ -9671,16 +9697,35 @@ def partslist_pm_main(request):
         selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
         searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
         loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
-        ##이름 및 권한 끌고다니기##
+    ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
         userteam = users.userteam
         password = users.password
         auth = users.auth1
         user_div = users.user_division
+        table_signal = "Y"
         users = {"auth": auth, "password": password, "username": username, "userteam": userteam, "user_div": user_div}
-        parts_pm_list = parts_pm.objects.all()
-        context = {"loginid": loginid,"parts_pm_list":parts_pm_list}
+    ##검색어##
+        try:
+            if selecttext == "controlno":
+                parts_pm_list = parts_pm.objects.filter(controlno__icontains=searchtext,).values("itemcode", "controlno", "team", "freq", "item",
+                                                        "equipname").distinct()
+            elif selecttext == "team":
+                parts_pm_list = parts_pm.objects.filter(team__icontains=searchtext,).values("itemcode", "controlno", "team", "freq", "item",
+                                                        "equipname").distinct()
+            elif selecttext == "item":
+                parts_pm_list = parts_pm.objects.filter(item__icontains=searchtext,).values("itemcode", "controlno", "team", "freq", "item",
+                                                        "equipname").distinct()
+            else:
+                parts_pm_list = parts_pm.objects.values("itemcode", "controlno", "team", "freq", "item",
+                                                        "equipname").distinct()
+        except:
+            parts_pm_list = parts_pm.objects.values("itemcode","controlno","team","freq","item","equipname").distinct()
+        if str(searchtext) == "None":
+            searchtext = ""
+        context = {"loginid": loginid,"parts_pm_list":parts_pm_list,"table_signal":table_signal,"selecttext":selecttext,
+                   "searchtext":searchtext}
         context.update(users)
     return render(request, 'partslist_pm_main.html', context)  # templates 내 html연결
 
@@ -9751,7 +9796,7 @@ def partslist_pm_maint_submit(request):
         freq_get = request.POST.get('freq_get')  # html에서 해당 값을 받는다
         checks_var = request.POST.getlist('checks[]')
         qy_var = request.POST.getlist('qy_get[]')
-        ##이름 및 권한 끌고다니기##
+    ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
         userteam = users.userteam
@@ -9759,6 +9804,15 @@ def partslist_pm_maint_submit(request):
         auth = users.auth1
         user_div = users.user_division
         users = {"auth": auth, "password": password, "username": username, "userteam": userteam, "user_div": user_div}
+    ##시트넘/최신주기 받기만들기##
+        pmsheet_no_get = pmmasterlist.objects.get(itemcode=maint_item, pm_y_n="Y")
+        pm_sheet_no = pmsheet_no_get.sheetno
+        recent_date = pm_sch.objects.filter(pmsheetno=pm_sheet_no)
+        recent_date = recent_date.values('date')
+        df_recent_date = pd.DataFrame.from_records(recent_date)
+        recent_date_len = len(df_recent_date.index)
+        l = int(recent_date_len) - 1
+        sch_date = df_recent_date.iat[l, 0]
     ##컨트롤넘버 정보 불러오기##
         controlno_get = controlno
         freq_trans = pmmasterlist.objects.get(controlno=controlno, amd="A", pm_y_n="Y", itemcode=maint_item)
@@ -9766,48 +9820,273 @@ def partslist_pm_maint_submit(request):
         item_get = freq_trans.item
         pm_list = pmmasterlist.objects.filter(controlno=controlno, amd="A", pm_y_n="Y")
         spare_list = spare_parts_list.objects.all().order_by('team', 'codeno')
-    ##저장하기##
-        qy_len = len(qy_var)
-        for j in range(qy_len):
-            if qy_var[j] == "":
-               qy_var[j] = "N/A"
-        while 'N/A' in qy_var:
-            qy_var.remove('N/A')  # 'N/A' 삭제
-        code_len = len(checks_var)
-        qy_var_len = len(qy_var)
-        if int(code_len) != int(qy_var_len):
-            messages.error(request, "미입력되었네~")  # 경고
+    ##기입력분확인##
+        chk = parts_pm.objects.filter(itemcode=maint_item,controlno=controlno)
+        chk = chk.values('itemcode')
+        df_chk = pd.DataFrame.from_records(chk)
+        chk_len = len(df_chk.index)
+        if int(chk_len) > 0:
+            messages.error(request, "This Maintenance Item is already registered.")  # 경고
             view_signal = "Y"
             context = {"loginid": loginid, "pm_list": pm_list, "controlno_get": controlno_get, "equip_get": equip_get,
-                       "freq_get":freq_get,"item_get":item_get,"spare_list":spare_list,"view_signal":view_signal}
+                       "freq_get": freq_get, "item_get": item_get, "spare_list": spare_list, "view_signal": view_signal,
+                       "maint_item":maint_item}
             context.update(users)
             return render(request, 'partslist_pm_new.html', context)  # templates 내 html연결
         else:
-            for i in range(code_len):
-                code_no= checks_var[i]
-                qy=qy_var[i]
-                spare_get = spare_parts_list.objects.get(codeno=code_no)
-                parts_pm(
-                    team=freq_trans.team,
-                    controlno=controlno,
-                    equipname=equip_get,
-                    freq=freq_get,
-                    itemcode=maint_item,
-                    item=item_get,
-                    codeno=code_no,
-                    partname=spare_get.partname,
-                    vendor=spare_get.vendor,
-                    modelno=spare_get.modelno,
-                    qy=qy,
-                    staff=username,
-                ).save()
-            part_list = parts_pm.objects.filter(itemcode=maint_item)
-            view_signal = "Comp"
-            context = {"loginid": loginid, "pm_list": pm_list, "controlno_get": controlno_get, "equip_get": equip_get,
-                       "freq_get":freq_get,"item_get":item_get,"spare_list":spare_list,"view_signal":view_signal,
-                       "part_list":part_list}
-            context.update(users)
-            return render(request, 'partslist_pm_new.html', context)  # templates 내 html연결
+    ##저장하기##
+            qy_len = len(qy_var)
+            for j in range(qy_len):
+                if qy_var[j] == "":
+                   qy_var[j] = "N/A"
+            while 'N/A' in qy_var:
+                qy_var.remove('N/A')  # 'N/A' 삭제
+            code_len = len(checks_var)
+            qy_var_len = len(qy_var)
+            if int(code_len) != int(qy_var_len):
+                messages.error(request, "There are entries not entered.")  # 경고
+                view_signal = "Y"
+                context = {"loginid": loginid, "pm_list": pm_list, "controlno_get": controlno_get, "equip_get": equip_get,
+                           "freq_get":freq_get,"item_get":item_get,"spare_list":spare_list,"view_signal":view_signal,
+                           "maint_item": maint_item}
+                context.update(users)
+                return render(request, 'partslist_pm_new.html', context)  # templates 내 html연결
+            else:
+                for i in range(code_len):
+                    code_no= checks_var[i]
+                    qy=qy_var[i]
+                    spare_get = spare_parts_list.objects.get(codeno=code_no)
+                    parts_pm(
+                        team=freq_trans.team,
+                        controlno=freq_trans.controlno,
+                        equipname=equip_get,
+                        freq=freq_get,
+                        itemcode=maint_item,
+                        item=item_get,
+                        codeno=code_no,
+                        partname=spare_get.partname,
+                        vendor=spare_get.vendor,
+                        modelno=spare_get.modelno,
+                        location=spare_get.location,
+                        qy=qy,
+                        sch=sch_date,
+                        staff=username,
+                    ).save()
+                    spare_get.pm_link="Y"
+                    spare_get.save()
+                part_list = parts_pm.objects.filter(itemcode=maint_item)
+                view_signal = "Comp"
+                context = {"loginid": loginid, "pm_list": pm_list, "controlno_get": controlno_get, "equip_get": equip_get,
+                           "freq_get":freq_get,"item_get":item_get,"spare_list":spare_list,"view_signal":view_signal,
+                           "part_list":part_list,"maint_item":maint_item}
+                context.update(users)
+                return render(request, 'partslist_pm_new.html', context)  # templates 내 html연결
+
+def partslist_pm_view(request):
+    if request.method == 'POST':  # 매소드값이 post인 값만 받는다
+        selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
+        searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        itemcode = request.POST.get('itemcode')  # html에서 해당 값을 받는다
+    ##이름 및 권한 끌고다니기##
+        users = userinfo.objects.get(userid=loginid)
+        username = users.username
+        userteam = users.userteam
+        password = users.password
+        auth = users.auth1
+        user_div = users.user_division
+        users = {"auth": auth, "password": password, "username": username, "userteam": userteam, "user_div": user_div}
+    ##검색어##
+        try:
+            if selecttext == "controlno":
+                parts_pm_list = parts_pm.objects.filter(controlno__icontains=searchtext, ).values("itemcode",
+                                                                                                  "controlno", "team",
+                                                                                                  "freq", "item",
+                                                                                                  "equipname").distinct()
+            elif selecttext == "team":
+                parts_pm_list = parts_pm.objects.filter(team__icontains=searchtext, ).values("itemcode", "controlno",
+                                                                                             "team", "freq", "item",
+                                                                                             "equipname").distinct()
+            elif selecttext == "item":
+                parts_pm_list = parts_pm.objects.filter(item__icontains=searchtext, ).values("itemcode", "controlno",
+                                                                                             "team", "freq", "item",
+                                                                                             "equipname").distinct()
+            else:
+                parts_pm_list = parts_pm.objects.values("itemcode", "controlno", "team", "freq", "item",
+                                                        "equipname").distinct()
+        except:
+            parts_pm_list = parts_pm.objects.values("itemcode", "controlno", "team", "freq", "item",
+                                                    "equipname").distinct()
+        if str(searchtext) == "None":
+            searchtext = ""
+    ##설비점검 정보 끌고오기##
+        #1)룸명
+        info_get = pmmasterlist.objects.get(itemcode=itemcode, pm_y_n="Y")
+        roomname = info_get.roomname
+        roomno = info_get.roomno
+        sheetno = info_get.sheetno
+        check = info_get.check
+    ##스케줄 최신버전으로 업데이트하기##
+        recent_date = pm_sch.objects.filter(pmsheetno=sheetno)
+        recent_date = recent_date.values('date')
+        df_recent_date = pd.DataFrame.from_records(recent_date)
+        recent_date_len = len(df_recent_date.index)
+        l = int(recent_date_len) - 1
+        sch_date = df_recent_date.iat[l, 0]
+        ###업데이트###
+        sch_get = parts_pm.objects.filter(itemcode=itemcode)
+        sch_get = sch_get.values('no')
+        df_sch_get = pd.DataFrame.from_records(sch_get)
+        sch_get_len = len(df_sch_get.index)
+        for k in range(sch_get_len):
+            no_get = df_sch_get.iat[k, 0]
+            sch_get = parts_pm.objects.get(no=no_get)
+            sch_get.sch = sch_date
+            sch_get.save()
+    ##정보보내기##
+        maint_list = parts_pm.objects.filter(itemcode=itemcode).values("itemcode","sch","controlno","team","freq","item",
+                                                                       "equipname","staff").distinct()
+        parts_list = parts_pm.objects.filter(itemcode=itemcode)
+        context = {"loginid": loginid,"parts_pm_list":parts_pm_list,"maint_list":maint_list,"roomname":roomname
+                      ,"roomno":roomno,"sheetno":sheetno,"check":check,"parts_list":parts_list, "selecttext":selecttext,
+                   "searchtext":searchtext}
+        context.update(users)
+    return render(request, 'partslist_pm_main.html', context)  # templates 내 html연결
+
+def partslist_pm_delete(request):
+    if request.method == 'POST':  # 매소드값이 post인 값만 받는다
+        selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
+        searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        itemcode = request.POST.get('itemcode')  # html에서 해당 값을 받는다
+    ##이름 및 권한 끌고다니기##
+        users = userinfo.objects.get(userid=loginid)
+        username = users.username
+        userteam = users.userteam
+        password = users.password
+        auth = users.auth1
+        user_div = users.user_division
+        users = {"auth": auth, "password": password, "username": username, "userteam": userteam, "user_div": user_div}
+    ##검색어##
+        try:
+            if selecttext == "controlno":
+                parts_pm_list = parts_pm.objects.filter(controlno__icontains=searchtext, ).values("itemcode",
+                                                                                                  "controlno", "team",
+                                                                                                  "freq", "item",
+                                                                                                  "equipname").distinct()
+            elif selecttext == "team":
+                parts_pm_list = parts_pm.objects.filter(team__icontains=searchtext, ).values("itemcode", "controlno",
+                                                                                             "team", "freq", "item",
+                                                                                             "equipname").distinct()
+            elif selecttext == "item":
+                parts_pm_list = parts_pm.objects.filter(item__icontains=searchtext, ).values("itemcode", "controlno",
+                                                                                             "team", "freq", "item",
+                                                                                             "equipname").distinct()
+            else:
+                parts_pm_list = parts_pm.objects.values("itemcode", "controlno", "team", "freq", "item",
+                                                        "equipname").distinct()
+        except:
+            parts_pm_list = parts_pm.objects.values("itemcode", "controlno", "team", "freq", "item",
+                                                    "equipname").distinct()
+        if str(searchtext) == "None":
+            searchtext = ""
+    ##삭제하기##
+        del_get = parts_pm.objects.filter(itemcode=itemcode)
+        del_get = del_get.values('no')
+        df_del_get = pd.DataFrame.from_records(del_get)
+        del_get_len = len(df_del_get.index)
+        for k in range(del_get_len):
+            no_get = df_del_get.iat[k, 0]
+            sch_get = parts_pm.objects.get(no=no_get)
+            if (auth == "SO_S") or (username == str(sch_get.staff)):
+                sch_get.delete()
+            else:
+                messages.error(request, "You do not have permission to delete.")
+                table_signal = "Y"
+                context = {"loginid": loginid, "parts_pm_list": parts_pm_list, "table_signal": table_signal,
+                           "selecttext": selecttext,"searchtext": searchtext}
+                context.update(users)
+                return render(request, 'partslist_pm_main.html', context)  # templates 내 html연결
+        table_signal = "Y"
+        context = {"loginid": loginid,"parts_pm_list":parts_pm_list,"table_signal":table_signal,"selecttext":selecttext,
+                   "searchtext":searchtext}
+        context.update(users)
+        return render(request, 'partslist_pm_main.html', context)  # templates 내 html연결
+
+def partslist_pm_cal(request):
+##금년도sch인거 업데이트하기##
+    today = date.datetime.today()
+    today_year = "20" + today.strftime('%y') #올해 년도 구하기
+    year_get = parts_pm.objects.all()
+    year_get = year_get.values('no')
+    df_year_get = pd.DataFrame.from_records(year_get)
+    year_get_len = len(df_year_get.index)
+    for i in range(year_get_len):
+        no_get = df_year_get.iat[i, 0]
+        info_get = parts_pm.objects.get(no=no_get)
+        info_get.plan_date="" ##plan_date 값 리셋하기
+        freq = info_get.freq #주기값 불러오기
+        plan_date = info_get.sch
+        if (freq[:2] == "10") or (freq[:2] == "11") or (freq[:2] == "12"): ##계산식 할수있게 값 변형하기
+            f_num = freq[:2]
+        else:
+            f_num = freq[:1]
+        f_m_y = freq[2:4]
+        next_year = int(today_year) + 2
+        year_chk = today_year
+        plan_date_y = plan_date[:4] ##년도
+        plan_date_m = plan_date[5:] ##월
+        plan_date = date.datetime(int(plan_date_y), int(plan_date_m), 1)
+        qy_count = 0 ## pm반복횟수 초기값
+        if (f_m_y == "on") or (f_m_y == "Mo"): ##주기가 월일경우
+            while int(year_chk) < int(next_year):
+                next_plan = plan_date + relativedelta(months=int(f_num))
+                next_plandate = "20" + next_plan.strftime('%y') + "-" + next_plan.strftime('%m')
+                year_chk = "20" + next_plan.strftime('%y')
+                plan_date = next_plandate
+                plan_date_y = plan_date[:4]
+                plan_date_m = plan_date[5:]
+                plan_date = date.datetime(int(plan_date_y), int(plan_date_m), 1)
+                if int(next_plandate[:4]) == int(today_year) + 1:
+                    qy_count = qy_count + 1
+                    info_get.plan_date = info_get.plan_date +" [" + next_plandate+"] "
+                    info_get.qy_plan = int(qy_count) * int(info_get.qy)
+                    info_get.save()
+        if freq =="1Year": ##주기가 1년일 경우
+            next_plan = plan_date + relativedelta(years=1)
+            next_plandate = "20" + next_plan.strftime('%y') + "-" + next_plan.strftime('%m')
+            if int(next_plandate[:4]) == int(today_year) + 1:
+                info_get.plan_date = next_plandate
+                info_get.save()
+    next_year = int(today_year) + 1
+##수량계산하기##
+    ##리셋##
+    reset = spare_parts_list.objects.filter(~Q(req_qy=0))
+    reset = reset.values('codeno')
+    df_reset = pd.DataFrame.from_records(reset)
+    reset_len = len(df_reset.index)
+    for m in range(reset_len):
+        codeno_get = df_reset.iat[m, 0]
+        reset_get = spare_parts_list.objects.get(codeno=codeno_get)
+        reset_get.req_qy
+        reset_get.short_qy
+        reset_get.save()
+    ##수량입력##
+    spare_check = parts_pm.objects.filter(plan_date__icontains=next_year).values('codeno').annotate(Sum('qy_plan'))
+    spare_check = spare_check.values('codeno','qy_plan__sum')
+    df_spare_check = pd.DataFrame.from_records(spare_check)
+    spare_check_len = len(df_spare_check.index)
+    for j in range(spare_check_len):
+        codeno_get = df_spare_check.iat[j, 0]
+        qy_get = spare_parts_list.objects.get(codeno=codeno_get)
+        qy_get.req_qy = int(df_spare_check.iat[j, 1])
+        qy_get.short_qy = int(qy_get.stock) - int(qy_get.req_qy)
+        qy_get.save()
+    parts_list = parts_pm.objects.filter(plan_date__icontains=next_year).order_by('team','controlno','itemcode','-codeno')
+    spare_check = spare_parts_list.objects.filter(~Q(req_qy=0))
+    context = {"parts_list": parts_list,"spare_check":spare_check}
+    return render(request, 'partslist_pm_cal.html', context)  # templates 내 html연결
+
 
 ##############################################################################################################
 #################################################Test########################################################

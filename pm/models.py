@@ -315,9 +315,11 @@ class spare_parts_list(models.Model): #spare_parts_list
     stock = models.CharField(max_length=255) #재고
     staff = models.CharField(max_length=255) #담당자
     attach = models.CharField(max_length=255) #첨부파일
-    pm_link = models.CharField(max_length=255) #pm링크
+    pm_link = models.CharField(max_length=255, default="N") #pm링크
     safety_stock = models.CharField(max_length=255) #안전재고
     check_y_n_temp = models.CharField(max_length=255)  #사용여부
+    req_qy = models.CharField(max_length=255, default=0)  #요구수량
+    short_qy = models.CharField(max_length=255)  #부족수량
 
     class Meta:
         managed = False
@@ -381,6 +383,10 @@ class parts_pm(models.Model): #spare_out
     modelno = models.TextField()  # 모델명
     qy = models.CharField(max_length=255) #입고수량
     staff = models.CharField(max_length=255)  # 담당자
+    sch = models.CharField(max_length=255)  # 올해,내년도 스케줄
+    plan_date = models.CharField(max_length=255)  # 내년스케줄 계산
+    location = models.CharField(max_length=255)  # 자재위치
+    qy_plan = models.CharField(max_length=255)  # 총 필요수량
 
     class Meta:
         managed = False
