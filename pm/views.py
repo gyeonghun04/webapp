@@ -1,7 +1,7 @@
 from django.shortcuts import render, HttpResponseRedirect, reverse, HttpResponse
 from .models import pmmasterlist, equiplist, controlformlist, pmmasterlist_temp, \
     pmsheetdb, pm_sch, pmchecksheet, pm_reference, pm_manual, userinfo, workorder, approval_information, \
-    spare_parts_list, spare_in, spare_out, parts_pm
+    spare_parts_list, spare_in, spare_out, parts_pm, room_db
 from django.contrib import messages
 import datetime as date
 from django.core.mail import send_mail, EmailMessage
@@ -6297,10 +6297,18 @@ def equipmentlist_main(request):
 def equipmentlist_new(request):
     return render(request, 'equipmentlist_new.html')  # templates 내 html연결
 
-def equipmentlist_new_submit(request):
+def equipmentlist_room(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
-        controlno = request.POST.get("controlno")
         loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        roomno = request.POST.get('roomno')  # html에서 해당 값을 받는다
+        controlno = request.POST.get('controlno_give')  # html에서 해당 값을 받는다
+        team = request.POST.get('team_give')  # html에서 해당 값을 받는다
+        name = request.POST.get('name_give')  # html에서 해당 값을 받는다
+        model = request.POST.get('model_give')  # html에서 해당 값을 받는다
+        serial = request.POST.get('serial_give')  # html에서 해당 값을 받는다
+        maker = request.POST.get('maker_give')  # html에서 해당 값을 받는다
+        setupdate = request.POST.get('setupdate_give')  # html에서 해당 값을 받는다
+        pq = request.POST.get('pq_give')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -6309,14 +6317,66 @@ def equipmentlist_new_submit(request):
         auth = users.auth1
         user_div = users.user_division
         users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
-    # 중복여부 판단하기
+        if pq == "Y":
+            pq_y = "selected"
+            pq_n = ""
+        else:
+            pq_n = "selected"
+            pq_y = ""
+    ##컨트롤넘버 정보 불러오기##
         try:
-            equiplist.objects.get(controlno=controlno)
-            messages.error(request, "The Control No. of facility is duplicated.")  # 경고
-            context = {"loginid":loginid}
+            room_info = room_db.objects.get(roomno=roomno)
+            roomname_get = room_info.roomname
+            context = {"loginid": loginid, "roomno": roomno, "controlno": controlno, "team": team,"name":name,
+                       "model":model,"serial":serial,"maker":maker,"setupdate":setupdate,"roomname_get":roomname_get,
+                       "pq_y":pq_y,"pq_n":pq_n}
             context.update(users)
-            return render(request, 'equipmentlist_main.html', context)  # templates 내 html연결
         except:
+            messages.error(request, "No such Room No. exist.")  # 경고
+            context = {"loginid": loginid, "roomno": roomno, "controlno": controlno, "team": team,"name":name,
+                       "model":model,"serial":serial,"maker":maker,"setupdate":setupdate,"pq_y":pq_y,"pq_n":pq_n}
+    return render(request, 'equipmentlist_new.html', context)  # templates 내 html연결
+
+def equipmentlist_new_submit(request):
+    if request.method =='POST': #매소드값이 post인 값만 받는다
+        controlno = request.POST.get("controlno")
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        roomno = request.POST.get('roomno_get')  # html에서 해당 값을 받는다
+        team = request.POST.get('team')  # html에서 해당 값을 받는다
+        name = request.POST.get('name')  # html에서 해당 값을 받는다
+        model = request.POST.get('model')  # html에서 해당 값을 받는다
+        serial = request.POST.get('serial')  # html에서 해당 값을 받는다
+        maker = request.POST.get('maker')  # html에서 해당 값을 받는다
+        setupdate = request.POST.get('setupdate')  # html에서 해당 값을 받는다
+        pq = request.POST.get('pq')  # html에서 해당 값을 받는다
+        roomname_get = request.POST.get('roomname')  # html에서 해당 값을 받는다
+    ##이름 및 권한 끌고다니기##
+        users = userinfo.objects.get(userid=loginid)
+        username = users.username
+        userteam = users.userteam
+        password = users.password
+        auth = users.auth1
+        user_div = users.user_division
+        users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
+        if pq == "Y":
+            pq_y = "selected"
+            pq_n = ""
+        else:
+            pq_n = "selected"
+            pq_y = ""
+    # 중복여부 판단하기
+        check = equiplist.objects.filter(controlno=controlno)
+        check = check.values('controlno')
+        df_check = pd.DataFrame.from_records(check)
+        check_len = len(df_check.index)
+        if int(check_len) > 0:
+            messages.error(request, "The Control No. of facility is duplicated.")  # 경고
+            context = {"loginid":loginid,"roomno": roomno, "controlno": controlno, "team": team,"name":name,
+                       "model":model,"serial":serial,"maker":maker,"setupdate":setupdate,"roomname_get":roomname_get,
+                       "pq_y":pq_y,"pq_n":pq_n}
+            context.update(users)
+            return render(request, 'equipmentlist_new.html', context)  # templates 내 html연결
+        else:
     #입력값 저장
             today = date.datetime.today()
             today_y = "20" + today.strftime('%y')
@@ -6329,7 +6389,7 @@ def equipmentlist_new_submit(request):
                         serial=request.POST.get("serial"),
                         maker=request.POST.get("maker"),
                         roomname=request.POST.get("roomname"),
-                        roomno=request.POST.get("roomno"),
+                        roomno=request.POST.get("roomno_get"),
                         setupdate=request.POST.get("setupdate"),
                         count_y = count_y,
                         pq=request.POST.get("pq"),
@@ -6337,7 +6397,10 @@ def equipmentlist_new_submit(request):
                     ).save() #저장
             comp_signal="Y"
     # 등록완료
-            context = {"loginid":loginid, "comp_signal":comp_signal}
+            context = {"loginid":loginid, "comp_signal":comp_signal,"roomno": roomno, "controlno": controlno,
+                       "team": team,"name":name,
+                       "model":model,"serial":serial,"maker":maker,"setupdate":setupdate,"roomname_get":roomname_get,
+                       "pq_y":pq_y,"pq_n":pq_n}
             context.update(users)
             return render(request, 'equipmentlist_new.html', context) #templates 내 html연결
 
@@ -10094,8 +10157,6 @@ def partslist_pm_cal(request):
 
 def roomlist_main(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
-        selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
-        searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
         loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
@@ -10105,9 +10166,273 @@ def roomlist_main(request):
         auth = users.auth1
         user_div = users.user_division
         users = {"auth": auth, "password": password, "username": username, "userteam": userteam, "user_div": user_div}
-        context = {"loginid": loginid}
+    ###검색어 설정####
+        selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
+        searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
+        try:
+            if selecttext == "roomname":
+                room_list = room_db.objects.filter(roomname__icontains=searchtext).order_by("roomno")
+            elif selecttext == "roomno":
+                room_list = room_db.objects.filter(roomno__icontains=searchtext).order_by("roomno")
+            else:
+                room_list = room_db.objects.all().order_by("roomno")
+        except:
+            room_list = room_db.objects.all().order_by("roomno")
+        if str(searchtext) == "None":
+            searchtext = ""
+        context = {"loginid": loginid,"room_list":room_list,"selecttext":selecttext,"searchtext":searchtext}
         context.update(users)
         return render(request, 'roomlist_main.html', context)  # templates 내 html연결
+
+def roomlist_new(request):
+    return render(request, 'roomlist_new.html')
+
+def roomlist_new_submit(request):
+    if request.method == 'POST':  # 매소드값이 post인 값만 받는다
+        roomname = request.POST.get('roomname')  # html 선택조건의 값을 받는다
+        roomno = request.POST.get('roomno')  # html 입력 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+    ##이름 및 권한 끌고다니기##
+        users = userinfo.objects.get(userid=loginid)
+        username = users.username
+        userteam = users.userteam
+        password = users.password
+        auth = users.auth1
+        user_div = users.user_division
+        users = {"auth": auth, "password": password, "username": username, "userteam": userteam, "user_div": user_div}
+    ##중복여부 확인하기##
+        dup_chk =room_db.objects.filter(roomno=roomno)
+        dup_chk = dup_chk.values('no')
+        df_dup_chk = pd.DataFrame.from_records(dup_chk)
+        dup_chk_len = len(df_dup_chk.index)
+        if int(dup_chk_len) > 0:
+            messages.error(request, "Duplicate Room No.")  # 경고
+            comp_signal = "N"
+        else:
+    ##저장하기##
+            room_db(
+                roomname=roomname,
+                roomno=roomno,
+            ).save()
+            comp_signal ="Y"
+        context = {"loginid": loginid,"comp_signal":comp_signal,"roomname":roomname,"roomno":roomno}
+        context.update(users)
+        return render(request, 'roomlist_new.html', context)  # templates 내 html연결
+
+def roomlist_delete(request):
+    if request.method == 'POST':  # 매소드값이 post인 값만 받는다
+        no = request.POST.get('no')  # html 입력 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+    ##이름 및 권한 끌고다니기##
+        users = userinfo.objects.get(userid=loginid)
+        username = users.username
+        userteam = users.userteam
+        password = users.password
+        auth = users.auth1
+        user_div = users.user_division
+        users = {"auth": auth, "password": password, "username": username, "userteam": userteam, "user_div": user_div}
+    ##정보삭제하기
+        room_del = room_db.objects.get(no=no)
+        room_del.delete()
+    ###검색어 설정####
+        selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
+        searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
+        try:
+            if selecttext == "roomname":
+                room_list = room_db.objects.filter(roomname__icontains=searchtext).order_by("roomno")
+            elif selecttext == "roomno":
+                room_list = room_db.objects.filter(roomno__icontains=searchtext).order_by("roomno")
+            else:
+                room_list = room_db.objects.all().order_by("roomno")
+        except:
+            room_list = room_db.objects.all().order_by("roomno")
+        if str(searchtext) == "None":
+            searchtext = ""
+        context = {"loginid": loginid,"room_list":room_list,"selecttext":selecttext,"searchtext":searchtext}
+        context.update(users)
+        return render(request, 'roomlist_main.html', context)  # templates 내 html연결
+
+def roomlist_change(request):
+    if request.method == 'POST':  # 매소드값이 post인 값만 받는다
+        new_name = request.POST.get('new_name')  # html 선택조건의 값을 받는다
+        new_no = request.POST.get('new_no')  # html 입력 값을 받는다
+        roomno = request.POST.get('roomno')  # html 입력 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        no = request.POST.get('no')  # html 입력 값을 받는다
+    ##이름 및 권한 끌고다니기##
+        users = userinfo.objects.get(userid=loginid)
+        username = users.username
+        userteam = users.userteam
+        password = users.password
+        auth = users.auth1
+        user_div = users.user_division
+        users = {"auth": auth, "password": password, "username": username, "userteam": userteam, "user_div": user_div}
+    ##중복여부 확인하기##
+        if roomno != new_no:
+            dup_chk = room_db.objects.filter(roomno=new_no)
+            dup_chk = dup_chk.values('no')
+            df_dup_chk = pd.DataFrame.from_records(dup_chk)
+            dup_chk_len = len(df_dup_chk.index)
+            if int(dup_chk_len) > 0:
+                messages.error(request, "Duplicate Room No.")  # 경고
+            ###검색어 설정####
+                selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
+                searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
+                try:
+                    if selecttext == "roomname":
+                        room_list = room_db.objects.filter(roomname__icontains=searchtext).order_by("roomno")
+                    elif selecttext == "roomno":
+                        room_list = room_db.objects.filter(roomno__icontains=searchtext).order_by("roomno")
+                    else:
+                        room_list = room_db.objects.all().order_by("roomno")
+                except:
+                    room_list = room_db.objects.all().order_by("roomno")
+                if str(searchtext) == "None":
+                    searchtext = ""
+                context = {"loginid": loginid, "room_list": room_list,"selecttext":selecttext,"searchtext":searchtext}
+                context.update(users)
+                return render(request, 'roomlist_main.html', context)  # templates 내 html연결
+    ##값 바꾸기##
+        change_room = room_db.objects.get(no=no)
+        change_room.roomname = new_name
+        change_room.roomno = new_no
+        change_room.save()
+    ##기존 db값 바꾸기##
+        try: ##pmmasterlist
+            master_change = pmmasterlist.objects.filter(roomno=roomno, pm_y_n="Y")
+            print(master_change)
+            master_change = master_change.values('no')
+            df_master_change = pd.DataFrame.from_records(master_change)
+            master_change_len = len(df_master_change.index)
+            for i in range(master_change_len):
+                no_get = df_master_change.iat[i, 0]
+                change_info = pmmasterlist.objects.get(no=no_get, pm_y_n="Y")
+                change_info.roomname = new_name
+                change_info.roomno = new_no
+                change_info.save()
+        except:
+            pass
+        try: ##pmmasterlist_temp
+            master_change_t = pmmasterlist_temp.objects.filter(roomno=roomno)
+            master_change_t = master_change_t.values('no')
+            df_master_change_t = pd.DataFrame.from_records(master_change_t)
+            master_change_t_len = len(df_master_change_t.index)
+            for i in range(master_change_t_len):
+                no_get = df_master_change_t.iat[i, 0]
+                change_info = pmmasterlist_temp.objects.get(no=no_get)
+                change_info.roomname = new_name
+                change_info.roomno = new_no
+                change_info.save()
+        except:
+            pass
+        try: ##pm_sch
+            sch_change = pm_sch.objects.filter(roomno=roomno, actiondate_temp="Not Checked")
+            sch_change = sch_change.values('no')
+            df_sch_change = pd.DataFrame.from_records(sch_change)
+            sch_change_len = len(df_sch_change.index)
+            for i in range(sch_change_len):
+                no_get = df_sch_change.iat[i, 0]
+                change_info = pm_sch.objects.get(no=no_get)
+                change_info.roomname = new_name
+                change_info.roomno = new_no
+                change_info.save()
+        except:
+            pass
+        try: ##equiplist
+            equip_change = equiplist.objects.filter(roomno=roomno)
+            equip_change = equip_change.values('no')
+            df_equip_change = pd.DataFrame.from_records(equip_change)
+            equip_change_len = len(df_equip_change.index)
+            for i in range(equip_change_len):
+                no_get = df_equip_change.iat[i, 0]
+                change_info = equiplist.objects.get(no=no_get)
+                change_info.roomname = new_name
+                change_info.roomno = new_no
+                change_info.save()
+        except:
+            pass
+    ###검색어 설정####
+        selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
+        searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
+        try:
+            if selecttext == "roomname":
+                room_list = room_db.objects.filter(roomname__icontains=searchtext).order_by("roomno")
+            elif selecttext == "roomno":
+                room_list = room_db.objects.filter(roomno__icontains=searchtext).order_by("roomno")
+            else:
+                room_list = room_db.objects.all().order_by("roomno")
+        except:
+            room_list = room_db.objects.all().order_by("roomno")
+        if str(searchtext) == "None":
+            searchtext = ""
+        context = {"loginid": loginid,"room_list":room_list,"selecttext":selecttext,"searchtext":searchtext}
+        context.update(users)
+        return render(request, 'roomlist_main.html', context)  # templates 내 html연결
+
+def pmrefer_main(request):
+    if request.method == 'POST':  # 매소드값이 post인 값만 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+    ##이름 및 권한 끌고다니기##
+        users = userinfo.objects.get(userid=loginid)
+        username = users.username
+        userteam = users.userteam
+        password = users.password
+        auth = users.auth1
+        user_div = users.user_division
+        users = {"auth": auth, "password": password, "username": username, "userteam": userteam, "user_div": user_div}
+        pm_refer = pm_reference.objects.all()
+        context = {"loginid": loginid,"pm_refer":pm_refer}
+        context.update(users)
+        return render(request, 'pmrefer_main.html', context)  # templates 내 html연결
+
+def pmrefer_delete(request):
+    if request.method == 'POST':  # 매소드값이 post인 값만 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        no = request.POST.get('no')  # html에서 해당 값을 받는다
+    ##이름 및 권한 끌고다니기##
+        users = userinfo.objects.get(userid=loginid)
+        username = users.username
+        userteam = users.userteam
+        password = users.password
+        auth = users.auth1
+        user_div = users.user_division
+        users = {"auth": auth, "password": password, "username": username, "userteam": userteam, "user_div": user_div}
+    ##정보삭제하기
+        refer_del = pm_reference.objects.get(no=no)
+        refer_del.delete()
+        pm_refer = pm_reference.objects.all()
+        context = {"loginid": loginid,"pm_refer":pm_refer}
+        context.update(users)
+        return render(request, 'pmrefer_main.html', context)  # templates 내 html연결
+
+def pmrefer_new(request):
+    return render(request, 'pmrefer_new.html')
+
+def pmrefer_new_submit(request):
+    if request.method == 'POST':  # 매소드값이 post인 값만 받는다
+        description = request.POST.get('description')  # html 선택조건의 값을 받는다
+        freq_m_y = request.POST.get('freq_m_y')  # html 선택조건의 값을 받는다
+        m_y = request.POST.get('m_y')  # html 입력 값을 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+    ##이름 및 권한 끌고다니기##
+        users = userinfo.objects.get(userid=loginid)
+        username = users.username
+        userteam = users.userteam
+        password = users.password
+        auth = users.auth1
+        user_div = users.user_division
+        users = {"auth": auth, "password": password, "username": username, "userteam": userteam, "user_div": user_div}
+    ##저장하기##
+        pm_reference(
+                description=description,
+                freq_m_y=freq_m_y,
+                m_y=m_y,
+        ).save()
+        comp_signal ="Y"
+        pm_refer = pm_reference.objects.all()
+        context = {"loginid": loginid,"pm_refer":pm_refer,"comp_signal":comp_signal}
+        context.update(users)
+        return render(request, 'pmrefer_new.html', context)  # templates 내 html연결
 ##############################################################################################################
 #################################################Test########################################################
 ##############################################################################################################

@@ -11,25 +11,6 @@ titletext{
         font-size:20px;
         font-weight:bold;
 }
-.selecttext{
-        width:105px;
-        height:20px;
-}
-.searchtext{
-        width:200px;
-        height:20px;
-}
-.searchbutton{
-        width:60px;
-        cursor:pointer;
-        height:20px;
-}
-#searchbar{
-        position:fixed;top:4.9%; left:79.5%;
-    	font-family: arial;
-        font-family:arial;
-        font-size:10px;
-}
 
 #tablemenu{
     	font-family: arial;
@@ -58,19 +39,22 @@ tr:nth-child(even){
     background-color:#EEEEEE;
 }
 
-.m1{width:362px;
+.m0{width:400px;
+background-color:#6F6F6F;}
+.m1{width:262px;
 height:15px;
 background-color:#6F6F6F;}
-.m2{width:300px;
+.m2{width:200px;
 background-color:#6F6F6F;}
 .m3{width:200px;
 background-color:#6F6F6F;}
 .m4{height:15px;}
 
-.m1-1{width:359px;}
-.m2-1{width:299px;}
-.m1-2{width:360px;}
-.m2-2{width:300px;}
+.m0-1{width:400px;}
+.m1-1{width:259px;}
+.m2-1{width:199px;}
+.m1-2{width:260px;}
+.m2-2{width:200px;}
 .m3-1{width:200px;}
 .m3-2{width:180px;}
 
@@ -97,7 +81,7 @@ background-color:#6F6F6F;}
         width:140px;
         }
 b{
-        position:fixed;top:5.2%; left:71.5%;
+        position:fixed;top:4.9%; left:91%;
         align-text:left;
         color:black;
 }
@@ -110,8 +94,8 @@ b{
         font-color:black;
         text-decoration:underline;
 }
-.input_css1{width:320px;}
-.input_css2{width:260px;}
+.input_css1{width:220px;}
+.input_css2{width:160px;}
 </style>
 <body>
 <main>
@@ -119,35 +103,23 @@ b{
 {% include "top.html"%}
 {% include "sidetap.html"%}
 
-<titletext>Room List</titletext>
+<titletext>PM Reference</titletext>
 <b class="xi-pen"><input type="button" value="New Registration" class="new" onclick="Registration_new();"></b>
-
-<div id="searchbar">
-        <form action="roomlist_main" method="post">
-            {% csrf_token %}
-            <select class="selecttext" name="selecttext" value="{{selecttext}}">&nbsp;
-            <option value="roomname">Room Name</option>
-            <option value="roomno">Room No.</option>
-            </select>
-            <input type="search"  class="searchtext" placeholder="Keywords" name="searchtext" value="{{searchtext}}">
-            <input type="hidden" value="{{loginid}}" name="loginid">
-            <input type="submit"  class="searchbutton" value="Search"></form>
-</div>
-
 
 <div id="tablemenu">
      <table  id="tabletop" style="word-break:break-all" border="1">
         <thead>
         <tr>
+        <td align="center" class="m0" rowspan="2">Description</td>
         <td align="center" class="m4" colspan="2">Now</td>
         <td align="center" class="m4" colspan="2">Change</td>
         <td align="center" class="m4" colspan="2">Button</td>
         </tr>
         <tr>
-            <td align="center" class="m1">Room Name</td>
-            <td align="center" class="m2">Room No.</td>
-            <td align="center" class="m1">Room Name</td>
-            <td align="center" class="m2">Room No.</td>
+            <td align="center" class="m1">Frequency</td>
+            <td align="center" class="m2">Month or Year</td>
+            <td align="center" class="m1">Frequency</td>
+            <td align="center" class="m2">Month or Year</td>
             <td align="center" class="m3">Change</td>
             <td align="center" class="m3">Delete</td>
         </tr>
@@ -157,28 +129,29 @@ b{
 <div id="tabledesc">
  <table style="word-break:break-all">
      <tbody>
-            {% for room_lists in room_list %}
+            {% for pm_refers in pm_refer %}
         <tr>
-            <td align="center" class="m1-1">{{room_lists.roomname}}</td>
-            <td align="center" class="m2-1">{{room_lists.roomno}}</td>
-            <form action="roomlist_change" method="post">
+            <td align="center" class="m0-1">{{pm_refers.description}}</td>
+            <td align="center" class="m1-1">{{pm_refers.freq_m_y}}</td>
+            <td align="center" class="m2-1">{{pm_refers.m_y}}</td>
+            <form action="pmrefer_change" method="post">
                     {% csrf_token %}
             <td align="center" class="m1-2">
-                <input type="text" name="new_name" class="input_css1" required></td>
+                <input type="text" name="new_freq" class="input_css1" required></td>
             <td align="center" class="m2-2">
-                <input type="text" name="new_no" class="input_css2" required></td>
+                <input type="text" name="new_my" class="input_css2" required></td>
             <td align="center" class="m3-1">
                 <input type="hidden" value="{{loginid}}" name="loginid">
                 <input type="hidden" value="{{loginid}}" id="loginid_up">
-                <input type="hidden" value="{{room_lists.roomno}}" name="roomno">
-                <input type="hidden" value="{{room_lists.no}}" name="no">
+                <input type="hidden" value="{{pm_refers.freq_m_y}}" name="m_y">
+                <input type="hidden" value="{{pm_refers.no}}" name="no">
                 <input type="submit" class="delete_button" value="Change"></form>
             </td>
             <td align="center" class="m3-2">
-                <form action="roomlist_delete" method="post">
+                <form action="pmrefer_delete" method="post">
                     {% csrf_token %}
                 <input type="hidden" value="{{loginid}}" name="loginid">
-                <input type="hidden" value="{{room_lists.no}}" name="no">
+                <input type="hidden" value="{{pm_refers.no}}" name="no">
                 <input type="submit" class="delete_button" value="Delete"></form>
             </td>
         </tr>
@@ -194,8 +167,8 @@ b{
 
     function Registration_new(){
                         // 팝업창열기
-            var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=380, height=180, left=50, top=10';
-            window.open("/roomlist_new", "Room Information Registration", settings);
+            var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=380, height=220, left=50, top=10';
+            window.open("/pmrefer_new", "PM Reference Registration", settings);
     }
 </script>
 </body>

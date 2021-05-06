@@ -220,7 +220,13 @@ urlpatterns = [
 ####Information####
     path('equipmentlist_main', pm.views.equipmentlist_main, name='equipmentlist_main'),
     path('equipmentlist_new', pm.views.equipmentlist_new, name='equipmentlist_new'),
+    path('equipmentlist_room', pm.views.equipmentlist_room, name='equipmentlist_room'),
     path('equipmentlist_new_submit', pm.views.equipmentlist_new_submit, name='equipmentlist_new_submit'),
+    path('roomlist_main', pm.views.roomlist_main, name='roomlist_main'),
+    path('roomlist_new', pm.views.roomlist_new, name='roomlist_new'),
+    path('roomlist_new_submit', pm.views.roomlist_new_submit, name='roomlist_new_submit'),
+    path('roomlist_change', pm.views.roomlist_change, name='roomlist_change'),
+    path('roomlist_delete', pm.views.roomlist_delete, name='roomlist_delete'),
 
     ####테스트용####
     path('temp', pm.views.temp, name='temp'),
@@ -240,8 +246,11 @@ urlpatterns = [
     path('user_info_change', pm.views.user_info_change, name='user_info_change'),
     path('user_info_change_submit', pm.views.user_info_change_submit, name='user_info_change_submit'),
     path('user_info_change_delete', pm.views.user_info_change_delete, name='user_info_change_delete'),
-    path('roomlist_main', pm.views.roomlist_main, name='roomlist_main'),
-
+    path('pmrefer_main', pm.views.pmrefer_main, name='pmrefer_main'),
+    path('pmrefer_new', pm.views.pmrefer_new, name='pmrefer_new'),
+    path('pmrefer_new_submit', pm.views.pmrefer_new_submit, name='pmrefer_new_submit'),
+    #path('pmrefer_change', pm.views.pmrefer_change, name='pmrefer_change'),
+    path('pmrefer_delete', pm.views.pmrefer_delete, name='pmrefer_delete'),
 
 ]
 if settings.DEBUG:

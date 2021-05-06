@@ -391,3 +391,12 @@ class parts_pm(models.Model): #spare_out
     class Meta:
         managed = False
         db_table = 'parts_pm'
+
+class room_db(models.Model): #spare_out
+    no = models.AutoField(primary_key=True) #순번
+    roomname = models.CharField(max_length=255)  # 담당자
+    roomno = models.CharField(max_length=255)  # 담당자
+
+    class Meta:
+        managed = False
+        db_table = 'room_db'

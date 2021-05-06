@@ -137,55 +137,55 @@ title_text{
         <tr>
             <td align="center" class="text_css">Control No.</td>
             <td align="left">
-            <input type="text" name="controlno"  class="input_css" required ></td>
+            <input type="text" name="controlno" value="{{controlno}}" class="input_css" required ></td>
             </td>
         </tr>
         <tr>
             <td align="center" class="text_css">Team</td>
             <td align="center">
-            <input type="text" name="team"  class="input_css" required ></td>
+            <input type="text" name="team" value="{{team}}" class="input_css" required ></td>
         </tr>
         <tr>
             <td align="center" class="text_css">Equip. Name</td>
             <td align="center">
-            <input type="text" name="name"  class="input_css" required ></td>
+            <input type="text" name="name" value="{{name}}" class="input_css" required ></td>
         </tr>
         <tr>
             <td align="center" class="text_css">Model Name</td>
             <td align="center">
-            <input type="text" name="model"  class="input_css" required></td>
+            <input type="text" name="model" value="{{model}}" class="input_css" required></td>
         </tr>
         <tr>
             <td align="center" class="text_css">Serial No.</td>
             <td align="center">
-            <input type="text" name="serial"  class="input_css" required></td>
+            <input type="text" name="serial" value="{{serial}}" class="input_css" required></td>
         </tr>
         <tr>
             <td align="center" class="text_css">Manufacturer</td>
             <td align="center">
-            <input type="text" name="maker"  class="input_css" required ></td>
+            <input type="text" name="maker" value="{{maker}}" class="input_css" required ></td>
         </tr>
         <tr>
             <td align="center" class="text_css">Room No.</td>
             <td align="center">
-            <input type="text" name="roomno"  class="input_css" required></td>
+            <input type="text" name="roomno_get"  class="input_css" value="{{roomno}}" onchange="Room_no();" required></td>
         </tr>
         <tr>
             <td align="center" class="text_css">Room Name</td>
             <td align="center">
-            <input type="text" name="roomname"  value="{{roomname}}" class="input_css" readonly></td>
+            <input type="text" name="roomname"  value="{{roomname_get}}" class="input_css" readonly></td>
         </tr>
                <tr>
             <td align="center" class="text_css">Setup Year</td>
             <td align="center">
-            <input type="text" name="setupdate"  placeholder="YYYY" class="input_css" required></td>
+            <input type="text" name="setupdate" value="{{setupdate}}" placeholder="YYYY" class="input_css" required></td>
         </tr>
         <tr>
             <td align="center" class="text_css">PQ</td>
             <td align="left">
                  <select class="pq_css" name="pq">&nbsp;
-                 <option value="Y">Y</option>
-                 <option value="N">N</option></select>
+                 <option value="Y" {{pq_y}}>Y</option>
+                 <option value="N" {{pq_n}}>N</option></select>
             <td>
         </tr>
    </table>
@@ -193,6 +193,20 @@ title_text{
     <input type="hidden" name="loginid">
 <input type="submit" class="submit_btn" value="Submit"></form>
 <input type="hidden" value="{{comp_signal}}" name="comp_signal">
+
+<form name="roomno_form" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="loginid">
+    <input type="hidden" name="roomno">
+    <input type="hidden" name="controlno_give">
+    <input type="hidden" name="team_give">
+    <input type="hidden" name="name_give">
+    <input type="hidden" name="model_give">
+    <input type="hidden" name="serial_give">
+    <input type="hidden" name="maker_give">
+    <input type="hidden" name="setupdate_give">
+    <input type="hidden" name="pq_give">
+</form>
 
 <script>
 
@@ -213,7 +227,34 @@ title_text{
       onload=init
 
     function Close(){
-    self.close();
+            self.close();
+    }
+
+    function Room_no(){
+            var roomno= document.getElementsByName('roomno_get')[0].value;
+            var controlno= document.getElementsByName('controlno')[0].value;
+            var team= document.getElementsByName('team')[0].value;
+            var name= document.getElementsByName('name')[0].value;
+            var model= document.getElementsByName('model')[0].value;
+            var serial= document.getElementsByName('serial')[0].value;
+            var maker= document.getElementsByName('maker')[0].value;
+            var setupdate= document.getElementsByName('setupdate')[0].value;
+            var pq= document.getElementsByName('pq')[0].value;
+            loginid = opener.document.getElementById("loginid_up").value;
+                // 값보내기
+            document.roomno_form.loginid.value = loginid;
+            document.roomno_form.roomno.value = roomno;
+            document.roomno_form.controlno_give.value = controlno;
+            document.roomno_form.team_give.value = team;
+            document.roomno_form.model_give.value = model;
+            document.roomno_form.serial_give.value = serial;
+            document.roomno_form.maker_give.value = maker;
+            document.roomno_form.setupdate_give.value = setupdate;
+            document.roomno_form.pq_give.value = pq;
+            document.roomno_form.name_give.value = name;
+                // 서버연결
+            document.roomno_form.action="equipmentlist_room";
+            document.roomno_form.submit();
     }
 
 </script>
