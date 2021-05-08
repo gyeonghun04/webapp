@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% include "css.html"%}
+{% include "top.html"%}
+{% include "sidetap.html"%}
+
+{% if signal == "BM"%}
+{% include "report_table_bm.html"%}
+{% elif signal == "SP"%}
+{% include "report_table_sp.html"%}
+{% else %}
+{% include "report_table_pm.html"%}
+{%endif%}
+</body>
+</html>

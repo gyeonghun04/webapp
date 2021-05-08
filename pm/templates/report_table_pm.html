@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+#_radius{
+        box-shadow: 3px 4px 0px 0px #A9A9A9;
+        position:fixed;top:75px; left:180px;
+        border:2px solid #EEEEEE;
+        border-radius:1%;
+        width:1720px;
+        height:880px;
+    }
+#btn{
+position:fixed;top:43px; left:190px;}
+.Button2 {
+        font-family:'Rubik', sans-serif;
+        font-size:16px;
+        background-color: rgba(255, 255, 255, 0.0);
+        cursor:pointer;
+        border:0px;
+        font-color:black;
+        padding-left:4%;
+        outline:0;
+}
+.Button3{
+        font-family:'Rubik', sans-serif;
+        font-size:16px;
+        background-color: #EEEEEE;
+        cursor:pointer;
+        border:0px;
+        font-color:black;
+        padding-left:4%;
+        outline:0;
+        height:30px;
+}
+.pm_chart_css{
+        position:fixed;top:60px; left:170px;
+        z-index:-10;}
+
+.pm_pie_css{
+        position:fixed;top:30px; left:1100px;
+        z-index:-20;}
+</style>
+<body>
+<div id="btn">
+    <table>
+        <tr>
+            <td>
+                    <form action="report_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value="{{loginid}}" name="loginid">
+        <input type="submit"value="Preventive Maintenance" class="Button3"></form>
+            </td>
+            <td>
+                    <form action="report_table_bm" method="post">
+        {% csrf_token %}
+        <input type="hidden" value="{{loginid}}" name="loginid">
+        <input type="submit"value="Breakdown Maintenance" class="Button2"></form>
+            </td>
+        <td>
+                     <form action="report_table_sp" method="post">
+        {% csrf_token %}
+        <input type="hidden" value="{{loginid}}" name="loginid">
+        <input type="submit"value="Spare Parts" class="Button2"></form>
+            </td>
+        </tr>
+    </table>
+</div>
+<div id="_radius" ></div>
+<div id="pm_data" ></div>
+
+{% load static %}
+        <img src="{% static 'pm_chart_report.png' %}" alt="My image" height="500" width="1000" class="pm_chart_css">
+
+{% load static %}
+        <img src="{% static 'pm_chart_pie.png' %}" alt="My image" height="550" width="750" class="pm_pie_css">
+</body>
+</html>

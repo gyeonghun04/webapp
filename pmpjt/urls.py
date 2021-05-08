@@ -252,6 +252,15 @@ urlpatterns = [
     #path('pmrefer_change', pm.views.pmrefer_change, name='pmrefer_change'),
     path('pmrefer_delete', pm.views.pmrefer_delete, name='pmrefer_delete'),
 
+##########################################################################################################################################
+##########################################################################################################################################
+####기타####
+    path('report_main', pm.views.report_main, name='report_main'),
+    path('report_table_bm', pm.views.report_table_bm, name='report_table_bm'),
+    path('report_table_sp', pm.views.report_table_sp, name='report_table_sp'),
+
+
+
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -411,7 +411,7 @@ i{
 </tr><br>
         <tr>
 <br><i class="xi-library-bookmark"><text>&nbsp;Report</text></i><br>
-    <form action="" method="post">
+    <form action="report_main" method="post">
         {% csrf_token %}
         <input type="hidden" value="{{loginid}}" name="loginid">
         <input type="submit"value="Report(개발중)" class="Button"></form><br>

@@ -155,6 +155,10 @@ text-decoration: underline;
         width:600px;
         height:450px;
     }
+.pm_chart_css{
+        position:fixed;top:500px; left:160px;
+        z-index:-10;
+}
 #bmchart_radius{
         box-shadow: 3px 4px 0px 0px #A9A9A9;
         position:fixed;top:500px; left:800px;
@@ -163,6 +167,10 @@ text-decoration: underline;
         width:600px;
         height:450px;
     }
+.bm_chart_css{
+        position:fixed;top:500px; left:780px;
+        z-index:-10;
+}
 #mypage_radius{
         box-shadow: 3px 4px 0px 0px #A9A9A9;
         position:fixed;top:500px; left:1420px;
@@ -493,13 +501,17 @@ a{
 
 <div id="pmchart_radius" >
     &nbsp;&nbsp;<a class="xi-chart-bar"><text_main>&nbsp;Preventive Maintenance Chart</text_main></a>
-    <br> &nbsp;&nbsp; &nbsp;&nbsp;(개발중)
+    <br> &nbsp;&nbsp; &nbsp;&nbsp;
 </div>
+{% load static %}
+        <img src="{% static 'pm_chart.png' %}" alt="My image" height="450" width="650" class="pm_chart_css">
 
 <div id="bmchart_radius" >
         &nbsp;&nbsp;<a class="xi-equalizer-thin"><text_main>&nbsp;Work Order Chart</text_main></a>
-     <br> &nbsp;&nbsp; &nbsp;&nbsp;(개발중)
+     <br> &nbsp;&nbsp; &nbsp;&nbsp;
 </div>
+{% load static %}
+        <img src="{% static 'bm_chart.png' %}" alt="My image" height="450" width="650" class="bm_chart_css">
 
 <div id="mypage_radius" >
         &nbsp;&nbsp;<a class="xi-profile"><text_main>&nbsp;My Page</text_main></a>

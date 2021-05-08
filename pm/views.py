@@ -7,7 +7,7 @@ import datetime as date
 from django.core.mail import send_mail, EmailMessage
 import pandas as pd
 import numpy as np
-#import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 from django.db.models import Q, Max
 from dateutil.relativedelta import relativedelta
 from django.core.files.storage import FileSystemStorage
@@ -277,6 +277,118 @@ def main(request):
                 order_cont.update(request_cont)
                 context = {"loginid": loginid}
                 context.update(order_cont)
+            #####4)PM그래프 그리기####
+                try:
+                    plt.figure(1)
+                    today = date.datetime.today()
+                    this_year = "20" + today.strftime('%y')  # 올해 년도 구하기
+                    month = [this_year + "-01",this_year + "-02",this_year + "-03",this_year + "-04",this_year + "-05",this_year + "-06",
+                                 this_year + "-07",this_year + "-08",this_year + "-09",this_year + "-10",this_year + "-11",this_year + "-12"]
+                    team_info = pm_sch.objects.filter(date__icontains=this_year).values('team').annotate(Count('team'))
+                    team_info = team_info.values('team')
+                    df_team_info = pd.DataFrame.from_records(team_info)
+                    team_info_len = len(df_team_info.index)
+                    for i in range(team_info_len):
+                        team = df_team_info.iat[i, 0]
+                        k = 0
+                        team_date =[]
+                        while k < 12:
+                             date_team = month[k]
+                             count = pm_sch.objects.filter(date=date_team, team=team)
+                             count = count.values('team')
+                             df_count = pd.DataFrame.from_records(count)
+                             count_len = len(df_count.index)
+                             team_date.append(count_len)
+                             k = k + 1
+                        if i==0:
+                            color='red'
+                        elif i==1:
+                            color='green'
+                        elif i==2:
+                            color='blue'
+                        elif i==3:
+                            color='yellow'
+                        elif i==4:
+                            color='purple'
+                        elif i==5:
+                            color='orange'
+                        elif i==6:
+                            color='pink'
+                        else:
+                            color='grey'
+                        i = plt.plot(['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May.', 'Jun.', 'Jul.', 'Aug.', 'Sept.', 'Oct.', 'Nov.', 'Dec.'],
+                                    team_date, color=color, marker='.',label=team)
+                    j=0
+                    total_date =[]
+                    while j < 12:
+                        date_team = month[j]
+                        count = pm_sch.objects.filter(date=date_team)
+                        count = count.values('team')
+                        df_count = pd.DataFrame.from_records(count)
+                        count_len = len(df_count.index)
+                        total_date.append(count_len)
+                        j = j + 1
+                    p1 = plt.bar(['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May.', 'Jun.', 'Jul.', 'Aug.', 'Sept.', 'Oct.', 'Nov.', 'Dec.'],
+                             total_date, color='coral', width=0.5, label='Total')
+                    j = 0
+                    comp_date = []
+                    while j < 12:
+                        date_team = month[j]
+                        count = pm_sch.objects.filter(date=date_team, status="Complete")
+                        count = count.values('team')
+                        df_count = pd.DataFrame.from_records(count)
+                        count_len = len(df_count.index)
+                        comp_date.append(count_len)
+                        j = j + 1
+                    p2 = plt.bar(['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May.', 'Jun.', 'Jul.', 'Aug.', 'Sept.', 'Oct.', 'Nov.', 'Dec.'],
+                            comp_date, color='dodgerblue', width=0.5, label='Complete')
+                    plt.xlabel('[Date]')
+                    plt.ylabel('[PM Count]')
+                    plt.legend((p1[0],p2[0]), ('Total','Complete'))
+                    plt.savefig('./static/pm_chart.png')
+                except:
+                    pass
+            ###5)BM그래프 그리기####
+                try:
+                    plt.figure(2)
+                    today = date.datetime.today()
+                    this_year = "20" + today.strftime('%y')  # 올해 년도 구하기
+                    month = [this_year + "-01", this_year + "-02", this_year + "-03", this_year + "-04", this_year + "-05",
+                             this_year + "-06",
+                             this_year + "-07", this_year + "-08", this_year + "-09", this_year + "-10", this_year + "-11",
+                             this_year + "-12"]
+                    j = 0
+                    total_bm = []
+                    while j < 12:
+                        date_team = month[j]
+                        count = workorder.objects.filter(date__icontains=date_team)
+                        count = count.values('team')
+                        df_count = pd.DataFrame.from_records(count)
+                        count_len = len(df_count.index)
+                        total_bm.append(count_len)
+                        j = j + 1
+                    p20 = plt.bar(['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May.', 'Jun.', 'Jul.', 'Aug.', 'Sept.', 'Oct.', 'Nov.',
+                             'Dec.'],
+                            total_bm, color='coral', width=0.5, label='Request')
+                    i = 0
+                    comp_bm = []
+                    while i < 12:
+                        date_team = month[i]
+                        count = workorder.objects.filter(action_date__icontains=date_team, status='Completed')
+                        count = count.values('team')
+                        df_count = pd.DataFrame.from_records(count)
+                        count_len = len(df_count.index)
+                        comp_bm.append(count_len)
+                        i = i + 1
+                    p21 = plt.plot(['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May.', 'Jun.', 'Jul.', 'Aug.', 'Sept.', 'Oct.', 'Nov.',
+                             'Dec.'],
+                            comp_bm, color='dodgerblue', marker='o',label='Complete')
+                    plt.xlabel('[Date]')
+                    plt.ylabel('[BM Count]')
+                    plt.legend((p20[0],p21[0]), ('Request','Complete'))
+                    plt.savefig('./static/bm_chart.png')
+                except:
+                    pass
                 return render(request, 'main.html', context)  # templates 내 html연결
             else:
                 messages.error(request, "The password does not match.")  # 경고
@@ -10466,3 +10578,170 @@ def temp(request):
     #fullname = ean.save(test)
     return render(request, 'temp.html') #templates 내 html연결
 
+##############################################################################################################
+#################################################info.########################################################
+##############################################################################################################
+
+def report_main(request):
+    if request.method =='POST': #매소드값이 post인 값만 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+    ##이름 및 권한 끌고다니기##
+        users = userinfo.objects.get(userid=loginid)
+        username = users.username
+        userteam = users.userteam
+        password = users.password
+        auth = users.auth1
+        user_div = users.user_division
+        users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
+    ####그래프 그리기####
+        plt.figure(4)
+        today = date.datetime.today()
+        this_year = "20" + today.strftime('%y')  # 올해 년도 구하기
+        month = [this_year + "-01", this_year + "-02", this_year + "-03", this_year + "-04", this_year + "-05",
+                 this_year + "-06",
+                 this_year + "-07", this_year + "-08", this_year + "-09", this_year + "-10", this_year + "-11",
+                 this_year + "-12"]
+        team_info = pm_sch.objects.filter(date__icontains=this_year).values('team').annotate(Count('team'))
+        team_info = team_info.values('team')
+        df_team_info = pd.DataFrame.from_records(team_info)
+        team_info_len = len(df_team_info.index)
+        for i in range(team_info_len):
+            team = df_team_info.iat[i, 0]
+            k = 0
+            team_date = []
+            while k < 12:
+                date_team = month[k]
+                count = pm_sch.objects.filter(date=date_team, team=team)
+                count = count.values('team')
+                df_count = pd.DataFrame.from_records(count)
+                count_len = len(df_count.index)
+                team_date.append(count_len)
+                k = k + 1
+            if i == 0:
+                color = 'lightsalmon'
+            elif i == 1:
+                color = 'lightgreen'
+            elif i == 2:
+                color = 'lightblue'
+            elif i == 3:
+                color = 'yellow'
+            elif i == 4:
+                color = 'violet'
+            elif i == 5:
+                color = 'orange'
+            elif i == 6:
+                color = 'pink'
+            else:
+                color = 'grey'
+            i = plt.plot(
+                ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May.', 'Jun.', 'Jul.', 'Aug.', 'Sept.', 'Oct.', 'Nov.', 'Dec.'],
+                team_date, color=color, marker='.', label=team)
+        j = 0
+        total_date = []
+        while j < 12:
+            date_team = month[j]
+            count = pm_sch.objects.filter(date=date_team)
+            count = count.values('team')
+            df_count = pd.DataFrame.from_records(count)
+            count_len = len(df_count.index)
+            total_date.append(count_len)
+            j = j + 1
+        p1 = plt.bar(['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May.', 'Jun.', 'Jul.', 'Aug.', 'Sept.', 'Oct.', 'Nov.', 'Dec.'],
+                     total_date, color='red', width=0.5, label='Total')
+        j = 0
+        comp_date = []
+        while j < 12:
+            date_team = month[j]
+            count = pm_sch.objects.filter(date=date_team, status="Complete")
+            count = count.values('team')
+            df_count = pd.DataFrame.from_records(count)
+            count_len = len(df_count.index)
+            comp_date.append(count_len)
+            j = j + 1
+        p2 = plt.bar(['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May.', 'Jun.', 'Jul.', 'Aug.', 'Sept.', 'Oct.', 'Nov.', 'Dec.'],
+                     comp_date, color='dodgerblue', width=0.5, label='Complete')
+        plt.xlabel('[Date]')
+        plt.ylabel('[PM Count]')
+        plt.legend((p1[0], p2[0]), ('Total', 'Complete'))
+        plt.savefig('./static/pm_chart_report.png')
+        plt.figure(3)
+        team_info = pm_sch.objects.filter(date__icontains=this_year).values('team').annotate(Count('team'))
+        team_info = team_info.values('team')
+        df_team_info = pd.DataFrame.from_records(team_info)
+        team_info_len = len(df_team_info.index)
+        k = 0
+        team_x = []
+        count_y = []
+        explode = []
+        color_list = []
+        while k < int(team_info_len):
+            team_get = df_team_info.iat[k, 0]
+        ###x축 list
+            team_x.append(team_get)
+            team_infos = pm_sch.objects.filter(date__icontains=this_year, team=team_get)
+            team_infos = team_infos.values('team')
+            df_team_infos = pd.DataFrame.from_records(team_infos)
+            team_infos_len = len(df_team_infos.index)
+        ###y축 list
+            count_y.append(team_infos_len)
+        ###띄우기 list
+            exp = 0.05
+            explode.append(exp)
+        ###컬러 list
+            if k == 0:
+                color = 'lightsalmon'
+            elif k == 1:
+                color = 'lightgreen'
+            elif k == 2:
+                color = 'lightblue'
+            elif k == 3:
+                color = 'yellow'
+            elif k == 4:
+                color = 'violet'
+            elif k == 5:
+                color = 'orange'
+            elif k == 6:
+                color = 'pink'
+            else:
+                color = 'grey'
+            color_list.append(color)
+            k = k + 1
+        plt.pie(count_y, labels=team_x, autopct='%.1f%%', startangle=260, counterclock=False, explode=explode, shadow=True, colors=color_list)
+        plt.savefig('./static/pm_chart_pie.png')
+        context = {"loginid":loginid}
+        context.update(users)
+        return render(request, 'report_main.html', context) #templates 내 html연결
+
+def report_table_sp(request):
+    if request.method =='POST': #매소드값이 post인 값만 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+    ##이름 및 권한 끌고다니기##
+        users = userinfo.objects.get(userid=loginid)
+        username = users.username
+        userteam = users.userteam
+        password = users.password
+        auth = users.auth1
+        user_div = users.user_division
+        signal = "SP"
+        users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
+        context = {"loginid":loginid,"signal":signal}
+        context.update(users)
+        return render(request, 'report_main.html', context) #templates 내 html연결
+
+
+def report_table_bm(request):
+    if request.method == 'POST':  # 매소드값이 post인 값만 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+    ##이름 및 권한 끌고다니기##
+        users = userinfo.objects.get(userid=loginid)
+        username = users.username
+        userteam = users.userteam
+        password = users.password
+        auth = users.auth1
+        user_div = users.user_division
+        signal = "BM"
+        users = {"auth": auth, "password": password, "username": username, "userteam": userteam, "user_div": user_div}
+    ##그래프 그리기##
+        context = {"loginid": loginid, "signal": signal}
+        context.update(users)
+        return render(request, 'report_main.html', context)  # templates 내 html연결
