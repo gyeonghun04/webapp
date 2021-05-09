@@ -51,12 +51,18 @@ position:fixed;top:43px; left:190px;}
         <input type="hidden" value="{{loginid}}" name="loginid">
         <input type="submit"value="Preventive Maintenance" class="Button2"></form>
             </td>
+        <td>
+            &nbsp;
+        </td>
             <td>
                     <form action="report_table_bm" method="post">
         {% csrf_token %}
         <input type="hidden" value="{{loginid}}" name="loginid">
         <input type="submit"value="Breakdown Maintenance" class="Button3"></form>
             </td>
+        <td>
+            &nbsp;
+        </td>
         <td>
                      <form action="report_table_sp" method="post">
         {% csrf_token %}

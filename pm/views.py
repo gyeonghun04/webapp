@@ -10660,10 +10660,9 @@ def report_main(request):
             j = j + 1
         p2 = plt.bar(['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May.', 'Jun.', 'Jul.', 'Aug.', 'Sept.', 'Oct.', 'Nov.', 'Dec.'],
                      comp_date, color='dodgerblue', width=0.5, label='Complete')
-        plt.xlabel('[Date]')
-        plt.ylabel('[PM Count]')
         plt.legend((p1[0], p2[0]), ('Total', 'Complete'))
         plt.savefig('./static/pm_chart_report.png')
+    ####파이테이블######
         plt.figure(3)
         team_info = pm_sch.objects.filter(date__icontains=this_year).values('team').annotate(Count('team'))
         team_info = team_info.values('team')
@@ -10708,7 +10707,201 @@ def report_main(request):
             k = k + 1
         plt.pie(count_y, labels=team_x, autopct='%.1f%%', startangle=260, counterclock=False, explode=explode, shadow=True, colors=color_list)
         plt.savefig('./static/pm_chart_pie.png')
-        context = {"loginid":loginid}
+    #####정보보내기####
+        team_total = equiplist.objects.filter(pmok="Y")
+        team_total = team_total.values('team')
+        df_team_total = pd.DataFrame.from_records(team_total)
+        team_total_len = len(df_team_total.index)
+        team_table = equiplist.objects.filter(pmok="Y").values('team').annotate(Count('team'))
+    #########
+        today = date.datetime.today()
+        this_year = "20" + today.strftime('%y')  # 올해 년도 구하기
+        this_month = [this_year + "-01", this_year + "-02", this_year + "-03", this_year + "-04", this_year + "-05",
+                        this_year + "-06", this_year + "-07", this_year + "-08", this_year + "-09", this_year + "-10",
+                      this_year + "-11", this_year + "-12"]
+        team_infos = pm_sch.objects.filter(date__icontains=this_year).values('team').annotate(Count('team'))
+        team_infos = team_infos.values('team')
+        df_team_infos = pd.DataFrame.from_records(team_infos)
+        team_infos_len = len(df_team_infos.index)
+        k=0
+        team_get=[]
+        while k < team_infos_len:
+            team = df_team_infos.iat[k,0]
+            team_get.append(team)
+            k = k + 1
+        try:
+            j=0
+            month_1=[]
+            while j < 12:
+                month = this_month[j]
+                pm_1 = pm_sch.objects.filter(team=team_get[0], date__icontains=month)
+                pm_1 = pm_1.values('team')
+                df_pm_1 = pd.DataFrame.from_records(pm_1)
+                pm_1_len = len(df_pm_1.index)
+                month_1.append(pm_1_len)
+                j = j + 1
+        except:
+            pass
+        try:
+            j = 0
+            month_2 = []
+            while j < 12:
+                month = this_month[j]
+                pm_1 = pm_sch.objects.filter(team=team_get[1], date__icontains=month)
+                pm_1 = pm_1.values('team')
+                df_pm_1 = pd.DataFrame.from_records(pm_1)
+                pm_1_len = len(df_pm_1.index)
+                month_2.append(pm_1_len)
+                j = j + 1
+        except:
+            pass
+        try:
+            j = 0
+            month_3 = []
+            while j < 12:
+                month = this_month[j]
+                pm_1 = pm_sch.objects.filter(team=team_get[2], date__icontains=month)
+                pm_1 = pm_1.values('team')
+                df_pm_1 = pd.DataFrame.from_records(pm_1)
+                pm_1_len = len(df_pm_1.index)
+                month_3.append(pm_1_len)
+                j = j + 1
+        except:
+            pass
+        try:
+            j = 0
+            month_4 = []
+            while j < 12:
+                month = this_month[j]
+                pm_1 = pm_sch.objects.filter(team=team_get[3], date__icontains=month)
+                pm_1 = pm_1.values('team')
+                df_pm_1 = pd.DataFrame.from_records(pm_1)
+                pm_1_len = len(df_pm_1.index)
+                month_4.append(pm_1_len)
+                j = j + 1
+        except:
+            pass
+        try:
+            j = 0
+            month_5 = []
+            while j < 12:
+                month = this_month[j]
+                pm_1 = pm_sch.objects.filter(team=team_get[4], date__icontains=month)
+                pm_1 = pm_1.values('team')
+                df_pm_1 = pd.DataFrame.from_records(pm_1)
+                pm_1_len = len(df_pm_1.index)
+                month_5.append(pm_1_len)
+                j = j + 1
+        except:
+            pass
+        try:
+            j = 0
+            month_6 = []
+            while j < 12:
+                month = this_month[j]
+                pm_1 = pm_sch.objects.filter(team=team_get[5], date__icontains=month)
+                pm_1 = pm_1.values('team')
+                df_pm_1 = pd.DataFrame.from_records(pm_1)
+                pm_1_len = len(df_pm_1.index)
+                month_6.append(pm_1_len)
+                j = j + 1
+        except:
+            pass
+        try:
+            j = 0
+            month_7 = []
+            while j < 12:
+                month = this_month[j]
+                pm_1 = pm_sch.objects.filter(team=team_get[6], date__icontains=month)
+                pm_1 = pm_1.values('team')
+                df_pm_1 = pd.DataFrame.from_records(pm_1)
+                pm_1_len = len(df_pm_1.index)
+                month_7.append(pm_1_len)
+                j = j + 1
+        except:
+            pass
+        try:
+            j = 0
+            month_8 = []
+            while j < 12:
+                month = this_month[j]
+                pm_1 = pm_sch.objects.filter(team=team_get[7], date__icontains=month)
+                pm_1 = pm_1.values('team')
+                df_pm_1 = pd.DataFrame.from_records(pm_1)
+                pm_1_len = len(df_pm_1.index)
+                month_8.append(pm_1_len)
+                j = j + 1
+        except:
+            pass
+        try:
+            j = 0
+            month_9 = []
+            while j < 12:
+                month = this_month[j]
+                pm_1 = pm_sch.objects.filter(team=team_get[8], date__icontains=month)
+                pm_1 = pm_1.values('team')
+                df_pm_1 = pd.DataFrame.from_records(pm_1)
+                pm_1_len = len(df_pm_1.index)
+                month_9.append(pm_1_len)
+                j = j + 1
+        except:
+            pass
+        try:
+            j = 0
+            month_10 = []
+            while j < 12:
+                month = this_month[j]
+                pm_1 = pm_sch.objects.filter(team=team_get[9], date__icontains=month)
+                pm_1 = pm_1.values('team')
+                df_pm_1 = pd.DataFrame.from_records(pm_1)
+                pm_1_len = len(df_pm_1.index)
+                month_10.append(pm_1_len)
+                j = j + 1
+        except:
+            pass
+        try:
+            j = 0
+            month_11 = []
+            while j < 12:
+                month = this_month[j]
+                pm_1 = pm_sch.objects.filter(team=team_get[10], date__icontains=month)
+                pm_1 = pm_1.values('team')
+                df_pm_1 = pd.DataFrame.from_records(pm_1)
+                pm_1_len = len(df_pm_1.index)
+                month_11.append(pm_1_len)
+                j = j + 1
+        except:
+            pass
+        try:
+            j = 0
+            month_12 = []
+            while j < 12:
+                month = this_month[j]
+                pm_1 = pm_sch.objects.filter(team=team_get[11], date__icontains=month)
+                pm_1 = pm_1.values('team')
+                df_pm_1 = pd.DataFrame.from_records(pm_1)
+                pm_1_len = len(df_pm_1.index)
+                month_12.append(pm_1_len)
+                j = j + 1
+        except:
+            pass
+        try:
+            j = 0
+            month_total = []
+            while j < 12:
+                month = this_month[j]
+                pm_1 = pm_sch.objects.filter(date__icontains=month)
+                pm_1 = pm_1.values('team')
+                df_pm_1 = pd.DataFrame.from_records(pm_1)
+                pm_1_len = len(df_pm_1.index)
+                month_total.append(pm_1_len)
+                j = j + 1
+        except:
+            pass
+        context = {"loginid":loginid,"team_table":team_table,"team_total_len":team_total_len,"month_1":month_1,
+                   "team_get":team_get,"month_2":month_2,"month_3":month_3,"month_4":month_4,"month_5":month_5
+                    , "month_6": month_6,"month_7":month_7,"month_8":month_8,"month_9":month_9,"month_10":month_10
+                   ,"month_11":month_11,"month_12":month_12,"month_total":month_total}
         context.update(users)
         return render(request, 'report_main.html', context) #templates 내 html연결
 

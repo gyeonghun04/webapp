@@ -39,10 +39,86 @@ position:fixed;top:43px; left:190px;}
 .pm_chart_css{
         position:fixed;top:60px; left:170px;
         z-index:-10;}
-
+#annual_css{
+        position:fixed;top:460px; left:420px;
+        font-family:'Rubik', sans-serif;
+        font-size:18px;
+        font-color:black;
+        font-weight:bold;
+}
 .pm_pie_css{
-        position:fixed;top:30px; left:1100px;
+        position:fixed;top:450px; left:130px;
         z-index:-20;}
+#team_css{
+        position:fixed;top:910px; left:330px;
+        font-family:'Rubik', sans-serif;
+        font-size:18px;
+        font-color:black;
+        font-weight:bold;
+}
+#team_table_title{
+        position:fixed;top:535px; left:870px;
+        font-family:'Rubik', sans-serif;
+        font-size:18px;
+        font-color:black;
+        font-weight:bold;
+}
+#team_table{
+        position:fixed;top:570px; left:800px;
+}
+.team{
+        font-family:'Rubik', sans-serif;
+        font-size:16px;
+        color:white;
+        background-color:#6F6F6F;
+        width:150px;
+        height:30px;}
+.text{
+        font-family:arial;
+        font-size:16px;
+        color:black;
+        width:150px;
+        height:30px;}
+.text2{
+        font-family:arial;
+        font-size:16px;
+        color:white;
+        background-color:#6F6F6F;
+        width:150px;
+        height:30px;
+        font-weight:bold;
+        }
+tr:nth-child(even){
+    background-color:#EEEEEE;
+}
+#pm_table_title{
+        position:fixed;top:100px; left:1300px;
+        font-family:'Rubik', sans-serif;
+        font-size:18px;
+        font-color:black;
+        font-weight:bold;
+}
+#pm_table{
+        position:fixed;top:130px; left:950px;
+}
+.pm_title{
+        font-family:'Rubik', sans-serif;
+        font-size:12px;
+        color:white;
+        background-color:#6F6F6F;
+        width:65px;
+        height:30px;
+}
+.pm_text{
+        font-family:arial;
+        font-size:12px;
+        color:black;
+        width:65px;
+        height:30px;
+}
+#month_sort{
+position:fixed;top:164px; left:1019px;
+}
 </style>
 <body>
 <div id="btn">
@@ -54,12 +130,18 @@ position:fixed;top:43px; left:190px;}
         <input type="hidden" value="{{loginid}}" name="loginid">
         <input type="submit"value="Preventive Maintenance" class="Button3"></form>
             </td>
+        <td>
+            &nbsp;
+        </td>
             <td>
                     <form action="report_table_bm" method="post">
         {% csrf_token %}
         <input type="hidden" value="{{loginid}}" name="loginid">
         <input type="submit"value="Breakdown Maintenance" class="Button2"></form>
             </td>
+        <td>
+            &nbsp;
+        </td>
         <td>
                      <form action="report_table_sp" method="post">
         {% csrf_token %}
@@ -73,9 +155,137 @@ position:fixed;top:43px; left:190px;}
 <div id="pm_data" ></div>
 
 {% load static %}
-        <img src="{% static 'pm_chart_report.png' %}" alt="My image" height="500" width="1000" class="pm_chart_css">
-
+        <img src="{% static 'pm_chart_report.png' %}" alt="My image" height="400" width="800" class="pm_chart_css">
+<div id="annual_css">[Preventive Maintenance Annual Chart]</div>
+<div id="pm_count">PM Count</div>
+<div id="month">Month</div>
 {% load static %}
-        <img src="{% static 'pm_chart_pie.png' %}" alt="My image" height="550" width="750" class="pm_pie_css">
+        <img src="{% static 'pm_chart_pie.png' %}" alt="My image" height="500" width="700" class="pm_pie_css">
+<div id="team_css">[Preventive Maintenance Chart By Team]</div>
+<div id="team_table_title">[Equipment By Team]</div>
+<div id="team_table">
+    <table>
+        <thead>
+        <tr>
+            <td class="team" align="center">Team</td>
+            <td class="team" align="center">Equip. No.</td>
+        </tr>
+        </thead>
+        <tbody>
+        {% for team_tables in team_table%}
+         <tr>
+             <td class="text" align="center">{{team_tables.team}}</td>
+             <td class="text" align="center">{{team_tables.team__count}}</td>
+         </tr>
+        {%endfor%}
+         <tr>
+             <td class="text2" align="center">Total</td>
+             <td class="text2" align="center">{{team_total_len}}</td>
+         </tr>
+        </tbody>
+    </table>
+</div>
+
+<div id="pm_table_title">[Annual Table By Team]</div>
+<div id="pm_table">
+    <table>
+        <thead>
+        <tr>
+            <td class="pm_title" align="center">Team</td>
+            <td class="pm_title" align="center">Jan.</td>
+            <td class="pm_title" align="center">Feb.</td>
+            <td class="pm_title" align="center">Mar.</td>
+            <td class="pm_title" align="center">Apr.</td>
+            <td class="pm_title" align="center">May.</td>
+            <td class="pm_title" align="center">Jun.</td>
+            <td class="pm_title" align="center">Jul.</td>
+            <td class="pm_title" align="center">Aug.</td>
+            <td class="pm_title" align="center">Sept.</td>
+            <td class="pm_title" align="center">Oct.</td>
+            <td class="pm_title" align="center">Nov.</td>
+            <td class="pm_title" align="center">Dec.</td>
+        </tr>
+        </thead>
+        <tbody id="team_sort">
+        {% for team_gets in team_get%}
+         <tr>
+             <td class="pm_text" align="center">{{team_gets}}</td>
+         </tr>
+        {%endfor%}
+        <tr>
+             <td class="pm_title" align="center">Total</td>
+
+                          {% for month_totals in month_total%}
+             <td class="pm_title" align="center">{{month_totals}}</td>
+            {%endfor%}
+        </tr>
+        </tbody>
+    </table>
+    <table id="month_sort">
+        <tbody>
+         <tr>
+             {% for month_1s in month_1%}
+             <td class="pm_text" align="center">{{month_1s}}</td>
+            {%endfor%}
+         </tr>
+         <tr>
+                          {% for month_2s in month_2%}
+             <td class="pm_text" align="center">{{month_2s}}</td>
+            {%endfor%}
+         </tr>
+         <tr>
+                          {% for month_3s in month_3%}
+             <td class="pm_text" align="center">{{month_3s}}</td>
+            {%endfor%}
+         </tr>
+         <tr>
+                          {% for month_4s in month_4%}
+             <td class="pm_text" align="center">{{month_4s}}</td>
+            {%endfor%}
+         </tr>
+         <tr>
+                          {% for month_5s in month_5%}
+             <td class="pm_text" align="center">{{month_5s}}</td>
+            {%endfor%}
+         </tr>
+         <tr>
+                          {% for month_6s in month_6%}
+             <td class="pm_text" align="center">{{month_6s}}</td>
+            {%endfor%}
+         </tr>
+         <tr>
+                          {% for month_7s in month_7%}
+             <td class="pm_text" align="center">{{month_7s}}</td>
+            {%endfor%}
+         </tr>
+         <tr>
+                          {% for month_8s in month_8%}
+             <td class="pm_text" align="center">{{month_8s}}</td>
+            {%endfor%}
+         </tr>
+         <tr>
+                          {% for month_9s in month_9%}
+             <td class="pm_text" align="center">{{month_9s}}</td>
+            {%endfor%}
+         </tr>
+         <tr>
+                          {% for month_10s in month_10%}
+             <td class="pm_text" align="center">{{month_10s}}</td>
+            {%endfor%}
+         </tr>
+         <tr>
+                          {% for month_11s in month_11%}
+             <td class="pm_text" align="center">{{month_11s}}</td>
+            {%endfor%}
+         </tr>
+         <tr>
+                          {% for month_12s in month_12%}
+             <td class="pm_text" align="center">{{month_12s}}</td>
+            {%endfor%}
+         </tr>
+        </tbody>
+    </table>
+</div>
+
 </body>
 </html>
