@@ -57,14 +57,14 @@ position:fixed;top:43px; left:190px;}
         font-weight:bold;
 }
 #team_table_title{
-        position:fixed;top:535px; left:870px;
+        position:fixed;top:715px; left:860px;
         font-family:'Rubik', sans-serif;
         font-size:18px;
         font-color:black;
         font-weight:bold;
 }
 #team_table{
-        position:fixed;top:570px; left:800px;
+        position:fixed;top:750px; left:800px;
 }
 .team{
         font-family:'Rubik', sans-serif;
@@ -92,14 +92,14 @@ tr:nth-child(even){
     background-color:#EEEEEE;
 }
 #pm_table_title{
-        position:fixed;top:100px; left:1300px;
+        position:fixed;top:360px; left:1300px;
         font-family:'Rubik', sans-serif;
         font-size:18px;
         font-color:black;
         font-weight:bold;
 }
 #pm_table{
-        position:fixed;top:130px; left:950px;
+        position:fixed;top:390px; left:950px;
 }
 .pm_title{
         font-family:'Rubik', sans-serif;
@@ -117,7 +117,34 @@ tr:nth-child(even){
         height:30px;
 }
 #month_sort{
-position:fixed;top:164px; left:1019px;
+        position:fixed;top:424px; left:1019px;
+}
+#pm_status_title{
+        position:fixed;top:150px; left:1293px;
+        font-family:'Rubik', sans-serif;
+        font-size:18px;
+        font-color:black;
+        font-weight:bold;
+        }
+#pm_status{
+        position:fixed;top:180px; left:950px;
+}
+#year_down{
+position:fixed;top:100px; left:1655px;
+}
+.select_year{
+        margin-left:5px;
+        width:80px;
+        height:25px;
+        font-family:'Rubik', sans-serif;
+        font-size:18px;
+}
+.year_title{
+        font-family:'Rubik', sans-serif;
+        font-size:18px;
+        font-color:black;
+        font-weight:bold;
+        text-decoration: underline;
 }
 </style>
 <body>
@@ -156,19 +183,19 @@ position:fixed;top:164px; left:1019px;
 
 {% load static %}
         <img src="{% static 'pm_chart_report.png' %}" alt="My image" height="400" width="800" class="pm_chart_css">
-<div id="annual_css">[Preventive Maintenance Annual Chart]</div>
+<div id="annual_css">[Preventive Maintenance Monthly Chart]</div>
 <div id="pm_count">PM Count</div>
 <div id="month">Month</div>
 {% load static %}
         <img src="{% static 'pm_chart_pie.png' %}" alt="My image" height="500" width="700" class="pm_pie_css">
 <div id="team_css">[Preventive Maintenance Chart By Team]</div>
-<div id="team_table_title">[Equipment By Team]</div>
+<div id="team_table_title">[PM Equipment By Team]</div>
 <div id="team_table">
     <table>
         <thead>
         <tr>
             <td class="team" align="center">Team</td>
-            <td class="team" align="center">Equip. No.</td>
+            <td class="team" align="center">No. of Equip.</td>
         </tr>
         </thead>
         <tbody>
@@ -186,7 +213,7 @@ position:fixed;top:164px; left:1019px;
     </table>
 </div>
 
-<div id="pm_table_title">[Annual Table By Team]</div>
+<div id="pm_table_title">[Monthly Table By Team]</div>
 <div id="pm_table">
     <table>
         <thead>
@@ -214,8 +241,7 @@ position:fixed;top:164px; left:1019px;
         {%endfor%}
         <tr>
              <td class="pm_title" align="center">Total</td>
-
-                          {% for month_totals in month_total%}
+             {% for month_totals in month_total%}
              <td class="pm_title" align="center">{{month_totals}}</td>
             {%endfor%}
         </tr>
@@ -287,5 +313,79 @@ position:fixed;top:164px; left:1019px;
     </table>
 </div>
 
+<div id="pm_status_title">[Monthly Table By Status]</div>
+<div id="pm_status">
+    <table>
+        <thead>
+        <tr>
+            <td class="pm_title" align="center">Status</td>
+            <td class="pm_title" align="center">Jan.</td>
+            <td class="pm_title" align="center">Feb.</td>
+            <td class="pm_title" align="center">Mar.</td>
+            <td class="pm_title" align="center">Apr.</td>
+            <td class="pm_title" align="center">May.</td>
+            <td class="pm_title" align="center">Jun.</td>
+            <td class="pm_title" align="center">Jul.</td>
+            <td class="pm_title" align="center">Aug.</td>
+            <td class="pm_title" align="center">Sept.</td>
+            <td class="pm_title" align="center">Oct.</td>
+            <td class="pm_title" align="center">Nov.</td>
+            <td class="pm_title" align="center">Dec.</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+             <td class="pm_text" align="center">Complete</td>
+             {% for pm_comps in pm_comp%}
+             <td class="pm_text" align="center">{{pm_comps}}</td>
+            {%endfor%}
+        </tr>
+                <tr>
+             <td class="pm_text" align="center">Not Complete</td>
+             {% for pm_nots in pm_not%}
+             <td class="pm_text" align="center">{{pm_nots}}</td>
+            {%endfor%}
+        </tr>
+                <tr>
+             <td class="pm_title" align="center">Total</td>
+             {% for pm_totals in pm_total%}
+             <td class="pm_title" align="center">{{pm_totals}}</td>
+            {%endfor%}
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div id="year_down">
+    <table>
+        <tr>
+            <td class="year_title">
+                Select Year
+            </td>
+            <td>
+            <select class="select_year" name="select_year" onchange="Select_year();">&nbsp;
+                <option value="N/A"></option>
+                {% for year_downs in year_down %}
+                <option value="{{year_downs}}">{{year_downs}}</option>
+                {% endfor %}</select>
+            </td>
+        </tr>
+    </table>
+</div>
+    <form name="select_year_form" method="post">
+        {% csrf_token %}
+        <input type="hidden" value="{{loginid}}" name="loginid">
+        <input type="hidden" name="select_year">
+    </form>
+
+<script>
+    function Select_year(){
+           var select_year= document.getElementsByName('select_year')[0].value;
+           document.select_year_form.select_year.value = select_year;
+                            // 서버연결
+           document.select_year_form.action="report_main";
+           document.select_year_form.submit();
+    }
+
+</script>
 </body>
 </html>

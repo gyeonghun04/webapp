@@ -278,8 +278,79 @@ def main(request):
                 context = {"loginid": loginid}
                 context.update(order_cont)
             #####4)PM그래프 그리기####
+                ##금년도sch인거 업데이트하기##
+                ###연간 스케줄 리셋하기##
+                year_reset = pm_sch.objects.all()
+                year_reset = year_reset.values('no')
+                df_year_reset = pd.DataFrame.from_records(year_reset)
+                year_reset_len = len(df_year_reset.index)
+                for i in range(year_reset_len):
+                    no_get = df_year_reset.iat[i, 0]
+                    info_reset = pm_sch.objects.get(no=no_get)
+                    info_reset.annual_date = ""
+                    info_reset.save()
+                today = date.datetime.today()
+                today_year = "20" + today.strftime('%y')  # 올해 년도 구하기
+                year_get = pm_sch.objects.filter(~Q(status="Complete") | Q(delete_signal="Y"))
+                year_get = year_get.values('no')
+                df_year_get = pd.DataFrame.from_records(year_get)
+                year_get_len = len(df_year_get.index)
+                for i in range(year_get_len):
+                    no_get = df_year_get.iat[i, 0]
+                    info_get = pm_sch.objects.get(no=no_get)
+                    try:
+                        plan_date_get = pmsheetdb.objects.get(pmsheetno_temp=info_get.pmsheetno)
+                        freq_get = pmsheetdb.objects.get(pmsheetno_temp=info_get.pmsheetno)
+                        freq = freq_get.freq  # 주기값 불러오기
+                        plan_date = plan_date_get.startdate
+                        start_date_check = plan_date_get.startdate
+                        if (freq[:2] == "10") or (freq[:2] == "11") or (freq[:2] == "12"):  ##계산식 할수있게 값 변형하기
+                            f_num = freq[:2]
+                        else:
+                            f_num = freq[:1]
+                        f_m_y = freq[2:4]
+                        next_year = int(today_year) + 2
+                        year_chk = today_year
+                        plan_date_y = plan_date[:4]  ##년도
+                        plan_date_m = plan_date[5:]  ##월
+                        plan_date = date.datetime(int(plan_date_y), int(plan_date_m), 1)
+                        if (f_m_y == "on") or (f_m_y == "Mo"):  ##주기가 월일경우
+                            if int(start_date_check[:4]) == int(today_year):
+                                info_get.annual_date = " [" + start_date_check + "] "
+                                info_get.save()
+                            while int(year_chk) < int(next_year):
+                                next_plan = plan_date + relativedelta(months=int(f_num))
+                                next_plandate = "20" + next_plan.strftime('%y') + "-" + next_plan.strftime('%m')
+                                year_chk = "20" + next_plan.strftime('%y')
+                                plan_date = next_plandate
+                                plan_date_y = plan_date[:4]
+                                plan_date_m = plan_date[5:]
+                                plan_date = date.datetime(int(plan_date_y), int(plan_date_m), 1)
+                                if int(plan_date_y) == int(today_year):
+                                    info_get.annual_date = info_get.annual_date + " [" + next_plandate + "] "
+                                    info_get.save()
+                        else:  ##주기가 년일 경우
+                            if int(start_date_check[:4]) == int(today_year):
+                                info_get.annual_date = " [" + start_date_check + "] "
+                                info_get.save()
+                            while int(year_chk) < int(next_year):
+                                next_plan = plan_date + relativedelta(years=int(f_num))
+                                next_plandate = "20" + next_plan.strftime('%y') + "-" + next_plan.strftime('%m')
+                                year_chk = "20" + next_plan.strftime('%y')
+                                plan_date = next_plandate
+                                plan_date_y = plan_date[:4]
+                                plan_date_m = plan_date[5:]
+                                plan_date = date.datetime(int(plan_date_y), int(plan_date_m), 1)
+                                if int(next_plandate[:4]) == int(today_year):
+                                    info_get.annual_date = info_get.annual_date + " [" + next_plandate + "] "
+                                    info_get.save()
+                    except:
+                        info_get.annual_date = " [" + info_get.date + "] "
+                        info_get.save()
+            ####그래프 그리기#####
                 try:
                     plt.figure(1)
+                    plt.clf()
                     today = date.datetime.today()
                     this_year = "20" + today.strftime('%y')  # 올해 년도 구하기
                     month = [this_year + "-01",this_year + "-02",this_year + "-03",this_year + "-04",this_year + "-05",this_year + "-06",
@@ -294,7 +365,7 @@ def main(request):
                         team_date =[]
                         while k < 12:
                              date_team = month[k]
-                             count = pm_sch.objects.filter(date=date_team, team=team)
+                             count = pm_sch.objects.filter(annual_date__icontains=date_team, team=team)
                              count = count.values('team')
                              df_count = pd.DataFrame.from_records(count)
                              count_len = len(df_count.index)
@@ -322,7 +393,7 @@ def main(request):
                     total_date =[]
                     while j < 12:
                         date_team = month[j]
-                        count = pm_sch.objects.filter(date=date_team)
+                        count = pm_sch.objects.filter(annual_date__icontains=date_team)
                         count = count.values('team')
                         df_count = pd.DataFrame.from_records(count)
                         count_len = len(df_count.index)
@@ -334,7 +405,7 @@ def main(request):
                     comp_date = []
                     while j < 12:
                         date_team = month[j]
-                        count = pm_sch.objects.filter(date=date_team, status="Complete")
+                        count = pm_sch.objects.filter(annual_date__icontains=date_team, status="Complete")
                         count = count.values('team')
                         df_count = pd.DataFrame.from_records(count)
                         count_len = len(df_count.index)
@@ -351,6 +422,7 @@ def main(request):
             ###5)BM그래프 그리기####
                 try:
                     plt.figure(2)
+                    plt.clf()
                     today = date.datetime.today()
                     this_year = "20" + today.strftime('%y')  # 올해 년도 구하기
                     month = [this_year + "-01", this_year + "-02", this_year + "-03", this_year + "-04", this_year + "-05",
@@ -3745,6 +3817,17 @@ def pmcontrolform_write_delete(request):
                     pmcode_delete = df_pmcode_del.iat[m, 0]
                     pmcode_delete = pm_sch.objects.get(pmcode=pmcode_delete)
                     pmcode_delete.delete()
+            #####PM sch내 완료아이템 델레트표시하기#####
+                pmcode_delete = pm_sch.objects.filter(Q(pmsheetno=pmsheetno_temp_delete, status="Performed") |
+                                                   Q(pmsheetno=pmsheetno_temp_delete, status="Checked")|
+                                                   Q(pmsheetno=pmsheetno_temp_delete, status="Complete"))
+                pmcode_delete = pmcode_delete.values('pmcode')  # sql문 dataframe으로 변경
+                df_pmcode_delete = pd.DataFrame.from_records(pmcode_delete)
+                df_pmcode_delete_len = len(df_pmcode_delete.index)  # 담당자 인원수 확인
+                for m in range(df_pmcode_delete_len):
+                    pmcode_delete = df_pmcode_delete.iat[m, 0]
+                    pmcode_delete.delete_signal ="Y"
+                    pmcode_delete.save()
         #####signal 정보 보내기#####
         signalinfo = controlformlist.objects.get(controlno=controlno, recent_y="Y")
         signal = [signalinfo.status][0]
@@ -10585,6 +10668,8 @@ def temp(request):
 def report_main(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
         loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        select_year = request.POST.get('select_year')  # html에서 해당 값을 받는다
+        select_year = str(select_year)
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -10593,15 +10678,92 @@ def report_main(request):
         auth = users.auth1
         user_div = users.user_division
         users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
+
+    ##금년도sch인거 업데이트하기##
+        ###연간 스케줄 리셋하기##
+        year_reset = pm_sch.objects.all()
+        year_reset = year_reset.values('no')
+        df_year_reset = pd.DataFrame.from_records(year_reset)
+        year_reset_len = len(df_year_reset.index)
+        for i in range(year_reset_len):
+            no_get = df_year_reset.iat[i, 0]
+            info_reset = pm_sch.objects.get(no=no_get)
+            info_reset.annual_date = ""
+            info_reset.save()
+        if (select_year =="N/A") or (select_year =="None"):
+            today = date.datetime.today()
+            today_year = "20" + today.strftime('%y')  # 올해 년도 구하기
+        else:
+            today_year = str(select_year)
+        year_get = pm_sch.objects.filter(~Q(status="Complete")|Q(delete_signal="Y"))
+        year_get = year_get.values('no')
+        df_year_get = pd.DataFrame.from_records(year_get)
+        year_get_len = len(df_year_get.index)
+        for i in range(year_get_len):
+            no_get = df_year_get.iat[i, 0]
+            info_get = pm_sch.objects.get(no=no_get)
+            try:
+                plan_date_get = pmsheetdb.objects.get(pmsheetno_temp=info_get.pmsheetno)
+                freq_get = pmsheetdb.objects.get(pmsheetno_temp=info_get.pmsheetno)
+                freq = freq_get.freq  # 주기값 불러오기
+                plan_date = plan_date_get.startdate
+                start_date_check = plan_date_get.startdate
+                if (freq[:2] == "10") or (freq[:2] == "11") or (freq[:2] == "12"):  ##계산식 할수있게 값 변형하기
+                    f_num = freq[:2]
+                else:
+                    f_num = freq[:1]
+                f_m_y = freq[2:4]
+                next_year = int(today_year) + 2
+                year_chk = today_year
+                plan_date_y = plan_date[:4]  ##년도
+                plan_date_m = plan_date[5:]  ##월
+                plan_date = date.datetime(int(plan_date_y), int(plan_date_m), 1)
+                if (f_m_y == "on") or (f_m_y == "Mo"):  ##주기가 월일경우
+                    if int(start_date_check[:4]) == int(today_year):
+                        info_get.annual_date = " [" + start_date_check + "] "
+                        info_get.save()
+                    while int(year_chk) < int(next_year):
+                        next_plan = plan_date + relativedelta(months=int(f_num))
+                        next_plandate = "20" + next_plan.strftime('%y') + "-" + next_plan.strftime('%m')
+                        year_chk = "20" + next_plan.strftime('%y')
+                        plan_date = next_plandate
+                        plan_date_y = plan_date[:4]
+                        plan_date_m = plan_date[5:]
+                        plan_date = date.datetime(int(plan_date_y), int(plan_date_m), 1)
+                        if int(plan_date_y) == int(today_year):
+                            info_get.annual_date = info_get.annual_date + " [" + next_plandate + "] "
+                            info_get.save()
+                else:  ##주기가 년일 경우
+                    if int(start_date_check[:4]) == int(today_year):
+                        info_get.annual_date = " [" + start_date_check + "] "
+                        info_get.save()
+                    while int(year_chk) < int(next_year):
+                        next_plan = plan_date + relativedelta(years=int(f_num))
+                        next_plandate = "20" + next_plan.strftime('%y') + "-" + next_plan.strftime('%m')
+                        year_chk = "20" + next_plan.strftime('%y')
+                        plan_date = next_plandate
+                        plan_date_y = plan_date[:4]
+                        plan_date_m = plan_date[5:]
+                        plan_date = date.datetime(int(plan_date_y), int(plan_date_m), 1)
+                        if int(next_plandate[:4]) == int(today_year):
+                            info_get.annual_date = info_get.annual_date + " [" + next_plandate + "] "
+                            info_get.save()
+            except:
+                info_get.annual_date = " [" + info_get.date + "] "
+                info_get.save()
     ####그래프 그리기####
         plt.figure(4)
-        today = date.datetime.today()
-        this_year = "20" + today.strftime('%y')  # 올해 년도 구하기
+        plt.clf()
+        if (select_year =="N/A") or(select_year =="None"):
+            today = date.datetime.today()
+            this_year = "20" + today.strftime('%y')  # 올해 년도 구하기
+        else:
+            this_year = str(select_year)
         month = [this_year + "-01", this_year + "-02", this_year + "-03", this_year + "-04", this_year + "-05",
                  this_year + "-06",
                  this_year + "-07", this_year + "-08", this_year + "-09", this_year + "-10", this_year + "-11",
                  this_year + "-12"]
-        team_info = pm_sch.objects.filter(date__icontains=this_year).values('team').annotate(Count('team'))
+        team_info = pm_sch.objects.filter(annual_date__icontains=this_year).values('team').annotate(Count('team'))
         team_info = team_info.values('team')
         df_team_info = pd.DataFrame.from_records(team_info)
         team_info_len = len(df_team_info.index)
@@ -10609,9 +10771,9 @@ def report_main(request):
             team = df_team_info.iat[i, 0]
             k = 0
             team_date = []
-            while k < 12:
+            while k < 12: ###팀별꺽은선
                 date_team = month[k]
-                count = pm_sch.objects.filter(date=date_team, team=team)
+                count = pm_sch.objects.filter(annual_date__icontains=date_team, team=team)
                 count = count.values('team')
                 df_count = pd.DataFrame.from_records(count)
                 count_len = len(df_count.index)
@@ -10638,9 +10800,9 @@ def report_main(request):
                 team_date, color=color, marker='.', label=team)
         j = 0
         total_date = []
-        while j < 12:
+        while j < 12:  ###토탈
             date_team = month[j]
-            count = pm_sch.objects.filter(date=date_team)
+            count = pm_sch.objects.filter(annual_date__icontains=date_team)
             count = count.values('team')
             df_count = pd.DataFrame.from_records(count)
             count_len = len(df_count.index)
@@ -10650,9 +10812,9 @@ def report_main(request):
                      total_date, color='red', width=0.5, label='Total')
         j = 0
         comp_date = []
-        while j < 12:
+        while j < 12:  ####완료항목
             date_team = month[j]
-            count = pm_sch.objects.filter(date=date_team, status="Complete")
+            count = pm_sch.objects.filter(date__icontains=date_team, status="Complete")
             count = count.values('team')
             df_count = pd.DataFrame.from_records(count)
             count_len = len(df_count.index)
@@ -10664,7 +10826,8 @@ def report_main(request):
         plt.savefig('./static/pm_chart_report.png')
     ####파이테이블######
         plt.figure(3)
-        team_info = pm_sch.objects.filter(date__icontains=this_year).values('team').annotate(Count('team'))
+        plt.clf()
+        team_info = pm_sch.objects.filter(annual_date__icontains=this_year).values('team').annotate(Count('team'))
         team_info = team_info.values('team')
         df_team_info = pd.DataFrame.from_records(team_info)
         team_info_len = len(df_team_info.index)
@@ -10677,7 +10840,7 @@ def report_main(request):
             team_get = df_team_info.iat[k, 0]
         ###x축 list
             team_x.append(team_get)
-            team_infos = pm_sch.objects.filter(date__icontains=this_year, team=team_get)
+            team_infos = pm_sch.objects.filter(annual_date__icontains=this_year, team=team_get)
             team_infos = team_infos.values('team')
             df_team_infos = pd.DataFrame.from_records(team_infos)
             team_infos_len = len(df_team_infos.index)
@@ -10713,28 +10876,31 @@ def report_main(request):
         df_team_total = pd.DataFrame.from_records(team_total)
         team_total_len = len(df_team_total.index)
         team_table = equiplist.objects.filter(pmok="Y").values('team').annotate(Count('team'))
-    #########
-        today = date.datetime.today()
-        this_year = "20" + today.strftime('%y')  # 올해 년도 구하기
+    #########팀별 피엠현황####
+        if (select_year =="N/A") or(select_year =="None"):
+            today = date.datetime.today()
+            this_year = "20" + today.strftime('%y')  # 올해 년도 구하기
+        else:
+            this_year = str(select_year)
         this_month = [this_year + "-01", this_year + "-02", this_year + "-03", this_year + "-04", this_year + "-05",
                         this_year + "-06", this_year + "-07", this_year + "-08", this_year + "-09", this_year + "-10",
                       this_year + "-11", this_year + "-12"]
-        team_infos = pm_sch.objects.filter(date__icontains=this_year).values('team').annotate(Count('team'))
+        team_infos = pm_sch.objects.filter(annual_date__icontains=this_year).values('team').annotate(Count('team'))
         team_infos = team_infos.values('team')
         df_team_infos = pd.DataFrame.from_records(team_infos)
         team_infos_len = len(df_team_infos.index)
-        k=0
+        k = 0
         team_get=[]
-        while k < team_infos_len:
+        while k < team_infos_len: ###팀이름 따기###
             team = df_team_infos.iat[k,0]
             team_get.append(team)
             k = k + 1
         try:
-            j=0
+            j = 0
             month_1=[]
             while j < 12:
                 month = this_month[j]
-                pm_1 = pm_sch.objects.filter(team=team_get[0], date__icontains=month)
+                pm_1 = pm_sch.objects.filter(team=team_get[0], annual_date__icontains=month)
                 pm_1 = pm_1.values('team')
                 df_pm_1 = pd.DataFrame.from_records(pm_1)
                 pm_1_len = len(df_pm_1.index)
@@ -10747,7 +10913,7 @@ def report_main(request):
             month_2 = []
             while j < 12:
                 month = this_month[j]
-                pm_1 = pm_sch.objects.filter(team=team_get[1], date__icontains=month)
+                pm_1 = pm_sch.objects.filter(team=team_get[1], annual_date__icontains=month)
                 pm_1 = pm_1.values('team')
                 df_pm_1 = pd.DataFrame.from_records(pm_1)
                 pm_1_len = len(df_pm_1.index)
@@ -10760,7 +10926,7 @@ def report_main(request):
             month_3 = []
             while j < 12:
                 month = this_month[j]
-                pm_1 = pm_sch.objects.filter(team=team_get[2], date__icontains=month)
+                pm_1 = pm_sch.objects.filter(team=team_get[2], annual_date__icontains=month)
                 pm_1 = pm_1.values('team')
                 df_pm_1 = pd.DataFrame.from_records(pm_1)
                 pm_1_len = len(df_pm_1.index)
@@ -10773,7 +10939,7 @@ def report_main(request):
             month_4 = []
             while j < 12:
                 month = this_month[j]
-                pm_1 = pm_sch.objects.filter(team=team_get[3], date__icontains=month)
+                pm_1 = pm_sch.objects.filter(team=team_get[3], annual_date__icontains=month)
                 pm_1 = pm_1.values('team')
                 df_pm_1 = pd.DataFrame.from_records(pm_1)
                 pm_1_len = len(df_pm_1.index)
@@ -10786,7 +10952,7 @@ def report_main(request):
             month_5 = []
             while j < 12:
                 month = this_month[j]
-                pm_1 = pm_sch.objects.filter(team=team_get[4], date__icontains=month)
+                pm_1 = pm_sch.objects.filter(team=team_get[4], annual_date__icontains=month)
                 pm_1 = pm_1.values('team')
                 df_pm_1 = pd.DataFrame.from_records(pm_1)
                 pm_1_len = len(df_pm_1.index)
@@ -10799,7 +10965,7 @@ def report_main(request):
             month_6 = []
             while j < 12:
                 month = this_month[j]
-                pm_1 = pm_sch.objects.filter(team=team_get[5], date__icontains=month)
+                pm_1 = pm_sch.objects.filter(team=team_get[5], annual_date__icontains=month)
                 pm_1 = pm_1.values('team')
                 df_pm_1 = pd.DataFrame.from_records(pm_1)
                 pm_1_len = len(df_pm_1.index)
@@ -10812,7 +10978,7 @@ def report_main(request):
             month_7 = []
             while j < 12:
                 month = this_month[j]
-                pm_1 = pm_sch.objects.filter(team=team_get[6], date__icontains=month)
+                pm_1 = pm_sch.objects.filter(team=team_get[6], annual_date__icontains=month)
                 pm_1 = pm_1.values('team')
                 df_pm_1 = pd.DataFrame.from_records(pm_1)
                 pm_1_len = len(df_pm_1.index)
@@ -10825,7 +10991,7 @@ def report_main(request):
             month_8 = []
             while j < 12:
                 month = this_month[j]
-                pm_1 = pm_sch.objects.filter(team=team_get[7], date__icontains=month)
+                pm_1 = pm_sch.objects.filter(team=team_get[7], annual_date__icontains=month)
                 pm_1 = pm_1.values('team')
                 df_pm_1 = pd.DataFrame.from_records(pm_1)
                 pm_1_len = len(df_pm_1.index)
@@ -10838,7 +11004,7 @@ def report_main(request):
             month_9 = []
             while j < 12:
                 month = this_month[j]
-                pm_1 = pm_sch.objects.filter(team=team_get[8], date__icontains=month)
+                pm_1 = pm_sch.objects.filter(team=team_get[8], annual_date__icontains=month)
                 pm_1 = pm_1.values('team')
                 df_pm_1 = pd.DataFrame.from_records(pm_1)
                 pm_1_len = len(df_pm_1.index)
@@ -10851,7 +11017,7 @@ def report_main(request):
             month_10 = []
             while j < 12:
                 month = this_month[j]
-                pm_1 = pm_sch.objects.filter(team=team_get[9], date__icontains=month)
+                pm_1 = pm_sch.objects.filter(team=team_get[9], annual_date__icontains=month)
                 pm_1 = pm_1.values('team')
                 df_pm_1 = pd.DataFrame.from_records(pm_1)
                 pm_1_len = len(df_pm_1.index)
@@ -10864,7 +11030,7 @@ def report_main(request):
             month_11 = []
             while j < 12:
                 month = this_month[j]
-                pm_1 = pm_sch.objects.filter(team=team_get[10], date__icontains=month)
+                pm_1 = pm_sch.objects.filter(team=team_get[10], annual_date__icontains=month)
                 pm_1 = pm_1.values('team')
                 df_pm_1 = pd.DataFrame.from_records(pm_1)
                 pm_1_len = len(df_pm_1.index)
@@ -10877,7 +11043,7 @@ def report_main(request):
             month_12 = []
             while j < 12:
                 month = this_month[j]
-                pm_1 = pm_sch.objects.filter(team=team_get[11], date__icontains=month)
+                pm_1 = pm_sch.objects.filter(team=team_get[11], annual_date__icontains=month)
                 pm_1 = pm_1.values('team')
                 df_pm_1 = pd.DataFrame.from_records(pm_1)
                 pm_1_len = len(df_pm_1.index)
@@ -10890,7 +11056,7 @@ def report_main(request):
             month_total = []
             while j < 12:
                 month = this_month[j]
-                pm_1 = pm_sch.objects.filter(date__icontains=month)
+                pm_1 = pm_sch.objects.filter(annual_date__icontains=month)
                 pm_1 = pm_1.values('team')
                 df_pm_1 = pd.DataFrame.from_records(pm_1)
                 pm_1_len = len(df_pm_1.index)
@@ -10898,10 +11064,59 @@ def report_main(request):
                 j = j + 1
         except:
             pass
+    #####피엠스테이터스####
+        try: ####완료 항목계산#####
+            j = 0
+            pm_comp = []
+            pm_not = []
+            pm_total = []
+            while j < 12:
+                month = this_month[j]
+                pm_comps = pm_sch.objects.filter(date__icontains=month, status="complete")
+                pm_comps = pm_comps.values('team')
+                df_pm_comps = pd.DataFrame.from_records(pm_comps)
+                pm_comps_len = len(df_pm_comps.index)
+                pm_comp.append(pm_comps_len)
+            ####미완료 항목계산#####
+                month = this_month[j]
+                today = date.datetime.today()
+                month_int = today.strftime('%m')
+                if int(month[5:]) > int(month_int):
+                    pm_nots = pm_sch.objects.filter(Q(annual_date__icontains=month, status="Not Fixed")|
+                                           Q(annual_date__icontains=month, status="Fixed Date")|
+                                           Q(annual_date__icontains=month, status="Performed")|
+                                           Q(annual_date__icontains=month, status="Checked"))
+                    pm_nots = pm_nots.values('team')
+                    df_pm_nots = pd.DataFrame.from_records(pm_nots)
+                    pm_nots_len = len(df_pm_nots.index)
+                    pm_not.append(pm_nots_len)
+                elif int(month[5:]) == int(month_int):
+                    pm_nots = pm_sch.objects.filter(~Q(status="Complete") & Q(date=month))
+                    pm_nots = pm_nots.values('team')
+                    df_pm_nots = pd.DataFrame.from_records(pm_nots)
+                    pm_nots_len = len(df_pm_nots.index)
+                    pm_not.append(pm_nots_len)
+                else:
+                    pm_nots_len = 0
+                    pm_not.append(pm_nots_len)
+            #####토탈 항목계산#####
+                pm_totals_len = int(pm_nots_len) + int(pm_comps_len)
+                pm_total.append(pm_totals_len)
+                j = j + 1
+        except:
+            pass
+        k = 0
+        year_down = []
+        while k < 100:
+            year_input = 2019
+            year_input = year_input + k
+            year_down.append(year_input)
+            k = k + 1
         context = {"loginid":loginid,"team_table":team_table,"team_total_len":team_total_len,"month_1":month_1,
                    "team_get":team_get,"month_2":month_2,"month_3":month_3,"month_4":month_4,"month_5":month_5
                     , "month_6": month_6,"month_7":month_7,"month_8":month_8,"month_9":month_9,"month_10":month_10
-                   ,"month_11":month_11,"month_12":month_12,"month_total":month_total}
+                   ,"month_11":month_11,"month_12":month_12,"month_total":month_total,"pm_not":pm_not,
+                   "pm_total":pm_total,"pm_comp":pm_comp,"year_down":year_down}
         context.update(users)
         return render(request, 'report_main.html', context) #templates 내 html연결
 
@@ -10925,6 +11140,8 @@ def report_table_sp(request):
 def report_table_bm(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
         loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        select_year = request.POST.get('select_year')  # html에서 해당 값을 받는다
+        select_year = str(select_year)
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -10934,7 +11151,312 @@ def report_table_bm(request):
         user_div = users.user_division
         signal = "BM"
         users = {"auth": auth, "password": password, "username": username, "userteam": userteam, "user_div": user_div}
+    ##년도검색##
+        if (select_year =="N/A") or (select_year =="None"):
+            today = date.datetime.today()
+            this_year = "20" + today.strftime('%y')  # 올해 년도 구하기
+        else:
+            this_year = str(select_year)
+        this_month = [this_year + "-01", this_year + "-02", this_year + "-03", this_year + "-04", this_year + "-05",
+                      this_year + "-06", this_year + "-07", this_year + "-08", this_year + "-09", this_year + "-10",
+                      this_year + "-11", this_year + "-12"]
     ##그래프 그리기##
-        context = {"loginid": loginid, "signal": signal}
+        ####파이테이블######
+        plt.figure(5)
+        plt.clf()
+        team_info = workorder.objects.filter(date__icontains=this_year).values('team').annotate(Count('team'))
+        team_info = team_info.values('team')
+        df_team_info = pd.DataFrame.from_records(team_info)
+        team_info_len = len(df_team_info.index)
+        k = 0
+        team_x = []
+        count_y = []
+        explode = []
+        color_list = []
+        while k < int(team_info_len):
+            team_get = df_team_info.iat[k, 0]
+            ###x축 list
+            team_x.append(team_get)
+            team_infos = workorder.objects.filter(date__icontains=this_year, team=team_get)
+            team_infos = team_infos.values('team')
+            df_team_infos = pd.DataFrame.from_records(team_infos)
+            team_infos_len = len(df_team_infos.index)
+            ###y축 list
+            count_y.append(team_infos_len)
+            ###띄우기 list
+            exp = 0.05
+            explode.append(exp)
+            ###컬러 list
+            if k == 0:
+                color = 'lightsalmon'
+            elif k == 1:
+                color = 'lightgreen'
+            elif k == 2:
+                color = 'lightblue'
+            elif k == 3:
+                color = 'yellow'
+            elif k == 4:
+                color = 'violet'
+            elif k == 5:
+                color = 'orange'
+            elif k == 6:
+                color = 'pink'
+            else:
+                color = 'grey'
+            color_list.append(color)
+            k = k + 1
+        plt.pie(count_y, labels=team_x, autopct='%.1f%%', startangle=260, counterclock=False, explode=explode,
+                shadow=True, colors=color_list)
+        plt.savefig('./static/bm_chart_pie.png')
+    ####차트테이블######
+        plt.figure(6)
+        plt.clf()
+        month = [this_year + "-01", this_year + "-02", this_year + "-03", this_year + "-04", this_year + "-05",
+                 this_year + "-06",
+                 this_year + "-07", this_year + "-08", this_year + "-09", this_year + "-10", this_year + "-11",
+                 this_year + "-12"]
+        j = 0
+        total_bm = []
+        while j < 12:
+            date_team = month[j]
+            count = workorder.objects.filter(date__icontains=date_team)
+            count = count.values('team')
+            df_count = pd.DataFrame.from_records(count)
+            count_len = len(df_count.index)
+            total_bm.append(count_len)
+            j = j + 1
+        p20 = plt.bar(['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May.', 'Jun.', 'Jul.', 'Aug.', 'Sept.', 'Oct.', 'Nov.',
+                       'Dec.'],
+                      total_bm, color='coral', width=0.5, label='Request')
+        i = 0
+        comp_bm = []
+        while i < 12:
+            date_team = month[i]
+            count = workorder.objects.filter(action_date__icontains=date_team, status='Completed')
+            count = count.values('team')
+            df_count = pd.DataFrame.from_records(count)
+            count_len = len(df_count.index)
+            comp_bm.append(count_len)
+            i = i + 1
+        p21 = plt.plot(['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May.', 'Jun.', 'Jul.', 'Aug.', 'Sept.', 'Oct.', 'Nov.',
+                        'Dec.'],
+                       comp_bm, color='dodgerblue', marker='o', label='Complete')
+        plt.legend((p20[0], p21[0]), ('Request', 'Complete'))
+        plt.savefig('./static/bm_chart_report.png')
+    ###년도 검색기능###
+        k = 0
+        year_down = []
+        while k < 100:
+            year_input = 2019
+            year_input = year_input + k
+            year_down.append(year_input)
+            k = k + 1
+    ####월간 차트####
+        try: ####완료 항목계산#####
+            j = 0
+            bm_comp = []
+            bm_req = []
+            while j < 12:
+                month = this_month[j]
+                comp_table = workorder.objects.filter(r_q_date__icontains=month, status="Completed")
+                comp_table = comp_table.values('team')
+                df_comp_table = pd.DataFrame.from_records(comp_table)
+                comp_table_len = len(df_comp_table.index)
+                bm_comp.append(comp_table_len)
+                req_table = workorder.objects.filter(date__icontains=month)
+                req_table = req_table.values('team')
+                df_req_table = pd.DataFrame.from_records(req_table)
+                req_table_len = len(df_req_table.index)
+                bm_req.append(req_table_len)
+                j = j + 1
+        except:
+            pass
+    ####고장 주요설비####
+        import_equip = workorder.objects.filter(date__icontains=this_year).values('controlno','equipname','team').annotate(Count('controlno')).order_by('-controlno__count')[:10]
+    #########팀별 BM현황####
+        team_infos = workorder.objects.filter(date__icontains=this_year).values('team').annotate(Count('team'))
+        team_infos = team_infos.values('team')
+        df_team_infos = pd.DataFrame.from_records(team_infos)
+        team_infos_len = len(df_team_infos.index)
+        k = 0
+        team_get = []
+        while k < team_infos_len:  ###팀이름 따기###
+            team = df_team_infos.iat[k, 0]
+            team_get.append(team)
+            k = k + 1
+        try:
+            j = 0
+            month_1 = []
+            while j < 12:
+                month = this_month[j]
+                pm_1 = workorder.objects.filter(team=team_get[0], date__icontains=month)
+                pm_1 = pm_1.values('team')
+                df_pm_1 = pd.DataFrame.from_records(pm_1)
+                pm_1_len = len(df_pm_1.index)
+                month_1.append(pm_1_len)
+                j = j + 1
+        except:
+            pass
+        try:
+            j = 0
+            month_2 = []
+            while j < 12:
+                month = this_month[j]
+                pm_1 = workorder.objects.filter(team=team_get[1], date__icontains=month)
+                pm_1 = pm_1.values('team')
+                df_pm_1 = pd.DataFrame.from_records(pm_1)
+                pm_1_len = len(df_pm_1.index)
+                month_2.append(pm_1_len)
+                j = j + 1
+        except:
+            pass
+        try:
+            j = 0
+            month_3 = []
+            while j < 12:
+                month = this_month[j]
+                pm_1 = workorder.objects.filter(team=team_get[2], date__icontains=month)
+                pm_1 = pm_1.values('team')
+                df_pm_1 = pd.DataFrame.from_records(pm_1)
+                pm_1_len = len(df_pm_1.index)
+                month_3.append(pm_1_len)
+                j = j + 1
+        except:
+            pass
+        try:
+            j = 0
+            month_4 = []
+            while j < 12:
+                month = this_month[j]
+                pm_1 = workorder.objects.filter(team=team_get[3], date__icontains=month)
+                pm_1 = pm_1.values('team')
+                df_pm_1 = pd.DataFrame.from_records(pm_1)
+                pm_1_len = len(df_pm_1.index)
+                month_4.append(pm_1_len)
+                j = j + 1
+        except:
+            pass
+        try:
+            j = 0
+            month_5 = []
+            while j < 12:
+                month = this_month[j]
+                pm_1 = workorder.objects.filter(team=team_get[4], date__icontains=month)
+                pm_1 = pm_1.values('team')
+                df_pm_1 = pd.DataFrame.from_records(pm_1)
+                pm_1_len = len(df_pm_1.index)
+                month_5.append(pm_1_len)
+                j = j + 1
+        except:
+            pass
+        try:
+            j = 0
+            month_6 = []
+            while j < 12:
+                month = this_month[j]
+                pm_1 = workorder.objects.filter(team=team_get[5], date__icontains=month)
+                pm_1 = pm_1.values('team')
+                df_pm_1 = pd.DataFrame.from_records(pm_1)
+                pm_1_len = len(df_pm_1.index)
+                month_6.append(pm_1_len)
+                j = j + 1
+        except:
+            pass
+        try:
+            j = 0
+            month_7 = []
+            while j < 12:
+                month = this_month[j]
+                pm_1 = workorder.objects.filter(team=team_get[6], date__icontains=month)
+                pm_1 = pm_1.values('team')
+                df_pm_1 = pd.DataFrame.from_records(pm_1)
+                pm_1_len = len(df_pm_1.index)
+                month_7.append(pm_1_len)
+                j = j + 1
+        except:
+            pass
+        try:
+            j = 0
+            month_8 = []
+            while j < 12:
+                month = this_month[j]
+                pm_1 = workorder.objects.filter(team=team_get[7], date__icontains=month)
+                pm_1 = pm_1.values('team')
+                df_pm_1 = pd.DataFrame.from_records(pm_1)
+                pm_1_len = len(df_pm_1.index)
+                month_8.append(pm_1_len)
+                j = j + 1
+        except:
+            pass
+        try:
+            j = 0
+            month_9 = []
+            while j < 12:
+                month = this_month[j]
+                pm_1 = workorder.objects.filter(team=team_get[8], date__icontains=month)
+                pm_1 = pm_1.values('team')
+                df_pm_1 = pd.DataFrame.from_records(pm_1)
+                pm_1_len = len(df_pm_1.index)
+                month_9.append(pm_1_len)
+                j = j + 1
+        except:
+            pass
+        try:
+            j = 0
+            month_10 = []
+            while j < 12:
+                month = this_month[j]
+                pm_1 = workorder.objects.filter(team=team_get[9], date__icontains=month)
+                pm_1 = pm_1.values('team')
+                df_pm_1 = pd.DataFrame.from_records(pm_1)
+                pm_1_len = len(df_pm_1.index)
+                month_10.append(pm_1_len)
+                j = j + 1
+        except:
+            pass
+        try:
+            j = 0
+            month_11 = []
+            while j < 12:
+                month = this_month[j]
+                pm_1 = workorder.objects.filter(team=team_get[10], date__icontains=month)
+                pm_1 = pm_1.values('team')
+                df_pm_1 = pd.DataFrame.from_records(pm_1)
+                pm_1_len = len(df_pm_1.index)
+                month_11.append(pm_1_len)
+                j = j + 1
+        except:
+            pass
+        try:
+            j = 0
+            month_12 = []
+            while j < 12:
+                month = this_month[j]
+                pm_1 = workorder.objects.filter(team=team_get[11], date__icontains=month)
+                pm_1 = pm_1.values('team')
+                df_pm_1 = pd.DataFrame.from_records(pm_1)
+                pm_1_len = len(df_pm_1.index)
+                month_12.append(pm_1_len)
+                j = j + 1
+        except:
+            pass
+        try:
+            j = 0
+            month_total = []
+            while j < 12:
+                month = this_month[j]
+                pm_1 = workorder.objects.filter(date__icontains=month)
+                pm_1 = pm_1.values('team')
+                df_pm_1 = pd.DataFrame.from_records(pm_1)
+                pm_1_len = len(df_pm_1.index)
+                month_total.append(pm_1_len)
+                j = j + 1
+        except:
+            pass
+        context = {"loginid": loginid, "signal": signal,"year_down":year_down,"bm_comp":bm_comp,"bm_req":bm_req,
+                   "import_equip":import_equip,"month_1":month_1,
+                   "team_get":team_get,"month_2":month_2,"month_3":month_3,"month_4":month_4,"month_5":month_5
+                    , "month_6": month_6,"month_7":month_7,"month_8":month_8,"month_9":month_9,"month_10":month_10
+                   ,"month_11":month_11,"month_12":month_12,"month_total":month_total}
         context.update(users)
         return render(request, 'report_main.html', context)  # templates 내 html연결

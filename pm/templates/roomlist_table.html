@@ -157,12 +157,13 @@ b{
 <div id="tabledesc">
  <table style="word-break:break-all">
      <tbody>
+        <form action="roomlist_change" method="post">
+                    {% csrf_token %}
             {% for room_lists in room_list %}
         <tr>
             <td align="center" class="m1-1">{{room_lists.roomname}}</td>
             <td align="center" class="m2-1">{{room_lists.roomno}}</td>
-            <form action="roomlist_change" method="post">
-                    {% csrf_token %}
+
             <td align="center" class="m1-2">
                 <input type="text" name="new_name" class="input_css1" required></td>
             <td align="center" class="m2-2">

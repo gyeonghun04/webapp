@@ -199,6 +199,8 @@ class pm_sch(models.Model): #PM Master List Table
     a_date = models.CharField(max_length=255, default="")  # 팀장승인일
     attach = models.TextField(default="N/A") #첨부파일 어드레스주소
     attach_temp = models.TextField(default="N/A") #첨부파일 어드레스 주소 임시
+    annual_date = models.TextField() #연간스케줄업데이트
+    delete_signal = models.CharField(max_length=255, default="N")  # 시트영구삭제신호
 
     class Meta:
         managed = False

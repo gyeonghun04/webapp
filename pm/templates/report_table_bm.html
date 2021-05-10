@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</<!DOCTYPE html>
+    <title>Title<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -40,6 +40,150 @@ position:fixed;top:43px; left:190px;}
         outline:0;
         height:30px;
 }
+.bm_chart_css{
+        position:fixed;top:60px; left:170px;
+        z-index:-10;}
+#annual_css{
+        position:fixed;top:460px; left:405px;
+        font-family:'Rubik', sans-serif;
+        font-size:18px;
+        font-color:black;
+        font-weight:bold;
+}
+.bm_pie_css{
+        position:fixed;top:530px; left:1000px;
+        z-index:-20;}
+#team_css{
+        position:fixed;top:910px; left:1200px;
+        font-family:'Rubik', sans-serif;
+        font-size:18px;
+        font-color:black;
+        font-weight:bold;
+}
+.team{
+        font-family:'Rubik', sans-serif;
+        font-size:16px;
+        color:white;
+        background-color:#6F6F6F;
+        width:150px;
+        height:30px;}
+.text{
+        font-family:arial;
+        font-size:16px;
+        color:black;
+        width:150px;
+        height:30px;}
+.text2{
+        font-family:arial;
+        font-size:16px;
+        color:white;
+        background-color:#6F6F6F;
+        width:150px;
+        height:30px;
+        font-weight:bold;
+        }
+tr:nth-child(even){
+    background-color:#EEEEEE;
+}
+#bm_table_title{
+        position:fixed;top:500px; left:550px;
+        font-family:'Rubik', sans-serif;
+        font-size:18px;
+        font-color:black;
+        font-weight:bold;
+}
+#bm_table{
+        position:fixed;top:530px; left:200px;
+}
+.bm_title{
+        font-family:'Rubik', sans-serif;
+        font-size:12px;
+        color:white;
+        background-color:#6F6F6F;
+        width:65px;
+        height:30px;
+}
+.bm_title3{
+        font-family:'Rubik', sans-serif;
+        font-size:12px;
+        color:white;
+        background-color:#6F6F6F;
+        width:65px;
+        height:30px;
+}
+.bm_title2{
+        font-family:'Rubik', sans-serif;
+        font-size:12px;
+        color:white;
+        background-color:#6F6F6F;
+        width:150px;
+        height:30px;
+}
+.bm_text{
+        font-family:arial;
+        font-size:12px;
+        color:black;
+        width:65px;
+        height:30px;
+}
+.bm_text3{
+        font-family:arial;
+        font-size:12px;
+        color:black;
+        width:80px;
+        height:30px;
+}
+.bm_text2{
+        font-family:arial;
+        font-size:12px;
+        color:black;
+        width:150px;
+        height:30px;
+}
+#month_sort{
+        position:fixed;top:564px; left:269px;
+}
+#bm_status_title{
+        position:fixed;top:150px; left:1293px;
+        font-family:'Rubik', sans-serif;
+        font-size:18px;
+        font-color:black;
+        font-weight:bold;
+        }
+#bm_status{
+        position:fixed;top:180px; left:950px;
+}
+#year_down{
+position:fixed;top:100px; left:1655px;
+}
+.select_year{
+        margin-left:5px;
+        width:80px;
+        height:25px;
+        font-family:'Rubik', sans-serif;
+        font-size:18px;
+}
+.year_title{
+        font-family:'Rubik', sans-serif;
+        font-size:18px;
+        font-color:black;
+        font-weight:bold;
+        text-decoration: underline;
+}
+#team_table_title{
+        position:fixed;top:500px; left:1570px;
+        font-family:'Rubik', sans-serif;
+        font-size:18px;
+        font-color:black;
+        font-weight:bold;
+}
+#team_table{
+        position:fixed;top:530px; left:1470px;
+        font-family:arial;
+        font-size:12px;
+        color:black;
+        height:30px;
+}
 </style>
 <body>
 <div id="btn">
@@ -73,11 +217,208 @@ position:fixed;top:43px; left:190px;}
     </table>
 </div>
 <div id="_radius" ></div>
-<div id="pm_data" ></div>
-</body>
-</html>itle>
-</head>
-<body>
+<div id="bm_data" ></div>
 
+{% load static %}
+        <img src="{% static 'bm_chart_report.png' %}" alt="My image" height="400" width="800" class="bm_chart_css">
+<div id="annual_css">[Breakdown Maintenance Monthly Chart]</div>
+<div id="bm_count">bm Count</div>
+<div id="month">Month</div>
+{% load static %}
+        <img src="{% static 'bm_chart_pie.png' %}" alt="My image" height="400" width="550" class="bm_pie_css">
+<div id="team_css">[BM Chart By Team]</div>
+
+<div id="bm_table_title">[Monthly Table By Team]</div>
+<div id="bm_table">
+    <table>
+        <thead>
+        <tr>
+            <td class="bm_title" align="center">Team</td>
+            <td class="bm_title" align="center">Jan.</td>
+            <td class="bm_title" align="center">Feb.</td>
+            <td class="bm_title" align="center">Mar.</td>
+            <td class="bm_title" align="center">Apr.</td>
+            <td class="bm_title" align="center">May.</td>
+            <td class="bm_title" align="center">Jun.</td>
+            <td class="bm_title" align="center">Jul.</td>
+            <td class="bm_title" align="center">Aug.</td>
+            <td class="bm_title" align="center">Sept.</td>
+            <td class="bm_title" align="center">Oct.</td>
+            <td class="bm_title" align="center">Nov.</td>
+            <td class="bm_title" align="center">Dec.</td>
+        </tr>
+        </thead>
+        <tbody id="team_sort">
+        {% for team_gets in team_get%}
+         <tr>
+             <td class="bm_text" align="center">{{team_gets}}</td>
+         </tr>
+        {%endfor%}
+        <tr>
+             <td class="bm_title" align="center">Total</td>
+             {% for month_totals in month_total%}
+             <td class="bm_title" align="center">{{month_totals}}</td>
+            {%endfor%}
+        </tr>
+        </tbody>
+    </table>
+    <table id="month_sort">
+        <tbody>
+         <tr>
+             {% for month_1s in month_1%}
+             <td class="bm_text" align="center">{{month_1s}}</td>
+            {%endfor%}
+         </tr>
+         <tr>
+                          {% for month_2s in month_2%}
+             <td class="bm_text" align="center">{{month_2s}}</td>
+            {%endfor%}
+         </tr>
+         <tr>
+                          {% for month_3s in month_3%}
+             <td class="bm_text" align="center">{{month_3s}}</td>
+            {%endfor%}
+         </tr>
+         <tr>
+                          {% for month_4s in month_4%}
+             <td class="bm_text" align="center">{{month_4s}}</td>
+            {%endfor%}
+         </tr>
+         <tr>
+                          {% for month_5s in month_5%}
+             <td class="bm_text" align="center">{{month_5s}}</td>
+            {%endfor%}
+         </tr>
+         <tr>
+                          {% for month_6s in month_6%}
+             <td class="bm_text" align="center">{{month_6s}}</td>
+            {%endfor%}
+         </tr>
+         <tr>
+                          {% for month_7s in month_7%}
+             <td class="bm_text" align="center">{{month_7s}}</td>
+            {%endfor%}
+         </tr>
+         <tr>
+                          {% for month_8s in month_8%}
+             <td class="bm_text" align="center">{{month_8s}}</td>
+            {%endfor%}
+         </tr>
+         <tr>
+                          {% for month_9s in month_9%}
+             <td class="bm_text" align="center">{{month_9s}}</td>
+            {%endfor%}
+         </tr>
+         <tr>
+                          {% for month_10s in month_10%}
+             <td class="bm_text" align="center">{{month_10s}}</td>
+            {%endfor%}
+         </tr>
+         <tr>
+                          {% for month_11s in month_11%}
+             <td class="bm_text" align="center">{{month_11s}}</td>
+            {%endfor%}
+         </tr>
+         <tr>
+                          {% for month_12s in month_12%}
+             <td class="bm_text" align="center">{{month_12s}}</td>
+            {%endfor%}
+         </tr>
+        </tbody>
+    </table>
+</div>
+
+<div id="bm_status_title">[Monthly Table By Status]</div>
+<div id="bm_status">
+    <table>
+        <thead>
+        <tr>
+            <td class="bm_title" align="center">Status</td>
+            <td class="bm_title" align="center">Jan.</td>
+            <td class="bm_title" align="center">Feb.</td>
+            <td class="bm_title" align="center">Mar.</td>
+            <td class="bm_title" align="center">Apr.</td>
+            <td class="bm_title" align="center">May.</td>
+            <td class="bm_title" align="center">Jun.</td>
+            <td class="bm_title" align="center">Jul.</td>
+            <td class="bm_title" align="center">Aug.</td>
+            <td class="bm_title" align="center">Sept.</td>
+            <td class="bm_title" align="center">Oct.</td>
+            <td class="bm_title" align="center">Nov.</td>
+            <td class="bm_title" align="center">Dec.</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+             <td class="bm_text" align="center">Request</td>
+             {% for bm_reqs in bm_req%}
+             <td class="bm_text" align="center">{{bm_reqs}}</td>
+            {%endfor%}
+        </tr>
+                <tr>
+             <td class="bm_text" align="center">Complete</td>
+             {% for bm_comps in bm_comp%}
+             <td class="bm_text" align="center">{{bm_comps}}</td>
+            {%endfor%}
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div id="year_down">
+    <table>
+        <tr>
+            <td class="year_title">
+                Select Year
+            </td>
+            <td>
+            <select class="select_year" name="select_year" onchange="Select_year();">&nbsp;
+                <option value="N/A"></option>
+                {% for year_downs in year_down %}
+                <option value="{{year_downs}}">{{year_downs}}</option>
+                {% endfor %}</select>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div id="team_table_title">[Important Equipment]</div>
+<div id="team_table">
+    <table>
+        <thead>
+        <tr>
+            <td class="bm_title" align="center">Team</td>
+            <td class="bm_title2" align="center">Equipment Name</td>
+            <td class="bm_title3" align="center">Control No.</td>
+            <td class="bm_title" align="center">BM Count</td>
+        </tr>
+        </thead>
+        <tbody>
+        {% for import_equips in import_equip %}
+         <tr>
+             <td class="bm_text" align="center">{{import_equips.team}}</td>
+             <td class="bm_text2" align="center">{{import_equips.equipname}}</td>
+             <td class="bm_text3" align="center">{{import_equips.controlno}}</td>
+             <td class="bm_text" align="center">{{import_equips.controlno__count}}</td>
+         </tr>
+        {%endfor%}
+        </tbody>
+    </table>
+</div>
+
+    <form name="select_year_form" method="post">
+        {% csrf_token %}
+        <input type="hidden" value="{{loginid}}" name="loginid">
+        <input type="hidden" name="select_year">
+    </form>
+
+<script>
+    function Select_year(){
+           var select_year= document.getElementsByName('select_year')[0].value;
+           document.select_year_form.select_year.value = select_year;
+                            // 서버연결
+           document.select_year_form.action="report_table_bm";
+           document.select_year_form.submit();
+    }
+</script>
 </body>
 </html>
