@@ -113,6 +113,7 @@ urlpatterns = [
     path('pmwritescore', pm.views.pmwritescore, name='pmwritescore'),
     path('pmra_write_prepared', pm.views.pmra_write_prepared, name='pmra_write_prepared'),
     path('pmra_write_approved', pm.views.pmra_write_approved, name='pmra_write_approved'),
+    path('pmra_review', pm.views.pmra_review, name='pmra_review'),
 
 ####PM Approval####
     path('pmapproval_main', pm.views.pmapproval_main, name='pmapproval_main'),
@@ -127,6 +128,7 @@ urlpatterns = [
     path('pmmanual_new', pm.views.pmmanual_new, name='pmmanual_new'),
     path('pmmanual_upload', pm.views.pmmanual_upload, name='pmmanual_upload'),
     path('pmmanual_submit', pm.views.pmmanual_submit, name='pmmanual_submit'),
+    path('pmmanual_regi', pm.views.pmmanual_regi, name='pmmanual_regi'),
 
 ##########################################################################################################################################
 ##########################################################################################################################################
@@ -184,6 +186,7 @@ urlpatterns = [
     path('spareparts_release_plus', pm.views.spareparts_release_plus, name='spareparts_release_plus'),
     path('spareparts_release_delete', pm.views.spareparts_release_delete, name='spareparts_release_delete'),
     path('spareparts_release_controlno', pm.views.spareparts_release_controlno, name='spareparts_release_controlno'),
+    path('spareparts_release_item', pm.views.spareparts_release_item, name='spareparts_release_item'),
     path('spareparts_release_table_controlno', pm.views.spareparts_release_table_controlno, name='spareparts_release_table_controlno'),
     path('spareparts_release_submit', pm.views.spareparts_release_submit,name='spareparts_release_submit'),
     path('spareparts_release_reset', pm.views.spareparts_release_reset, name='spareparts_release_reset'),
@@ -258,8 +261,9 @@ urlpatterns = [
     path('report_main', pm.views.report_main, name='report_main'),
     path('report_table_bm', pm.views.report_table_bm, name='report_table_bm'),
     path('report_table_sp', pm.views.report_table_sp, name='report_table_sp'),
-
-
+    path('history_of_equip_main', pm.views.history_of_equip_main, name='history_of_equip_main'),
+    path('history_of_equip_upload', pm.views.history_of_equip_upload, name='history_of_equip_upload'),
+    path('history_of_equip_reset', pm.views.history_of_equip_reset, name='history_of_equip_reset'),
 
 ]
 if settings.DEBUG:

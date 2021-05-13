@@ -2,10 +2,6 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <style>
@@ -40,12 +36,102 @@ position:fixed;top:43px; left:190px;}
         outline:0;
         height:30px;
 }
+.bm_title{
+        font-family:'Rubik', sans-serif;
+        font-size:12px;
+        color:white;
+        background-color:#6F6F6F;
+        width:65px;
+        height:30px;
+}
+.bm_title3{
+        font-family:'Rubik', sans-serif;
+        font-size:12px;
+        color:white;
+        background-color:#6F6F6F;
+        width:65px;
+        height:30px;
+}
+.bm_title2{
+        font-family:'Rubik', sans-serif;
+        font-size:12px;
+        color:white;
+        background-color:#6F6F6F;
+        width:150px;
+        height:30px;
+}
+.bm_text{
+        font-family:arial;
+        font-size:12px;
+        color:black;
+        width:65px;
+        height:30px;
+}
+.bm_text3{
+        font-family:arial;
+        font-size:12px;
+        color:black;
+        width:80px;
+        height:30px;
+}
+.bm_text2{
+        font-family:arial;
+        font-size:12px;
+        color:black;
+        width:150px;
+        height:30px;
+}
+#use_table_title{
+        position:fixed;top:520px; left:1100px;
+        font-family:'Rubik', sans-serif;
+        font-size:18px;
+        font-color:black;
+        font-weight:bold;
+}
+#use_table{
+        position:fixed;top:550px; left:800px;
+        font-family:arial;
+        font-size:12px;
+        color:black;
+        height:30px;
+}
+#spare_table_title{
+        position:fixed;top:100px; left:350px;
+        font-family:'Rubik', sans-serif;
+        font-size:18px;
+        font-color:black;
+        font-weight:bold;
+        }
+
+#spare_table{
+        position:fixed;top:130px; left:200px;
+        font-family:arial;
+        font-size:12px;
+        color:black;
+        height:30px;
+        }
+.sp_chart_css{
+        position:fixed;top:80px; left:700px;
+        z-index:-10;
+        }
+#annual_css{
+        position:fixed;top:470px; left:1180px;
+        font-family:'Rubik', sans-serif;
+        font-size:18px;
+        font-color:black;
+        font-weight:bold;
+}
+#sp_team{
+        position:fixed;top:200px; left:200px;
+}
+.sp_text{
+background-color:red;}
 </style>
 <body>
 <div id="btn">
     <table>
         <tr>
-            <td>
+        <td>
                     <form action="report_main" method="post">
         {% csrf_token %}
         <input type="hidden" value="{{loginid}}" name="loginid">
@@ -74,10 +160,78 @@ position:fixed;top:43px; left:190px;}
 </div>
 <div id="_radius" ></div>
 <div id="pm_data" ></div>
-</body>
-</html>
-</head>
-<body>
+
+<div id="spare_table_title">[Summary Of Spare Parts]</div>
+<div id="spare_table">
+    <table>
+        <thead>
+        <tr>
+            <td class="bm_title" align="center" rowspan="2">Team</td>
+            <td class="bm_title" align="center" colspan="3">Division</td>
+        </tr>
+        <tr>
+            <td class="bm_title2" align="center">In stock</td>
+            <td class="bm_title2" align="center">Out of Stock</td>
+            <td class="bm_title2" align="center">Total</td>
+        </tr>
+        </thead>
+    </table>
+    <table>
+        <tbody>
+        <div id="sp_team">
+             {% for team_gets in team_get %}
+         <tr>
+             <td class="sp_text" align="center">{{team_gets}}</td>
+         </tr>
+             {%endfor%}
+        </div>
+             {% for stocks in stock %}
+         <tr>
+             <td class="sp_stock" align="center">{{stocks}}</td>
+         </tr>
+             {%endfor%}
+             {% for shorts in short %}
+         <tr>
+             <td class="sp_short" align="center">{{shorts}}</td>
+         </tr>
+             {%endfor%}
+             {% for totals in total %}
+         </tr>
+             <td class="sp_total" align="center">{{totals}}</td>
+         </tr>
+              {%endfor%}
+        </tbody>
+    </table>
+</div>
+
+<div id="use_table_title">[Important Used Parts]</div>
+<div id="use_table">
+    <table>
+        <thead>
+        <tr>
+            <td class="bm_title" align="center">Team</td>
+            <td class="bm_title2" align="center">Code No.</td>
+            <td class="bm_title2" align="center">Parts Name</td>
+            <td class="bm_title2" align="center">Vendor</td>
+            <td class="bm_title2" align="center">Model Name</td>
+            <td class="bm_title3" align="center">QY</td>
+        </tr>
+        </thead>
+        <tbody>
+        {% for import_equips in import_equip %}
+         <tr>
+             <td class="bm_text" align="center">{{import_equips.team}}</td>
+             <td class="bm_text2" align="center">{{import_equips.equipname}}</td>
+             <td class="bm_text3" align="center">{{import_equips.controlno}}</td>
+             <td class="bm_text" align="center">{{import_equips.controlno__count}}</td>
+         </tr>
+        {%endfor%}
+        </tbody>
+    </table>
+</div>
+{% load static %}
+        <img src="{% static 'sp_chart_report.png' %}" alt="My image" height="400" width="1200" class="sp_chart_css">
+<div id="annual_css">[Monthly Spare Parts Status]</div>
 
 </body>
 </html>

@@ -55,7 +55,7 @@ b{
 <div id="tabletop">
 <titletext>PM Period</titletext></td>
 </div>
-<b class="xi-rotate-right"><input type="button" value="Review" class="new" onclick="Review();"></b>
+<b class="xi-rotate-right"><input type="button" value="Review" class="new" onclick="pm_review();"></b>
 <div id="searchbar">
         <form action="pmra_main" method="post">
             {% csrf_token %}
@@ -68,5 +68,18 @@ b{
             <input type="hidden" value="{{loginid}}" name="loginid">
             <input type="submit"  class="searchbutton" value="Search"></form>
 </div>
+
+        <form action="" method="post" name="pmra_review_form">
+             {% csrf_token %}
+        <input type="hidden" value="{{loginid}}" name="loginid">
+        </form>
+
 </body>
+<script>
+    function pm_review(){
+            // 서버로 전송
+            document.pmra_review_form.action="pmra_review";
+            document.pmra_review_form.submit();
+            }
+</script>
 </html>

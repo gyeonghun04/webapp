@@ -415,7 +415,7 @@ def main(request):
                             comp_date, color='dodgerblue', width=0.5, label='Complete')
                     plt.xlabel('[Date]')
                     plt.ylabel('[PM Count]')
-                    plt.legend((p1[0],p2[0]), ('Total','Complete'))
+                    plt.legend((p1[0], p2[0]), ('Total','Complete'))
                     plt.savefig('./static/pm_chart.png')
                 except:
                     pass
@@ -3640,6 +3640,15 @@ def pmcontrolform_change_link_submit(request):
         df_new_check_len = len(df_new_check.index)  # itemcode 하나씩 넘기기
         if int(df_new_check_len) > 0:
             messages.error(request, "PM Maintenance Item already exists.")  # 경고
+            equip_info = equiplist.objects.get(controlno=controlno_get)
+            team_get = equip_info.team
+            equip_get = equip_info.name
+            pm_list = pmmasterlist.objects.filter(controlno=controlno, amd="A", pm_y_n="Y")
+            view_signal = "N"
+            comp_signal = "N"
+            context = {"team_get": team_get, "loginid": loginid, "pm_list": pm_list, "controlno_get": controlno_get,
+                       "equip_get": equip_get, "view_signal": view_signal, "comp_signal": comp_signal}
+            return render(request, 'pmcontrolform_change_link.html', context)  # templates 내 html연결
         else:
     ##컨트롤넘버 DB불러오기##
             db_call = pmmasterlist.objects.filter(controlno=controlno_get, amd="A", pm_y_n="Y")
@@ -4150,6 +4159,75 @@ def pmra_main(request):
             equiplists = equiplist.objects.all().order_by('team', 'controlno')  # db 동기화
         if str(searchtext) == "None":
             searchtext = ""
+        context = {"equiplists":equiplists,"loginid":loginid,"selecttext":selecttext,"searchtext":searchtext}
+        context.update(users)
+        return render(request, 'pmra_main.html', context) #templates 내 html연결
+
+def pmra_review(request):
+    if request.method =='POST': #매소드값이 post인 값만 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+    ##이름 및 권한 끌고다니기##
+        users = userinfo.objects.get(userid=loginid)
+        username = users.username
+        userteam = users.userteam
+        password = users.password
+        auth = users.auth1
+        user_div = users.user_division
+        users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
+    ##검색어 설정##
+        selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
+        searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
+        if selecttext == "team":
+            equiplists = equiplist.objects.filter(team__icontains=searchtext).order_by('team',
+                                                                                                    'controlno')  # db 동기화
+        elif selecttext == "controlno":
+            equiplists = equiplist.objects.filter(controlno__icontains=searchtext).order_by('team',
+                                                                                                         'controlno')  # db 동기화
+        elif selecttext == "equipname":
+            equiplists = equiplist.objects.filter(name__icontains=searchtext).order_by('team',
+                                                                                                    'controlno')  # db 동기화
+        elif selecttext == "status":
+            equiplists = equiplist.objects.filter(status__icontains=searchtext).order_by('team',
+                                                                                                    'controlno')  # db 동기화
+        else:
+            equiplists = equiplist.objects.all().order_by('team', 'controlno')  # db 동기화
+        if str(searchtext) == "None":
+            searchtext = ""
+    ####리뷰하기####
+        today = date.datetime.today()
+        today_year = "20" + today.strftime('%y')  # 올해 년도 구하기
+        next_year = int(today_year) + 1
+        controlno =  equiplist.objects.filter(pmok="Y")
+        controlno = controlno.values('controlno')  # sql문 dataframe으로 변경
+        df_controlno = pd.DataFrame.from_records(controlno)
+        df_controlno_len = len(df_controlno.index)  # 일정 숫자로 변환
+        for k in range(df_controlno_len):
+            try:
+                controno_get = df_controlno.iat[k, 0]
+                review_chk = equiplist.objects.get(controlno=controno_get)
+                score = int(next_year) - int(review_chk.setupdate)
+                if score < 6:
+                    score_y = 1
+                elif score < 11:
+                    score_y = 2
+                elif score < 16:
+                    score_y = 3
+                else:
+                    score_y = 4
+                score_result = int(review_chk.score_f) + int(score_y)
+                if score_result == 2:
+                    ra_result = 12
+                elif score_result == 3:
+                    ra_result = 6
+                elif score_result < 6:
+                    ra_result = 3
+                else:
+                    ra_result = 1
+                print(int(ra_result) + "/" + int(review_chk.ra))
+                if int(ra_result) != int(review_chk.ra):
+                    print("성공")
+            except:
+                pass
         context = {"equiplists":equiplists,"loginid":loginid,"selecttext":selecttext,"searchtext":searchtext}
         context.update(users)
         return render(request, 'pmra_main.html', context) #templates 내 html연결
@@ -6342,6 +6420,9 @@ def pmmanual_main(request):
         context.update(users)
         return render(request, 'pmmanual_main.html', context) #templates 내 html연결
 
+def pmmanual_regi(request):
+    return render(request, 'pmmanual_new.html')  # templates 내 html연결
+
 def pmmanual_new(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
         loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
@@ -6365,15 +6446,14 @@ def pmmanual_new(request):
             context = {"pmmanual":pmmanual, "loginid":loginid,"equipname":equipname,"equipteam":equipteam,
                         "controlno":controlno}
             context.update(users)
-            return render(request, 'pmmanual_main.html', context) #templates 내 html연결
+            return render(request, 'pmmanual_new.html', context) #templates 내 html연결
     # equip 없을때
         except:
             messages.error(request, "Equipment information does not exist.")  # 경고
-            pmmanual = pm_manual.objects.all().order_by('controlno')  # db 동기화
             loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
-            context = {"pmmanual": pmmanual, "loginid": loginid}
+            context = {"loginid": loginid}
             context.update(users)
-            return render(request, 'pmmanual_main.html', context)  # templates 내 html연결
+            return render(request, 'pmmanual_new.html', context)  # templates 내 html연결
 
 def pmmanual_upload(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
@@ -6409,14 +6489,13 @@ def pmmanual_upload(request):
                            "controlno": controlno, "division": division, "partname": partname, "maker": maker,
                            "url": url}
             context.update(users)
-            return render(request, 'pmmanual_main.html', context)  # templates 내 html연결
+            return render(request, 'pmmanual_new.html', context)  # templates 내 html연결
         except:
             messages.error(request, "File selection is missing.")  # 경고
-            pmmanual = pm_manual.objects.all().order_by('controlno')  # db 동기화
-            context = {"pmmanual": pmmanual, "loginid": loginid, "equipname": equipname, "equipteam": equipteam,
+            context = {"loginid": loginid, "equipname": equipname, "equipteam": equipteam,
                            "controlno": controlno, "division": division, "partname": partname, "maker": maker}
             context.update(users)
-            return render(request, 'pmmanual_main.html', context)  # templates 내 html연결
+            return render(request, 'pmmanual_new.html', context)  # templates 내 html연결
 
 def pmmanual_submit(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
@@ -6458,17 +6537,16 @@ def pmmanual_submit(request):
                                         date = today
                                     ).save()
                                 #####equip info 정보 보내기#####
-                                    pmmanual = pm_manual.objects.all().order_by('controlno') #db 동기화
-                                    context = {"pmmanual": pmmanual, "loginid": loginid}
+                                    comp_signal = "Y"
+                                    context = {"loginid": loginid,"comp_signal":comp_signal}
                                     context.update(users)
-                                    return render(request, 'pmmanual_main.html', context)  # templates 내 html연결
+                                    return render(request, 'pmmanual_new.html', context)  # templates 내 html연결
 
     #####equip info 정보 보내기#####
         messages.error(request, "There are entries not entered.")  # 경고
-        pmmanual = pm_manual.objects.all().order_by('controlno')  # db 동기화
-        context = {"pmmanual": pmmanual, "loginid": loginid}
+        context = {"loginid": loginid}
         context.update(users)
-        return render(request, 'pmmanual_main.html', context)  # templates 내 html연결
+        return render(request, 'pmmanual_new.html', context)  # templates 내 html연결
 #######################
 ####Information########
 #######################
@@ -9694,15 +9772,67 @@ def spareparts_release_controlno(request):
         try:
             equip_get = equiplist.objects.get(controlno=controlno)
             equipname = equip_get.name
+            controlno = equip_get.controlno
+            team = equip_get.team
         except:
             equipname=""
             controlno=""
+            team=""
             messages.error(request, "No such equipment exists.")  # 아이디 중복
         ##정보넘기기##
+        parts_list = parts_pm.objects.filter(controlno=controlno).values('itemcode','item').annotate(Count('item'))
         spare_release = spare_out.objects.filter(temp_y_n="N", staff=username)
-        context = {"spare_release": spare_release, "loginid": loginid,"equipname":equipname,"controlno":controlno}
+        context = {"spare_release": spare_release, "loginid": loginid,"equipname":equipname,"controlno":controlno,
+                   "parts_list":parts_list,"team":team}
         context.update(users)
         return render(request, 'spareparts_release_main.html', context)  # templates 내 html연결
+
+def spareparts_release_item(request):
+    if request.method == 'POST':  # 매소드값이 post인 값만 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        controlno = request.POST.get('controlno')  # html에서 해당 값을 받는다
+        itemcode = request.POST.get('select_item')  # html에서 해당 값을 받는다
+    ##이름 및 권한 끌고다니기##
+        users = userinfo.objects.get(userid=loginid)
+        username = users.username
+        userteam = users.userteam
+        password = users.password
+        auth = users.auth1
+        user_div = users.user_division
+        users = {"auth": auth, "password": password, "username": username, "userteam": userteam, "user_div": user_div}
+    #####입력날짜 받기#####
+        today = date.datetime.today()
+        today_date = "20" + today.strftime('%y') + "-" + today.strftime('%m') + "-" + today.strftime('%d')
+        try:
+            input_check = parts_pm.objects.filter(itemcode=itemcode)
+            input_check = input_check.values('no')
+            df_input_check = pd.DataFrame.from_records(input_check)
+            input_check_len = len(df_input_check.index)
+            for i in range(input_check_len):
+                no_get = df_input_check.iat[i, 0]
+                info_get = parts_pm.objects.get(no=no_get)
+                spare_out(
+                    codeno=info_get.codeno,
+                    team=info_get.team,
+                    partname=info_get.partname,
+                    vendor=info_get.vendor,
+                    modelno=info_get.modelno,
+                    staff=username,
+                    qy=info_get.qy,
+                    date=today_date,
+                    controlno=info_get.controlno,
+                    equipname=info_get.equipname,
+                    temp_y_n="N",
+                    location=info_get.location,
+                ).save()
+        except:
+            messages.error(request, "No such Code No. exists.")  #
+    ##정보넘기기##
+        spare_release = spare_out.objects.filter(temp_y_n="N", staff=username)
+        context = {"spare_release":spare_release,"loginid":loginid}
+        context.update(users)
+        return render(request, 'spareparts_release_main.html', context)  # templates 내 html연결
+
 
 def spareparts_release_table_controlno(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
@@ -10678,7 +10808,6 @@ def report_main(request):
         auth = users.auth1
         user_div = users.user_division
         users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
-
     ##금년도sch인거 업데이트하기##
         ###연간 스케줄 리셋하기##
         year_reset = pm_sch.objects.all()
@@ -11105,11 +11234,13 @@ def report_main(request):
                 j = j + 1
         except:
             pass
-        k = 0
+        k = 2021
         year_down = []
-        while k < 100:
-            year_input = 2019
-            year_input = year_input + k
+        today = date.datetime.today()
+        this_year = "20" + today.strftime('%y')  # 올해 년도 구하기
+        year = int(this_year) + 5
+        while k < year:
+            year_input = k
             year_down.append(year_input)
             k = k + 1
         context = {"loginid":loginid,"team_table":team_table,"team_total_len":team_total_len,"month_1":month_1,
@@ -11132,7 +11263,94 @@ def report_table_sp(request):
         user_div = users.user_division
         signal = "SP"
         users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
-        context = {"loginid":loginid,"signal":signal}
+    ##년도검색##
+        today = date.datetime.today()
+        this_year = "20" + today.strftime('%y')  # 올해 년도 구하기
+        month = [this_year + "-01", this_year + "-02", this_year + "-03", this_year + "-04", this_year + "-05",
+                      this_year + "-06", this_year + "-07", this_year + "-08", this_year + "-09", this_year + "-10",
+                      this_year + "-11", this_year + "-12"]
+    ####차트테이블######
+        plt.figure(7)
+        plt.clf()
+        j = 0
+        sp_in = []
+        while j < 12:
+            date_in = month[j]
+            count = spare_in.objects.filter(date__icontains=date_in)
+            count = count.values('team')
+            df_count = pd.DataFrame.from_records(count)
+            count_len = len(df_count.index)
+            sp_in.append(count_len)
+            j = j + 1
+        p20 = plt.plot(['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May.', 'Jun.', 'Jul.', 'Aug.', 'Sept.', 'Oct.', 'Nov.',
+                       'Dec.'],
+                       sp_in, color='coral', marker='o')
+        i = 0
+        sp_out = []
+        while i < 12:
+            date_out = month[i]
+            count = spare_out.objects.filter(date__icontains=date_out)
+            count = count.values('team')
+            df_count = pd.DataFrame.from_records(count)
+            count_len = len(df_count.index)
+            sp_out.append(count_len)
+            i = i + 1
+        p21 = plt.plot(['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May.', 'Jun.', 'Jul.', 'Aug.', 'Sept.', 'Oct.', 'Nov.',
+                        'Dec.'],
+                       sp_out, color='dodgerblue', marker='o')
+        plt.legend((p20[0], p21[0]), ('Incoming', 'Release'))
+        plt.savefig('./static/sp_chart_report.png')
+    ###팀별 재고현황###
+        team_infos = spare_parts_list.objects.all().values('team').annotate(Count('team'))
+        team_infos = team_infos.values('team')
+        df_team_infos = pd.DataFrame.from_records(team_infos)
+        team_infos_len = len(df_team_infos.index)
+        k = 0
+        team_get = []
+        stock = []
+        short = []
+        total = []
+        while k < team_infos_len:  ###팀이름 따기###
+            team = df_team_infos.iat[k, 0]
+            team_get.append(team)
+            try: ###재고 없음
+                sp_n = spare_parts_list.objects.filter(team=team, stock="0")
+                sp_n = sp_n.values('team')
+                df_sp_n = pd.DataFrame.from_records(sp_n)
+                sp_n_len = len(df_sp_n.index)
+                short.append(sp_n_len)
+                sp_t = spare_parts_list.objects.filter(team=team)
+                sp_t = sp_t.values('team')
+                df_sp_t = pd.DataFrame.from_records(sp_t)
+                sp_t_len = len(df_sp_t.index)
+                total.append(sp_t_len)
+                sp_p_len = int(sp_t_len) - int(sp_n_len)
+                stock.append(sp_p_len)
+            except:
+                pass
+            k = k + 1
+    ###사용자재###
+        k = 0
+        main_table = []
+        use_table = {}
+        use_count = spare_out.objects.filter(date__icontains=this_year).values('codeno').annotate(Count('codeno'))
+        use_count = use_count.values('codeno')
+        df_use_count = pd.DataFrame.from_records(use_count)
+        use_count_len = len(df_use_count.index)
+        count = int(use_count_len)
+        while k < count:
+            codeno_get = df_use_count.iat[k, 0]
+            info_get = spare_parts_list.objects.get(codeno=codeno_get)
+            import_part = spare_out.objects.filter(date__icontains=this_year, codeno=codeno_get).aggregate(sum_qy=Sum('qy'))
+            use_table['codeno'] = codeno_get
+            use_table['partname'] = info_get.partname
+            use_table['vendor'] = info_get.vendor
+            use_table['modelno'] = info_get.modelno
+            use_table['team'] = info_get.team
+            use_table['qy'] =import_part['sum_qy']
+            main_table.append(use_table)
+            k = k + 1
+        context = {"loginid":loginid,"signal":signal,"team_get":team_get,"stock":stock,"short":short,"total":total}
         context.update(users)
         return render(request, 'report_main.html', context) #templates 내 html연결
 
@@ -11244,11 +11462,13 @@ def report_table_bm(request):
         plt.legend((p20[0], p21[0]), ('Request', 'Complete'))
         plt.savefig('./static/bm_chart_report.png')
     ###년도 검색기능###
-        k = 0
+        k = 2021
         year_down = []
-        while k < 100:
-            year_input = 2019
-            year_input = year_input + k
+        today = date.datetime.today()
+        this_year = "20" + today.strftime('%y')  # 올해 년도 구하기
+        year = int(this_year) + 1
+        while k < year:
+            year_input = k
             year_down.append(year_input)
             k = k + 1
     ####월간 차트####
@@ -11460,3 +11680,134 @@ def report_table_bm(request):
                    ,"month_11":month_11,"month_12":month_12,"month_total":month_total}
         context.update(users)
         return render(request, 'report_main.html', context)  # templates 내 html연결
+
+def history_of_equip_main(request):
+    if request.method == 'POST':  # 매소드값이 post인 값만 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        select_control = request.POST.get('select_control')  # html에서 해당 값을 받는다
+    ##이름 및 권한 끌고다니기##
+        users = userinfo.objects.get(userid=loginid)
+        username = users.username
+        userteam = users.userteam
+        password = users.password
+        auth = users.auth1
+        user_div = users.user_division
+        users = {"auth": auth, "password": password, "username": username, "userteam": userteam, "user_div": user_div}
+    ##Equipment Information##
+        equip_table = equiplist.objects.filter(controlno=select_control)
+    ##pm Information##
+        pmsch_info = pm_sch.objects.filter(controlno=select_control).order_by('date', 'pmsheetno')
+    ##bm Information##
+        workorderlist = workorder.objects.filter(controlno=select_control).order_by('-date')
+    ##sp Information##
+        spareparts_release = spare_out.objects.filter(controlno=select_control, temp_y_n="Y").order_by('-date')  # db 동기화
+    ##Signal##
+        if str(select_control) == "None":
+            signal = "N"
+        else:
+            signal = "Y"
+    ##url signal##
+        try:
+            url_chk = equiplist.objects.get(controlno=select_control)
+            if (str(url_chk.pic) =="N/A") or (str(url_chk.pic) == "None"):
+                url_comp = "N"
+                url_add = ""
+            else:
+                url_comp = "Y"
+                url_add = url_chk.pic
+        except:
+            url_comp = "N/A"
+            url_add = ""
+        context = {"loginid": loginid, "equip_table":equip_table,"select_control":select_control,"pmsch_info":pmsch_info,
+                   "spareparts_release":spareparts_release,"workorderlist":workorderlist,"signal":signal,
+                   "url_comp":url_comp,"url_add":url_add}
+        context.update(users)
+        return render(request, 'history_of_equip_main.html', context)  # templates 내 html연결
+
+def history_of_equip_upload(request):
+    if request.method == 'POST':  # 매소드값이 post인 값만 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        select_control = request.POST.get('select_control')  # html에서 해당 값을 받는다
+    ##이름 및 권한 끌고다니기##
+        users = userinfo.objects.get(userid=loginid)
+        username = users.username
+        userteam = users.userteam
+        password = users.password
+        auth = users.auth1
+        user_div = users.user_division
+        users = {"auth": auth, "password": password, "username": username, "userteam": userteam, "user_div": user_div}
+    ##Equipment Information##
+        equip_table = equiplist.objects.filter(controlno=select_control)
+    ##pm Information##
+        pmsch_info = pm_sch.objects.filter(controlno=select_control).order_by('date', 'pmsheetno')
+    ##bm Information##
+        workorderlist = workorder.objects.filter(controlno=select_control).order_by('-date')
+    ##sp Information##
+        spareparts_release = spare_out.objects.filter(controlno=select_control, temp_y_n="Y").order_by(
+            '-date')  # db 동기화
+    ##Signal##
+        if str(select_control) == "None":
+            signal = "N"
+        else:
+            signal = "Y"
+    #################파일업로드하기##################
+        if "upload_file" in request.FILES:
+            # 파일 업로드 하기!!!
+            upload_file = request.FILES["upload_file"]
+            fs = FileSystemStorage()
+            name = fs.save(upload_file.name, upload_file)  # 파일저장 // 이름저장
+            # 파일 읽어오기!!!
+            url = fs.url(name)
+        else:
+            file_name = "-"
+        url_save = equiplist.objects.get(controlno=select_control)
+        url_save.pic = url
+        url_save.save()
+        url_comp = "Y"
+        url_add = url_save.pic
+        context = {"loginid": loginid, "equip_table":equip_table,"select_control":select_control,"pmsch_info":pmsch_info,
+                   "spareparts_release":spareparts_release,"workorderlist":workorderlist,"signal":signal,
+                   "url_comp":url_comp, "url_add":url_add}
+        context.update(users)
+        return render(request, 'history_of_equip_main.html', context)  # templates 내 html연결
+
+def history_of_equip_reset(request):
+    if request.method == 'POST':  # 매소드값이 post인 값만 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        select_control = request.POST.get('select_control')  # html에서 해당 값을 받는다
+    ##이름 및 권한 끌고다니기##
+        users = userinfo.objects.get(userid=loginid)
+        username = users.username
+        userteam = users.userteam
+        password = users.password
+        auth = users.auth1
+        user_div = users.user_division
+        users = {"auth": auth, "password": password, "username": username, "userteam": userteam, "user_div": user_div}
+    ##Equipment Information##
+        equip_table = equiplist.objects.filter(controlno=select_control)
+    ##pm Information##
+        pmsch_info = pm_sch.objects.filter(controlno=select_control).order_by('date', 'pmsheetno')
+    ##bm Information##
+        workorderlist = workorder.objects.filter(controlno=select_control).order_by('-date')
+    ##sp Information##
+        spareparts_release = spare_out.objects.filter(controlno=select_control, temp_y_n="Y").order_by('-date')  # db 동기화
+    ##Signal##
+        if str(select_control) == "None":
+            signal = "N"
+        else:
+            signal = "Y"
+    ##url 삭제##
+        try:
+            url_chk = equiplist.objects.get(controlno=select_control)
+            url_chk.pic = "N/A"
+            url_chk.save()
+            url_comp = "N"
+            url_add = ""
+        except:
+            url_comp = "N/A"
+            url_add = ""
+        context = {"loginid": loginid, "equip_table":equip_table,"select_control":select_control,"pmsch_info":pmsch_info,
+                   "spareparts_release":spareparts_release,"workorderlist":workorderlist,"signal":signal,
+                   "url_comp":url_comp,"url_add":url_add}
+        context.update(users)
+        return render(request, 'history_of_equip_main.html', context)  # templates 내 html연결

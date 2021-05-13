@@ -413,10 +413,10 @@ i{
         {% csrf_token %}
         <input type="hidden" value="{{loginid}}" name="loginid">
         <input type="submit"value="Report" class="Button"></form><br>
-    <form action="" method="post">
+    <form action="history_of_equip_main" method="post">
         {% csrf_token %}
         <input type="hidden" value="{{loginid}}" name="loginid">
-        <input type="submit"value="History of Equip.(개발중)" class="Button"></form>
+        <input type="submit"value="History of Equip." class="Button"></form>
 </tr><br>
         <tr>
     {% if user_div == "Admin"%}

@@ -76,16 +76,12 @@ title_text{
 #info_top{
         position:fixed;top:56.5%; left:64%;
         height:5%;
-        width:16%;
+        width:13.7%;
         background-color:white;
         z-index:10;
 }
 #controlno_select{
         position:fixed;top:62.5%; left:64%;
-        font-family:'Rubik', sans-serif;
-        font-size:24px;}
-#qy_select{
-        position:fixed;top:80.5%; left:64%;
         font-family:'Rubik', sans-serif;
         font-size:24px;}
 .controlno_css{
@@ -102,7 +98,7 @@ title_text{
       font-size:20px;
 }
 #controlno_table{
-      margin-top:5px;
+      margin-top:10px;
 }
 #btn_location{
         position:fixed;top:95.5%; left:90%;
@@ -123,6 +119,12 @@ title_text{
         font-weight:bold;
         color:red;
 }
+.select_item{
+      height:40px;
+      width:358px;
+      font-family:'Rubik', sans-serif;
+      font-size:20px;
+}
 </style>
 </head>
 <body>
@@ -135,7 +137,7 @@ title_text{
 <form name="scan_result" method="post">
                 {% csrf_token %}
 <input type="hidden" value="{{loginid}}" name="loginid">
-<input type="text" name="search_text" class="search_text" value="{{reset_text}}"placeholder="Please Scan Barcode">
+<input type="text" name="search_text" class="search_text" value="{{reset_text}}"placeholder="Please Scan Barcode" onchange="Codeno();">
 </form>
 </div>
 
@@ -188,11 +190,11 @@ title_text{
 <div id="submit_radius">
 </div>
 <div id="info_top">
-<searchtext>&nbsp;Manual Information</searchtext>
+<searchtext>&nbsp;PM Parts Release</searchtext>
 </div>
 
 <div id="controlno_select">
-    <title_text>Equipment</title_text>
+    <title_text>Select Maintenance Item</title_text>
     &nbsp;<table id="controlno_table">
         <tr>
             <td align="center" class="text_css">Control No.</td>
@@ -200,36 +202,25 @@ title_text{
                 <input type="text" name="controlno_up" value="{{controlno}}"class="controlno_css" onchange="Controlno_upload();"></td>
         </tr>
         <tr>
+            <td align="center" class="text_css">Team</td>
+            <td align="center" class="input_css">
+                <input type="text" name="team" value="{{team}}" class="controlno_css" readonly></td>
+        </tr>
+         <tr>
             <td align="center" class="text_css">Equipment Name</td>
             <td align="center" class="input_css">
                 <input type="text" name="equipname" value="{{equipname}}" class="controlno_css" readonly></td>
         </tr>
+        <tr>
+            <td align="center" class="text_css">Maintenance Item</td>
+            <td align="center">
+            <select class="select_item" name="select_item" onchange="Select_item();">&nbsp;
+                <option value="N/A"></option>
+                {% for parts_lists in parts_list %}
+                <option value="{{parts_lists.itemcode}}">{{parts_lists.item}}</option>
+                {% endfor %}</select></td>
+        </tr>
     </table>
-</div>
-<div id="qy_select">
-    <title_text>Quantity</title_text><br>
-     &nbsp;<select class="selecttext" name="selecttext">&nbsp;
-            <option value="1">1ea</option>
-            <option value="2">2ea</option>
-            <option value="3">3ea</option>
-            <option value="4">4ea</option>
-            <option value="5">5ea</option>
-            <option value="6">6ea</option>
-            <option value="7">7ea</option>
-            <option value="8">8ea</option>
-            <option value="9">9ea</option>
-            <option value="10">10ea</option>
-            <option value="11">11ea</option>
-            <option value="12">12ea</option>
-            <option value="13">13ea</option>
-            <option value="14">14ea</option>
-            <option value="15">15ea</option>
-            <option value="16">16ea</option>
-            <option value="17">17ea</option>
-            <option value="18">18ea</option>
-            <option value="19">19ea</option>
-            <option value="20">20ea</option>
-            </select>
 </div>
 <div id="btn_location">
     <table>
@@ -255,9 +246,15 @@ title_text{
         <input type="hidden" name="loginid" value="{{loginid}}">
         <input type="hidden" name="controlno"></form>
 
+    <form method="post" name="select_form">
+             {% csrf_token %}
+        <input type="hidden" name="select_item">
+        <input type="hidden" name="loginid" value="{{loginid}}">
+        <input type="hidden" name="controlno"></form>
+
 <script>
      // 클릭버전으로 바꾸기{현재 미사용}
-      function Test_scan(){
+      function Codeno(){
             var search_text = document.getElementsByName('search_text')[0].value;
             var len_check = search_text.length;
             if(len_check=="6"){
@@ -268,7 +265,7 @@ title_text{
                         var type = document.getElementsByName("type")[i].value;
                         }
                     }
-            if(type=="auto"){
+            if(type=="manual"){
             document.scan_result.action="spareparts_release_scan";
             document.scan_result.submit();}}
       }
@@ -290,8 +287,6 @@ title_text{
             clearInterval(barcode_scan);}}
             },3000)
 
-
-
       function Controlno_upload(){
             var controlno= document.getElementsByName('controlno_up')[0].value;
             // 값보내기
@@ -299,6 +294,17 @@ title_text{
             // 서버로 전송
             document.control_no.action="spareparts_release_controlno";
             document.control_no.submit();
+            }
+
+      function Select_item(){
+            var controlno= document.getElementsByName('controlno_up')[0].value;
+            var select_item= document.getElementsByName('select_item')[0].value;
+            // 값보내기
+            document.select_form.controlno.value = controlno;
+            document.select_form.select_item.value = select_item;
+            // 서버로 전송
+            document.select_form.action="spareparts_release_item";
+            document.select_form.submit();
             }
 
 </script>

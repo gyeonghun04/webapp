@@ -75,7 +75,7 @@ position:fixed;top:43px; left:190px;}
         height:30px;}
 .text{
         font-family:arial;
-        font-size:16px;
+        font-size:14px;
         color:black;
         width:150px;
         height:30px;}
@@ -169,12 +169,6 @@ position:fixed;top:100px; left:1655px;
         <td>
             &nbsp;
         </td>
-        <td>
-                     <form action="report_table_sp" method="post">
-        {% csrf_token %}
-        <input type="hidden" value="{{loginid}}" name="loginid">
-        <input type="submit"value="Spare Parts" class="Button2"></form>
-            </td>
         </tr>
     </table>
 </div>

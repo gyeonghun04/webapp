@@ -17,7 +17,6 @@ titletext{
         font-weight:bold;
 }
 .selecttext{
-        margin-left:1130px;
         width:105px;
         height:20px;
 }
@@ -52,7 +51,7 @@ titletext{
         font-family: arial;
         font-size:11px;
         overflow-y:scroll;
-        height:83.8%;
+        height:89.8%;
 }
 
 body{overflow:hidden;}
@@ -60,24 +59,6 @@ body{overflow:hidden;}
 tr:nth-child(even){
     background-color:#EEEEEE;
 }
-#manualchange{
-        position:fixed; top:94%; left:9%;
-        width:90.7%;
-    	font-family: arial;
-        font-size:11px;
-        background-color:#6F6F6F;
-        color:white;
-        height:20px;
-}
-
-#manualchangeinput{
-        position:fixed; top:96.5%; left:9%;
-        width:90.7%;
-    	font-family: arial;
-        font-size:11px;
-        height:40px;
-}
-
 .m1{width:100px;}
 .m2{width:100px;}
 .m3{width:200px;}
@@ -97,52 +78,19 @@ height:20px;}
 .m6-1{width:250px;}
 .m7-1{width:230px;}
 .m8-1{width:200px;}
-.m9-1{width:100px;}
+.m9-1{width:105px;}
 
-.n1{width:120px;}
-.n2{width:90px;}
-.n3{width:160px;}
-.n4{width:130px;}
-.n5{width:300px;}
-.n6{width:280px;}
-.n7{width:300px;}
-
-
-.n1-1{width:100px;
-height:18px;}
-.n2-1{width:100px;
-height:18px;}
-.n3-1{width:150px;
-height:18px;}
-.n4-1{width:200px;
-height:18px;}
-.n5-1{width:300px;
-height:18px;}
-.n6-1{width:220px;
-height:18px;}
-.n7-1{
-width:580px;
-}
-.submit_button{
-    	font-family: arial;
+.new{
+        font-family:'Rubik', sans-serif;
+        font-size:15px;
+        background-color: rgba(255, 255, 255, 0.0);
         cursor:pointer;
-        font-size:14px;
+        border:0px;
+        font-color:black;
+        text-decoration:underline;
 }
-.upload_button{
-    	font-family: arial;
-        cursor:pointer;
-        font-size:14px;
-        }
-.divisiontext{
-    	font-family: arial;
-        padding-top:2px;
-        padding-bottom:3px;
-        }
-.upload_comp{
-    	font-family: arial;
-        font-size:16px;
-        padding-left:130px;
-}
+b{
+margin-left:970px;}
 </style>
 <body>
 <main>
@@ -154,6 +102,9 @@ width:580px;
 <table>
     <tr>
     <td><titletext>Equipment Manual List</titletext></td>
+    <td>
+        <b class="xi-pen"><input type="button" value="New Registration" class="new" onclick="Registration_new();"></b>
+    </td>
     <td>
     <div id="searchbar">
         <form action="pmmanual_main" method="post">
@@ -168,6 +119,7 @@ width:580px;
             </select>
             <input type="search"  class="searchtext" placeholder="Keywords" name="searchtext">
             <input type="hidden" value="{{loginid}}" name="loginid">
+            <input type="hidden" value="{{loginid}}" id="loginid_up">
             <input type="submit"  class="searchbutton" value="Search"></form>
     </div></td>
     </tr>
@@ -210,131 +162,15 @@ width:580px;
         </tbody>
  </table>
 </div>
- <div>
- <table>
-   <thead id="manualchange">
-        <tr>
-            <td align="center" class="n1">Control No.</td>
-            <td align="center" class="n2">Team</td>
-            <td align="center" class="n3">Equip. Name</td>
-            <td align="center" class="n4">Division</td>
-            <td align="center" class="n5">Parts Name</td>
-            <td align="center" class="n6">Maker</td>
-            <td align="center" class="n7">Uplaod File</td>
-        </tr>
-   </thead>
-   <tbody id="manualchangeinput">
-     <tr>
-            <td align="center">
-            <input type="text" name="controlno_up"  value="{{controlno}}" class="n1-1" onchange="Controlno_upload();" required ></td>
-            <td align="center">
-                     <input type="text" name="team_up"  value="{{equipteam}}" class="n2-1" readonly></td>
-            <td align="center">
-                     <input type="text" name="name_up"  value="{{equipname}}" class="n3-1" readonly></td>
-            <td align="center">
-                <select class="divisiontext" name="division_up">&nbsp;
-                    <option value="Operation Manual">Operation Manual</option>
-                    <option value="Elec. Drawing">Elec. Drawing</option>
-                    <option value="FDS">FDS</option>
-                    <option value="P&ID">P&ID</option>
-                    <option value="Parts Manual">Parts Manual</option>
-                    <option value="ETC">ETC</option>
-                </select>
-            <td align="center">
-                     <input type="text" name="partname_up"  value="{{partname}}" class="n5-1" placeholder="N/A if not entered" required ></td>
-            <td align="center">
-                     <input type="text" name="maker_up"  value="{{maker}}" class="n6-1" placeholder="N/A if not entered" required ></td>
-            <td class="n7-1">
-                <form method="post" name="upload_file" enctype="multipart/form-data">
-                                {% csrf_token %}
-                <input type="hidden" value="{{loginid}}" name="loginid">
-                <input type="hidden" name="controlno">
-                <input type="hidden" name="team">
-                <input type="hidden" name="name">
-                <input type="hidden" name="division">
-                <input type="hidden" name="partname">
-                <input type="hidden" name="maker">
-                {% if url %}
-                <a href="{{url}}" target="_blank" class="upload_comp">Upload Complete</a>
-                {% else %}
-                 <input type="file" name="upload_files" id="upload_files">
-                <input type="button" value="Upload" class="upload_button" onclick="Upload_file();"><br>
-                {% endif %}
-                </form>
-            </td>
-         <td>
-             <input type="button" class="submit_button" value="Submit" onclick="Fileupload_submit();">
-         </td>
-     </tr>
-   </tbody>
-</table>
- </div>
-
-        <form action="" method="post" name="control_no">
-             {% csrf_token %}
-        <input type="hidden" value="{{loginid}}" name="loginid">
-        <input type="hidden" name="controlno">
-        </form>
-
-        <form action="" method="post" name="fileupload_submit">
-             {% csrf_token %}
-        <input type="hidden" value="{{loginid}}" name="loginid">
-        <input type="hidden" name="controlno">
-        <input type="hidden" name="team">
-        <input type="hidden" name="name">
-        <input type="hidden" name="division">
-        <input type="hidden" name="partname">
-        <input type="hidden" name="maker">
-        <input type="hidden" value="{{url}}" name="url">
-        </form>
 
 </main>
 <script>
-     function Controlno_upload(){
-            var controlno= document.getElementsByName('controlno_up')[0].value;
-            // 값보내기
-            document.control_no.controlno.value = controlno;
-            // 서버로 전송
-            document.control_no.action="pmmanual_new";
-            document.control_no.submit();
+     function Registration_new(){
+                        // 팝업창열기
+            var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=385, height=360, left=50, top=10';
+            window.open("/pmmanual_regi", "PM Manual Registration", settings);
             }
 
-     function Upload_file(){
-             var controlno= document.getElementsByName('controlno_up')[0].value;
-            var team= document.getElementsByName('team_up')[0].value;
-            var name= document.getElementsByName('name_up')[0].value;
-            var division= document.getElementsByName('division_up')[0].value;
-            var partname= document.getElementsByName('partname_up')[0].value;
-            var maker= document.getElementsByName('maker_up')[0].value;
-            // 값보내기
-            document.upload_file.controlno.value = controlno;
-            document.upload_file.team.value = team;
-            document.upload_file.name.value = name;
-            document.upload_file.division.value = division;
-            document.upload_file.partname.value = partname;
-            document.upload_file.maker.value = maker;
-             // 서버로 전송
-            document.upload_file.action="pmmanual_upload";
-            document.upload_file.submit();}
-
-
-      function Fileupload_submit(){
-            var controlno= document.getElementsByName('controlno_up')[0].value;
-            var team= document.getElementsByName('team_up')[0].value;
-            var name= document.getElementsByName('name_up')[0].value;
-            var division= document.getElementsByName('division_up')[0].value;
-            var partname= document.getElementsByName('partname_up')[0].value;
-            var maker= document.getElementsByName('maker_up')[0].value;
-            // 값보내기
-            document.fileupload_submit.controlno.value = controlno;
-            document.fileupload_submit.team.value = team;
-            document.fileupload_submit.name.value = name;
-            document.fileupload_submit.division.value = division;
-            document.fileupload_submit.partname.value = partname;
-            document.fileupload_submit.maker.value = maker;
-            // 서버로 전송!
-            document.fileupload_submit.action="pmmanual_submit";
-            document.fileupload_submit.submit();}
 </script>
 </body>
 </html>

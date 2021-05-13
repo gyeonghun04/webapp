@@ -35,6 +35,8 @@ class equiplist(models.Model): #PM Master List Table
     ra_temp = models.CharField(max_length=255, default="New") # result score (___months) // 결재 전 임시저장
     p_name_temp = models.CharField(max_length=255, default="None") # 작성자 이름 // 결재 전 임시저장
     p_date_temp = models.CharField(max_length=255, default="None") # 작성자 날짜 // 결재 전 임시저장
+    pic = models.TextField(default="N/A") #설비사진
+
     class Meta:
         managed = False
         db_table = 'equiplist'
@@ -322,6 +324,7 @@ class spare_parts_list(models.Model): #spare_parts_list
     check_y_n_temp = models.CharField(max_length=255)  #사용여부
     req_qy = models.CharField(max_length=255, default=0)  #요구수량
     short_qy = models.CharField(max_length=255)  #부족수량
+    barcode = models.CharField(max_length=255)  #바코드
 
     class Meta:
         managed = False
@@ -354,7 +357,7 @@ class spare_out(models.Model): #spare_out
     vendor = models.CharField(max_length=255)  # 업체명
     modelno = models.TextField()  # 모델명
     staff = models.CharField(max_length=255) #담당자
-    qy = models.CharField(max_length=255) #입고수량
+    qy = models.IntegerField() #출고수량
     date = models.CharField(max_length=255) #입고일자
     controlno = models.CharField(max_length=255) #설비명
     out_code = models.CharField(max_length=255) #출고코드

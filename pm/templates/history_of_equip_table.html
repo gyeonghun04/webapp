@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+#_radius{
+        box-shadow: 3px 4px 0px 0px #A9A9A9;
+        position:fixed;top:75px; left:180px;
+        border:2px solid #EEEEEE;
+        border-radius:1%;
+        width:1720px;
+        height:880px;
+    }
+#pic_radius{
+        position:fixed;top:100px; left:205px;
+        border:2px solid #EEEEEE;
+        border-radius:5%;
+        width:500px;
+        height:350px;
+}
+#pic{
+    position:fixed;top:115px; left:255px;
+}
+#reset_pic{
+    position:fixed;top:420px; left:610px;
+}
+#equip_table_title{
+        position:fixed;top:470px; left:330px;
+        font-family:'Rubik', sans-serif;
+        font-size:22px;
+        font-color:black;
+        font-weight:bold;
+}
+#equip_table{
+        position:fixed;top:510px; left:205px;
+}
+#select{
+position:fixed;top:43px; left:1630px;}
+.select_css{
+       font-size:16px;
+       font-family: arial;
+       width:150px;
+       height:20px;
+}
+c_no{
+       font-size:16px;
+       font-family: arial;
+       font-weight:bold;
+       text-decoration: underline;
+}
+.title_css{
+        font-family:'Rubik', sans-serif;
+        font-size:14px;
+        background-color:#D8D8D8;
+        width:200px;
+        height:30px;
+        font-weight:bold;}
+.text_css{
+        font-family:arial;
+        background-color:#EEEEEE;
+        font-size:14px;
+        color:black;
+        width:300px;
+        height:30px;
+        font-weight:bold;}
+#pm_table_title{
+        position:fixed;top:100px; left:740px;
+        font-family:'Rubik', sans-serif;
+        font-size:22px;
+        font-color:black;
+        font-weight:bold;}
+#bm_table_title{
+        position:fixed;top:400px; left:740px;
+        font-family:'Rubik', sans-serif;
+        font-size:22px;
+        font-color:black;
+        font-weight:bold;}
+#sp_table_title{
+        position:fixed;top:700px; left:740px;
+        font-family:'Rubik', sans-serif;
+        font-size:22px;
+        font-color:black;
+        font-weight:bold;}
+#pm_table_top{
+        position:fixed;top:140px; left:740px;
+        background-color:#6F6F6F;
+        color:white;
+        height:25px;
+        font-family: arial;
+        font-size:12px;}
+.c1{width:150px;}
+.c2{width:50px;}
+.c3{width:150px;}
+.c4{width:130px;}
+.c5{width:130px;}
+.c6{width:130px;}
+.c7{width:130px;}
+.c8{width:130px;}
+.c9{width:105px;}
+
+.c1-1{width:150px;}
+.c2-1{width:50px;}
+.c3-1{width:150px;}
+.c4-1{width:130px;}
+.c5-1{width:130px;}
+.c6-1{width:130px;}
+.c7-1{width:130px;}
+.c8-1{width:130px;}
+.c9-1{width:105px;}
+
+#bm_table_top{
+        position:fixed;top:440px; left:740px;
+        background-color:#6F6F6F;
+        color:white;
+        height:35px;
+        font-family: arial;
+        font-size:12px;}
+#tablemenu_top{
+        border:1px solid white;
+        border-collapse:collapse;
+}
+.m1{width:100px;
+background-color:#6F6F6F;}
+.m2{width:90px;
+background-color:#6F6F6F;}
+.m3{width:80px;
+background-color:#6F6F6F;}
+.m4{width:230px;
+background-color:#6F6F6F;}
+.m5{width:100px;
+background-color:#6F6F6F;}
+.m6{width:50px;
+background-color:#6F6F6F;}
+.m7{width:80px;
+background-color:#6F6F6F;}
+.m8{width:230px;
+background-color:#6F6F6F;}
+.m10{width:100px;
+background-color:#6F6F6F;}
+.m11{width:50px;
+background-color:#6F6F6F;}
+
+.m1-1{width:100px;}
+.m2-1{width:90px;}
+.m3-1{width:75px;}
+.m4-1{width:230px;}
+.m5-1{width:100px;}
+.m6-1{width:50px;}
+.m7-1{width:75px;}
+.m8-1{width:230px;}
+.m10-1{width:100px;}
+.m11-1{width:50px;}
+
+
+#sp_table_top{
+        position:fixed;top:740px; left:740px;
+        background-color:#6F6F6F;
+        color:white;
+        height:25px;
+        font-family: arial;
+        font-size:12px;}
+.s1{width:105px;}
+.s2{width:150px;}
+.s3{width:100px;}
+.s4{width:250px;}
+.s5{width:100px;}
+.s6{width:50px;}
+.s7{width:100px;}
+.s8{width:100px;}
+.s9{width:150px;}
+
+.s1-1{width:105px;}
+.s2-1{width:150px;}
+.s3-1{width:100px;}
+.s4-1{width:250px;}
+.s5-1{width:100px;}
+.s6-1{width:50px;}
+.s7-1{width:100px;}
+.s8-1{width:100px;}
+.s9-1{width:150px;}
+
+tr:nth-child(even){
+    background-color:#EEEEEE;
+}
+#upload_pic{
+    position:fixed;top:400px; left:300px;
+}
+.button_css{
+        font-family: arial;
+        font-size:14px;
+        cursor:pointer;
+}
+#pm_table_table{
+        position:fixed;top:165px; left:740px;
+        z-index:10;
+        overflow-y:auto;
+        height:220px;
+}
+#pm_table{
+        font-family: arial;
+        font-size:11px;
+        height:20px;
+}
+.button{
+    	font-family: arial;
+        font-size:11px;
+        cursor:pointer;
+}
+#bm_table_table{
+        position:fixed;top:474px; left:740px;
+        z-index:10;
+        overflow-y:auto;
+        height:210px;
+        }
+#bm_table{
+        font-family: arial;
+        font-size:11px;
+        height:20px;
+        }
+#sp_table_table{
+        position:fixed;top:765px; left:740px;
+        z-index:10;
+        overflow-y:auto;
+        height:150px;
+        }
+#sp_table{
+        font-family: arial;
+        font-size:11px;
+        height:20px;
+        }
+#no_text{
+        position:fixed;top:100px; left:740px;
+        font-family:'Rubik', sans-serif;
+        font-size:32px;
+        font-color:black;
+        font-weight:bold;
+        }
+</style>
+<body>
+<div id="select">
+    <c_no>Control No.</c_no>
+    <input type="text" name="controlno" class="select_css"  placeholder="Enter Control No." onchange="Change_control();">
+</div>
+<div id="_radius" ></div>
+        {% if signal == "Y" %}
+</div>
+<div id="pic_radius" ></div>
+<div id="equip_table_title">[Equipment Information]</div>
+<div id="equip_table">
+    <table>
+        <tbody>
+        {% for equip_tables in equip_table%}
+                <tr>
+             <td class="title_css" align="center">Control No.</td>
+             <td class="text_css" align="center">{{equip_tables.controlno}}</td>
+         </tr>
+                 <tr>
+             <td class="title_css" align="center">Equipment Name</td>
+             <td class="text_css" align="center">{{equip_tables.name}}</td>
+         </tr>
+                 <tr>
+             <td class="title_css" align="center">Team</td>
+             <td class="text_css" align="center">{{equip_tables.team}}</td>
+         </tr>
+                 <tr>
+             <td class="title_css" align="center">Room Name (Room No.)</td>
+             <td class="text_css" align="center">{{equip_tables.roomname}} ({{equip_tables.roomno}})</td>
+         </tr>
+                 <tr>
+             <td class="title_css" align="center">Vendor</td>
+             <td class="text_css" align="center">{{equip_tables.maker}}</td>
+         </tr>
+                <tr>
+             <td class="title_css" align="center">Model Name</td>
+             <td class="text_css" align="center">{{equip_tables.model}}</td>
+         </tr>
+                <tr>
+             <td class="title_css" align="center">Serial No.</td>
+             <td class="text_css" align="center">{{equip_tables.serial}}</td>
+         </tr>
+                <tr>
+             <td class="title_css" align="center">Setup Year</td>
+             <td class="text_css" align="center">{{equip_tables.setupdate}}</td>
+         </tr>
+                 <tr>
+             <td class="title_css" align="center">PM</td>
+             <td class="text_css" align="center">{{equip_tables.pmok}}</td>
+         </tr>
+                 <tr>
+             <td class="title_css" align="center">Assessment of Period</td>
+             <td class="text_css" align="center">{{equip_tables.ra}}Months</td>
+         </tr>
+        {%endfor%}
+        </tbody>
+    </table>
+</div>
+<div id="pm_table_title">[History of Prevent Maintenance]</div>
+<div id="pm_table_top">
+    <table>
+        <tr>
+            <td align="center" class="c1">PM Sheet No.</td>
+            <td align="center" class="c2">Rev No.</td>
+            <td align="center" class="c3">Rev Date</td>
+            <td align="center" class="c4">Plan Month</td>
+            <td align="center" class="c5">Plan Date</td>
+            <td align="center" class="c6">Action Date</td>
+            <td align="center" class="c7">Staff Name</td>
+            <td align="center" class="c8">Status</td>
+            <td align="center" class="c9">Click</td>
+        </tr>
+    </table>
+</div>
+<div id="pm_table_table">
+ <table style="word-break:break-all" id="pm_table">
+     <tbody>
+             {% for pmsch in pmsch_info %}
+        <tr>
+            <td align="center" class="c1-1">{{pmsch.pmsheetno}}</td>
+            <td align="center" class="c2-1">{{pmsch.revno}}</td>
+            <td align="center" class="c3-1">{{pmsch.revdate}}</td>
+            <td align="center" class="c4-1">{{pmsch.date}}</td>
+            <td align="center" class="c5-1">{{pmsch.plandate}}</td>
+            <td align="center" class="c6-1">{{pmsch.actiondate_temp}}</td>
+            <td align="center" class="c7-1">{{pmsch.p_name}}</td>
+            <td align="center" class="c8-1">{{pmsch.status}}</td>
+            <td align="center" class="c9-1">
+            <form action="pm_fullscreen" method="post" target="_blank">
+                {% csrf_token %}
+                <input type="hidden" name="pmsheetno" value="{{pmsch.pmsheetno}}">
+                <input type="hidden" name="pmcode" value="{{pmsch.pmcode}}">
+                <input type="hidden" name="loginid" value="{{loginid}}">
+                <input type="hidden" name="controlno" value="{{pmsch.controlno}}">
+                <input type="submit" value="Click" class="button">
+            </form>
+            </td>
+        </tr>
+                                  {% endfor %}
+        </tbody>
+ </table>
+</div>
+
+<div id="bm_table_title">[History of Breakdown Maintenance]</div>
+<div id="bm_table_top">
+         <table  style="word-break:break-all" border="1" id="tablemenu_top">
+        <thead>
+        <tr>
+            <td align="center" class="n0" colspan="2">Informantion</td>
+            <td align="center" class="n1" colspan="4">Work Request</td>
+            <td align="center" class="n2" colspan="4">Work Order</td>
+        </tr>
+        <tr>
+            <td align="center" class="m1">Work Order No.</td>
+            <td align="center" class="m2">Status</td>
+            <td align="center" class="m3">Requestor</td>
+            <td align="center" class="m4">Description</td>
+            <td align="center" class="m5">Request Date</td>
+            <td align="center" class="m6">Click</td>
+            <td align="center" class="m7">Staff Name</td>
+            <td align="center" class="m8">Work Description</td>
+            <td align="center" class="m10">Completed Date</td>
+            <td align="center" class="m11">Click</td>
+        </tr>
+        </thead>
+     </table>
+</div>
+
+<div id="bm_table_table">
+ <table style="word-break:break-all" id="bm_table">
+     <tbody>
+                {% for workorder in workorderlist %}
+        <tr>
+            <td align="center" class="m1-1">{{workorder.workorderno}}</td>
+            <td align="center" class="m2-1">{{workorder.status}}</td>
+            <td align="center" class="m3-1">{{workorder.requestor}}</td>
+            <td align="center" class="m4-1">{{workorder.description}}</td>
+            <td align="center" class="m5-1">{{workorder.date}}</td>
+            <td align="center" class="m6-1">
+                <input type="button" value="Click" class="button" onclick="Workrequest_view(this);">
+            </td>
+            <td align="center" class="m7-1">{{workorder.action_name}}</td>
+            <td align="center" class="m8-1">{{workorder.work_desc}}</td>
+            <td align="center" class="m10-1">{{workorder.action_date}}</td>
+            <td align="center" class="m11-1">
+                <input type="hidden" value="{{workorder.workorderno}}" name="workorderno_up">
+                <input type="button" value="Click" class="button" onclick="Workorder_view(this);">
+            </td>
+        </tr>
+
+                {% endfor %}
+        </tbody>
+ </table>
+</div>
+
+<div id="sp_table_title">[History of Spare Parts]</div>
+<div id="sp_table_top">
+         <table  style="word-break:break-all">
+        <thead>
+        <tr>
+            <td align="center" class="s1">Code No.</td>
+            <td align="center" class="s2">Parts Name</td>
+            <td align="center" class="s3">Vendor</td>
+            <td align="center" class="s4">Model Name</td>
+            <td align="center" class="s5">Staff</td>
+            <td align="center" class="s6">QY</td>
+            <td align="center" class="s7">Location</td>
+            <td align="center" class="s8">Date</td>
+            <td align="center" class="s9">Use Information</td>
+        </tr>
+        </thead>
+     </table>
+</div>
+
+<div id="sp_table_table">
+ <table style="word-break:break-all" id="sp_table">
+     <tbody>
+            {% for spare_out in spareparts_release %}
+        <tr>
+            <td align="center" class="s1-1">{{spare_out.codeno}}</td>
+            <td align="center" class="s2-1">{{spare_out.partname}}</td>
+            <td align="center" class="s3-1">{{spare_out.vendor}}</td>
+            <td align="center" class="s4-1">{{spare_out.modelno}}</td>
+            <td align="center" class="s5-1">{{spare_out.staff}}</td>
+            <td align="center" class="s6-1">{{spare_out.qy}}</td>
+            <td align="center" class="s7-1">{{spare_out.location}}</td>
+            <td align="center" class="s8-1">{{spare_out.date}}</td>
+            <td align="center" class="s9-1">{{spare_out.used_y_n}}</td>
+        </tr>
+            {% endfor %}
+        </tbody>
+ </table>
+</div>
+
+        {% if url_comp == "N" %}
+<div id="upload_pic">
+           <form action="history_of_equip_upload" method="post" name="uploadfile" enctype="multipart/form-data" class="uploadfile">
+            {% csrf_token %}
+            <input type="file" name="upload_file" id="upload_file" class="button_css1">
+            <input type="hidden" name="loginid" value="{{loginid}}">
+            <input type="hidden" name="select_control" value="{{select_control}}">
+            <input type="submit" value="Upload" class="button_css"></form>
+</div>
+        {% elif url_comp == "Y" %}
+<div id="pic">
+        <img src="{{url_add}}" alt="My image" height="300" width="400" class="pic_css">
+</div>
+<div id="reset_pic">
+           <form action="history_of_equip_reset" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="loginid" value="{{loginid}}">
+            <input type="hidden" name="select_control" value="{{select_control}}">
+            <input type="submit" value="Reset" class="button"></form>
+</div>
+        {%endif%}
+    {%else%}
+<div id="no_text">
+    Please Enter the Control No. of Equipment
+</div>
+    {%endif%}
+
+        <form method="post" name="request">
+             {% csrf_token %}
+        <input type="hidden" name="workorderno" id="workorderno_up">
+        </form>
+
+    <form name="change_control_form" method="post">
+        {% csrf_token %}
+    <input type="hidden" name="loginid" value="{{loginid}}">
+    <input type="hidden" name="select_control" value="{{select_control}}">
+    </form>
+
+<script>
+    function Change_control(){
+            var controlno= document.getElementsByName('controlno')[0].value;
+             // 체크박스 하나만 선택되게 하기
+            document.change_control_form.select_control.value = controlno;
+            // 서버로 전송
+            document.change_control_form.action="history_of_equip_main";
+            document.change_control_form.submit();
+    }
+    function Workrequest_view(obj){
+            var i = obj.parentNode.parentNode.rowIndex;
+            var workorderno = document.getElementsByName('workorderno_up')[i].value;
+            document.request.workorderno.value = workorderno;
+                        // 팝업창열기
+            var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=200, height=80, left=50, top=400';
+            window.open("/workorderlist_request_main", "Work Request Form", settings);
+    }
+    function Workorder_view(obj){
+            var i = obj.parentNode.parentNode.rowIndex;
+            var workorderno = document.getElementsByName('workorderno_up')[i].value;
+            document.request.workorderno.value = workorderno;
+                        // 팝업창열기
+            var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=200, height=80, left=50, top=400';
+            window.open("/workorderlist_order_main", "Work Request Form", settings);
+    }
+</script>
+</body>
+</html>

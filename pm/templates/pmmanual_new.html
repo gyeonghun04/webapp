@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+    <title>Title</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap');
+
+header{
+        height:30px;
+        background:#6F6F6F;
+        justify-content:space-between;
+        align-items:center;
+        position:fixed;
+        top:0;
+        left:0;
+        right:0;
+        z-index:10;
+        }
+header2{
+        height:0.3px;
+        padding-top:3px;
+        background:#EEEEEE;
+        display:flex;
+        justify-content:space-between;
+        position:fixed;
+        top:30px;
+        left:0;
+        right:0;
+        z-index:10;
+}
+toptext{
+        font-family: 'Rubik', sans-serif;
+        font-size:18px;
+        vertical-align:top;
+        font-weight:bold;
+        padding-left:5px;
+        color:white;
+}
+#logindata{
+        position:fixed; top:1px; left:90px;
+        font-family: 'Rubik', sans-serif;
+        font-size:18px;
+        vertical-align:top;
+        font-weight:bold;
+        color:white;
+}
+l{
+        margin-left:1%;
+        color:white;
+}
+m{
+        margin-left:1%;
+        color:white;
+}
+k{
+        position:fixed; top:0%; left:94.5%;
+        color:white;
+}
+.Button {
+        position:fixed; left:320px;
+        font-family:'Rubik', sans-serif;
+        font-size:18px;
+        background-color: rgba(255, 255, 255, 0.0);
+        cursor:pointer;
+        border:0px;
+        color:white;
+        font-weight:bold;
+}
+spareparts{
+        position:fixed; top:35px; left:5px;
+        font-family: 'Rubik', sans-serif;
+        font-size:18px;
+        font-weight:bold;
+}
+#table_location{
+        position:fixed; top:70px; left:5px;
+}
+
+#sparepartstable{
+        border:1px solid white;
+        border-collapse:collapse;
+}
+.text_css{
+      font-family:'Rubik', sans-serif;
+      font-size:13px;
+      color:black;
+      background-color:#D8D8D8;
+      width:130px;
+      height:25px;
+      }
+.input_css{
+      width:245px;
+      height:25px;
+}
+.location_css{
+      width:120px;
+      height:25px;
+}
+.select_css{
+      font-size:13px;
+      width:254px;
+      height:27px;
+}
+.location_btn{
+        margin-top:11px;
+    	font-family: arial;
+        font-size:12px;
+        cursor:pointer;
+}
+.submit_btn{
+    	font-family: arial;
+        font-size:12px;
+        cursor:pointer;
+        position:fixed; top:330px; left:330px;
+
+}
+</style>
+</head>
+
+<body>
+<header>
+<toptext>Welcome,&nbsp;</toptext>
+<div id="logindata"></div>
+
+<input type="button"value="Close" class="Button" onclick="Close();">
+
+</header>
+<header2>
+</header2>
+<spareparts>Spare Parts New Registration</spareparts>
+<div id="table_location">
+   <table id="sparepartstable" border="1">
+        <tr>
+            <td align="center" class="text_css">Control No.</td>
+            <td align="center">
+                <input type="text" name="controlno_up"  value="{{controlno}}" class="input_css" onchange="Controlno_upload();" required >
+            </td>
+        </tr>
+        <tr>
+            <td align="center" class="text_css">Team</td>
+            <td align="center">
+            <input type="text" name="team_up"  value="{{equipteam}}" class="input_css" readonly></td>
+        </tr>
+        <tr>
+            <td align="center" class="text_css">Equip. Name</td>
+            <td align="center">
+            <input type="text" name="name_up"  value="{{equipname}}" class="input_css" readonly></td>
+        </tr>
+        <tr>
+            <td align="center" class="text_css">Division</td>
+            <td align="center">
+                <select class="select_css" name="division_up">&nbsp;
+                    <option value="Operation Manual">Operation Manual</option>
+                    <option value="Elec. Drawing">Elec. Drawing</option>
+                    <option value="FDS">FDS</option>
+                    <option value="P&ID">P&ID</option>
+                    <option value="Parts Manual">Parts Manual</option>
+                    <option value="ETC">ETC</option>
+                </select></td>
+        </tr>
+        <tr>
+            <td align="center" class="text_css">Parts Name</td>
+            <td align="center">
+            <input type="text" name="partname_up"  value="{{partname}}" class="input_css" placeholder="N/A if not entered" required ></td>
+        </tr>
+        <tr>
+            <td align="center" class="text_css">Maker</td>
+             <td align="center">
+            <input type="text" name="maker_up"  value="{{maker}}" class="input_css" placeholder="N/A if not entered" required ></td>
+        </tr>
+        <tr>
+            <td align="center" class="text_css">Uplaod File</td>
+            <td align="center">
+            <form method="post" name="upload_file" enctype="multipart/form-data">
+                                {% csrf_token %}
+                <input type="hidden" name="loginid">
+                <input type="hidden" name="controlno">
+                <input type="hidden" name="team">
+                <input type="hidden" name="name">
+                <input type="hidden" name="division">
+                <input type="hidden" name="partname">
+                <input type="hidden" name="maker">
+                {% if url %}
+                <a href="{{url}}" target="_blank" class="upload_comp">Upload Complete</a>
+                {% else %}
+                 <input type="file" name="upload_files" id="upload_files"><br>
+                <input type="button" value="Upload" class="upload_button" onclick="Upload_file();">
+                {% endif %}
+                </form></td>
+        </tr>
+   </table>
+</div>
+<input type="button" class="submit_btn" value="Submit" onclick="Fileupload_submit();">
+
+        <form action="" method="post" name="control_no">
+             {% csrf_token %}
+        <input type="hidden" name="loginid">
+        <input type="hidden" name="controlno">
+        </form>
+
+        <form action="" method="post" name="fileupload_submit">
+             {% csrf_token %}
+        <input type="hidden" name="loginid">
+        <input type="hidden" name="controlno">
+        <input type="hidden" name="team">
+        <input type="hidden" name="name">
+        <input type="hidden" name="division">
+        <input type="hidden" name="partname">
+        <input type="hidden" name="maker">
+        <input type="hidden" value="{{url}}" name="url">
+        </form>
+
+<input type="hidden" value="{{comp_signal}}" name="comp_signal">
+
+<script>
+    //////////// 기본초기값 불러오기//////////////
+     function init(){
+            loginid = opener.document.getElementById("loginid_up").value;
+            document.fileupload_submit.loginid.value = loginid;
+            document.control_no.loginid.value = loginid;
+            document.upload_file.loginid.value = loginid;
+       ////아이디 정보 보내기
+            var loginid_up = loginid;
+            document.getElementById("logindata").innerHTML=loginid_up;
+       // 자동닫기
+            var close_signal= document.getElementsByName('comp_signal')[0].value;
+            if (close_signal=="Y"){
+                alert("User Information Change is complete.");
+               opener.document.location.reload();
+               self.close();}
+            }
+
+      onload=init
+
+
+    function Close(){
+    self.close();
+    }
+
+    function Controlno_upload(){
+            var controlno= document.getElementsByName('controlno_up')[0].value;
+            // 값보내기
+            document.control_no.controlno.value = controlno;
+            // 서버로 전송
+            document.control_no.action="pmmanual_new";
+            document.control_no.submit();
+            }
+
+    function Upload_file(){
+             var controlno= document.getElementsByName('controlno_up')[0].value;
+            var team= document.getElementsByName('team_up')[0].value;
+            var name= document.getElementsByName('name_up')[0].value;
+            var division= document.getElementsByName('division_up')[0].value;
+            var partname= document.getElementsByName('partname_up')[0].value;
+            var maker= document.getElementsByName('maker_up')[0].value;
+            // 값보내기
+            document.upload_file.controlno.value = controlno;
+            document.upload_file.team.value = team;
+            document.upload_file.name.value = name;
+            document.upload_file.division.value = division;
+            document.upload_file.partname.value = partname;
+            document.upload_file.maker.value = maker;
+             // 서버로 전송
+            document.upload_file.action="pmmanual_upload";
+            document.upload_file.submit();}
+
+
+    function Fileupload_submit(){
+            var controlno= document.getElementsByName('controlno_up')[0].value;
+            var team= document.getElementsByName('team_up')[0].value;
+            var name= document.getElementsByName('name_up')[0].value;
+            var division= document.getElementsByName('division_up')[0].value;
+            var partname= document.getElementsByName('partname_up')[0].value;
+            var maker= document.getElementsByName('maker_up')[0].value;
+            // 값보내기
+            document.fileupload_submit.controlno.value = controlno;
+            document.fileupload_submit.team.value = team;
+            document.fileupload_submit.name.value = name;
+            document.fileupload_submit.division.value = division;
+            document.fileupload_submit.partname.value = partname;
+            document.fileupload_submit.maker.value = maker;
+            // 서버로 전송!
+            document.fileupload_submit.action="pmmanual_submit";
+            document.fileupload_submit.submit();}
+
+</script>
+</body>
+</html>
