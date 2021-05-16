@@ -222,8 +222,19 @@ tr:nth-child(even){
 <div id="submit_location">
 <form action="workorder_used_submit" method="post" name="used_parts_link_submit">
                  {% csrf_token %}
-<input type="hidden" name="pmcode">
 <input type="hidden" name="workorderno">
+<input type="hidden"  name="loginid">
+<input type="hidden"  name="url_up">
+<input type="hidden"  name="action_name">
+<input type="hidden"  name="action_company">
+<input type="hidden"  name="work_desc">
+<input type="hidden"  name="test_result">
+<input type="hidden"  name="detail_type">
+<input type="hidden"  name="repair_method">
+<input type="hidden"  name="pm_trans">
+<input type="hidden"  name="action_date">
+<input type="hidden"  name="repair_type">
+<input type="hidden"  name="usedparts_na">
 <input type="submit"  class="searchbutton" value="Submit"></form>
 <input type="hidden" name="close_signal" value="{{close_signal}}">
 
@@ -240,12 +251,36 @@ tr:nth-child(even){
 
 <script>
      function init(){
+        ////부모창에서 값 받아오기///
             loginid = opener.document.getElementById("workloginid2").value;
             workorderno = opener.document.getElementById("workorderno2").value;
-            var loginid_up = loginid;
-            document.getElementById("logindata").innerHTML=loginid_up;
+            assigned_staff= opener.document.getElementById('action_name').value;
+            assigned_company= opener.document.getElementById('action_company').value;
+            description_of_work= opener.document.getElementById('work_desc').value;
+            test_result= opener.document.getElementById('test_result').value;
+            select_detail= opener.document.getElementById('detail_type').value;
+            maint_method= opener.document.getElementById('repair_method').value;
+            pmlinktext= opener.document.getElementById('pm_trans').value;
+            selectRepair= opener.document.getElementById('repair_type').value;
+            action_date= opener.document.getElementById('action_date').value;
+            usedparts_na= opener.document.getElementById('usedparts_na').value;
+            url_up= opener.document.getElementById('url_up').value;
+        ///HTML로 값 전송////
+            document.used_parts_link_submit.loginid.value = loginid;
             document.used_parts_link_submit.workorderno.value = workorderno;
+            document.used_parts_link_submit.action_name.value = assigned_staff;
+            document.used_parts_link_submit.action_company.value = assigned_company;
+            document.used_parts_link_submit.work_desc.value = description_of_work;
+            document.used_parts_link_submit.test_result.value = test_result;
+            document.used_parts_link_submit.detail_type.value = select_detail;
+            document.used_parts_link_submit.repair_method.value = maint_method;
+            document.used_parts_link_submit.pm_trans.value = pmlinktext;
+            document.used_parts_link_submit.repair_type.value = selectRepair;
+            document.used_parts_link_submit.action_date.value = action_date;
+            document.used_parts_link_submit.usedparts_na.value = usedparts_na;
+            document.used_parts_link_submit.url_up.value = url_up;
 
+            document.getElementById("logindata").innerHTML=loginid;
             var close_signal= document.getElementsByName('close_signal')[0].value;
             if (close_signal=="Y"){
                         alert("Used Parts registration is complete.");

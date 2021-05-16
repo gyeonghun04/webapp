@@ -1,10 +1,356 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+    <title>Title</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap');
+
+header{
+        height:30px;
+        background:#6F6F6F;
+        justify-content:space-between;
+        align-items:center;
+        position:fixed;
+        top:0;
+        left:0;
+        right:0;
+        z-index:10;
+        }
+header2{
+        height:0.3px;
+        padding-top:3px;
+        background:#EEEEEE;
+        display:flex;
+        justify-content:space-between;
+        position:fixed;
+        top:30px;
+        left:0;
+        right:0;
+        z-index:10;
+}
+toptext{
+        font-family: 'Rubik', sans-serif;
+        font-size:18px;
+        vertical-align:top;
+        font-weight:bold;
+        padding-left:5px;
+        color:white;
+}
+#logindata{
+        position:fixed; top:1px; left:90px;
+        font-family: 'Rubik', sans-serif;
+        font-size:18px;
+        vertical-align:top;
+        font-weight:bold;
+        color:white;
+}
+l{
+        margin-left:1%;
+        color:white;
+}
+m{
+        margin-left:1%;
+        color:white;
+}
+k{
+        position:fixed; top:0%; left:94.5%;
+        color:white;
+}
+.Button {
+        position:fixed; left:530px;
+        font-family:'Rubik', sans-serif;
+        font-size:18px;
+        background-color: rgba(255, 255, 255, 0.0);
+        cursor:pointer;
+        border:0px;
+        color:white;
+        font-weight:bold;
+}
+title_text{
+        position:fixed; top:35px; left:5px;
+        font-family: 'Rubik', sans-serif;
+        font-size:18px;
+        font-weight:bold;
+}
+#table_location{
+        position:fixed; top:70px; left:5px;
+}
+
+#auth_table{
+        border:1px solid white;
+        border-collapse:collapse;
+}
+.text_css{
+      font-family:'Rubik', sans-serif;
+      font-size:13px;
+      color:black;
+      background-color:#D8D8D8;
+      width:130px;
+      height:25px;
+      }
+.input_css{
+      font-family: arial;
+      font-size:13px;
+      width:220px;
+      height:25px;
+}
+.input_css2{
+      background-color:#EEEEEE;
+      font-family: arial;
+      font-size:13px;
+      width:220px;
+      height:25px;
+}
+.location_css{
+      width:120px;
+      height:25px;
+}
+.select_css{
+      font-size:13px;
+      width:125px;
+      height:27px;
+}
+.location_btn{
+        margin-top:11px;
+    	font-family: arial;
+        font-size:12px;
+        cursor:pointer;
+}
+.submit_btn{
+    	font-family: arial;
+        font-size:12px;
+        cursor:pointer;
+        position:fixed; top:380px; left:530px;
+}
+#messages_location{
+        position:fixed; top:1px; left:250px;
+        font-size:18px;
+        font-weight:bold;
+        animation-iteration-count:10;
+	    animation-duration:1s;
+	    animation-name: changecolor;
+       	color:#6F6F6F;
+       	}
+
+@keyframes changecolor{
+    from{
+       	  color:white;    }
+    to{
+          color:red;    }
+}
+</style>
 </head>
+
 <body>
-$END$
+<header>
+<toptext>Welcome,&nbsp;</toptext>
+<div id="logindata">{{loginid}}</div>
+
+<div id="messages_location">
+{%if messages %}
+{%for message in messages%}
+{{message}}
+{%endfor%}
+{%endif%}
+</div>
+
+<input type="button"value="Close" class="Button" onclick="Close();">
+
+</header>
+<header2>
+</header2>
+<title_text>Equipment Information Change</title_text>
+<form action="equipmentlist_change_submit" method="post" name="equip_change">
+    {% csrf_token %}
+<div id="table_location">
+   <table id="auth_table" border="1">
+        <tr>
+            <td align="center" class="text_css">Division</td>
+            <td align="center" class="text_css">Now Value</td>
+            <td align="center" class="text_css">Change Value</td>
+            </td>
+        </tr>
+        <tr>
+            <td align="center" class="text_css">Control No.</td>
+                        {%if get_fail == "Y" %}
+            <td align="center" class="input_css2">{{controlno}}</td>
+                        {%else%}
+            <td align="center" class="input_css2"><div id="controlno_get"></div></td>
+                        {%endif%}
+            <td><input type="text" name="controlno" value="{{controlno}}" class="input_css" readonly></td>
+        </tr>
+        <tr>
+            <td align="center" class="text_css">Team</td>
+                        {%if get_fail == "Y" %}
+            <td align="center" class="input_css2">{{team}}</td>
+                        {%else%}
+            <td align="center" class="input_css2"><div id="team_get"></div></td>
+                        {%endif%}
+            <td align="center">
+            <input type="text" name="team" value="{{team}}" class="input_css" required></td>
+        </tr>
+        <tr>
+            <td align="center" class="text_css">Equip. Name</td>
+                        {%if get_fail == "Y" %}
+            <td align="center" class="input_css2">{{name}}</td>
+                        {%else%}
+            <td align="center" class="input_css2"><div id="name_get"></div></td>
+                        {%endif%}
+            <td align="center">
+            <input type="text" name="name" value="{{name}}" class="input_css" readonly></td>
+        </tr>
+        <tr>
+            <td align="center" class="text_css">Model Name</td>
+                        {%if get_fail == "Y" %}
+            <td align="center" class="input_css2">{{model}}</td>
+                        {%else%}
+            <td align="center" class="input_css2"><div id="model_get"></div></td>
+                        {%endif%}
+            <td align="center">
+            <input type="text" name="model" value="{{model}}" class="input_css" readonly></td>
+        </tr>
+        <tr>
+            <td align="center" class="text_css">Serial No.</td>
+                        {%if get_fail == "Y" %}
+            <td align="center" class="input_css2">{{serial}}</td>
+                        {%else%}
+            <td align="center" class="input_css2"><div id="serial_get"></div></td>
+                        {%endif%}
+            <td align="center">
+            <input type="text" name="serial" value="{{serial}}" class="input_css" readonly></td>
+        </tr>
+        <tr>
+            <td align="center" class="text_css">Manufacturer</td>
+                         {%if get_fail == "Y" %}
+            <td align="center" class="input_css2">{{maker}}</td>
+                        {%else%}
+            <td align="center" class="input_css2"><div id="maker_get"></div></td>
+                        {%endif%}
+            <td align="center">
+            <input type="text" name="maker" value="{{maker}}" class="input_css" readonly></td>
+        </tr>
+        <tr>
+            <td align="center" class="text_css">Room No.</td>
+                        {%if get_fail == "Y" %}
+            <td align="center" class="input_css2">{{roomno_origin}}</td>
+                        {%else%}
+            <td align="center" class="input_css2"><div id="roomno_get"></div></td>
+                        {%endif%}
+            <td align="center">
+            <input type="text" name="roomno" class="input_css" value="{{roomno}}" onchange="Room_no();" required></td>
+        </tr>
+        <tr>
+            <td align="center" class="text_css">Room Name</td>
+                        {%if get_fail == "Y" %}
+            <td align="center" class="input_css2">{{roomname_origin}}</td>
+                        {%else%}
+            <td align="center" class="input_css2"><div id="roomname_get"></div></td>
+                        {%endif%}
+            {% if room_get == "Y"%}
+            <td align="center">
+            <input type="text" name="roomname_get"  value="{{roomname}}" class="input_css" readonly required></td>
+            {%else%}
+            <td align="center">
+            <input type="text" name="roomname"  class="input_css" readonly></td>
+            {%endif%}
+        </tr>
+   </table>
+</div>
+    <input type="hidden" name="loginid">
+<input type="submit" class="submit_btn" value="Submit"></form>
+<input type="hidden" value="{{comp_signal}}" name="comp_signal">
+
+<form name="roomno_form" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="loginid">
+    <input type="hidden" name="roomno_origin">
+    <input type="hidden" name="roomname_origin">
+    <input type="hidden" name="roomno_give">
+    <input type="hidden" name="controlno_give">
+    <input type="hidden" name="team_give">
+    <input type="hidden" name="name_give">
+    <input type="hidden" name="model_give">
+    <input type="hidden" name="serial_give">
+    <input type="hidden" name="maker_give">
+</form>
+
+<script>
+
+    //////////// 기본초기값 불러오기//////////////
+     function init(){
+            var close_signal= document.getElementsByName('comp_signal')[0].value;
+            if (close_signal=="Y"){
+                alert("Equipment Information Change is complete.");
+               opener.document.location.reload();
+               self.close();}
+            loginid = opener.document.getElementById("loginid_up").value;
+            controlno = opener.document.getElementById("controlno_up").value;
+            team = opener.document.getElementById("team_up").value;
+            name = opener.document.getElementById("name_up").value;
+            model = opener.document.getElementById("model_up").value;
+            serial = opener.document.getElementById("serial_up").value;
+            maker = opener.document.getElementById("maker_up").value;
+            roomname = opener.document.getElementById("roomname_up").value;
+            roomno = opener.document.getElementById("roomno_up").value;
+        // 기존값 보내기
+            document.equip_change.controlno.value = controlno;
+            document.equip_change.loginid.value = loginid;
+            document.equip_change.team.value = team;
+            document.equip_change.name.value = name;
+            document.equip_change.model.value = model;
+            document.equip_change.serial.value = serial;
+            document.equip_change.maker.value =maker;
+            document.equip_change.roomname.value = roomname;
+            document.equip_change.roomno.value = roomno;
+       // 값 표현하기
+            document.getElementById("logindata").innerHTML=loginid;
+            document.getElementById("controlno_get").innerHTML=controlno;
+            document.getElementById("team_get").innerHTML=team;
+            document.getElementById("name_get").innerHTML=name;
+            document.getElementById("model_get").innerHTML=model;
+            document.getElementById("serial_get").innerHTML=serial;
+            document.getElementById("maker_get").innerHTML=maker;
+            document.getElementById("roomname_get").innerHTML=roomname;
+            document.getElementById("roomno_get").innerHTML=roomno;
+       ////아이디 정보 보내기
+            var loginid_up = loginid;
+            document.getElementById("logindata").innerHTML=loginid_up;
+            }
+
+      onload=init
+
+    function Close(){
+            self.close();
+    }
+
+    function Room_no(){
+            var roomno= document.getElementsByName('roomno')[0].value;
+            var controlno= document.getElementsByName('controlno')[0].value;
+            var team= document.getElementsByName('team')[0].value;
+            var name= document.getElementsByName('name')[0].value;
+            var model= document.getElementsByName('model')[0].value;
+            var serial= document.getElementsByName('serial')[0].value;
+            var maker= document.getElementsByName('maker')[0].value;
+            loginid = opener.document.getElementById("loginid_up").value;
+            roomname_origin = opener.document.getElementById("roomname_up").value;
+            roomno_origin = opener.document.getElementById("roomno_up").value;
+                // 값보내기
+            document.roomno_form.loginid.value = loginid;
+            document.roomno_form.roomno_give.value = roomno;
+            document.roomno_form.controlno_give.value = controlno;
+            document.roomno_form.team_give.value = team;
+            document.roomno_form.model_give.value = model;
+            document.roomno_form.serial_give.value = serial;
+            document.roomno_form.maker_give.value = maker;
+            document.roomno_form.name_give.value = name;
+            document.roomno_form.roomname_origin.value = roomname_origin;
+            document.roomno_form.roomno_origin.value = roomno_origin;
+                // 서버연결
+            document.roomno_form.action="equipmentlist_change_room";
+            document.roomno_form.submit();
+    }
+</script>
 </body>
 </html>

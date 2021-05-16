@@ -28,10 +28,10 @@
 .m2{width:110px;}
 .m3{width:80px;}
 .m4{width:80px;}
-.m5{width:300px;}
+.m5{width:320px;}
 .m6{width:80px;}
 .m7{width:60px;}
-.m8{width:80px;}
+.m8{width:70px;}
 .m51{width:355px;}
 .m61{width:80px;}
 .m71{width:90px;}
@@ -40,10 +40,10 @@
 .m2-1{width:110px;}
 .m3-1{width:80px;}
 .m4-1{width:80px;}
-.m5-1{width:300px;}
+.m5-1{width:323px;}
 .m6-1{width:80px;}
 .m7-1{width:60px;}
-.m8-1{width:80px;}
+.m8-1{width:60px;}
 .m5-11{width:360px;}
 .m6-11{width:80px;}
 .m7-11{width:90px;}
@@ -78,15 +78,15 @@ tr:nth-child(even){
             <td align="center" class="m3">Work Order No.</td>
             <td align="center" class="m4">Requestor</td>
             {% if user_div == "Engineer" %}
-            <td align="center" class="m5">description</td>
+            <td align="center" class="m5">Description</td>
             <td align="center" class="m6">Status</td>
             <td align="center" class="m7">View</td>
-            <td align="center" class="m8">Approval</td>
+            <td align="center" class="m8">Check</td>
             {% elif user_div == "Manager" %}
             <td align="center" class="m5">description</td>
             <td align="center" class="m6">Status</td>
             <td align="center" class="m7">View</td>
-            <td align="center" class="m8">Approval</td>
+            <td align="center" class="m8">Check</td>
             {%else%}
             <td align="center" class="m51">description</td>
             <td align="center" class="m61">Status</td>
@@ -125,7 +125,7 @@ tr:nth-child(even){
                 <input type="hidden" value="{{workorder.workorderno}}" name="workorderno">
                 <input type="hidden" value="{{searchtext}}" name="searchtext">
                 <input type="hidden" value="{{selecttext}}" name="selecttext">
-                <input type="submit" class="button" value="Approval">
+                <input type="submit" class="button" value="Check">
                 </form>
             </td>
             {% elif user_div == "Manager" %}
@@ -148,7 +148,7 @@ tr:nth-child(even){
                 <input type="hidden" value="{{workorder.workorderno}}" name="workorderno">
                 <input type="hidden" value="{{searchtext}}" name="searchtext">
                 <input type="hidden" value="{{selecttext}}" name="selecttext">
-                <input type="submit" class="button" value="Approval">
+                <input type="submit" class="button" value="Check">
                 </form>
             </td>
             {%else%}

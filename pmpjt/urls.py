@@ -102,8 +102,7 @@ urlpatterns = [
     path('pmcontrolform_change_division', pm.views.pmcontrolform_change_division, name='pmcontrolform_change_division'),
     path('pmcontrolform_change_link', pm.views.pmcontrolform_change_link, name='pmcontrolform_change_link'),
     path('pmcontrolform_change_controlno', pm.views.pmcontrolform_change_controlno, name='pmcontrolform_change_controlno'),
-    path('pmcontrolform_change_link_submit', pm.views.pmcontrolform_change_link_submit,
-         name='pmcontrolform_change_link_submit'),
+    path('pmcontrolform_change_link_submit', pm.views.pmcontrolform_change_link_submit, name='pmcontrolform_change_link_submit'),
 
 ####PM Assessment of Period####
     path('pmra_main', pm.views.pmra_main, name='pmra_main'),
@@ -147,11 +146,7 @@ urlpatterns = [
     path('workrequest_r_t_accept', pm.views.workrequest_r_t_accept, name='workrequest_r_t_accept'),
     path('workrequest_r_q_accept', pm.views.workrequest_r_q_accept, name='workrequest_r_q_accept'),
     path('workorderlist_main', pm.views.workorderlist_main, name='workorderlist_main'),
-    path('workorder_main', pm.views.workorder_main, name='workorder_main'),
-    path('workorder_form', pm.views.workorder_form, name='workorder_form'),
-    path('workorder_submit', pm.views.workorder_submit, name='workorder_submit'),
-    path('workorder_pmcontrolform', pm.views.workorder_pmcontrolform, name='workorder_pmcontrolform'),
-    path('workorder_upload', pm.views.workorder_upload, name='workorder_upload'),
+
     path('workorder_approval_main', pm.views.workorder_approval_main, name='workorder_approval_main'),
     path('workorder_approval_view', pm.views.workorder_approval_view, name='workorder_approval_view'),
     path('workrequest_approval_main', pm.views.workrequest_approval_main, name='workrequest_approval_main'),
@@ -167,12 +162,20 @@ urlpatterns = [
     path('workorderlist_order', pm.views.workorderlist_order, name='workorderlist_order'),
     path('workorderlist_order_main', pm.views.workorderlist_order_main, name='workorderlist_order_main'),
     path('workorderlist_order_print', pm.views.workorderlist_order_print, name='workorderlist_order_print'),
-    path('workorder_pmcontrolform_submit', pm.views.workorder_pmcontrolform_submit, name='workorder_pmcontrolform_submit'),
+####Work Order####
+    path('workorder_main', pm.views.workorder_main, name='workorder_main'),
+    path('workorder_form', pm.views.workorder_form, name='workorder_form'),
+    path('workorder_submit', pm.views.workorder_submit, name='workorder_submit'),
+    path('workorder_pmcontrolform', pm.views.workorder_pmcontrolform, name='workorder_pmcontrolform'),
+    path('workorder_pmcontrolform_submit', pm.views.workorder_pmcontrolform_submit,
+         name='workorder_pmcontrolform_submit'),
+    path('workorder_upload', pm.views.workorder_upload, name='workorder_upload'),
     path('workorder_used_part', pm.views.workorder_used_part, name='workorder_used_part'),
     path('workorder_used_click', pm.views.workorder_used_click, name='workorder_used_click'),
     path('workorder_used_submit', pm.views.workorder_used_submit, name='workorder_used_submit'),
     path('workorder_used_minus', pm.views.workorder_used_minus, name='workorder_used_minus'),
     path('workorder_used_plus', pm.views.workorder_used_plus, name='workorder_used_plus'),
+    path('workorder_used_delete', pm.views.workorder_used_delete, name='workorder_used_delete'),
 
 ##########################################################################################################################################
 ##########################################################################################################################################
@@ -225,6 +228,10 @@ urlpatterns = [
     path('equipmentlist_new', pm.views.equipmentlist_new, name='equipmentlist_new'),
     path('equipmentlist_room', pm.views.equipmentlist_room, name='equipmentlist_room'),
     path('equipmentlist_new_submit', pm.views.equipmentlist_new_submit, name='equipmentlist_new_submit'),
+    path('equipmentlist_change', pm.views.equipmentlist_change, name='equipmentlist_change'),
+    path('equipmentlist_change_room', pm.views.equipmentlist_change_room, name='equipmentlist_change_room'),
+    path('equipmentlist_change_submit', pm.views.equipmentlist_change_submit, name='equipmentlist_change_submit'),
+    path('equipmentlist_delete', pm.views.equipmentlist_delete, name='equipmentlist_delete'),
     path('roomlist_main', pm.views.roomlist_main, name='roomlist_main'),
     path('roomlist_new', pm.views.roomlist_new, name='roomlist_new'),
     path('roomlist_new_submit', pm.views.roomlist_new_submit, name='roomlist_new_submit'),

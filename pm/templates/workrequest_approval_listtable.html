@@ -71,7 +71,7 @@ tr:nth-child(even){
             <td align="center" class="m4">Requestor</td>
             <td align="center" class="m5">description</td>
             <td align="center" class="m6">Status</td>
-            <td align="center" class="m8">Approval</td>
+            <td align="center" class="m8">Check</td>
         </tr>
         </thead>
      </table>
@@ -92,7 +92,7 @@ tr:nth-child(even){
                 {% csrf_token %}
                 <input type="hidden" value="{{loginid}}" name="loginid">
                 <input type="hidden" value="{{workorder.workorderno}}" name="workorderno">
-                <input type="submit" class="button" value="Approval">
+                <input type="submit" class="button" value="Check">
                 </form>
             </td>
         </tr>

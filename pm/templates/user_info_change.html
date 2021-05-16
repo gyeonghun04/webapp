@@ -199,6 +199,7 @@ spareparts{
         <td><div id="auth_1_get"></div></td>
         <td>
             <select class="auth_text" name="auth_1" required>
+            <option value="N/A"></option>
             <option value="Staff">Staff</option>
                                      {% for approval_info in approval_infos %}
             <option value="{{approval_info.code_no}}">{{approval_info.code_no}}</option>
@@ -208,6 +209,7 @@ spareparts{
         <td align="center" class="text_css">View Auth.</td>
         <td><div id="user_div_get"></div></td>
         <td><select class="div_text" name="user_div" required>
+                    <option value="N/A"></option>
                     <option value="Admin">Admin</option>
                     <option value="Engineer">Engineer</option>
                     <option value="Staff">Staff</option>

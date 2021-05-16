@@ -165,14 +165,15 @@ tr:nth-child(even){
                 <input type="button" class="delete_button" value="Change" onclick="Info_change(this);">
             </td>
             <td align="center" class="m14-1">
-                <input type="button" class="delete_button" value="Delete">
+                <input type="hidden" value="{{equiplist.controlno}}" name="controlno_up">
+                <input type="button" class="delete_button" value="Delete" onclick="Info_del(this);">
             </td>
         </tr>
                   {% endfor %}
         </tbody>
  </table>
 </div>
-    <form name="Info_change.form" method="post">
+    <form name="Info_change_form" method="post">
                      {% csrf_token %}
         <input type="hidden" name="controlno" id="controlno_up">
         <input type="hidden" name="team" id="team_up">
@@ -182,8 +183,13 @@ tr:nth-child(even){
         <input type="hidden" name="maker" id="maker_up">
         <input type="hidden" name="roomname" id="roomname_up">
         <input type="hidden" name="roomno" id="roomno_up">
-        <input type="hidden" name="{{auth}}" id="auth_up">
         <input type="hidden" value="{{loginid}}" id="loginid_up"></form>
+
+    <form name="info_delete_form" method="post">
+                     {% csrf_token %}
+       <input type="hidden" value="{{loginid}}" name="loginid">
+       <input type="hidden" name="controlno"></form>
+
 </main>
 <script>
         function Info_change(obj){
@@ -198,19 +204,27 @@ tr:nth-child(even){
             var roomname= document.getElementsByName('roomname_give')[i].value;
             var roomno= document.getElementsByName('roomno_give')[i].value;
                 // html로 값보내기
-            document.Info_change.form.controlno.value = controlno;
-            document.Info_change.form.team.value = team;
-            document.Info_change.form.name.value = name;
-            document.Info_change.form.model.value = model;
-            document.Info_change.form.serial.value = serial;
-            document.Info_change.form.maker.value = maker;
-            document.Info_change.form.roomname.value = roomname;
-            document.Info_change.form.roomno.value = roomno;
+            document.Info_change_form.controlno.value = controlno;
+            document.Info_change_form.team.value = team;
+            document.Info_change_form.name.value = name;
+            document.Info_change_form.model.value = model;
+            document.Info_change_form.serial.value = serial;
+            document.Info_change_form.maker.value = maker;
+            document.Info_change_form.roomname.value = roomname;
+            document.Info_change_form.roomno.value = roomno;
                         // 팝업창열기
-            var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=880, height=840, left=50, top=10';
-            window.open("/equip_info_change", "Equipment Information Change", settings);
+            var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=600, height=420, left=50, top=10';
+            window.open("/equipmentlist_change", "Equipment Information Change", settings);
     }
 
+        function Info_del(obj){
+            var i = obj.parentNode.parentNode.rowIndex;
+            var controlno= document.getElementsByName('controlno_up')[i].value;
+            document.info_delete_form.controlno.value = controlno;
+            // 서버로 전송
+            document.info_delete_form.action="equipmentlist_delete";
+            document.info_delete_form.submit();
+            }
 </script>
 </body>
 </html>

@@ -116,6 +116,22 @@ title_text{
         position:fixed; top:410px; left:320px;
 }
 .pq_css{height:25px;}
+#messages_location{
+        position:fixed; top:410px; left:5px;
+        font-size:12px;
+        font-weight:bold;
+        animation-iteration-count:10;
+	    animation-duration:1s;
+	    animation-name: changecolor;
+       	color:white;
+       	}
+
+@keyframes changecolor{
+    from{
+       	  color:white;    }
+    to{
+          color:red;    }
+}
 </style>
 </head>
 
@@ -123,6 +139,14 @@ title_text{
 <header>
 <toptext>Welcome,&nbsp;</toptext>
 <div id="logindata"></div>
+
+<div id="messages_location">
+{%if messages %}
+{%for message in messages%}
+{{message}}
+{%endfor%}
+{%endif%}
+</div>
 
 <input type="button"value="Close" class="Button" onclick="Close();">
 

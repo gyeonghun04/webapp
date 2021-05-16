@@ -19,7 +19,7 @@ class equiplist(models.Model): #PM Master List Table
     score_f = models.CharField(max_length=255) # Frequency of Use
     count_y = models.CharField(max_length=255) # score_y count
     score_y = models.CharField(max_length=255) # 연식
-    pmscore = models.CharField(max_length=45, default="New") # pmscore (score_f * score_y)
+    pmscore = models.CharField(max_length=45, default="New") # pmscore (score_f + score_y)
     ra = models.CharField(max_length=255, default="New") # result score (___months)
     status = models.CharField(max_length=255, default="New") #상태
     recheck = models.CharField(max_length=255, default="N") # ra다시알람

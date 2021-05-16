@@ -165,6 +165,24 @@ font-size:12px;
 font-family: arial;
 height:30px;
 }
+.u_info_8{
+font-size:12px;
+font-family: arial;
+width:175px;
+height:30px;
+}
+.u_info_9{
+font-size:12px;
+font-family: arial;
+width:109px;
+height:30px;
+}
+.u_info_10{
+font-size:12px;
+font-family: arial;
+height:30px;
+}
+
 .t_info_2{
 width:21%;
 background-color:#EEEEEE;
@@ -174,6 +192,18 @@ height:30px;}
 .t_info_3{
 background-color:#EEEEEE;
 width:15%;
+font-family: arial;
+height:30px;
+}
+.t_info_4{
+background-color:#EEEEEE;
+width:16%;
+font-family: arial;
+height:30px;
+}
+.t_info_5{
+background-color:#EEEEEE;
+width:10%;
 font-family: arial;
 height:30px;
 }
@@ -209,6 +239,11 @@ width:1000px;
 .button_css{
 font-family: arial;
 font-size:12px;
+cursor:pointer;
+}
+.button_css2{
+font-family: arial;
+font-size:13px;
 cursor:pointer;
 }
 #usedpart_info_b{
@@ -629,7 +664,7 @@ Maintenance Work Order Form
             <td align="center" class="t_info_2">
                 <info_title>Part Name</info_title>
             </td>
-            <td align="center" class="t_info_2">
+            <td align="center" class="t_info_4">
                 <info_title>Code No.</info_title>
             </td>
             <td align="center" class="t_info_2">
@@ -638,8 +673,11 @@ Maintenance Work Order Form
             <td align="center" class="t_info_2">
                 <info_title>Model Name</info_title>
             </td>
-            <td align="center" class="t_info_3">
+            <td align="center" class="t_info_5">
                 <info_title>QY.</info_title>
+            </td>
+            <td align="center" class="t_info_5">
+                <info_title>Delete</info_title>
             </td>
         </tr>
     </table>
@@ -652,7 +690,7 @@ Maintenance Work Order Form
             <td align="center" class="u_info_6">
                 {{out_list.partname}}
             </td>
-            <td align="center" class="u_info_6">
+            <td align="center" class="u_info_8">
                 {{out_list.codeno}}
             </td>
             <td align="center" class="u_info_6">
@@ -661,9 +699,12 @@ Maintenance Work Order Form
             <td align="center" class="u_info_6">
                 {{out_list.modelno}}
             </td>
-            <td align="center" class="u_info_7">
+            <td align="center" class="u_info_9">
                 {{out_list.used_qy}}
             </td>
+            <td align="center" class="u_info_10">
+                <input type="hidden" name="delete_no" value="{{out_list.no}}">
+                <input type="button" value="Delete" class="button_css2" onclick="Used_delete(this);">
         </tr>
             {%endfor%}
     </table>
@@ -676,11 +717,13 @@ Maintenance Work Order Form
                     {%for workrequest in workorder_call %}
                 <info_text>{{workrequest.usedpart}}&emsp;</info_text>
                                   {%endfor%}
+                    {% if usedpart_Y == "selected"%}
+                    {%else%}
               <info_text><select class="selecttext" name="usedparts_na" onchange="Usedpart_na();">
                     <option value="Y" {{usedpart_Y}}>Y</option>
                     <option value="N" {{usedpart_N}}>N</option>
                     </select></info_text>
-
+                    {%endif%}
 </div>
 <div id="attached_check">
                  {% if url_comp == "Y" %}
@@ -703,6 +746,7 @@ Maintenance Work Order Form
             <input type="hidden"  name="pm_trans">
             <input type="hidden"  name="action_date">
             <input type="hidden"  name="repair_type">
+            <input type="hidden"  name="usedparts_na">
             <input type="file" name="upload_file" id="upload_file" class="button_css1">
             <info_text><input type="button" value="Upload" class="button_css2" onclick="Upload_file();"></info_text></form>
                             {%endif%}
@@ -750,7 +794,35 @@ Maintenance Work Order Form
              {% csrf_token %}
         <input type="hidden" value="{{loginid}}" id="workloginid2">
         <input type="hidden" value="{{workorderno}}" id="workorderno2">
+        <input type="hidden" value="{{url}}" name="url_up">
+        <input type="hidden"  name="action_name" id="action_name">
+        <input type="hidden"  name="action_company" id="action_company">
+        <input type="hidden"  name="work_desc" id="work_desc">
+        <input type="hidden"  name="test_result" id="test_result">
+        <input type="hidden"  name="detail_type" id="detail_type">
+        <input type="hidden"  name="repair_method" id="repair_method">
+        <input type="hidden"  name="pm_trans" id="pm_trans">
+        <input type="hidden"  name="action_date" id="action_date">
+        <input type="hidden"  name="repair_type" id="repair_type">
+        <input type="hidden"  name="usedparts_na" id="usedparts_na">
         </form>
+
+    <form name="used_delete_form" method="post">
+            {% csrf_token %}
+        <input type="hidden" value="{{loginid}}" name="loginid">
+        <input type="hidden" value="{{workorderno}}" name="workorderno">
+        <input type="hidden" value="{{url}}" name="url_up">
+        <input type="hidden"  name="action_name">
+        <input type="hidden"  name="action_company">
+        <input type="hidden"  name="work_desc">
+        <input type="hidden"  name="test_result">
+        <input type="hidden"  name="detail_type">
+        <input type="hidden"  name="repair_method">
+        <input type="hidden"  name="pm_trans">
+        <input type="hidden"  name="action_date">
+        <input type="hidden"  name="repair_type">
+        <input type="hidden"  name="usedparts_na">
+        <input type="hidden"  name="codeno_del"></form>
 
     <form method="post" name="Submit_workorder">
             {% csrf_token %}
@@ -770,7 +842,7 @@ Maintenance Work Order Form
             {%endif%}
             {% endfor %}
 <script>
-     //////////// n/a클릭 시 자동 클릭 //////////////
+//////////// n/a클릭 시 자동 클릭 //////////////
               function Company_na(){
                 if (document.workorder_company.company_na.checked == true){
                 document.workorder_company.assigned_company.value = "N/A";
@@ -780,7 +852,7 @@ Maintenance Work Order Form
                 }
               }
 
-     //////////// Workorder_submit //////////////
+//////////// Workorder_submit //////////////
               function Workorder_submit(){
                 var assigned_staff= document.getElementsByName('assigned_staff')[0].value;
                 var assigned_company= document.getElementsByName('assigned_company')[0].value;
@@ -792,7 +864,6 @@ Maintenance Work Order Form
                 var selectRepair= document.getElementsByName('selectRepair')[0].value;
                 var action_date= document.getElementsByName('action_date')[0].value;
                 var usedparts_na= document.getElementsByName('usedparts_na')[0].value;
-
                          // 값보내기
                 document.Submit_workorder.action_name.value = assigned_staff;
                 document.Submit_workorder.action_company.value = assigned_company;
@@ -831,6 +902,8 @@ Maintenance Work Order Form
                 var pmlinktext= document.getElementsByName('pmlinktext')[0].value;
                 var selectRepair= document.getElementsByName('selectRepair')[0].value;
                 var action_date= document.getElementsByName('action_date')[0].value;
+                var usedparts_na= document.getElementsByName('usedparts_na')[0].value;
+
                 // 값보내기
                 document.uploadfile.action_name.value = assigned_staff;
                 document.uploadfile.action_company.value = assigned_company;
@@ -841,12 +914,34 @@ Maintenance Work Order Form
                 document.uploadfile.pm_trans.value = pmlinktext;
                 document.uploadfile.repair_type.value = selectRepair;
                 document.uploadfile.action_date.value = action_date;
+                 document.uploadfile.usedparts_na.value = usedparts_na;
                 // 서버연결
                 document.uploadfile.action="workorder_upload";
                 document.uploadfile.submit();
                 }
 
             function Usedpart_na(){
+                var assigned_staff= document.getElementsByName('assigned_staff')[0].value;
+                var assigned_company= document.getElementsByName('assigned_company')[0].value;
+                var description_of_work= document.getElementsByName('description_of_work')[0].value;
+                var test_result= document.getElementsByName('test_result')[0].value;
+                var select_detail= document.getElementsByName('select_detail')[0].value;
+                var maint_method= document.getElementsByName('maint_method')[0].value;
+                var pmlinktext= document.getElementsByName('pmlinktext')[0].value;
+                var selectRepair= document.getElementsByName('selectRepair')[0].value;
+                var action_date= document.getElementsByName('action_date')[0].value;
+                var usedparts_na= document.getElementsByName('usedparts_na')[0].value;
+                         // 값보내기
+                document.usedpartup.action_name.value = assigned_staff;
+                document.usedpartup.action_company.value = assigned_company;
+                document.usedpartup.work_desc.value = description_of_work;
+                document.usedpartup.test_result.value = test_result;
+                document.usedpartup.detail_type.value = select_detail;
+                document.usedpartup.repair_method.value = maint_method;
+                document.usedpartup.pm_trans.value = pmlinktext;
+                document.usedpartup.repair_type.value = selectRepair;
+                document.usedpartup.action_date.value = action_date;
+                document.usedpartup.usedparts_na.value = usedparts_na;
                 var usedparts_na= document.getElementsByName('usedparts_na')[0].value;
                 if (usedparts_na == "Y"){
                                             // 팝업창열기
@@ -854,6 +949,37 @@ Maintenance Work Order Form
                 window.open("/workorder_used_part", "Used Parts Link", settings);
                 }
               }
+
+//////////// 사용자재 삭제하기//////////////
+            function Used_delete(obj){
+                var i = obj.parentNode.parentNode.rowIndex;
+                var codeno_del = document.getElementsByName('delete_no')[i].value;
+                var assigned_staff= document.getElementsByName('assigned_staff')[0].value;
+                var assigned_company= document.getElementsByName('assigned_company')[0].value;
+                var description_of_work= document.getElementsByName('description_of_work')[0].value;
+                var test_result= document.getElementsByName('test_result')[0].value;
+                var select_detail= document.getElementsByName('select_detail')[0].value;
+                var maint_method= document.getElementsByName('maint_method')[0].value;
+                var pmlinktext= document.getElementsByName('pmlinktext')[0].value;
+                var selectRepair= document.getElementsByName('selectRepair')[0].value;
+                var action_date= document.getElementsByName('action_date')[0].value;
+                var usedparts_na= document.getElementsByName('usedparts_na')[0].value;
+                // 값보내기
+                document.used_delete_form.codeno_del.value = codeno_del;
+                document.used_delete_form.action_name.value = assigned_staff;
+                document.used_delete_form.action_company.value = assigned_company;
+                document.used_delete_form.work_desc.value = description_of_work;
+                document.used_delete_form.test_result.value = test_result;
+                document.used_delete_form.detail_type.value = select_detail;
+                document.used_delete_form.repair_method.value = maint_method;
+                document.used_delete_form.pm_trans.value = pmlinktext;
+                document.used_delete_form.repair_type.value = selectRepair;
+                document.used_delete_form.action_date.value = action_date;
+                document.used_delete_form.usedparts_na.value = usedparts_na;
+                // 서버연결
+                document.used_delete_form.action="workorder_used_delete";
+                document.used_delete_form.submit();
+                }
 </script>
 </body>
 </html>
