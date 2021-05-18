@@ -1,7 +1,7 @@
 from django.shortcuts import render, HttpResponseRedirect, reverse, HttpResponse
 from .models import pmmasterlist, equiplist, controlformlist, pmmasterlist_temp, \
     pmsheetdb, pm_sch, pmchecksheet, pm_reference, pm_manual, userinfo, workorder, approval_information, \
-    spare_parts_list, spare_in, spare_out, parts_pm, room_db
+    spare_parts_list, spare_in, spare_out, parts_pm, room_db, audit_trail, vendor_list
 from django.contrib import messages
 import datetime as date
 from django.core.mail import send_mail, EmailMessage
@@ -26,10 +26,6 @@ import re
 
 def login(request):
     return render(request, 'login.html') #templates 내 html연결
-
-def auditrail_main(request):
-    if request.method =='POST': #매소드값이 post인 값만 받는다
-        return render(request, 'auditrail_main.html') #templates 내 html연결
 
 def logout_page(request):
     return render(request, 'logout_page.html') #templates 내 html연결
@@ -57,7 +53,18 @@ def main(request):
             users={"loginid":loginid}
         try:
             login_info = userinfo.objects.get(userid=loginid) #아이디 일치여부 확인
-            if login_info.password == userpassword: #비밀번호 일치여부 확인
+            if login_info.password == userpassword: #비밀번호 일치여부
+#####audit추출####
+                today = date.datetime.today()
+                audit_date = "20" + today.strftime('%y') + "-" + today.strftime('%m') + "-" + today.strftime('%d')
+                audit_time = today.strftime('%H') + ":" + today.strftime('%M') + ":" + today.strftime('%S')
+                audit_trail(
+                    date = audit_date,
+                    time = audit_time,
+                    user = loginid,
+                    division = "Login",
+                    new_value = loginid + "가 로그인 하였습니다.",
+                ).save()
 #####메인테이블 창 만들기####
                 #####1)PM창 카운트 계산하기####
                 today = date.datetime.today()
@@ -6595,7 +6602,9 @@ def equipmentlist_new(request):
     return render(request, 'equipmentlist_new.html')  # templates 내 html연결
 
 def equipmentlist_change(request):
-    return render(request, 'equipmentlist_change.html')  # templates 내 html연결
+    team_signal = "Y"
+    context = {"team_signal":team_signal}
+    return render(request, 'equipmentlist_change.html', context) #templates 내 html연결
 
 def equipmentlist_change_submit(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
@@ -6603,6 +6612,7 @@ def equipmentlist_change_submit(request):
         loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
         roomno = request.POST.get('roomno')  # html에서 해당 값을 받는다
         team = request.POST.get('team')  # html에서 해당 값을 받는다
+        team_check = request.POST.get('team_get')  # html에서 해당 값을 받는다
         name = request.POST.get('name')  # html에서 해당 값을 받는다
         model = request.POST.get('model')  # html에서 해당 값을 받는다
         serial = request.POST.get('serial')  # html에서 해당 값을 받는다
@@ -6610,6 +6620,11 @@ def equipmentlist_change_submit(request):
         roomname = request.POST.get('roomname_get')  # html에서 해당 값을 받는다
         roomno_origin = request.POST.get('roomno_origin')  # html에서 해당 값을 받는다
         roomname_origin = request.POST.get('roomname_origin')  # html에서 해당 값을 받는다
+        roomname_check = request.POST.get('roomname')  # html에서 해당 값을 받는다
+        if str(roomname) =="None": ###룸명 경우의 수
+            roomname = str(roomname_check)
+        if str(team) =="None": ###팀명 경우의 수
+            team = str(team_check)
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -6618,15 +6633,16 @@ def equipmentlist_change_submit(request):
         auth = users.auth1
         user_div = users.user_division
         users = {"auth": auth, "password": password, "username": username, "userteam": userteam, "user_div": user_div}
-        if str(roomname) =="None":
-            get_fail = "Y"
-            roomname = ""
-            messages.error(request, "No such Room No. exist.")  # 경고
-            context = {"loginid": loginid, "roomno": roomno, "controlno": controlno, "team": team, "name": name,
-                       "model": model, "serial": serial, "maker": maker, "roomname": roomname, "get_fail": get_fail,
-                       "roomname_origin": roomname_origin, "roomno_origin": roomno_origin}
-            context.update(users)
-            return render(request, 'equipmentlist_change.html', context)  # templates 내 html연결
+        if str(roomno_origin) != str(roomno):
+            if str(roomname) =="None":
+                get_fail = "Y"
+                roomname = ""
+                messages.error(request, "No such Room No. exist.")  # 경고
+                context = {"loginid": loginid, "roomno": roomno, "controlno": controlno, "team": team, "name": name,
+                           "model": model, "serial": serial, "maker": maker, "roomname": roomname, "get_fail": get_fail,
+                           "roomname_origin": roomname_origin, "roomno_origin": roomno_origin}
+                context.update(users)
+                return render(request, 'equipmentlist_change.html', context)  # templates 내 html연결
     ##equiplist 정보바꾸기##
         equip_change = equiplist.objects.get(controlno=controlno)
         equip_change.team = team
@@ -6697,6 +6713,7 @@ def equipmentlist_change_room(request):
         maker = request.POST.get('maker_give')  # html에서 해당 값을 받는다
         roomno_origin = request.POST.get('roomno_origin')  # html에서 해당 값을 받는다
         roomname_origin = request.POST.get('roomname_origin')  # html에서 해당 값을 받는다
+        team_origin = request.POST.get('team_origin')  # html에서 해당 값을 받는다
 ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -6707,21 +6724,28 @@ def equipmentlist_change_room(request):
         users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
     ##컨트롤넘버 정보 불러오기##
         try:
+            if str(team) == str(team_origin):
+                team_signal = "Y"
             room_info = room_db.objects.get(roomno=roomno)
             roomname = room_info.roomname
             room_get = "Y"
             get_fail = "Y"
+            team_signal = "N"
             context = {"loginid": loginid, "roomno": roomno, "controlno": controlno, "team": team,"name":name,
                        "model":model,"serial":serial,"maker":maker,"roomname":roomname,"room_get":room_get,
-                       "roomname_origin":roomname_origin,"roomno_origin":roomno_origin,"get_fail":get_fail}
+                       "roomname_origin":roomname_origin,"roomno_origin":roomno_origin,"get_fail":get_fail,
+                       "team_origin":team_origin,"team_signal":team_signal}
             context.update(users)
         except:
+            if str(team) == str(team_origin):
+                team_signal = "Y"
             get_fail="Y"
             roomname = ""
+            team_signal = "N"
             messages.error(request, "No such Room No. exist.")  # 경고
             context = {"loginid": loginid, "roomno": roomno, "controlno": controlno, "team": team,"name":name,
                        "model":model,"serial":serial,"maker":maker,"roomname":roomname,"get_fail":get_fail,
-                       "roomname_origin":roomname_origin,"roomno_origin":roomno_origin}
+                       "roomname_origin":roomname_origin,"roomno_origin":roomno_origin,"team_signal":team_signal}
             context.update(users)
         return render(request, 'equipmentlist_change.html', context)  # templates 내 html연결
 
@@ -10347,7 +10371,6 @@ def spareparts_cert_upload(request):
         else:
             file_name = "-"
             url="??"
-        print(url)
         try:
             upload_get = spare_parts_list.objects.get(codeno=codeno)
             upload_get.attach = url
@@ -10753,7 +10776,137 @@ def partslist_pm_cal(request):
     context = {"parts_list": parts_list,"spare_check":spare_check}
     return render(request, 'partslist_pm_cal.html', context)  # templates 내 html연결
 
+def spareparts_short_main(request):
+######데이터 리셋#####
+    check_reset = spare_parts_list.objects.filter(stock="0", contact_y_n="checked")
+    check_reset = check_reset.values('no')
+    df_check_reset = pd.DataFrame.from_records(check_reset)
+    check_reset_len = len(df_check_reset.index)
+    for i in range(check_reset_len):
+        no_get = df_check_reset.iat[i, 0]
+        info_reset = spare_parts_list.objects.get(no=no_get)
+        info_reset.contact_y_n = ""
+        info_reset.save()
+    email_reset = vendor_list.objects.filter(contact_y_n="checked")
+    email_reset = check_reset.values('no')
+    df_email_reset = pd.DataFrame.from_records(email_reset)
+    email_reset_len = len(df_email_reset.index)
+    for i in range(email_reset_len):
+        no_get = df_email_reset.iat[i, 0]
+        info_reset = vendor_list.objects.get(no=no_get)
+        info_reset.contact_y_n = ""
+        info_reset.save()
+######기본정보 불러오기#####
+    parts_list = spare_parts_list.objects.filter(stock="0")
+    context = {"parts_list": parts_list}
+    return render(request, 'spareparts_short_main.html', context)
 
+def spareparts_short_request(request):
+    if request.method == 'POST':  # 매소드값이 post인 값만 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        checks_var = request.POST.getlist('checks[]')
+    ##이름 및 권한 끌고다니기##
+        users = userinfo.objects.get(userid=loginid)
+        username = users.username
+        userteam = users.userteam
+        password = users.password
+        auth = users.auth1
+        user_div = users.user_division
+        users = {"auth": auth, "password": password, "username": username, "userteam": userteam, "user_div": user_div}
+    ######요청자재 표로 만들기#####
+        for i in range(len(checks_var)):
+            codeno_get = checks_var[i]
+            check_get = spare_parts_list.objects.get(codeno = codeno_get)
+            check_get.contact_y_n="checked"
+            check_get.save()
+        parts_list = spare_parts_list.objects.filter(stock="0")
+        spare_check = spare_parts_list.objects.filter(stock="0", contact_y_n="checked")
+        vendorlist = vendor_list.objects.all()
+        context = {"parts_list": parts_list,"spare_check":spare_check,"vendorlist":vendorlist}
+        context.update(users)
+    return render(request, 'spareparts_short_main.html', context)
+
+def spareparts_short_submit(request):
+    if request.method == 'POST':  # 매소드값이 post인 값만 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        email_var = request.POST.getlist('email_chk[]')
+        qy_var = request.POST.getlist('req_qy[]')
+        codeno_var = request.POST.getlist('codeno[]')
+        ##이름 및 권한 끌고다니기##
+        users = userinfo.objects.get(userid=loginid)
+        username = users.username
+        userteam = users.userteam
+        useremail = users.useremail
+        password = users.password
+        auth = users.auth1
+        user_div = users.user_division
+        users = {"auth": auth, "password": password, "username": username, "userteam": userteam, "user_div": user_div}
+        ##미입력분 확인하기##
+        len_check = spare_parts_list.objects.filter(stock="0", contact_y_n="checked")
+        len_check = len_check.values('codeno')
+        df_len_check = pd.DataFrame.from_records(len_check)
+        check_len = len(df_len_check.index)
+        if check_len != len(qy_var):
+            messages.error(request, "There are entries not entered.")  # 경고
+            check_reset = spare_parts_list.objects.filter(stock="0", contact_y_n="checked")
+            check_reset = check_reset.values('no')
+            df_check_reset = pd.DataFrame.from_records(check_reset)
+            check_reset_len = len(df_check_reset.index)
+            for i in range(check_reset_len):
+                no_get = df_check_reset.iat[i, 0]
+                info_reset = spare_parts_list.objects.get(no=no_get)
+                info_reset.contact_y_n = ""
+                info_reset.save()
+            ######기본정보 불러오기#####
+            parts_list = spare_parts_list.objects.filter(stock="0")
+            context = {"parts_list": parts_list}
+            return render(request, 'spareparts_short_main.html', context)
+        emailtext = ""
+        i = 0
+        while i < (len(qy_var)):
+            qy_get = qy_var[i]
+            codeno_get = codeno_var[i]
+            text_get = spare_parts_list.objects.get(codeno=codeno_get)
+            text = "\n 자재명:" + text_get.partname + " // Vendor:" + text_get.vendor + " // Model No.:" + text_get.modelno + \
+                   " // Spec:" + text_get.spec + " // 수량:" + qy_get
+            emailtext = emailtext + text
+            i = i + 1
+    ######메일내용 입력#####
+        title_text = "예비부품 견적서 송부 요청의 건"
+        email_text = "발 신 : 디엠바이오 시스템운영팀 " + username +\
+                    "\n\n연일 업무에 수고가 많으십니다." + \
+                    "\n\n예비부품 견적 요청의 건으로 연락 드립니다." +\
+                    "\n하기와 같이 예비부품 견적요청드리오니, 견적서 송부 부탁 드립니다." + \
+                    "\n\n         ******하 기******" + \
+                     emailtext + \
+                    "\n\n ※ 상기메일 프로그램 자동발송 메일이며, 문의사항은 하기 담당자에 문의하시기 바랍니다." + \
+                    "\n         ******담당자******" + \
+                    "\n 담당자: " + username + \
+                    "\n 이메일 주소: " + useremail +\
+                    "\n\n 감사합니다."
+    ######메일발송#####
+        ####담당자 메일주소 불러오기####
+        for j in range(len(email_var)):
+            no_get = email_var[j]
+            check_get = vendor_list.objects.get(no = no_get)
+            check_get.contact_y_n="checked"
+            check_get.save()
+        email_get = vendor_list.objects.filter(contact_y_n="checked")
+        email_get = email_get.values('no')
+        df_email_get = pd.DataFrame.from_records(email_get)
+        email_get_len = len(df_email_get.index)
+        for k in range(email_get_len):
+            no_add = df_email_get.iat[k, 0]
+            email_add = vendor_list.objects.get(no= no_add)
+            repemail = [email_add.email]
+            email = EmailMessage(title_text, email_text, to=repemail)
+            email.send()
+        parts_list = spare_parts_list.objects.filter(stock="0")
+        spare_check = spare_parts_list.objects.filter(stock="0", contact_y_n="checked")
+        vendorlist = vendor_list.objects.all()
+        context = {"parts_list": parts_list, "spare_check": spare_check, "vendorlist": vendorlist}
+        context.update(users)
+    return render(request, 'spareparts_short_main.html', context)
 ##############################################################################################################
 #################################################Test########################################################
 ##############################################################################################################
@@ -12101,3 +12254,60 @@ def history_of_equip_reset(request):
                    "url_comp":url_comp,"url_add":url_add}
         context.update(users)
         return render(request, 'history_of_equip_main.html', context)  # templates 내 html연결
+
+def audittrail_main(request):
+    date="checked"
+    document = ""
+    audit_list = audit_trail.objects.all().values('date').annotate(Count('date'))
+    context = {"date":date, "document":document, "audit_list":audit_list}
+    return render(request, 'audittrail_main.html', context) #templates 내 html연결
+
+def audittrail_view(request):
+    if request.method == 'POST':  # 매소드값이 post인 값만 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        date_search = request.POST.get('date')  # html에서 해당 값을 받는다
+    ##이름 및 권한 끌고다니기##
+        users = userinfo.objects.get(userid=loginid)
+        username = users.username
+        userteam = users.userteam
+        password = users.password
+        auth = users.auth1
+        user_div = users.user_division
+        users = {"auth": auth, "password": password, "username": username, "userteam": userteam, "user_div": user_div}
+    ##data 값 넘기기##
+        date = "checked"
+        document = ""
+        audit_search = audit_trail.objects.filter(date=date_search)
+        audit_list = audit_trail.objects.all().values('date').annotate(Count('date'))
+        context = {"date": date, "document": document, "audit_list": audit_list,"audit_search":audit_search,
+                   "date_search":date_search,"loginid":loginid}
+        context.update(users)
+        return render(request, 'audittrail_main.html', context)  # templates 내 html연결
+
+def audittrail_click(request):
+    if request.method == 'POST':  # 매소드값이 post인 값만 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        audit_no = request.POST.get('audit_no')  # html에서 해당 값을 받는다
+        date_search = request.POST.get('date_search')  # html에서 해당 값을 받는다
+    ##이름 및 권한 끌고다니기##
+        users = userinfo.objects.get(userid=loginid)
+        username = users.username
+        userteam = users.userteam
+        password = users.password
+        auth = users.auth1
+        user_div = users.user_division
+        users = {"auth": auth, "password": password, "username": username, "userteam": userteam, "user_div": user_div}
+    ##description##
+        audit_desc = audit_trail.objects.get(no=audit_no)
+        if str(audit_desc.division) == "Login":
+            description = audit_desc.new_value
+    ##data 값 넘기기##
+        date = "checked"
+        document = ""
+        audit_search = audit_trail.objects.filter(date=date_search).order_by("-time")
+        audit_list = audit_trail.objects.all().values('date').annotate(Count('date'))
+        audit_text = audit_trail.objects.filter(no=audit_no)
+        context = {"date": date, "document": document, "audit_list": audit_list,"audit_search":audit_search,
+                   "audit_text":audit_text,"description":description,"loginid":loginid,"date_search":date_search}
+        context.update(users)
+        return render(request, 'audittrail_main.html', context)  # templates 내 html연결

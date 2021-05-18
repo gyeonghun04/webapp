@@ -325,6 +325,7 @@ class spare_parts_list(models.Model): #spare_parts_list
     req_qy = models.CharField(max_length=255, default=0)  #요구수량
     short_qy = models.CharField(max_length=255)  #부족수량
     barcode = models.CharField(max_length=255)  #바코드
+    contact_y_n = models.CharField(max_length=255)  # 스페어 구매체크
 
     class Meta:
         managed = False
@@ -405,3 +406,33 @@ class room_db(models.Model): #spare_out
     class Meta:
         managed = False
         db_table = 'room_db'
+
+class audit_trail(models.Model): #spare_out
+    no = models.AutoField(primary_key=True) #순번
+    date = models.CharField(max_length=255)  # 변경일
+    time = models.CharField(max_length=255)  # 변경시간
+    document = models.CharField(max_length=255,default="N/A")  # 문서명
+    document_no = models.CharField(max_length=255,default="N/A")  # 문서번호
+    user = models.CharField(max_length=255)  # 담당자
+    division = models.CharField(max_length=255)  # 구분
+    controlno = models.CharField(max_length=255,default="N/A")  # 설비번호
+    comment = models.TextField(default="N/A")  # 코멘트
+    old_value = models.TextField(default="N/A")  # 이전값
+    new_value = models.TextField(default="N/A")  # 신규값
+
+    class Meta:
+        managed = False
+        db_table = 'audit_trail'
+
+class vendor_list(models.Model): #spare_out
+    no = models.AutoField(primary_key=True) #순번
+    vendor = models.CharField(max_length=255)  # 업체명
+    name = models.CharField(max_length=255)  # 이름
+    tel = models.CharField(max_length=255,default="N/A")  # 전화번호
+    email = models.CharField(max_length=255,default="N/A")  # 이메일주소
+    description = models.TextField(default="N/A")  # 업체 설명
+    contact_y_n = models.CharField(max_length=255)  # 메일체크
+
+    class Meta:
+        managed = False
+        db_table = 'vendor_list'

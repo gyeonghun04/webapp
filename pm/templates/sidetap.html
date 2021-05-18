@@ -393,7 +393,11 @@ i{
     <form action="partslist_pm_main" method="post">
         {% csrf_token %}
         <input type="hidden" value="{{loginid}}" name="loginid">
-        <input type="submit"value="Parts List for PM" class="Button"></form>
+        <input type="submit"value="Parts List for PM" class="Button"></form><br>
+    <form action="partslist_" method="post">
+        {% csrf_token %}
+        <input type="hidden" value="{{loginid}}" name="loginid">
+        <input type="submit"value="Vendor List" class="Button"></form>
 </tr><br>
           {%endif%}
         <tr>

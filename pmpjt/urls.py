@@ -25,8 +25,10 @@ urlpatterns = [
     path('main', pm.views.main, name='main'),
     path('logout_page', pm.views.logout_page, name='logout_page'),
     path('login_again', pm.views.login_again, name='login_again'),
-    path('auditrail_main', pm.views.auditrail_main, name='auditrail_main'),
     path('information_main', pm.views.information_main, name='information_main'),
+    path('audittrail_main', pm.views.audittrail_main, name='audittrail_main'),
+    path('audittrail_view', pm.views.audittrail_view, name='audittrail_view'),
+    path('audittrail_click', pm.views.audittrail_click, name='audittrail_click'),
 
 ##########################################################################################################################################
 ##########################################################################################################################################
@@ -215,7 +217,9 @@ urlpatterns = [
     path('partslist_pm_view', pm.views.partslist_pm_view, name='partslist_pm_view'),
     path('partslist_pm_delete', pm.views.partslist_pm_delete, name='partslist_pm_delete'),
     path('partslist_pm_cal', pm.views.partslist_pm_cal, name='partslist_pm_cal'),
-
+    path('spareparts_short_main', pm.views.spareparts_short_main, name='spareparts_short_main'),
+    path('spareparts_short_request', pm.views.spareparts_short_request, name='spareparts_short_request'),
+    path('spareparts_short_submit', pm.views.spareparts_short_submit, name='spareparts_short_submit'),
 
 ##########################################################################################################################################
 ##########################################################################################################################################

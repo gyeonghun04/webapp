@@ -111,11 +111,8 @@ k{
 <input type="hidden" value="{{password}}" name="pw">
 <input type="submit" class="hidden_btn_home2" value=""></form>
 <l class="xi-home-o xi-2x"></l>
-<form action="auditrail_main" method="post" target="_blank">
-{% csrf_token %}
-<input type="hidden" value="{{loginid}}" name="loginid">
-<input type="hidden" value="{{password}}" name="pw">
-<input type="submit" class="hidden_btn_audit" value=""></form>
+<input type="hidden" value="{{loginid}}" id="loginid_up">
+<input type="button" class="hidden_btn_audit" value="" onclick="Auditrail();"></form>
 <m class="xi-align-justify xi-2x"></m>
 <toptext>Welcome,&nbsp;{{loginid}}</toptext>
 <div id="messages_location">
@@ -139,6 +136,10 @@ k{
             var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=400, height=500, left=50, top=10';
             window.open("/information_main", "Program Information", settings);}
 
+      function Auditrail(){
+        // 팝업창열기
+            var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=1355, height=905, left=50, top=10';
+            window.open("/audittrail_main", "Audit Trail", settings);}
 
       // 자동 로그아웃 Logout Timer 객체 정의
       var LogOutTimer = function() {

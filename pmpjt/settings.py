@@ -139,7 +139,6 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_PASSWORD = "Qq043823!"
-STATCI_ROOT = os.path.join(BASE_DIR, 'static')
 
 ######################이미지 업로드 세팅###########################
 MEDIA_URL = '/media/'

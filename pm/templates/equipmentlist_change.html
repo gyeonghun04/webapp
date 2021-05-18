@@ -103,6 +103,13 @@ title_text{
       width:220px;
       height:25px;
 }
+.input_css3{
+      font-family: arial;
+      font-size:13px;
+      width:150px;
+      height:25px;
+}
+
 .location_css{
       width:120px;
       height:25px;
@@ -140,6 +147,11 @@ title_text{
     to{
           color:red;    }
 }
+.room_btn{
+    font-family: arial;
+    font-size:12px;
+    cursor:pointer;
+}
 </style>
 </head>
 
@@ -169,8 +181,7 @@ title_text{
         <tr>
             <td align="center" class="text_css">Division</td>
             <td align="center" class="text_css">Now Value</td>
-            <td align="center" class="text_css">Change Value</td>
-            </td>
+            <td align="center" class="text_css" colspan="2">Change Value</td>
         </tr>
         <tr>
             <td align="center" class="text_css">Control No.</td>
@@ -179,17 +190,19 @@ title_text{
                         {%else%}
             <td align="center" class="input_css2"><div id="controlno_get"></div></td>
                         {%endif%}
-            <td><input type="text" name="controlno" value="{{controlno}}" class="input_css" readonly></td>
+            <td align="center" colspan="2"><input type="text" name="controlno" value="{{controlno}}" class="input_css" readonly>
+                <input type="hidden" name="roomno_origin"></td>
         </tr>
         <tr>
             <td align="center" class="text_css">Team</td>
                         {%if get_fail == "Y" %}
-            <td align="center" class="input_css2">{{team}}</td>
+            <td align="center" class="input_css2">{{team_origin}}</td>
                         {%else%}
             <td align="center" class="input_css2"><div id="team_get"></div></td>
                         {%endif%}
-            <td align="center">
+            <td align="center" colspan="2">
             <input type="text" name="team" value="{{team}}" class="input_css" required></td>
+
         </tr>
         <tr>
             <td align="center" class="text_css">Equip. Name</td>
@@ -198,7 +211,7 @@ title_text{
                         {%else%}
             <td align="center" class="input_css2"><div id="name_get"></div></td>
                         {%endif%}
-            <td align="center">
+            <td align="center" colspan="2">
             <input type="text" name="name" value="{{name}}" class="input_css" readonly></td>
         </tr>
         <tr>
@@ -208,7 +221,7 @@ title_text{
                         {%else%}
             <td align="center" class="input_css2"><div id="model_get"></div></td>
                         {%endif%}
-            <td align="center">
+            <td align="center" colspan="2">
             <input type="text" name="model" value="{{model}}" class="input_css" readonly></td>
         </tr>
         <tr>
@@ -218,17 +231,17 @@ title_text{
                         {%else%}
             <td align="center" class="input_css2"><div id="serial_get"></div></td>
                         {%endif%}
-            <td align="center">
+            <td align="center" colspan="2">
             <input type="text" name="serial" value="{{serial}}" class="input_css" readonly></td>
         </tr>
         <tr>
             <td align="center" class="text_css">Manufacturer</td>
-                         {%if get_fail == "Y" %}
+                        {%if get_fail == "Y" %}
             <td align="center" class="input_css2">{{maker}}</td>
                         {%else%}
             <td align="center" class="input_css2"><div id="maker_get"></div></td>
                         {%endif%}
-            <td align="center">
+            <td align="center" colspan="2">
             <input type="text" name="maker" value="{{maker}}" class="input_css" readonly></td>
         </tr>
         <tr>
@@ -238,8 +251,10 @@ title_text{
                         {%else%}
             <td align="center" class="input_css2"><div id="roomno_get"></div></td>
                         {%endif%}
+            <td align="left">
+            <input type="text" name="roomno" class="input_css3" value="{{roomno}}"  required></td>
             <td align="center">
-            <input type="text" name="roomno" class="input_css" value="{{roomno}}" onchange="Room_no();" required></td>
+            <input type="button" class="room_btn" value="Click" onclick="Room_no();"></td>
         </tr>
         <tr>
             <td align="center" class="text_css">Room Name</td>
@@ -249,24 +264,27 @@ title_text{
             <td align="center" class="input_css2"><div id="roomname_get"></div></td>
                         {%endif%}
             {% if room_get == "Y"%}
-            <td align="center">
+            <td align="center" colspan="2">
             <input type="text" name="roomname_get"  value="{{roomname}}" class="input_css" readonly required></td>
             {%else%}
-            <td align="center">
-            <input type="text" name="roomname"  class="input_css" readonly></td>
+            <td align="center" colspan="2">
+            <input type="text" name="roomname" class="input_css" readonly></td>
             {%endif%}
         </tr>
    </table>
 </div>
-    <input type="hidden" name="loginid">
+<input type="hidden" name="loginid">
 <input type="submit" class="submit_btn" value="Submit"></form>
 <input type="hidden" value="{{comp_signal}}" name="comp_signal">
+<input type="hidden" value="{{team_signal}}" name="team_signal">
+
 
 <form name="roomno_form" method="post">
     {% csrf_token %}
     <input type="hidden" name="loginid">
     <input type="hidden" name="roomno_origin">
     <input type="hidden" name="roomname_origin">
+    <input type="hidden" name="team_origin">
     <input type="hidden" name="roomno_give">
     <input type="hidden" name="controlno_give">
     <input type="hidden" name="team_give">
@@ -281,33 +299,37 @@ title_text{
     //////////// 기본초기값 불러오기//////////////
      function init(){
             var close_signal= document.getElementsByName('comp_signal')[0].value;
+            var team_signal= document.getElementsByName('team_signal')[0].value;
             if (close_signal=="Y"){
                 alert("Equipment Information Change is complete.");
                opener.document.location.reload();
                self.close();}
             loginid = opener.document.getElementById("loginid_up").value;
             controlno = opener.document.getElementById("controlno_up").value;
-            team = opener.document.getElementById("team_up").value;
             name = opener.document.getElementById("name_up").value;
             model = opener.document.getElementById("model_up").value;
             serial = opener.document.getElementById("serial_up").value;
             maker = opener.document.getElementById("maker_up").value;
             roomname = opener.document.getElementById("roomname_up").value;
             roomno = opener.document.getElementById("roomno_up").value;
+            team = opener.document.getElementById("team_up").value;
         // 기존값 보내기
             document.equip_change.controlno.value = controlno;
             document.equip_change.loginid.value = loginid;
-            document.equip_change.team.value = team;
             document.equip_change.name.value = name;
             document.equip_change.model.value = model;
             document.equip_change.serial.value = serial;
             document.equip_change.maker.value =maker;
             document.equip_change.roomname.value = roomname;
             document.equip_change.roomno.value = roomno;
+            document.equip_change.roomno_origin.value = roomno;
+            if (team_signal=="Y"){
+                document.equip_change.team.value = team;
+                }
        // 값 표현하기
+            document.getElementById("team_get").innerHTML=team;
             document.getElementById("logindata").innerHTML=loginid;
             document.getElementById("controlno_get").innerHTML=controlno;
-            document.getElementById("team_get").innerHTML=team;
             document.getElementById("name_get").innerHTML=name;
             document.getElementById("model_get").innerHTML=model;
             document.getElementById("serial_get").innerHTML=serial;
@@ -336,6 +358,7 @@ title_text{
             loginid = opener.document.getElementById("loginid_up").value;
             roomname_origin = opener.document.getElementById("roomname_up").value;
             roomno_origin = opener.document.getElementById("roomno_up").value;
+            team_origin = opener.document.getElementById("team_up").value;
                 // 값보내기
             document.roomno_form.loginid.value = loginid;
             document.roomno_form.roomno_give.value = roomno;
@@ -347,6 +370,7 @@ title_text{
             document.roomno_form.name_give.value = name;
             document.roomno_form.roomname_origin.value = roomname_origin;
             document.roomno_form.roomno_origin.value = roomno_origin;
+            document.roomno_form.team_origin.value = team_origin;
                 // 서버연결
             document.roomno_form.action="equipmentlist_change_room";
             document.roomno_form.submit();

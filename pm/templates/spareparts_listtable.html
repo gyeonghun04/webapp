@@ -29,13 +29,14 @@
 .m3{width:200px;}
 .m4{width:200px;}
 .m5{width:250px;}
-.m6{width:250px;}
+.m6{width:240px;}
 .m7{width:100px;}
-.m8{width:100px;}
+.m8{width:70px;}
 .m9{width:100px;}
 .m10{width:100px;}
-.m11{width:100px;}
-.m12{width:100px;}
+.m11{width:70px;}
+.m12{width:60px;}
+.m13{width:100px;}
 
 .m1-1{width:100px;
 height:20px;}
@@ -45,11 +46,12 @@ height:20px;}
 .m5-1{width:250px;}
 .m6-1{width:250px;}
 .m7-1{width:100px;}
-.m8-1{width:100px;}
+.m8-1{width:70px;}
 .m9-1{width:100px;}
 .m10-1{width:100px;}
-.m11-1{width:100px;}
-.m12-1{width:100px;}
+.m11-1{width:70px;}
+.m12-1{width:60px;}
+.m13-1{width:100px;}
 
 body{overflow:hidden;}
 
@@ -82,6 +84,7 @@ tr:nth-child(even){
             <td align="center" class="m10">Attached File</td>
             <td align="center" class="m11">Safety Stock</td>
             <td align="center" class="m12">PM Link</td>
+            <td align="center" class="m13">Barcode</td>
         </tr>
         </thead>
      </table>
@@ -103,6 +106,7 @@ tr:nth-child(even){
             <td align="center" class="m10-1">{{sp_list.attach}}</td>
             <td align="center" class="m11-1">{{sp_list.safety_stock}}</td>
             <td align="center" class="m12-1">{{sp_list.pm_link}}</td>
+            <td align="center" class="m13-1"></td>
         </tr>
             {%endfor%}
         </tbody>

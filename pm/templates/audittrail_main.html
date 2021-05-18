@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap');
+
+header{
+        height:30px;
+        background:#6F6F6F;
+        justify-content:space-between;
+        align-items:center;
+        position:fixed;
+        top:0;
+        left:0;
+        right:0;
+        z-index:10;
+        }
+header2{
+        height:0.3px;
+        padding-top:3px;
+        background:#EEEEEE;
+        display:flex;
+        justify-content:space-between;
+        position:fixed;
+        top:30px;
+        left:0;
+        right:0;
+        z-index:10;
+}
+#logindata{
+        position:fixed; top:1px; left:100px;
+        font-family: 'Rubik', sans-serif;
+        font-size:18px;
+        vertical-align:top;
+        font-weight:bold;
+        color:white;
+}
+toptext{
+        font-family: 'Rubik', sans-serif;
+        font-size:18px;
+        vertical-align:top;
+        font-weight:bold;
+        padding-left:10px;
+        color:white;
+}
+.Button {
+        position:fixed; left:1270px;
+        font-family:'Rubik', sans-serif;
+        font-size:18px;
+        background-color: rgba(255, 255, 255, 0.0);
+        cursor:pointer;
+        border:0px;
+        color:white;
+        font-weight:bold;
+}
+#select_radio{
+        position:fixed;top:50px; left:50px;
+        font-family: 'Rubik', sans-serif;
+        font-size:12px;
+        font-weight:bold;
+}
+#tablemenu{
+    	font-family: arial;
+        font-size:11px;
+        position:fixed;top:76px;
+        height:25px;
+        width:200px;
+        background-color:#6F6F6F;
+        color:white;
+}
+#tabledesc{
+        position:absolute;top:101px;
+        z-index:10;
+        width:200px;
+        font-family: arial;
+        font-size:11px;
+        height:800px;
+        overflow-y:scroll;
+}
+.m1{width:180px;}
+.m1-1{width:200px;}
+
+body{overflow:hidden;}
+
+#sideline2{
+        background:#EEEEEE;
+        position:fixed; left:208px; top:20px;
+        height:880px;
+        width:5px;
+}
+
+tr:nth-child(even){
+    background-color:#EEEEEE;
+}
+.button{
+        font-family: arial;
+        font-size:11px;
+        background-color: rgba(255, 255, 255, 0.0);
+        cursor:pointer;
+        border:0px;
+        font-color:black;
+        padding-left:4%;
+        outline:0;
+}
+.Button:hover {
+	background-color:#EEEEEE;
+	border-radius:10%;
+}
+
+#audittrail_text{
+        position:fixed; top:38px; left:220px;
+        font-family: 'Rubik', sans-serif;
+        font-size:24px;
+        font-weight:bold;
+}
+
+#audittrail_desc_rad{
+        box-shadow: 3px 4px 0px 0px #A9A9A9;
+        position:fixed;top:75px; left:220px;
+        border:2px solid #EEEEEE;
+        border-radius:1%;
+        width:1100px;
+        height:400px;
+    }
+#audittrail_desc{
+        position:fixed;top:100px; left:240px;
+    }
+#audittrail_table_top{
+        position:fixed;top:500px; left:220px;
+        background-color:#6F6F6F;
+        color:white;
+        font-family: arial;
+        font-size:11px;
+        height:25px;
+}
+.t1{width:140px;}
+.t2{width:60px;}
+.t3{width:80px;}
+.t4{width:80px;}
+.t5{width:80px;}
+.t6{width:200px;}
+.t7{width:200px;}
+.t8{width:150px;}
+.t9{width:80px;}
+
+.t1-1{width:140px;}
+.t2-1{width:60px;}
+.t3-1{width:80px;}
+.t4-1{width:80px;}
+.t5-1{width:85px;}
+.t6-1{width:200px;}
+.t7-1{width:200px;}
+.t8-1{width:155px;}
+.t9-1{width:80px;}
+
+#audittrail_table_table{
+        position:fixed;top:525px; left:220px;
+        font-family: arial;
+        font-size:11px;
+        height:370px;
+        overflow-y:auto;
+        width:1180px;
+}
+#audittrail_table{
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+        height:25px;
+}
+.click_btn{
+    	font-family: arial;
+        font-size:11px;
+        cursor:pointer;
+}
+.title_css{
+      font-family:'Rubik', sans-serif;
+      font-size:16px;
+      color:black;
+      background-color:#D8D8D8;
+      width:200px;
+      height:35px;
+      }
+.input_css{
+      padding-left:10px;
+      font-family:arial;
+      font-size:16px;
+      background-color:#EEEEEE;
+      color:black;
+      width:700px;
+}
+.titel1{
+      font-family:'Rubik', sans-serif;
+      font-size:16px;
+      color:white;
+      background-color:#6F6F6F;
+      width:200px;
+      height:35px;
+      }
+</style>
+<body>
+
+<header>
+<toptext>Welcome,&nbsp;</toptext>
+<div id="logindata"></div>
+
+<input type="button"value="Close" class="Button" onclick="Close();">
+</header>
+<header2>
+</header2>
+
+<main>
+<div id="select_radio">
+            <input type="radio" name="type" value="date" {{date}}>Date&emsp;
+            <input type="radio" name="type" value="document" {{document}}>Document&emsp;
+</div>
+
+<div id="tablemenu">
+     <table  style="word-break:break-all">
+        <thead>
+        <tr>
+            <td align="center" class="m1">Division</td>
+        </tr>
+        </thead>
+     </table>
+</div>
+
+<div id="tabledesc">
+ <table style="word-break:break-all">
+     <tbody>
+                      {% for audit_lists in audit_list %}
+        <tr>
+            <td align="center" class="m1-1">
+                <input type="hidden" value="{{audit_lists.date}}" name="date_get">
+                <input type="button" class="button" value="{{audit_lists.date}}" onclick="Audit_lists(this);">
+            </td>
+        </tr>
+                    {%endfor%}
+        </tbody>
+ </table>
+</div>
+<div id="sideline2">
+<mainline>
+</mainline>
+</div>
+
+<div id="audittrail_text">Audit Trail</div>
+<div id="audittrail_desc">
+    <table>
+        {% for audit_texts in audit_text%}
+         <tr>
+            <td align="center" class="titel1">Title</td>
+            <td align="center" class="titel1">Text</td>
+        </tr>
+        <tr>
+            <td class="title_css">Document Name</td>
+            <td class="input_css">{{audit_texts.document}}</td>
+        </tr>
+        <tr>
+            <td class="title_css">Document No.</td>
+            <td class="input_css">{{audit_texts.document_no}}</td>
+        </tr>
+        <tr>
+            <td class="title_css">Time</td>
+            <td class="input_css">{{audit_texts.date}}&nbsp;{{audit_texts.time}}</td>
+        </tr>
+        <tr>
+            <td class="title_css">ID</td>
+            <td class="input_css">{{audit_texts.user}}</td>
+        </tr>
+        <tr>
+            <td class="title_css">Division</td>
+            <td class="input_css">{{audit_texts.division}}</td>
+        </tr>
+        <tr>
+            <td class="title_css">Control No.</td>
+            <td class="input_css">{{audit_texts.controlno}}</td>
+        </tr>
+        <tr>
+            <td class="title_css">Description</td>
+            <td class="input_css">{{description}}</td>
+        </tr>
+        <tr>
+            <td class="title_css">Comment</td>
+            <td class="input_css">{{audit_texts.comment}}</td>
+        </tr>
+        {%endfor%}
+    </table>
+
+</div>
+<div id="audittrail_desc_rad"></div>
+<div id="audittrail_table_top">
+    <table>
+           <tr>
+            <td align="center" class="t1">Document</td>
+            <td align="center" class="t2">Time</td>
+            <td align="center" class="t3">ID</td>
+            <td align="center" class="t4">Division</td>
+            <td align="center" class="t5">Control No.</td>
+            <td align="center" class="t6">Old Value</td>
+            <td align="center" class="t7">New Value</td>
+            <td align="center" class="t8">Comment</td>
+            <td align="center" class="t9">Click</td>
+        </tr>
+    </table>
+</div>
+
+<div id="audittrail_table_table">
+<table id="audittrail_table" border="1">
+                    {% for audit_searchs in audit_search %}
+        <tr>
+            <td align="center" class="t1-1">{{audit_searchs.document}} / {{audit_searchs.document_no}} </td>
+            <td align="center" class="t2-1">{{audit_searchs.time}}</td>
+            <td align="center" class="t3-1">{{audit_searchs.user}}</td>
+            <td align="center" class="t4-1">{{audit_searchs.division}}</td>
+            <td align="center" class="t5-1">{{audit_searchs.controlno}}</td>
+            <td align="center" class="t6-1">{{audit_searchs.old_value}}</td>
+            <td align="center" class="t7-1">{{audit_searchs.new_value}}</td>
+            <td align="center" class="t8-1">{{audit_searchs.comment}}</td>
+            <td align="center" class="t9-1">
+            <form action="audittrail_click" method="post" name="audittrail_click_form">
+                    {% csrf_token %}
+                <input type="hidden" name="loginid" value="{{loginid}}">
+                <input type="hidden" name="date_search" value="{{date_search}}">
+                <input type="hidden" value="{{audit_searchs.no}}" name="audit_no">
+                <input type="submit" class="click_btn" value="Click"></form>
+            </td>
+        </tr>
+                    {%endfor%}
+</table>
+
+</div>
+
+        <form method="post" name="audittrail_view_form">
+             {% csrf_token %}
+        <input type="hidden" name="loginid">
+        <input type="hidden" name="date">
+        </form>
+
+</main>
+<script>
+     function init(){
+            loginid = opener.document.getElementById("loginid_up").value;
+            var loginid_up = loginid;
+            document.getElementById("logindata").innerHTML=loginid_up;}
+
+      onload=init
+
+     function Audit_lists(obj){
+             var i = obj.parentNode.parentNode.rowIndex;
+             loginid = opener.document.getElementById("loginid_up").value;
+             date= document.getElementsByName('date_get')[i].value;
+             document.audittrail_view_form.loginid.value = loginid;
+             document.audittrail_view_form.date.value = date;
+                            // 서버연결
+             document.audittrail_view_form.action="audittrail_view";
+             document.audittrail_view_form.submit();}
+
+    function Close(){
+            self.close();
+    }
+</script>
+</body>
+</html>

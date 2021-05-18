@@ -46,6 +46,11 @@ b{
         align-text:left;
         color:black;
 }
+a{
+        position:fixed;top:4.9%; left:62%;
+        align-text:left;
+        color:black;
+}
 </style>
 </head>
 <body>
@@ -53,7 +58,10 @@ b{
 <table>
     <tr>
     <td><titletext>Spare Parts List</titletext></td>
-        <td>
+    <td>
+        <a class="xi-calculator"><input type="button" value="Shortage Spare Parts" class="new" onclick="Check_spare();"></a>
+    </td>
+    <td>
         <b class="xi-pen"><input type="button" value="New Registration" class="new" onclick="Registration_new();"></b>
     </td>
         <td>
@@ -81,6 +89,13 @@ b{
             var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=380, height=360, left=50, top=10';
             window.open("/spareparts_new", "Spare Parts Registration", settings);
             }
+
+            function Check_spare(){
+                         // 팝업창열기
+            var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=1120,height=770, left=50, top=10';
+            window.open("/spareparts_short_main", "Shortage Spare Parts List", settings);
+            }
+
 </script>
 </body>
 </html>
