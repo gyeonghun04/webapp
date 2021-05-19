@@ -66,7 +66,7 @@ titletext{
         font-weight:bold;
 }
 .selecttext{
-        margin-left:460px;
+        margin-left:20px;
         width:105px;
         height:20px;
 }
@@ -145,7 +145,7 @@ tr:nth-child(even){
         z-index:10;
         font-family: arial;
         font-size:11px;
-        overflow-y:scroll;
+        overflow-y:auto;
         height:200px;
 }
 
@@ -182,10 +182,10 @@ height:20px;}
     background-color:#6F6F6F;
     color:white;
     height:20px;}
-.v2{width:100px;
+.v2{width:80px;
     background-color:#6F6F6F;
     color:white;}
-.v3{width:100px;
+.v3{width:120px;
     background-color:#6F6F6F;
     color:white;}
 .v4{width:50px;
@@ -193,8 +193,8 @@ height:20px;}
     color:white;}
 
 .v1-1{width:100px;}
-.v2-1{width:100px;}
-.v3-1{width:100px;}
+.v2-1{width:80px;}
+.v3-1{width:120px;}
 .v4-1{width:50px;}
 
 .request_btn{
@@ -213,13 +213,19 @@ height:20px;}
     font-weight:bold;
 }
 .submit_btn{
-    position:absolute;top:740px; left:1020px;
+    position:absolute;top:740px; left:1035px;
     font-family: arial;
     font-size:12px;
     cursor:pointer;
     font-weight:bold;
     }
-
+#select_radio{
+        margin-top:5px;
+        margin-left:330px;
+        font-family: 'Rubik', sans-serif;
+        font-size:11px;
+        font-weight:bold;
+}
 </style>
 </head>
 <body>
@@ -236,6 +242,12 @@ height:20px;}
 <table>
     <tr>
     <td><titletext>Shortage Spare Parts List</titletext></td>
+    <td>
+    <div id="select_radio">
+            <input type="radio" name="type" value="total" {{total}} onclick="Select_radio();">Total&emsp;
+            <input type="radio" name="type" value="pm" {{pm}} onclick="Select_radio();">PM&emsp;
+    </div>
+    </td>
     <td>
     <div id="searchbar">
         <form action="spareparts_short_main" method="get">
@@ -283,7 +295,11 @@ height:20px;}
             <td align="center" class="m5-1">{{sp_list.modelno}}</td>
             <td align="center" class="m6-1">{{sp_list.spec}}</td>
             <td align="center" class="m7-1">{{sp_list.location}}</td>
+            {% if pm == "checked" %}
+            <td align="center" class="m8-1">{{sp_list.short_qy}}</td>
+            {% else %}
             <td align="center" class="m8-1">{{sp_list.safety_stock}}</td>
+            {%endif%}
             <td align="center" class="m9-1">
                 <input type="checkbox" name="checks[]"  value="{{sp_list.codeno}}" {{sp_list.contact_y_n}}>
                 <input type="hidden" value="{{sp_list.no}}" name="no_up">
@@ -294,7 +310,10 @@ height:20px;}
  </table>
  </div>
 <input type="hidden" name="loginid">
- <input type="submit" class="request_btn" value="Request"></form>
+<input type="hidden" name="total" value="{{total}}">
+<input type="hidden" name="pm" value="{{pm}}">
+<input type="hidden" name="type" value="{{type}}">
+<input type="submit" class="request_btn" value="Request"></form>
 
 <form action="spareparts_short_main" method="post" name="spareparts_request_reset">
         {% csrf_token %}
@@ -366,7 +385,16 @@ height:20px;}
     </table>
 </div>
     <input type="hidden" name="loginid">
-    <input type="submit"  class="submit_btn" value="Submit" onclick="this.disabled=true;this.value='Submit'; this.form.submit();"></form>
+    <input type="hidden" name="type" value="{{type}}">
+    <input type="hidden" name="total" value="{{total}}">
+    <input type="hidden" name="pm" value="{{pm}}">
+    <input type="submit"  class="submit_btn" value="e-mail" onclick="this.disabled=true;this.value='e-mail'; this.form.submit();"></form>
+<input type="hidden" value="{{email_comp}}" name="email_comp">
+
+
+<form method="get" name="spareparts_short_type">
+<input type="hidden" name="type">
+</form>
 
 <script>
      function init(){
@@ -374,12 +402,32 @@ height:20px;}
             var loginid_up = loginid;
             document.spareparts_request_form.loginid.value = loginid_up;
             document.spareparts_submit_form.loginid.value = loginid_up;
-            document.getElementById("logindata").innerHTML=loginid_up;}
+            document.getElementById("logindata").innerHTML=loginid_up;
+            var close_signal= document.getElementsByName('email_comp')[0].value;
+            if (close_signal=="Y"){
+                alert("Your email has been sent.");
+               opener.document.location.reload();
+               self.close();}
+            }
 
       onload=init
 
     function Close(){
             self.close();
+    }
+
+    function Select_radio(){
+                     // type 값보내기
+           var obj_length = document.getElementsByName("type").length;
+                for (var i=0; i<obj_length; i++) {
+                    if (document.getElementsByName("type")[i].checked == true) {
+                        var type = document.getElementsByName("type")[i].value;
+                        }
+                    }
+           document.spareparts_short_type.type.value = type;
+                           // 서버연결
+           document.spareparts_short_type.action="spareparts_short_main";
+           document.spareparts_short_type.submit();
     }
 </script>
 </body>

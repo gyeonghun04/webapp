@@ -81,7 +81,9 @@ toptext{
         overflow-y:scroll;
 }
 .m1{width:180px;}
-.m1-1{width:200px;}
+.m1-1{width:200px;
+      background-color:white;
+}
 
 body{overflow:hidden;}
 
@@ -104,10 +106,6 @@ tr:nth-child(even){
         font-color:black;
         padding-left:4%;
         outline:0;
-}
-.Button:hover {
-	background-color:#EEEEEE;
-	border-radius:10%;
 }
 
 #audittrail_text{
@@ -198,6 +196,11 @@ tr:nth-child(even){
       width:200px;
       height:35px;
       }
+
+.button:hover {
+	background-color:#EEEEEE;
+	border-radius:10%;
+}
 </style>
 <body>
 
@@ -212,8 +215,8 @@ tr:nth-child(even){
 
 <main>
 <div id="select_radio">
-            <input type="radio" name="type" value="date" {{date}}>Date&emsp;
-            <input type="radio" name="type" value="document" {{document}}>Document&emsp;
+            <input type="radio" name="type" value="date" {{date}} onclick="Select_radio();">Date&emsp;
+            <input type="radio" name="type" value="document" {{document}} onclick="Select_radio();">Document&emsp;
 </div>
 
 <div id="tablemenu">
@@ -231,10 +234,17 @@ tr:nth-child(even){
      <tbody>
                       {% for audit_lists in audit_list %}
         <tr>
+            {% if date == "checked" %}
             <td align="center" class="m1-1">
-                <input type="hidden" value="{{audit_lists.date}}" name="date_get">
+                <input type="hidden" value="{{audit_lists.date}}" name="data">
                 <input type="button" class="button" value="{{audit_lists.date}}" onclick="Audit_lists(this);">
             </td>
+            {% else %}
+             <td align="center" class="m1-1">
+                <input type="hidden" value="{{audit_lists.document}}" name="data">
+                <input type="button" class="button" value="{{audit_lists.document}}" onclick="Audit_lists(this);">
+            </td>
+            {% endif %}
         </tr>
                     {%endfor%}
         </tbody>
@@ -293,7 +303,7 @@ tr:nth-child(even){
 <div id="audittrail_table_top">
     <table>
            <tr>
-            <td align="center" class="t1">Document</td>
+            <td align="center" class="t1">Document / No.</td>
             <td align="center" class="t2">Time</td>
             <td align="center" class="t3">ID</td>
             <td align="center" class="t4">Division</td>
@@ -322,7 +332,8 @@ tr:nth-child(even){
             <form action="audittrail_click" method="post" name="audittrail_click_form">
                     {% csrf_token %}
                 <input type="hidden" name="loginid" value="{{loginid}}">
-                <input type="hidden" name="date_search" value="{{date_search}}">
+                <input type="hidden" name="data" value="{{data}}">
+                <input type="hidden" name="type" value="{{type}}">
                 <input type="hidden" value="{{audit_searchs.no}}" name="audit_no">
                 <input type="submit" class="click_btn" value="Click"></form>
             </td>
@@ -335,9 +346,13 @@ tr:nth-child(even){
         <form method="post" name="audittrail_view_form">
              {% csrf_token %}
         <input type="hidden" name="loginid">
-        <input type="hidden" name="date">
+        <input type="hidden" name="data">
+        <input type="hidden" name="type" value="{{type}}">
         </form>
 
+        <form method="get" name="audittrail_view_type">
+        <input type="hidden" name="type">
+        </form>
 </main>
 <script>
      function init(){
@@ -350,15 +365,29 @@ tr:nth-child(even){
      function Audit_lists(obj){
              var i = obj.parentNode.parentNode.rowIndex;
              loginid = opener.document.getElementById("loginid_up").value;
-             date= document.getElementsByName('date_get')[i].value;
+             data= document.getElementsByName('data')[i].value;
              document.audittrail_view_form.loginid.value = loginid;
-             document.audittrail_view_form.date.value = date;
+             document.audittrail_view_form.data.value = data;
                             // 서버연결
              document.audittrail_view_form.action="audittrail_view";
              document.audittrail_view_form.submit();}
 
     function Close(){
             self.close();
+    }
+
+    function Select_radio(){
+                     // type 값보내기
+           var obj_length = document.getElementsByName("type").length;
+                for (var i=0; i<obj_length; i++) {
+                    if (document.getElementsByName("type")[i].checked == true) {
+                        var type = document.getElementsByName("type")[i].value;
+                        }
+                    }
+           document.audittrail_view_type.type.value = type;
+                           // 서버연결
+           document.audittrail_view_type.action="audittrail_main";
+           document.audittrail_view_type.submit();
     }
 </script>
 </body>

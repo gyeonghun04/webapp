@@ -3,114 +3,157 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+</head>
 <style>
-ratitle{
-        position:fixed;top:6%; left:58%;
+.border {
+        position:fixed;top:10px;
+        border:8px solid #6F6F6F;
+        width:549px;
+        height:740px;
+        z-index:10;
+    }
+#ra_title{
+        margin-top:30px;
+        margin-left:40px;
         font-size: 20px;
         font-family: arial;
         font-weight:bold;
 }
-#raok{
+
+#equipinfo{
+        margin-top:10px;
     	font-family: arial;
-        font-size:11px;
-        position:fixed;top:19.6%; left:39.6%;
-        width:59.98%;
+        font-size:10px;
+        position:relative; left:7px;
+        color:black;
+        width:551px;
+}
+#equipinfo_table{
+        border:1px solid #6F6F6F;
+        border-collapse:collapse;
+        -webkit-print-color-adjust: exact !important;
+}
+#raok{
+        position:relative; left:7px;
+    	font-family: arial;
+        font-size:10px;
+        width:551px;
         background-color:#6F6F6F;
         color:white;
         height:20px;
+        -webkit-print-color-adjust: exact !important;
 }
+.table1{
+        background-color: #EEEEEE;
+        width:97px;
+        height:15px;
+        font-weight:bold;
+        -webkit-print-color-adjust: exact !important;
+}
+.table2{
+        background-color: white;
+        width:180px;
+}
+
 #raokdesc{
-        position:fixed; top:21.6%; left:39.6%;
-        width:59.98%;
+        position:relative; left:7px;
+        width:551px;
 }
 #raoktable{
         border:1px solid #6F6F6F;
         border-collapse:collapse;
-        font-size:11px;
+        font-size:10px;
         font-family: arial;
+        -webkit-print-color-adjust: exact !important;
 }
 #ratitle{
     	font-family: arial;
-        font-size:11px;
-        position:fixed;top:28%; left:39.6%;
-        width:59.98%;
+        font-size:10px;
+        position:relative; left:7px;
+        width:551px;
         background-color:#6F6F6F;
         color:white;
         height:20px;
+        -webkit-print-color-adjust: exact !important;
 }
 #radesc{
-        position:fixed; top:30%; left:39.6%;
-        width:59.98%;
-        height:67%;
+        position:relative; left:7px;
+        width:551px;
 }
 #ratable{
         border:1px solid #6F6F6F;
         border-collapse:collapse;
-        font-size:11px;
+        font-size:10px;
         font-family: arial;
+        -webkit-print-color-adjust: exact !important;
 }
 #ramain{
     	font-family: arial;
-        font-size:11px;
-        position:fixed;top:42.6%; left:39.6%;
-        width:59.98%;
+        font-size:10px;
+        position:relative; left:7px;
+        width:551px;
         background-color:#6F6F6F;
         color:white;
         height:20px;
+        -webkit-print-color-adjust: exact !important;
 }
 #ramaindesc{
-        position:fixed; top:44.6%; left:39.6%;
-        width:59.98%;
+        position:relative; left:7px;
+        width:551px;
         height:67%;
 }
 #ramaintable{
         border:1px solid #6F6F6F;
         border-collapse:collapse;
-        font-size:11px;
+        font-size:10px;
         font-family: arial;
+        -webkit-print-color-adjust: exact !important;
 }
 #rafooter{
-        position:fixed;top:72.8%; left:39.6%;
+        position:relative; left:7px;
+        width:551px;
     	font-family: arial;
-        font-size:11px;
-        width:59.98%;
+        font-size:10px;
         background-color:#6F6F6F;
         color:white;
         height:20px;
+        -webkit-print-color-adjust: exact !important;
 }
 #rafooterdesc{
-        position:fixed; top:75%; left:39.6%;
-        width:59.98%;
+        position:relative; left:7px;
+        width:551px;
         font-family: arial;
-        font-size:11px;
+        font-size:10px;
         padding-left:5px;
 }
 #score{
-        position:fixed; top:79%; left:40%;
-        width:40%;
+        position:relative; left:7px;
+        width:500px;
         border:1px solid #6F6F6F;
         border-collapse:collapse;
-        font-size:11px;
+        font-size:10px;
         font-family: arial;
+        -webkit-print-color-adjust: exact !important;
 }
 #raresult{
     	font-family: arial;
-        font-size:11px;
-        position:fixed;top:86%; left:39.6%;
-        width:59.98%;
+        font-size:10px;
+        position:relative; left:7px;
+        width:551px;
         background-color:#6F6F6F;
         color:white;
         height:20px;
+        -webkit-print-color-adjust: exact !important;
 }
 #raresultdesc{
-        position:fixed; top:88.5%; left:39.6%;
-        width:59.98%;
+        position:relative; left:7px;
+        width:551px;
         font-family: arial;
         font-size:12px;
-        padding-left:56.5%;
+        padding-left:480px;
         font-weight:bold;
+        -webkit-print-color-adjust: exact !important;
 }
-
 
 .a1-1{width:100px; height:20px;}
 .a2-1{width:841px; height:20px;}
@@ -121,8 +164,8 @@ ratitle{
 
 .c1-1{width:100px; height:15px;}
 .c2-1{width:1044px; height:15px;}
-.c1-2{width:100px; height:100px;}
-.c2-2{width:1044px; height:100px;}
+.c1-2{width:100px; height:90px;}
+.c2-2{width:1044px; height:90px;}
 
 .c2{width:100px;}
 
@@ -130,9 +173,9 @@ ratitle{
 .t2-1{width:841px; height:20px;}
 .t3-1{width:200px; height:20px;}
 
-.t1-2{width:100px; height:100px;}
-.t1-3{width:100px; height:100px;}
-.t1-4{width:100px; height:40px;}
+.t1-2{width:100px; height:70px;}
+.t1-3{width:100px; height:70px;}
+.t1-4{width:100px; height:30px;}
 
 
 
@@ -142,7 +185,7 @@ ratitle{
 
 
 .c11{width:300px;
-    height:25px;
+    height:21px;
     background-color: #EEEEEE;
     font-weight:bold;}
 .c12{width:300px;
@@ -153,34 +196,100 @@ ratitle{
     background-color:white;}
 
 #pmcontrolformtop{
-        position:fixed; top:91%; left:39.6%;
-        width:59.98%;
+        position:relative; left:7px;
+        width:551px;
     	font-family: arial;
-        font-size:11px;
+        font-size:10px;
         background-color:#6F6F6F;
         color:white;
         padding:3px;
-        }
+        -webkit-print-color-adjust: exact !important;
+}
 
 #pmcontrolformapproval{
-        position:fixed; top:93.5%; left:39.6%;
-        width:59.98%;
+        position:relative; left:7px;
+        width:551px;
         font-family: arial;
-        font-size:11px;
+        font-size:10px;
         padding:10px;
         border:1px solid #6F6F6F;
         border-collapse:collapse;
-        }
+        -webkit-print-color-adjust: exact !important;
+}
 </style>
-
-</head>
 <body>
-<ratitle>
+
+<div id="ra_title">
 Assessment for Period of Preventive Maintenance
-</ratitle>
-<main>
-  {% for equipinfos in equipinfo %}
-<div id="raok" >
+</div>
+
+<div class="border">
+</div>
+<div id="equipinfo">
+<table id="equipinfo_table" border= "1">
+                      {% for equipinfos in equipinfo %}
+    <tr>
+        <td class="table1">
+            Control No.
+        </td>
+        <td class="table2">
+            {{equipinfos.controlno}}
+        </td>
+        <td class="table1">
+            Equipment. Name
+        </td>
+        <td class="table2">
+            {{equipinfos.name}}
+        </td>
+    </tr>
+    <tr>
+        <td class="table1">
+            Model Name
+        </td>
+        <td class="table2">
+            {{equipinfos.model}}
+        </td>
+        <td class="table1">
+            Serial No.
+        </td>
+        <td class="table2">
+            {{equipinfos.serial}}
+        </td>
+    </tr>
+    <tr>
+        <td class="table1">
+            Manufacturer
+        </td>
+        <td class="table2">
+            {{equipinfos.maker}}
+        </td>
+        <td class="table1">
+            Team
+        </td>
+        <td class="table2">
+            {{equipinfos.team}}
+        </td>
+    </tr>
+    <tr>
+        <td class="table1">
+            Room Name
+        </td>
+        <td class="table2">
+            {{equipinfos.roomname}}
+        </td>
+        <td class="table1">
+            Room No.
+        </td>
+        <td class="table2">
+            {{equipinfos.roomno}}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+</div>
+
+ {% for equipinfos in equipinfo %}
+<div id="raok">
 <table  style="word-break:break-all">
         <thead>
         <tr>
@@ -199,7 +308,7 @@ Assessment for Period of Preventive Maintenance
          </tr>
          <tr>
 
-            <td align="center" class="a1-2" height="35">PM<br>Standard</td>
+            <td align="center" class="a1-2" height="20">PM<br>Standard</td>
             <td align="left" class="a2-2">{{equipinfos.pmresult}}</td>
             <td align="center" class="a3-2">{{equipinfos.pmok}}</td>
 
@@ -230,7 +339,7 @@ Assessment for Period of Preventive Maintenance
 (1. If it is classified as a PQ target facility according to the result of “GxP assessment of equipment and computers (FE002)”
                 or if necessary, this implementation will be conducted. Otherwise, “Not applicable” is indicated<br>
 2. 설비 매뉴얼의 권고사항을 기준으로 주기를 적용하나 그렇지 않으면 아래의 평가 방법을 따른다.<br>
-(2. The interval is applied based on the recommendations of the equipment manual, but exceptions follow the interval setting
+(2. The interval is applied based on the recommendations of the equipment manual, but exceptions <br>follow the interval setting
 evaluation method Ⅱ below.)
 </td>
 </tr>
@@ -268,9 +377,9 @@ evaluation method Ⅱ below.)
              <td align="left" class="t2-3">
                  설비의 사용 연수에 따라 설비에 미치는 영향을 주요 변수로 적용.<br>
                 The effect on the equipment is applied as the main variable according to
-                the number of years of equipment use.<br>
+                the number <br>of years of equipment use.<br>
                 (평가: 0 ~ 5년(1점), 6 ~ 10년(2점), 11 ~ 15년(3점), 16년 이상(4점))<br>
-                (Assessment : 0 to 5 years(1 point), 6 to 10 years(2 points), 11 to 15 years(3 points),16 years or more(4 points)<br></td>
+                (Assessment : 0 to 5 years(1 point), 6 to 10 years(2 points), 11 to 15 years(3 points),<br>16 years or more(4 points)<br></td>
             <td align="center" class="t3-3">{{equipinfos.score_y}}point</td>
          </tr>
          <tr>
@@ -302,14 +411,14 @@ evaluation method Ⅱ below.)
  </table>
  <table id="score" border="1">
     <tr>
-        <td align="center" width="200" height="25">Total Score (F + Y)</td>
+        <td align="center" width="200" height="15">Total Score (F + Y)</td>
         <td align="center" width="150">2</td>
         <td align="center" width="150">3</td>
         <td align="center" width="150">4 ~ 5</td>
         <td align="center" width="150">6 ~ 8</td>
     </tr>
     <tr>
-        <td align="center" height="25">PM Period</td>
+        <td align="center" height="15">PM Period</td>
         <td align="center" >12 Months</td>
         <td align="center" >6 Months</td>
         <td align="center" >3 Months</td>
@@ -362,6 +471,17 @@ evaluation method Ⅱ below.)
      </tbody>
  </table>
     {%endfor%}
-</main>
+</table>
 </body>
+
+<script>
+
+             //////////// 기본초기값 불러오기//////////////
+     function init(){
+             window.resizeTo(595,842);
+             window.print();
+             }
+      onload=init
+
+</script>
 </html>

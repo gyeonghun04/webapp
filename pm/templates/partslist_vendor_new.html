@@ -47,7 +47,7 @@ toptext{
         color:white;
 }
 .Button {
-        position:fixed; left:320px;
+        position:fixed; left:315px;
         font-family:'Rubik', sans-serif;
         font-size:18px;
         background-color: rgba(255, 255, 255, 0.0);
@@ -86,7 +86,14 @@ title_text{
     	font-family: arial;
         font-size:12px;
         cursor:pointer;
-        position:fixed; top:255px; left:315px;
+        position:fixed; top:355px; left:315px;
+}
+textarea{
+        margin-top:5px;
+        width:220px;
+        height:130px;
+        font-size:11px;
+        font-family: arial;
 }
 </style>
 </head>
@@ -101,40 +108,40 @@ title_text{
 </header>
 <header2>
 </header2>
-<title_text>Authority Information Registration</title_text>
-<form action="approval_info_new_submit" method="post" name="spare_registration">
+<title_text>Vendor Registration</title_text>
+<form action="partslist_vendor_new_submit" method="post" name="vendor_registration">
     {% csrf_token %}
 <div id="table_location">
    <table id="auth_table" border="1">
         <tr>
-            <td align="center" class="text_css">Division</td>
-            <td align="left" colspan="2">
-            <input type="text" name="division"  class="input_css" required ></td>
+            <td align="center" class="text_css">Vendor Name</td>
+            <td align="left">
+            <input type="text" name="vendor"  class="input_css" required ></td>
             </td>
         </tr>
         <tr>
+            <td align="center" class="text_css">Name</td>
+            <td align="center">
+            <input type="text" name="name"  class="input_css" required ></td>
+        </tr>
+        <tr>
+            <td align="center" class="text_css">Tel.</td>
+            <td align="center">
+            <input type="tel" name="tel"  class="input_css" required ></td>
+        </tr>
+        <tr>
+            <td align="center" class="text_css">e-mail</td>
+            <td align="center">
+            <input type="email" name="email"  class="input_css" required></td>
+        </tr>
+        <tr>
             <td align="center" class="text_css">Description</td>
-            <td align="center" colspan="2">
-            <input type="text" name="description"  class="input_css" required ></td>
-        </tr>
-        <tr>
-            <td align="center" class="text_css">Auth. Team</td>
-            <td align="center" colspan="2">
-            <input type="text" name="team"  class="input_css" required ></td>
-        </tr>
-        <tr>
-            <td align="center" class="text_css">Auth. Name</td>
-            <td align="center" colspan="2">
-            <input type="text" name="auth_name"  class="input_css" required></td>
-        </tr>
-        <tr>
-            <td align="center" class="text_css">Authority</td>
-            <td align="center" colspan="2">
-            <input type="text" name="authority"  class="input_css" placeholder="Auth. Team _ Auth. Name" required></td>
+            <td align="center">
+                <textarea name="description" style="resize:none;" required></textarea></td>
         </tr>
    </table>
 </div>
-    <input type="hidden" name="loginid">
+<input type="hidden" name="loginid">
 <input type="submit" class="submit_btn" value="Submit"></form>
 <input type="hidden" value="{{comp_signal}}" name="comp_signal">
 
@@ -143,7 +150,7 @@ title_text{
     //////////// 기본초기값 불러오기//////////////
      function init(){
             loginid = opener.document.getElementById("loginid_up").value;
-            document.spare_registration.loginid.value = loginid;
+            document.vendor_registration.loginid.value = loginid;
        ////아이디 정보 보내기
             var loginid_up = loginid;
             document.getElementById("logindata").innerHTML=loginid_up;

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Work Request Select Page</title>
+</head>
+<style>
+click_btn{
+    	font-family: arial;
+        font-size:14px;
+        font-weight:bold;
+}
+.period_css{
+        position: fixed; top:45px; left:40px;
+    	font-family: arial;
+        font-size:12px;
+        cursor:pointer;
+        width:120px;
+}
+.control_css{
+        position: fixed; top:70px; left:40px;
+    	font-family: arial;
+        font-size:12px;
+        cursor:pointer;
+        width:120px;
+}
+</style>
+<body>
+<click_btn>Click the button</click_btn>
+    <form action="history_of_equip_period" name="pm_period" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="controlno">
+        <input type="hidden" name="loginid">
+        <input type="submit" class="period_css" value="PM Period">
+    </form>
+
+    <form action="history_of_equip_control" name="pm_control" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="controlno">
+        <input type="hidden" name="loginid">
+        <input type="submit" class="control_css" value="PM Control From">
+    </form>
+
+<script>
+     //////////// 기본초기값 불러오기//////////////
+     function init(){
+             var controlno = opener.document.getElementById("controlno_up").value;
+             var loginid = opener.document.getElementById("loginid_up").value;
+             document.pm_period.controlno.value = controlno;
+             document.pm_period.loginid.value = loginid;
+             document.pm_control.controlno.value = controlno;
+             document.pm_control.loginid.value = loginid;
+             }
+      onload=init
+
+</script>
+</body>
+</html>

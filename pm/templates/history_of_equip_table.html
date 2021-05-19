@@ -295,6 +295,8 @@ tr:nth-child(even){
                          <tr>
              <td class="title_css" align="center">Document Print</td>
              <td class="text_css" align="center">
+                 <input type="hidden" id="loginid_up" value="{{loginid}}">
+                 <input type="hidden" id="controlno_up" value="{{equip_tables.controlno}}">
                  <input type="button" value="Click" class="button" onclick="Print_out();">
              </td>
          </tr>
@@ -500,6 +502,11 @@ tr:nth-child(even){
                         // 팝업창열기
             var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=200, height=80, left=50, top=400';
             window.open("/workorderlist_order_main", "Work Request Form", settings);
+    }
+
+    function Print_out(){
+            var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=200, height=80, left=50, top=400';
+            window.open("/history_of_equip_print", "Document Print", settings);
     }
 </script>
 </body>

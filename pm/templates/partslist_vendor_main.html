@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+titletext{
+        position:fixed;top:4%; left:9.2%;
+    	font-family:'Rubik', sans-serif;
+        font-size:20px;
+        font-weight:bold;
+}
+
+#tablemenu{
+    	font-family: arial;
+        font-size:11px;
+        position:fixed;top:7.5%; left:9%;
+        height:2.5%;
+        width:90.7%;
+        background-color:#6F6F6F;
+        color:white;
+}
+#tabledesc{
+        position:fixed;top:10%; left:9%;
+        z-index:10;
+        width:90.7%;
+        font-family: arial;
+        font-size:11px;
+        overflow-y:scroll;
+        height:90%;
+}
+
+body{overflow:hidden;}
+
+tr:nth-child(even){
+    background-color:#EEEEEE;
+}
+
+.m1{width:150px;}
+.m2{width:200px;}
+.m3{width:135px;}
+.m4{width:200px;}
+.m5{width:800px;}
+.m6{width:250px;}
+.m7{width:100px;}
+
+
+.m1-1{width:150px;}
+.m2-1{width:200px;}
+.m3-1{width:135px;}
+.m4-1{width:200px;}
+.m5-1{width:800px;}
+.m7-1{width:100px;}
+
+.delete_button{
+    	font-family: arial;
+        font-size:11px;
+        cursor:pointer;
+}
+
+.submit_button{
+    	font-family: arial;
+        cursor:pointer;
+        font-size:14px;
+        height:24px;
+        margin-left:1800px;
+        margin-top:930px;
+}
+
+.authtext{
+    	font-family: arial;
+        padding-top:2px;
+        padding-bottom:3px;
+        width:140px;
+        }
+b{
+        position:fixed;top:5.2%; left:91%;
+        align-text:left;
+        color:black;
+}
+.new{
+        font-family:'Rubik', sans-serif;
+        font-size:15px;
+        background-color: rgba(255, 255, 255, 0.0);
+        cursor:pointer;
+        border:0px;
+        font-color:black;
+        text-decoration:underline;
+}
+</style>
+<body>
+<main>
+{% include "css.html"%}
+{% include "top.html"%}
+{% include "sidetap.html"%}
+
+<titletext>Vendor Information</titletext>
+<b class="xi-pen"><input type="button" value="New Registration" class="new" onclick="Registration_new();"></b>
+
+<div id="tablemenu">
+     <table  style="word-break:break-all">
+        <thead>
+        <tr>
+            <td align="center" class="m1">Vendor Name</td>
+            <td align="center" class="m2">Name</td>
+            <td align="center" class="m3">Tel</td>
+            <td align="center" class="m4">e-mail</td>
+            <td align="center" class="m5">Description</td>
+            <td align="center" class="m7">Change</td>
+            <td align="center" class="m7">Delete</td>
+        </tr>
+        </thead>
+     </table>
+</div>
+<div id="tabledesc">
+ <table style="word-break:break-all">
+     <tbody>
+                      {% for vendorlists in vendorlist %}
+        <tr>
+            <td align="center" class="m1-1">{{vendorlists.vendor}}</td>
+            <td align="center" class="m2-1">{{vendorlists.name}}</td>
+            <td align="center" class="m3-1">{{vendorlists.tel}}</td>
+            <td align="center" class="m4-1">{{vendorlists.email}}</td>
+            <td align="center" class="m5-1">{{vendorlists.description}}</td>
+            <td align="center" class="m7-1">
+                <input type="hidden" value="{{vendorlists.vendor}}" name="vendor_give">
+                <input type="hidden" value="{{vendorlists.name}}" name="name_give">
+                <input type="hidden" value="{{vendorlists.tel}}" name="tel_give">
+                <input type="hidden" value="{{vendorlists.email}}" name="email_give">
+                <input type="hidden" value="{{vendorlists.no}}" name="no_give">
+                <input type="hidden" value="{{vendorlists.description}}" name="description_give">
+                <input type="button" class="delete_button" value="Change" onclick="Id_change(this);"></td>
+            <td align="center" class="m7-1">
+                <input type="hidden" value="{{loginid}}" id="loginid_up">
+                <input type="hidden" value="{{vendorlists.no}}" name="no">
+                <input type="button" class="delete_button" value="Delete" onclick="Id_delete(this);"></td>
+        </tr>
+                        {%endfor%}
+        </tbody>
+ </table>
+</div>
+
+</div>
+    <form name="vendor_info_change" method="post">
+                     {% csrf_token %}
+        <input type="hidden" name="description_up" id="description_up">
+        <input type="hidden" name="email_up" id="email_up">
+        <input type="hidden" name="tel_up" id="tel_up">
+        <input type="hidden" name="name_up" id="name_up">
+        <input type="hidden" name="no_up" id="no_up">
+        <input type="hidden" name="vendor_up" id="vendor_up"></form>
+
+    <form name="vendor_delete" method="post">
+                     {% csrf_token %}
+       <input type="hidden" value="{{loginid}}" name="loginid">
+       <input type="hidden" name="no"></form>
+
+
+</main>
+<script>
+
+    function Id_change(obj){
+                // 행위치값과 플랜데이트 받기
+            var i = obj.parentNode.parentNode.rowIndex;
+            var description= document.getElementsByName('description_give')[i].value;
+            var email= document.getElementsByName('email_give')[i].value;
+            var tel= document.getElementsByName('tel_give')[i].value;
+            var name= document.getElementsByName('name_give')[i].value;
+            var vendor= document.getElementsByName('vendor_give')[i].value;
+            var no= document.getElementsByName('no_give')[i].value;
+                // html로 값보내기
+            document.vendor_info_change.description_up.value = description;
+            document.vendor_info_change.email_up.value = email;
+            document.vendor_info_change.tel_up.value = tel;
+            document.vendor_info_change.name_up.value = name;
+            document.vendor_info_change.vendor_up.value = vendor;
+            document.vendor_info_change.no_up.value = no;
+                        // 팝업창열기
+            var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=605, height=400, left=50, top=10';
+            window.open("/partslist_vendor_change", "Vendor Information Change", settings);
+    }
+
+    function Id_delete(obj){
+            var i = obj.parentNode.parentNode.rowIndex;
+            var no= document.getElementsByName('no')[i].value;
+            document.vendor_delete.no.value = no;
+            // 서버로 전송
+            document.vendor_delete.action="partslist_vendor_delete";
+            document.vendor_delete.submit();
+    }
+
+    function Registration_new(){
+                        // 팝업창열기
+            var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=380, height=380, left=50, top=10';
+            window.open("/partslist_vendor_new", "Vendor Registration", settings);
+    }
+</script>
+</body>
+</html>

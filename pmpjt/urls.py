@@ -220,6 +220,12 @@ urlpatterns = [
     path('spareparts_short_main', pm.views.spareparts_short_main, name='spareparts_short_main'),
     path('spareparts_short_request', pm.views.spareparts_short_request, name='spareparts_short_request'),
     path('spareparts_short_submit', pm.views.spareparts_short_submit, name='spareparts_short_submit'),
+    path('partslist_vendor_main', pm.views.partslist_vendor_main, name='partslist_vendor_main'),
+    path('partslist_vendor_new', pm.views.partslist_vendor_new, name='partslist_vendor_new'),
+    path('partslist_vendor_new_submit', pm.views.partslist_vendor_new_submit, name='partslist_vendor_new_submit'),
+    path('partslist_vendor_delete', pm.views.partslist_vendor_delete, name='partslist_vendor_delete'),
+    path('partslist_vendor_change', pm.views.partslist_vendor_change, name='partslist_vendor_change'),
+    path('partslist_vendor_change_submit', pm.views.partslist_vendor_change_submit, name='partslist_vendor_change_submit'),
 
 ##########################################################################################################################################
 ##########################################################################################################################################
@@ -275,6 +281,9 @@ urlpatterns = [
     path('history_of_equip_main', pm.views.history_of_equip_main, name='history_of_equip_main'),
     path('history_of_equip_upload', pm.views.history_of_equip_upload, name='history_of_equip_upload'),
     path('history_of_equip_reset', pm.views.history_of_equip_reset, name='history_of_equip_reset'),
+    path('history_of_equip_print', pm.views.history_of_equip_print, name='history_of_equip_print'),
+    path('history_of_equip_period', pm.views.history_of_equip_period, name='history_of_equip_period'),
+    path('history_of_equip_control', pm.views.history_of_equip_control, name='history_of_equip_control'),
 
 ]
 if settings.DEBUG:
