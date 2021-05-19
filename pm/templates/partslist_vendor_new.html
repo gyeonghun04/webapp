@@ -156,9 +156,10 @@ textarea{
             document.getElementById("logindata").innerHTML=loginid_up;
             var close_signal= document.getElementsByName('comp_signal')[0].value;
             if (close_signal=="Y"){
+                window.resizeTo(600,200);
                 alert("Authority Information Registration is complete.");
-               opener.document.location.reload();
-               self.close();}
+                opener.document.location.reload();
+                self.close();}
             }
 
       onload=init

@@ -301,9 +301,10 @@ title_text{
             var close_signal= document.getElementsByName('comp_signal')[0].value;
             var team_signal= document.getElementsByName('team_signal')[0].value;
             if (close_signal=="Y"){
+                window.resizeTo(600,200);
                 alert("Equipment Information Change is complete.");
-               opener.document.location.reload();
-               self.close();}
+                opener.document.location.reload();
+                self.close();}
             loginid = opener.document.getElementById("loginid_up").value;
             controlno = opener.document.getElementById("controlno_up").value;
             name = opener.document.getElementById("name_up").value;

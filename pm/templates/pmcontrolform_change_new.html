@@ -235,7 +235,8 @@ pm{
             document.getElementById("logindata").innerHTML=loginid_up;
             var close_signal= document.getElementsByName('comp_signal')[0].value;
             if (close_signal=="Y"){
-                alert("PM Maintenance Item Registration is complete.");
+               window.resizeTo(600,200);
+               alert("PM Maintenance Item Registration is complete.");
                opener.document.location.reload();
                self.close();}
             }

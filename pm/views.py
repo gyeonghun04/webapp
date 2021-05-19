@@ -21,8 +21,6 @@ import re
 #import barcode ##바코드 생성기
 #from barcode.writer import ImageWriter ##바코드 생성기
 
-# Create your views here.
-
 ##############################################################################################################
 #################################################로그인페이지###################################################
 ##############################################################################################################
@@ -10820,7 +10818,7 @@ def partslist_pm_cal(request):
 def spareparts_short_main(request):
 ######데이터 리셋#####
     type = request.GET.get('type')  # html에서 해당 값을 받는다
-    check_reset = spare_parts_list.objects.filter(stock="0", contact_y_n="checked")
+    check_reset = spare_parts_list.objects.filter(contact_y_n="checked")
     check_reset = check_reset.values('no')
     df_check_reset = pd.DataFrame.from_records(check_reset)
     check_reset_len = len(df_check_reset.index)

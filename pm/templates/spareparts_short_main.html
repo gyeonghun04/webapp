@@ -405,9 +405,10 @@ height:20px;}
             document.getElementById("logindata").innerHTML=loginid_up;
             var close_signal= document.getElementsByName('email_comp')[0].value;
             if (close_signal=="Y"){
+                window.resizeTo(600,200);
                 alert("Your email has been sent.");
-               opener.document.location.reload();
-               self.close();}
+                opener.document.location.reload();
+                self.close();}
             }
 
       onload=init
