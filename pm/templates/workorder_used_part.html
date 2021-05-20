@@ -2,8 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Work Order Spare Parts</title>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap');
+
 header{
         height:30px;
         background:#6F6F6F;
@@ -76,39 +78,40 @@ titletext{
         z-index:10;
         font-family: arial;
         font-size:11px;
-        overflow-y:auto;
-        height:690px;
+        overflow-y:scroll;
+        height:680px;
 }
 
 .m1{width:70px;}
 .m2{width:50px;}
 .m3{width:150px;}
 .m4{width:100px;}
-.m5{width:150px;}
-.m6{width:70px;}
-.m7{width:80px;}
-.m8{width:120px;}
+.m5{width:170px;}
+.m6{width:63px;}
+.m7{width:83px;}
+.m8{width:100px;}
 .m9{width:95px;}
-.m10{width:80px;}
+.m10{width:85px;}
 .m11{width:150px;}
 .m12{width:75px;}
-.m13{width:50px;}
+.m13{width:50px;
+padding-left:10px;}
 
 .m1-1{width:70px;
 height:20px;}
 .m2-1{width:50px;}
 .m3-1{width:150px;}
 .m4-1{width:100px;}
-.m5-1{width:150px;}
-.m6-1{width:80px;}
+.m5-1{width:165px;}
+.m6-1{width:70px;}
 .m7-1{width:30px;}
-.m7-2{width:35px;}
-.m8-1{width:120px;}
+.m7-2{width:20px;}
+.m8-1{width:100px;}
 .m9-1{width:100px;}
 .m10-1{width:80px;}
 .m11-1{width:150px;}
 .m12-1{width:80px;}
-.m13-1{width:50px;}
+.m13-1{width:40px;}
 
 body{overflow:hidden;}
 
@@ -117,7 +120,6 @@ tr:nth-child(even){
 }
 #submit_location{
         position:fixed;top:770px; left:1240px;
-
 }
 .qy_btn_minus{
         font-weight:bold;
@@ -138,6 +140,11 @@ tr:nth-child(even){
         border:1px;
         width:20px;
         color:blue;
+}
+.submit_btn{
+        font-size:14px;
+        cursor:pointer;
+        font-family: arial;
 }
 </style>
 </head>
@@ -175,7 +182,7 @@ tr:nth-child(even){
             <td align="center" class="m10">Control No.</td>
             <td align="center" class="m11">Equipment Name</td>
             <td align="center" class="m12">Out Code</td>
-            <td align="center" class="m13">Check</td>
+            <td align="left" class="m13">Check</td>
         </tr>
         </thead>
      </table>
@@ -192,14 +199,14 @@ tr:nth-child(even){
             <td align="center" class="m5-1">{{spare_out.modelno}}</td>
             <td align="center" class="m6-1">{{spare_out.staff}}</td>
             <td align="right" class="m7-2">
-                <form action="used_parts_minus" method="post">
+                <form action="workorder_used_minus" method="post">
                     {% csrf_token %}
                 <input type="hidden" value="{{spare_out.no}}" name="no">
                 <input type="submit" value="-" class="qy_btn_minus"></form>
             </td>
             <td align="center" class="m7-1">{{spare_out.used_qy}}</td>
             <td align="left" class="m7-2">
-                <form action="used_parts_plus" method="post">
+                <form action="workorder_used_plus" method="post">
                     {% csrf_token %}
                 <input type="hidden" value="{{spare_out.no}}" name="no">
                 <input type="submit" value="+" class="qy_btn_plus"></form>
@@ -235,7 +242,7 @@ tr:nth-child(even){
 <input type="hidden"  name="action_date">
 <input type="hidden"  name="repair_type">
 <input type="hidden"  name="usedparts_na">
-<input type="submit"  class="searchbutton" value="Submit"></form>
+<input type="submit"  class="submit_btn" value="Submit"></form>
 <input type="hidden" name="close_signal" value="{{close_signal}}">
 
 </div>

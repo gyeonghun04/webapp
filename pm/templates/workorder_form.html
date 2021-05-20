@@ -608,6 +608,7 @@ Maintenance Work Order Form
 {%endfor%}
 
 {%else%}
+                         {%for workrequest in workorder_call %}
 <div id="workorder_info">
     <table border="1" id="workorder_info_t">
         <form name="workorder_company">
@@ -617,16 +618,16 @@ Maintenance Work Order Form
             </td>
             <td align="left" class="w_info_2">
                 <info_title>Assigned to Staff</info_title><br>
-                <info_text><input type="text" name="assigned_staff" class="text_css" value="{{username}}" required></info_text>
+                <info_text><input type="text" name="assigned_staff" class="text_css" value="{{workrequest.action_name}}" required></info_text>
             </td>
             <td align="left" class="w_info_2">
                 <info_title>Assigned to Company</info_title><br>
-                <info_text><input type="text" name="assigned_company" class="text_css" value="{{action_company}}" required>
+                <info_text><input type="text" name="assigned_company" class="text_css" value="{{workrequest.action_company}}" required>
                 <input type="checkbox" name="company_na" class="company_na" {{company_na_return}} onclick="Company_na();">N/A</info_text>
             </td>
             <td align="left" class="w_info_4">
                 <info_title>Date Assigned</info_title><br>
-            <info_text><input type="date" name="action_date" class="assigned_date_css" value="{{action_date}}"></info_text>
+            <info_text><input type="date" name="action_date" class="assigned_date_css" value="{{workrequest.action_date}}"></info_text>
             </td>
             <td align="left" class="w_info_4">
                 <info_title>PM Link</info_title><br>
@@ -642,19 +643,20 @@ Maintenance Work Order Form
         <tr>
             <td align="left" class="o_info_3" colspan="4">
             <info_title>Description of Work</info_title><br>
-            <info_text><textarea name="description_of_work" class="desc_css" style="resize:none;" required>{{work_desc}}</textarea></info_text>
+            <info_text><textarea name="description_of_work" class="desc_css" style="resize:none;" required>{{workrequest.work_desc}}</textarea></info_text>
             </td>
         </tr>
         <tr>
             <td align="left" class="o_info_3" colspan="4">
             <info_title>Test Result</info_title><br>
-            <info_text><textarea name="test_result" class="desc_css" style="resize:none;" required>{{test_result}}
+            <info_text><textarea name="test_result" class="desc_css" style="resize:none;" required>{{workrequest.test_result}}
             </textarea></info_text>
             </td>
         </tr>
         </form>
     </table>
 </div>
+            {%endfor%}
 <div id="usedpart_title"><br><br><br><br>
   Used Parts<br> Information
 </div>
@@ -773,17 +775,16 @@ Maintenance Work Order Form
 
             <td align="left" class="r_info_2">
                 <info_title> Detail Description</info_title><br>
-            <info_text><input type="text" name="select_detail" class="text_css" value="{{detail_type}}"></info_text>
+            <info_text><input type="text" name="select_detail" class="text_css" value="{{workrequest.detail_type}}"></info_text>
             </td>
             <td align="left" class="r_info_3">
                 <info_title>Maintenance Method</info_title><br>
-                <info_text><input type="text" name="maint_method" class="maint_method_css" value="{{repair_method}}"></info_text>
+                <info_text><input type="text" name="maint_method" class="maint_method_css" value="{{workrequest.repair_method}}"></info_text>
             </td>
         </tr>
     </table>
     </form>
 </div>
-
             <input type="hidden" id="workorderno_up" value="{{workorderno}}">
             <input type="hidden" id="controlno_up" value="{{workrequest.controlno}}">
             <input type="hidden" id="loginid_up" value="{{loginid}}">
@@ -794,7 +795,7 @@ Maintenance Work Order Form
              {% csrf_token %}
         <input type="hidden" value="{{loginid}}" id="workloginid2">
         <input type="hidden" value="{{workorderno}}" id="workorderno2">
-        <input type="hidden" value="{{url}}" name="url_up">
+        <input type="hidden" value="{{url}}" id="url_up">
         <input type="hidden"  name="action_name" id="action_name">
         <input type="hidden"  name="action_company" id="action_company">
         <input type="hidden"  name="work_desc" id="work_desc">

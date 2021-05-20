@@ -7843,6 +7843,10 @@ def workorder_form(request):
         auth = users.auth1
         user_div = users.user_division
         users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
+    ##조치자 저장##
+        name_get = workorder.objects.get(workorderno=workorderno)
+        name_get.action_name = username
+        name_get.save()
     ##COMP_SIGNAL보내기##
         comp_check = workorder.objects.get(workorderno=workorderno)
         if comp_check.workorder_y_n == "Y":
@@ -7860,6 +7864,12 @@ def workorder_form(request):
         else:
             url_comp = "Y"
             url=url_check.w_attach
+    ##Assigned to Company 시그널##
+        company_check = workorder.objects.get(workorderno=workorderno)
+        if company_check.action_company == "N/A":
+            company_na_return ="checked"
+        else:
+            company_na_return =""
     ##pm_trans N/A 시그널##
         pm_check = workorder.objects.get(workorderno=workorderno)
         if pm_check.pm_trans == "Y":
@@ -7876,7 +7886,46 @@ def workorder_form(request):
         else:
             usedpart_N = "selected"
             usedpart_Y = ""
+    ###repair_type신호보내기###
+        repair_check = workorder.objects.get(workorderno=workorderno)
+        if repair_check.repair_type == "Elec.Part":
+            repair_type_1 = "selected"
+            repair_type_2 = ""
+            repair_type_3 = ""
+            repair_type_4 = ""
+            repair_type_5 = ""
+        elif repair_check.repair_type == "Pump":
+            repair_type_1 = ""
+            repair_type_2 = "selected"
+            repair_type_3 = ""
+            repair_type_4 = ""
+            repair_type_5 = ""
+        elif repair_check.repair_type == "Piping":
+            repair_type_1 = ""
+            repair_type_2 = ""
+            repair_type_3 = "selected"
+            repair_type_4 = ""
+            repair_type_5 = ""
+        elif repair_check.repair_type == "PLC":
+            repair_type_1 = ""
+            repair_type_2 = ""
+            repair_type_3 = ""
+            repair_type_4 = "selected"
+            repair_type_5 = ""
+        elif repair_check.repair_type == "ETC":
+            repair_type_1 = ""
+            repair_type_2 = ""
+            repair_type_3 = ""
+            repair_type_4 = ""
+            repair_type_5 = "selected"
+        else:
+            repair_type_1 = ""
+            repair_type_2 = ""
+            repair_type_3 = ""
+            repair_type_4 = ""
+            repair_type_5 = ""
     ##정보보내기##
+        print(pm_trans_Y)
         spare_list = spare_out.objects.filter(used_y_n=workorderno)
         controlno_call = workorder.objects.get(workorderno=workorderno)
         controlno= controlno_call.controlno
@@ -7885,7 +7934,8 @@ def workorder_form(request):
         context = {"workorder_call": workorder_call, "loginid": loginid, "workorderno":workorderno,"spare_list":spare_list,
                    "equipinfos":equipinfos,"username":username,"comp_signal":comp_signal,"pm_trans_N":pm_trans_N,
                    "url_comp":url_comp,"url":url,"spare_list":spare_list,"pm_trans_Y":pm_trans_Y,"usedpart_Y":usedpart_Y,
-                   "usedpart_N":usedpart_N}
+                   "usedpart_N":usedpart_N,"repair_type_1":repair_type_1,"repair_type_2":repair_type_2,"company_na_return":company_na_return,
+                   "repair_type_3":repair_type_3,"repair_type_4":repair_type_4,"repair_type_5":repair_type_5}
         context.update(users)
     return render(request, 'workorder_form.html', context) #templates 내 html연결
 
@@ -9071,8 +9121,27 @@ def workorder_used_click(request):
 def workorder_used_submit(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
         workorderno = request.POST.get('workorderno')  # html 선택조건의 값을 받는다
+        loginid = request.POST.get('loginid')  # html 선택조건의 값을 받는다
+        url_up = request.POST.get('url_up')  # html 선택조건의 값을 받는다
+        action_name = request.POST.get('action_name')  # html 선택조건의 값을 받는다
+        action_company = request.POST.get('action_company')  # html 선택조건의 값을 받는다
+        work_desc = request.POST.get('work_desc')  # html 선택조건의 값을 받는다
+        test_result = request.POST.get('test_result')  # html 선택조건의 값을 받는다
+        detail_type = request.POST.get('detail_type')  # html 선택조건의 값을 받는다
+        repair_method = request.POST.get('repair_method')  # html 선택조건의 값을 받는다
+        pm_trans = request.POST.get('pm_trans')  # html 선택조건의 값을 받는다
+        action_date = request.POST.get('action_date')  # html 선택조건의 값을 받는다
+        repair_type = request.POST.get('repair_type')  # html 선택조건의 값을 받는다
         spareparts_release = spare_out.objects.filter(temp_y_n="Y", used_y_n="").order_by('date', 'out_code',
                                                                                               'team')  # db 동기화
+    ##이름 및 권한 끌고다니기##
+        users = userinfo.objects.get(userid=loginid)
+        username = users.username
+        userteam = users.userteam
+        password = users.password
+        auth = users.auth1
+        user_div = users.user_division
+        users = {"auth": auth, "password": password, "username": username, "userteam": userteam, "user_div": user_div}
     ####사용자재 링크저장하기###
         used_submit = spare_out.objects.filter(used_y_n_temp=workorderno)
         used_submit = used_submit.values('no')  # sql문 dataframe으로 변경
@@ -9088,9 +9157,24 @@ def workorder_used_submit(request):
         used_check = workorder.objects.get(workorderno=workorderno)
         used_check.usedpart="Y"
         used_check.save()
+    ####기 입력내용 임시 저장하기###
+        workorder_save = workorder.objects.get(workorderno=workorderno)
+        workorder_save.action_name = action_name
+        workorder_save.action_company = action_company
+        workorder_save.work_desc = work_desc
+        workorder_save.test_result = test_result
+        workorder_save.detail_type = detail_type
+        workorder_save.repair_method = repair_method
+        workorder_save.pm_trans = pm_trans
+        workorder_save.repair_type = repair_type
+        workorder_save.action_date = action_date
+        workorder_save.w_attach = url_up
+        workorder_save.usedpart = "Y"
+        workorder_save.save()
     ####입력창 닫힘###
         close_signal ="Y"
         context = {"spareparts_release": spareparts_release,"close_signal":close_signal}
+        context.update(users)
         return render(request, 'workorder_used_part.html', context)  # templates 내 html연결
 
 def workorder_used_minus(request):
@@ -10867,7 +10951,7 @@ def spareparts_short_request(request):
             check_get = spare_parts_list.objects.get(codeno = codeno_get)
             check_get.contact_y_n="checked"
             check_get.save()
-        spare_check = spare_parts_list.objects.filter(stock="0", contact_y_n="checked")
+        spare_check = spare_parts_list.objects.filter(contact_y_n="checked")
         vendorlist = vendor_list.objects.all()
         if type == "pm":
             total = ""

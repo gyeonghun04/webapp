@@ -299,8 +299,8 @@ class workorder(models.Model):  #
     w_q_date = models.CharField(max_length=255)
     w_attach = models.CharField(max_length=255, default="")
     repair_type = models.CharField(max_length=255, default="N/A")
-    detail_type = models.CharField(max_length=255, default="N/A")
-    repair_method = models.TextField(default="N/A")
+    detail_type = models.CharField(max_length=255, default="")
+    repair_method = models.TextField(default="")
     description_info = models.TextField()
     workorder_y_n = models.CharField(max_length=255,default="N")
     class Meta:
