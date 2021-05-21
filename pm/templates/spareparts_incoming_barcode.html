@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="/static/js/jquery-barcode.js"></script>
+    <meta charset="UTF-8">
+    <title>Barcode Print</title>
+</head>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap');
+
+
+.tag{
+    font-size:16px;
+    font-family:'Rubik', sans-serif;
+    width:267px;
+    height:20px;
+}
+.name{
+    font-size:16px;
+    font-family:arial;
+    font-weight:bold;
+    width:80px;
+    height:20px;
+}
+#border{
+        position:fixed;top:5px; left:5px;
+        border:2px solid black;
+        border-radius:2%;
+        width:365px;
+        height:160px;
+    }
+@media print {
+  @page {
+    size:10cm 4.8cm;
+    margin:0;
+  }
+  html, body { border:0; margin:5px; padding:0; }
+}
+</style>
+<body>
+<div id="barcodeTarget"></div>
+<table id="tag_location">
+    <tr>
+        <td align="center" class="name">부품설명:</td>
+        <td align="left" class="tag"><div id="commentdata"></div></td>
+    </tr>
+    <tr>
+        <td align="center" class="name">부품위치:</td>
+        <td align="left" class="tag"><div id="locationdata"></div></td>
+    </tr>
+</table>
+<div id="border"></div>
+</body>
+
+<script>
+      function init(){
+            var codeno = opener.document.getElementById("codeno_up").value;
+            var location = opener.document.getElementById("location_up").value;
+            var partname = opener.document.getElementById("partname_up").value;
+            var vendor = opener.document.getElementById("vendor_up").value;
+            var modelno = opener.document.getElementById("modelno_up").value;
+            var comment = partname + " [" + vendor + " - " + modelno + "] "
+            var value= codeno ;
+            var btype = "code128";
+            var renderer ="css"
+            var settings = {
+                output:renderer,
+                bgColor: "#FFFFFF",
+                color: "#000000",
+                barWidth:"3",
+                barHeight:"50",
+                moduleSize:"5",
+                addQuietZone:"10"
+                };
+        $("#barcodeTarget").barcode(value,"code128",settings);
+            document.getElementById("commentdata").innerHTML=comment;
+            document.getElementById("locationdata").innerHTML=location;
+            window.print();
+            setTimeout("window.close();",500);
+            }
+
+      onload=init
+
+</script>
+</html>

@@ -65,6 +65,11 @@ body{overflow:hidden;}
 tr:nth-child(even){
     background-color:#EEEEEE;
 }
+.barcode_btn{
+        cursor:pointer;
+        font-family:arial;
+        font-size:11px;
+}
 </style>
 <body>
 <main>
@@ -106,7 +111,14 @@ tr:nth-child(even){
             <td align="center" class="m10-1">{{sp_list.attach}}</td>
             <td align="center" class="m11-1">{{sp_list.safety_stock}}</td>
             <td align="center" class="m12-1">{{sp_list.pm_link}}</td>
-            <td align="center" class="m13-1"></td>
+            <td align="center" class="m13-1">
+                <input type="hidden" value="{{sp_list.codeno}}" name="codeno_give">
+                <input type="hidden" value="{{sp_list.partname}}" name="partname_give">
+                <input type="hidden" value="{{sp_list.vendor}}" name="vendor_give">
+                <input type="hidden" value="{{sp_list.modelno}}" name="modelno_give">
+                <input type="hidden" value="{{sp_list.location}}" name="location_give">
+               <input type="button" value="Barcode" class="barcode_btn" onclick="Barcode(this);">
+            </td>
         </tr>
             {%endfor%}
         </tbody>
@@ -116,6 +128,35 @@ tr:nth-child(even){
 <mainline>
 </mainline>
 </div>
+
+            <form name="barcode_print_form">
+        <input type="hidden" name="codeno" id="codeno_up">
+        <input type="hidden" name="location" id="location_up">
+        <input type="hidden" name="partname" id="partname_up">
+        <input type="hidden" name="vendor" id="vendor_up">
+        <input type="hidden" name="modelno" id="modelno_up">
+        </form>
+
 </main>
+
+<script>
+     function Barcode(obj){
+
+            var i = obj.parentNode.parentNode.rowIndex;
+            var codeno = document.getElementsByName('codeno_give')[i].value;
+            var location = document.getElementsByName('location_give')[i].value;
+            var partname = document.getElementsByName('partname_give')[i].value;
+            var vendor = document.getElementsByName('vendor_give')[i].value;
+            var modelno = document.getElementsByName('modelno_give')[i].value;
+            document.barcode_print_form.codeno.value = codeno;
+            document.barcode_print_form.location.value = location;
+            document.barcode_print_form.partname.value = partname;
+            document.barcode_print_form.vendor.value = vendor;
+            document.barcode_print_form.modelno.value = modelno;
+             var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no, left=50, top=10';
+                window.open("/spareparts_incoming_barcode", "Spare Parts Barcode", settings);
+       }
+</script>
+
 </body>
 </html>

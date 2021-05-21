@@ -35,24 +35,28 @@ titletext{
         overflow-y:scroll;
 }
 .m1{width:70px;}
-.m2{width:60px;}
-.m3{width:150px;}
-.m4{width:100px;}
-.m5{width:150px;}
-.m6{width:40px;}
+.m2{width:40px;}
+.m3{width:100px;}
+.m4{width:90px;}
+.m5{width:110px;}
+.m6{width:85px;}
 .m7{width:100px;}
 .m8{width:70px;}
 .m9{width:70px;}
+.m10{width:70px;}
 
 .m1-1{width:70px;}
-.m2-1{width:60px;}
-.m3-1{width:150px;}
+.m2-1{width:40px;}
+.m3-1{width:100px;}
 .m4-1{width:100px;}
-.m5-1{width:150px;}
+.m5-1{width:110px;}
 .m6-1{width:40px;}
+.m6-2{width:10px;}
 .m7-1{width:100px;}
 .m8-1{width:70px;}
 .m9-1{width:70px;}
+.m10-1{width:70px;}
+
 
 body{overflow:hidden;}
 
@@ -108,6 +112,11 @@ tr:nth-child(even){
         width:60px;
         text-align:center;
 }
+.barcode_btn{
+        cursor:pointer;
+        font-family:arial;
+        font-size:11px;
+}
 </style>
 </head>
 <body>
@@ -134,6 +143,7 @@ tr:nth-child(even){
             <td align="center" class="m7">Location</td>
             <td align="center" class="m8">Division</td>
             <td align="center" class="m9">Delete</td>
+            <td align="center" class="m10">Barcode</td>
         </tr>
         </thead>
      </table>
@@ -175,6 +185,13 @@ tr:nth-child(even){
                 <input type="hidden" value="{{loginid}}" name="loginid">
                 <input type="submit"  class="delete_btn" value="Delete"></form>
             </td>
+            <td align="center" class="m10-1">
+                <input type="hidden" value="{{sp_incoming.codeno}}" name="codeno_give">
+                <input type="hidden" value="{{sp_incoming.partname}}" name="partname_give">
+                <input type="hidden" value="{{sp_incoming.vendor}}" name="vendor_give">
+                <input type="hidden" value="{{sp_incoming.modelno}}" name="modelno_give">
+               <input type="button" value="Barcode" class="barcode_btn" onclick="Barcode(this);">
+            </td>
         </tr>
                         {% endfor %}
         </tbody>
@@ -191,6 +208,14 @@ tr:nth-child(even){
         <input type="hidden" name="location_up">
         </form>
         <input type="hidden" value="{{loginid}}" id="loginid_up">
+
+        <form name="barcode_print_form">
+        <input type="hidden" name="codeno" id="codeno_up">
+        <input type="hidden" name="location" id="location_up">
+        <input type="hidden" name="partname" id="partname_up">
+        <input type="hidden" name="vendor" id="vendor_up">
+        <input type="hidden" name="modelno" id="modelno_up">
+        </form>
 <script>
        function Incoming(){
             var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=1270,height=800,location=0,top=0,left=0';
@@ -206,6 +231,22 @@ tr:nth-child(even){
                         //서버전송
             document.location_change_form.action="spareparts_incoming_location";
             document.location_change_form.submit();
+       }
+
+       function Barcode(obj){
+            var i = obj.parentNode.parentNode.rowIndex;
+            var codeno = document.getElementsByName('codeno_give')[i].value;
+            var location = document.getElementsByName('location_up')[i].value;
+            var partname = document.getElementsByName('partname_give')[i].value;
+            var vendor = document.getElementsByName('vendor_give')[i].value;
+            var modelno = document.getElementsByName('modelno_give')[i].value;
+            document.barcode_print_form.codeno.value = codeno;
+            document.barcode_print_form.location.value = location;
+            document.barcode_print_form.partname.value = partname;
+            document.barcode_print_form.vendor.value = vendor;
+            document.barcode_print_form.modelno.value = modelno;
+             var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no, left=50, top=10';
+                window.open("/spareparts_incoming_barcode", "Spare Parts Barcode", settings);
        }
 
 </script>

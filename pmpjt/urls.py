@@ -52,6 +52,8 @@ urlpatterns = [
     path('used_parts_link_submit', pm.views.used_parts_link_submit, name='used_parts_link_submit'),
     path('used_parts_link_minus', pm.views.used_parts_link_minus, name='used_parts_link_minus'),
     path('used_parts_link_plus', pm.views.used_parts_link_plus, name='used_parts_link_plus'),
+    path('pmchecksheet_workorder_list', pm.views.pmchecksheet_workorder_list, name='pmchecksheet_workorder_list'),
+    path('pmchecksheet_workorder_submit', pm.views.pmchecksheet_workorder_submit, name='pmchecksheet_workorder_submit'),
 
 
 ####PM Check Sheet Approval####
@@ -226,6 +228,7 @@ urlpatterns = [
     path('partslist_vendor_delete', pm.views.partslist_vendor_delete, name='partslist_vendor_delete'),
     path('partslist_vendor_change', pm.views.partslist_vendor_change, name='partslist_vendor_change'),
     path('partslist_vendor_change_submit', pm.views.partslist_vendor_change_submit, name='partslist_vendor_change_submit'),
+    path('spareparts_incoming_barcode', pm.views.spareparts_incoming_barcode, name='spareparts_incoming_barcode'),
 
 ##########################################################################################################################################
 ##########################################################################################################################################

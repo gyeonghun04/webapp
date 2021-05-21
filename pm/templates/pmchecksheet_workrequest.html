@@ -5,6 +5,8 @@
     <title>Title</title>
 </head>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap');
+
 workrequesttitle{
         position:fixed;top:64.8px; left:28.8px;
         font-size: 24px;
@@ -118,6 +120,14 @@ font-family: arial;
 font-size:12px;
 cursor:pointer;
 }
+
+.pmcheck_order_css{
+position:fixed;top:797.04px; left:720px;
+font-family: arial;
+font-size:12px;
+cursor:pointer;
+}
+
 .button_css2{
 font-family: arial;
 font-size:16px;
@@ -298,6 +308,7 @@ Work Request Form
 </div>
         <input type="hidden" value="{{url}}" name="url_up">
 </form>
+     <input type="button" class="pmcheck_order_css" value="Work Order" onclick="Work_order();">
      <input type="button" class="pmcheck_submit_css" value="Submit" onclick="submit_request();">
 
     <form method="post" name="Submit_request">
@@ -317,6 +328,12 @@ Work Request Form
             <input type="hidden"  name="itemcode">
             <input type="hidden"  name="description_info"></form>
 
+    <form method="post" name="Work_order_form">
+            {% csrf_token %}
+            <input type="hidden" name="loginid">
+            <input type="hidden" name="itemcode">
+            <input type="hidden" name="pmcode">
+            <input type="hidden"  name="controlno"></form>
 
 <script>
  //////////// 기본초기값 불러오기//////////////
@@ -415,6 +432,21 @@ Work Request Form
             document.Submit_request.action="pmcheck_workrequest_submit";
             document.Submit_request.submit();}
 
+        function Work_order(){
+            var loginid_up= document.getElementsByName('loginid_up')[0].value;
+            var controlno= document.getElementsByName('controlno_up')[0].value;
+             pmcode = opener.document.getElementById("workpmcode").value;
+            itemcode = opener.document.getElementById("workitemcode").value;
+            document.Work_order_form.loginid.value = loginid;
+            document.Work_order_form.controlno.value = controlno;
+            document.Work_order_form.pmcode.value = pmcode;
+            document.Work_order_form.itemcode.value = itemcode;
+                        // 서버연결
+            document.Work_order_form.action="pmchecksheet_workorder_list";
+            document.Work_order_form.submit();
+            window.resizeTo(895,500);
+
+        }
 </script>
 </body>
 </html>
