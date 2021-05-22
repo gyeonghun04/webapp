@@ -222,6 +222,7 @@ tr:nth-child(even){
 <div id="submit_location">
 <form action="used_parts_link_submit" method="post" name="used_parts_link_submit">
                  {% csrf_token %}
+<input type="hidden" name="loginid">
 <input type="hidden" name="pmcode">
 <input type="hidden" name="itemcode">
 <input type="submit"  class="searchbutton" value="Submit"></form>
@@ -247,6 +248,7 @@ tr:nth-child(even){
             document.getElementById("logindata").innerHTML=loginid_up;
             document.used_parts_link_submit.pmcode.value = pmcode;
             document.used_parts_link_submit.itemcode.value = itemcode;
+            document.used_parts_link_submit.loginid.value = loginid_up;
 
             var close_signal= document.getElementsByName('close_signal')[0].value;
             if (close_signal=="Y"){

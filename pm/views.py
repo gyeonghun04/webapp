@@ -597,10 +597,10 @@ def pmchecksheet_write(request):
     #####승인요청여부 확인하기#####
         comp_signal_check = pm_sch.objects.get(pmcode=pmcode)  # plandate 보내기
         comp_signal_check = comp_signal_check.status
-        if comp_signal_check != "Fixed Date":
-            comp_signal = "Y"
-        else:
+        if (comp_signal_check == "Fixed Date") or (comp_signal_check == "Fixed Date(R)"):
             comp_signal = "N"
+        else:
+            comp_signal = "Y"
 #################검색어 반영##################
         selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
         searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
@@ -716,6 +716,7 @@ def pmchecksheet_checkresult(request):
                     document_no=pmcode,
                     old_value=old_value,
                     new_value=checkresult,
+                    comment="Check Result",
             ).save()
         #################검색어 반영##################
         selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
@@ -835,7 +836,8 @@ def pmchecksheet_actiondetail(request):
         today = date.datetime.today()
         audit_date = "20" + today.strftime('%y') + "-" + today.strftime('%m') + "-" + today.strftime('%d')
         audit_time = today.strftime('%H') + ":" + today.strftime('%M') + ":" + today.strftime('%S')
-        if (old_value != "") and (old_value != actiondetail):
+        auditr_chk = pm_sch.objects.get(pmcode=pmcode)  # plandate 보내기
+        if (auditr_chk.status == "Fixed Date(R)") and (old_value != actiondetail):
             audit_trail(
                 date=audit_date,
                 document="PM Check Sheet",
@@ -966,7 +968,8 @@ def pmchecksheet_checkboxform(request):
         today = date.datetime.today()
         audit_date = "20" + today.strftime('%y') + "-" + today.strftime('%m') + "-" + today.strftime('%d')
         audit_time = today.strftime('%H') + ":" + today.strftime('%M') + ":" + today.strftime('%S')
-        if (old_value_1 != "") and (old_value_1 != pass_y):
+        auditr_chk = pm_sch.objects.get(pmcode=pmcode)  # plandate 보내기
+        if (auditr_chk.status == "Fixed Date(R)") and (old_value_1 != pass_y):
             audit_trail(
                 date=audit_date,
                 document="PM Check Sheet",
@@ -979,7 +982,7 @@ def pmchecksheet_checkboxform(request):
                 new_value=pass_y,
                 comment="Judgement (Pass)",
             ).save()
-        if (old_value_2 != "") and (old_value_2 != fail_y):
+        if (auditr_chk.status == "Fixed Date(R)") and (old_value_2 != fail_y):
             audit_trail(
                 date=audit_date,
                 document="PM Check Sheet",
@@ -992,7 +995,7 @@ def pmchecksheet_checkboxform(request):
                 new_value=fail_y,
                 comment="Judgement (Fail_Y)",
             ).save()
-        if (old_value_3 != "") and (old_value_3 != fail_n):
+        if (auditr_chk.status == "Fixed Date(R)") and (old_value_3 != fail_n):
             audit_trail(
                 date=audit_date,
                 document="PM Check Sheet",
@@ -1106,11 +1109,32 @@ def pmchecksheet_remark(request):
         if (str(calendarsearch) == "None") or (str(calendarsearch) == ""):
             today = date.datetime.today()
             calendarsearch = "20" + today.strftime('%y') + "-" + today.strftime('%m')
+    #####Audit_기본값 추적######
+        audit_check = pm_sch.objects.get(pmcode=pmcode)
+        old_value = audit_check.remark_temp
     #####리마크 입력시에 입력#####
         pmchecksheet_remark = pm_sch.objects.get(pmcode=pmcode)
         pmchecksheet_remark.remark_temp = remarkreturn
         pmchecksheet_remark.remark_na_temp = remark_na
         pmchecksheet_remark.save()
+    #####audit추출####
+        today = date.datetime.today()
+        audit_date = "20" + today.strftime('%y') + "-" + today.strftime('%m') + "-" + today.strftime('%d')
+        audit_time = today.strftime('%H') + ":" + today.strftime('%M') + ":" + today.strftime('%S')
+        auditr_chk = pm_sch.objects.get(pmcode=pmcode)  # plandate 보내기
+        if (auditr_chk.status == "Fixed Date(R)") and (old_value != remarkreturn):
+            audit_trail(
+                date=audit_date,
+                document="PM Check Sheet",
+                time=audit_time,
+                user=loginid,
+                division="Change",
+                controlno=controlno,
+                document_no=pmcode,
+                old_value=old_value,
+                new_value=remarkreturn,
+                comment="Remark",
+            ).save()
     #################검색어 반영##################
         selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
         searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
@@ -1468,6 +1492,9 @@ def pmcheck_workrequest_submit(request):
         password = users.password
         auth = users.auth1
         users = {"auth": auth, "password": password, "username": username, "userteam": userteam}
+    #####Audit_기본값 추적######
+        audit_check = pmchecksheet.objects.get(itemcode=itemcode, pmcode=pmcode)
+        old_value = audit_check.workrequest_temp
     ##workodrerno생성
         today = date.datetime.today()
         date_check = "20" + today.strftime('%y') + "-" + today.strftime('%m') + "-" + today.strftime('%d')
@@ -1506,6 +1533,24 @@ def pmcheck_workrequest_submit(request):
                 ).save()
                 ##해당팀장에 메일보내기##
 
+            #####audit추출####
+                today = date.datetime.today()
+                audit_date = "20" + today.strftime('%y') + "-" + today.strftime('%m') + "-" + today.strftime('%d')
+                audit_time = today.strftime('%H') + ":" + today.strftime('%M') + ":" + today.strftime('%S')
+                auditr_chk = pm_sch.objects.get(pmcode=pmcode)  # plandate 보내기
+                if (auditr_chk.status == "Fixed Date(R)") and (old_value != workorderno):
+                    audit_trail(
+                        date=audit_date,
+                        document="PM Check Sheet",
+                        time=audit_time,
+                        user=loginid,
+                        division="Change",
+                        controlno=controlno,
+                        document_no=pmcode,
+                        old_value=old_value,
+                        new_value=workorderno,
+                        comment="Work Request",
+                    ).save()
                 context = {"loginid": loginid, "equipname": equipname, "equipteam": equipteam, "capa": capa,
                             "description": description, "description_info": description_info,
                             "controlno": controlno, "roomno": roomno, "roomname": roomname,
@@ -2219,7 +2264,10 @@ def pmchecksheet_upload(request):
         auth = users.auth1
         user_div = users.user_division
         users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
-        #####검색월 디폴트값#####
+    #####Audit_기본값 추적######
+        audit_check = pm_sch.objects.get(pmcode=pmcode)
+        old_value = audit_check.attach_temp
+    #####검색월 디폴트값#####
         if (str(calendarsearch) == "None") or (str(calendarsearch) == ""):
             today = date.datetime.today()
             calendarsearch = "20" + today.strftime('%y') + "-" + today.strftime('%m')
@@ -2296,7 +2344,7 @@ def pmchecksheet_upload(request):
             attach_change.attach_temp = url
             attach_change.save()
         except:
-            pass
+            url = ""
     #####첨부파일 시그널 주기#####
         url_comp = pm_sch.objects.get(pmcode=pmcode)  # plandate 보내기
         if url_comp.attach_temp == "N/A":
@@ -2305,6 +2353,24 @@ def pmchecksheet_upload(request):
             url_comp = "N"
         else:
             url_comp = "Y"
+    #####audit추출####
+        today = date.datetime.today()
+        audit_date = "20" + today.strftime('%y') + "-" + today.strftime('%m') + "-" + today.strftime('%d')
+        audit_time = today.strftime('%H') + ":" + today.strftime('%M') + ":" + today.strftime('%S')
+        auditr_chk = pm_sch.objects.get(pmcode=pmcode)  # plandate 보내기
+        if (auditr_chk.status == "Fixed Date(R)") and (old_value != url):
+            audit_trail(
+                date=audit_date,
+                document="PM Check Sheet",
+                time=audit_time,
+                user=loginid,
+                division="Change",
+                controlno=controlno,
+                document_no=pmcode,
+                old_value=old_value,
+                new_value=url,
+                comment="Attached File",
+            ).save()
     #####equip info 정보 보내기#####
         spare_list = spare_out.objects.filter(used_y_n=pmcode)
         equipinfo = equiplist.objects.filter(controlno=controlno)
@@ -2358,7 +2424,6 @@ def used_parts_link_click(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
         loginid = request.POST.get('loginid')  # html 선택조건의 값을 받는다
         used_part = request.POST.get('used_part')  # html 입력 값을 받는다
-        out_code = request.POST.get('out_code')  # html 선택조건의 값을 받는다
         no = request.POST.get('no')  # html 입력 값을 받는다
         pmcode = request.POST.get('pmcode')  # html 선택조건의 값을 받는다
     ##이름 및 권한 끌고다니기##
@@ -2388,10 +2453,15 @@ def used_parts_link_click(request):
 
 def used_parts_link_submit(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
+        loginid = request.POST.get('loginid')  # html 선택조건의 값을 받는다
         pmcode = request.POST.get('pmcode')  # html 선택조건의 값을 받는다
         itemcode = request.POST.get('itemcode')  # html 선택조건의 값을 받는다
         spareparts_release = spare_out.objects.filter(temp_y_n="Y", used_y_n="").order_by('date', 'out_code',
                                                                                               'team')  # db 동기화
+    #####Audit_기본값 추적######
+        audit_check = pmchecksheet.objects.get(itemcode=itemcode, pmcode=pmcode)
+        old_value = audit_check.usedpart_temp
+        controlno = audit_check.usedpart_temp
     ####사용자재 링크저장하기###
         used_submit = spare_out.objects.filter(used_y_n_temp=pmcode)
         used_submit = used_submit.values('no')  # sql문 dataframe으로 변경
@@ -2407,6 +2477,26 @@ def used_parts_link_submit(request):
         used_check = pmchecksheet.objects.get(pmcode=pmcode, itemcode=itemcode)
         used_check.usedpart_temp="Y"
         used_check.save()
+    #####audit추출####
+        today = date.datetime.today()
+        audit_date = "20" + today.strftime('%y') + "-" + today.strftime('%m') + "-" + today.strftime('%d')
+        audit_time = today.strftime('%H') + ":" + today.strftime('%M') + ":" + today.strftime('%S')
+        auditr_chk = pm_sch.objects.get(pmcode=pmcode)  # plandate 보내기
+        if (auditr_chk.status == "Fixed Date(R)") and (old_value != used_check.usedpart_temp):
+            audit_trail(
+                date=audit_date,
+                document="PM Check Sheet",
+                time=audit_time,
+                user=loginid,
+                division="Change",
+                controlno=controlno,
+                document_no=pmcode,
+                old_value=old_value,
+                new_value=used_check.usedpart_temp,
+                comment="Used Parts",
+            ).save()
+
+
         close_signal ="Y"
         context = {"spareparts_release": spareparts_release,"close_signal":close_signal}
         return render(request, 'used_parts_link.html', context)  # templates 내 html연결
@@ -4923,10 +5013,24 @@ def pm_fullscreen(request):
         pmchecksheet_info = pm_sch.objects.filter(pmcode=pmcode)
         pmchecksheet_result = pmchecksheet.objects.filter(pmcode=pmcode)
         pmchecksheet_before = pmmasterlist.objects.filter(sheetno = pmsheetno, pm_y_n="Y")
+        pm_plandate = pm_sch.objects.get(pmcode=pmcode) #plandate 보내기
+        plandate = pm_plandate.plandate
+        actiondate = pm_plandate.actiondate
+        remark_get = pm_plandate.remark_temp
+        spare_list = spare_out.objects.filter(used_y_n=pmcode)
+    #####첨부파일 시그널 주기#####
+        url_comp = pm_sch.objects.get(pmcode=pmcode)  # plandate 보내기
+        if url_comp.attach == "N/A":
+            url_comp = "N"
+        elif str(url_comp.attach) == "None":
+            url_comp = "N"
+        else:
+            url_comp = "Y"
         context = {"loginid": loginid,"equipinfo": equipinfo, "equipinforev": equipinforev,
                    "pmchecksheet_result":pmchecksheet_result,"comp_signal":comp_signal,
-                   "pmchecksheet_before":pmchecksheet_before,
-                   "pmcode": pmcode,"pmchecksheet_info": pmchecksheet_info}
+                   "pmchecksheet_before":pmchecksheet_before,"spare_list":spare_list,
+                   "pmcode": pmcode,"pmchecksheet_info": pmchecksheet_info,"plandate":plandate, "actiondate":actiondate,
+                    "remark_get": remark_get,"url_comp":url_comp}
         context.update(users)
         return render(request, 'pm_fullscreen.html', context) #templates 내 html연결
 
@@ -12706,9 +12810,11 @@ def history_of_equip_control(request):
     loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
 #####equip info 정보 보내기#####
     equipinfo = equiplist.objects.filter(controlno=controlno)
+    equipinforev = controlformlist.objects.filter(controlno=controlno, recent_y="Y")
     controlformdb = pmmasterlist.objects.filter(controlno=controlno, pm_y_n="Y").order_by('freq')
     pmsheet = pmsheetdb.objects.filter(controlno=controlno, filter_check="Y").order_by('freq_temp')
-    context = {"equipinfo": equipinfo,"loginid":loginid,"controlformdb":controlformdb,"pmsheet":pmsheet}
+    context = {"equipinfo": equipinfo,"loginid":loginid,"controlformdb":controlformdb,"pmsheet":pmsheet,
+                "equipinforev":equipinforev}
     return render(request, 'history_of_equip_control.html', context) #templates 내 html연결
 
 def audittrail_main(request):

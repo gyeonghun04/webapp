@@ -5,153 +5,237 @@
     <title>Preventive Maintenance Check Sheet</title>
 <style>
 @media print{
+  @page {
+    size:297mm 210mm;
+    margin: 10mm 10mm 10mm 10mm;
+  }
+  html, body { border:0; margin:0px; padding:0; }
+
+.border{
+      display:none;}
 .print_button{
       display:none;}
 .close_button{
     display:none;}
+
 #pmchecksheet{
-        position:relative; left:35%;
-        margin-top:30px;
-        font-size: 24px;
+        border-width: 8px 8px 0px 8px;
+        border-color: #6F6F6F;
+        border-style: solid;
+        margin-top: 35px;
+        font-size: 32px;
         font-family: arial;
-        font-weight:bold;}
+        font-weight:bold;
+        width:297mm;
+}
 
 #equipinfo{
-        position:relative; left:0.2%;
-        margin-top:10px;
-        width:99.3%;
+        margin-top:17px;
+        position:relative; left:10px;
+        width:297mm;
     	font-family: arial;
-        font-size:11px;
+        font-size:12px;
         color:black;
         border:1px solid #6F6F6F;
-        border-collapse:collapse;}
+        border-collapse:collapse;
+        -webkit-print-color-adjust: exact !important;
+}
 .table1{
         -webkit-print-color-adjust: exact !important;
         background-color: #EEEEEE;
         width:17%;
         height:25px;
-        font-size:11px;
-        font-weight:bold;}
+        font-weight:bold;
+}
 .table2{
-        -webkit-print-color-adjust: exact !important;
         background-color: white;
-        width:30%;}
+        width:30%;
+}
 #pmchecksheettitle{
         -webkit-print-color-adjust: exact !important;
-        position:relative; left:0.2%;
+        position:relative; left:10px;
     	font-family: arial;
-        font-size:11px;
-        width:99.2%;
+        font-size:12px;
+        width:297mm;
         background-color:#6F6F6F;
         color:white;
-        height:32px;}
-
-.c1{width:210px;}
-.c2{width:150px;}
-.c3{width:200px;}
-.c4{width:120px;}
-.c5{width:180px;}
-.c6{width:100px;}
-.c7{width:40px;
+        height:40px;
+}
+.c1{width:400px;}
+.c2{width:300px;}
+.c3{width:330px;}
+.c4{width:150px;}
+.c5{width:350px;}
+.c6{width:150px;}
+.c7{width:50px;
+    -webkit-print-color-adjust: exact !important;
     background-color:#6F6F6F;
-    font-size:8px;
+    font-size:9px;
     font-family: arial;}
-.c8{width:100px;}
+.c8{width:150px;}
 
+#pmchecksheetdesc{
+        position:relative; left:10px;
+        width:297mm;
+}
 #pmtable{
-        position:relative; left:0.3%;
+        -webkit-print-color-adjust: exact !important;
         border:1px solid #6F6F6F;
         border-collapse:collapse;
-        font-size:11px;
-        font-family: arial;}
+        font-size:12px;
+        font-family: arial;
+}
 
-.c1-1{width:200px;}
-.c2-1{width:150px;}
-.c3-1{width:190px;}
-.c5-1{width:180px;}
-.c6-1{width:80px;}
-.c7-1{width:40px;}
-.c8-1{width:80px;}
+#usedparthead{
+        position:relative; left:9px;
+        width:297mm;
+    	font-family: arial;
+        font-size:11px;
+        background-color:#6F6F6F;
+        color:white;
+        height:40px;
+        border:1px solid white;
+        border-collapse:collapse;
+        z-index:-10;
+        -webkit-print-color-adjust: exact !important;
+}
+#usedpartbody{
+        margin-top:20px;
+        position:relative; left:10px;
+        width:297mm;
+        -webkit-print-color-adjust: exact !important;
+}
+#usedparttop{
+    	font-family: arial;
+        font-size:11px;
+        height:20px;
+}
+#usedparttable{
+        font-size:12px;
+    	font-family: arial;
+    	border:1px solid #6F6F6F;
+        border-collapse:collapse;
+        -webkit-print-color-adjust: exact !important;
+}
+
+.c1-1{width:380px;}
+.c2-1{width:310px;}
+.c3-1{width:350px;}
+.c5-1{width:350px;}
+.c6-1{width:150px;}
+.c7-1{width:50px;}
+.c8-1{width:150px;}
 
 tr:nth-child(even){
-     -webkit-print-color-adjust: exact !important;
-    background-color:#EEEEEE;}
+    background-color:#EEEEEE;
+    -webkit-print-color-adjust: exact !important;
+}
 
-#pmremarkhead{
-        -webkit-print-color-adjust: exact !important;
-        position: inline-block;
-        height:20px;
+#pmremarktop{
+        position:relative; left:10px;
+        height:30px;
+        width:297mm;
         background-color:#6F6F6F;
-    	font-family: arial;
-        color:white;
-        width:99.2%;
-        font-size:11px;}
-
-
-#pmremark{
         -webkit-print-color-adjust: exact !important;
-        position:relative; left:0.2%;
-        height:24px;
-        background-color:#6F6F6F;
-        width:99.2%;
+
 }
 #pmremarkhead{
     	font-family: arial;
         color:white;
-        font-size:16px;}
+        width:297mm;
+        font-size:12px;}
 
 #pmremarkbody{
-        position:relative; left:0.3%;
-        height:24px;
-        width:99.2%;
+        position:relative; left:10px;
+        height:40px;
+        width:297mm;
 }
 
 #pmremarktable{
-        font-size:16px;
+        font-size:12px;
     	font-family: arial;
-        width:99.2%;
 }
+#pmremarktable{
+        font-size:12px;
+    	font-family: arial;
+    	border:1px solid #6F6F6F;
+        border-collapse:collapse;
+        -webkit-print-color-adjust: exact !important;
+}
+.r1{width:1323px;}
+.r2{width:659px;}
+.r1-1{width:1323px;
+      height:40px;}
+.r2-1{width:659px;}
 
 #pmchecksheetapprovaltop{
-        -webkit-print-color-adjust: exact !important;
-        position:relative; left:0.3%;
+        position:relative; left:10px;
     	font-family: arial;
-        font-size:16px;
+        font-size:12px;
         background-color:#6F6F6F;
         color:white;
         padding:1px;
-        width:99.2%;
+        width:297mm;
+        -webkit-print-color-adjust: exact !important;
         }
 
 #pmchecksheetapproval{
-        position:relative; left:0.3%;
+        position:relative; left:10px;
         font-family: arial;
-        font-size:16px;
+        font-size:12px;
         padding:10px;
-        width:99.2%;
+        width:297mm;
         border:1px solid #6F6F6F;
         border-collapse:collapse;
+        -webkit-print-color-adjust: exact !important;
         }
 .c11{width:300px;
-    -webkit-print-color-adjust: exact !important;
+    height:25px;
     background-color: #EEEEEE;}
 .c12{width:300px;
     background-color:white;}
 .c13{width:300px;
     background-color:white;}
 
-.border {
-        position:fixed;top:1.5%; left:0.5%;
-        border:5px solid #6F6F6F;
-        height:93.5%;
-        width:98%;
-        }
+.u1{width:13.2%;
+background-color:#6F6F6F;
+-webkit-print-color-adjust: exact !important;
+}
+.u2{width:17.6%;
+background-color:#6F6F6F;
+-webkit-print-color-adjust: exact !important;
+}
+.u3{width:13.3%;
+background-color:#6F6F6F;
+-webkit-print-color-adjust: exact !important;
+}
+.u4{width:26.3%;
+background-color:#6F6F6F;
+-webkit-print-color-adjust: exact !important;
+}
+.u5{width:10.7%;
+background-color:#6F6F6F;
+-webkit-print-color-adjust: exact !important;
+}
+.u6{width:;
+background-color:#6F6F6F;
+-webkit-print-color-adjust: exact !important;
+}
+
+.u1-1{width:244px;
+height:25px;}
+.u2-1{width:328px;}
+.u3-1{width:247px}
+.u4-1{width:491px;}
+.u5-1{width:198px;}
+.u6-1{width:338px;}
 }
 
 
 @media screen{
 #pmchecksheet{
-        position:fixed;top:4.2%; left:33%;
+        margin-top: 35px;
+        margin-left:600px;
         font-size: 40px;
         font-family: arial;
         font-weight:bold;
@@ -163,8 +247,9 @@ tr:nth-child(even){
         width:98%;
     }
 #equipinfo{
-        position:fixed;top:10%; left:0.9%;
-        width:98.1%;
+        margin-top:17px;
+        position:relative; left:10px;
+        width:1882px;
     	font-family: arial;
         font-size:16px;
         color:black;
@@ -174,7 +259,7 @@ tr:nth-child(even){
 .table1{
         background-color: #EEEEEE;
         width:17%;
-        height:20px;
+        height:25px;
         font-weight:bold;
 }
 .table2{
@@ -182,10 +267,10 @@ tr:nth-child(even){
         width:30%;
 }
 #pmchecksheettitle{
-        position:fixed;top:22%; left:0.9%;
+        position:relative; left:10px;
     	font-family: arial;
         font-size:16px;
-        width:98.1%;
+        width:1882px;
         background-color:#6F6F6F;
         color:white;
         height:40px;
@@ -203,9 +288,9 @@ tr:nth-child(even){
 .c8{width:150px;}
 
 #pmchecksheetdesc{
-        position:fixed; top:26.1%; left:0.9%;
-        height:48%;
-        width:97.9%;
+        position:relative; left:10px;
+        width:1882px;
+        height:355px;
         overflow-y:scroll;
 }
 #pmtable{
@@ -214,6 +299,38 @@ tr:nth-child(even){
         font-size:16px;
         font-family: arial;
 }
+
+#usedparthead{
+        position:relative; left:9px;
+        width:1883px;
+    	font-family: arial;
+        font-size:11px;
+        background-color:#6F6F6F;
+        color:white;
+        height:40px;
+        border:1px solid white;
+        border-collapse:collapse;
+        z-index:-10;
+}
+#usedpartbody{
+        margin-top:20px;
+        position:relative; left:10px;
+        width:1882px;
+        height:75px;
+        overflow-y:scroll;
+}
+#usedparttop{
+    	font-family: arial;
+        font-size:11px;
+        height:20px;
+}
+#usedparttable{
+        font-size:16px;
+    	font-family: arial;
+    	border:1px solid #6F6F6F;
+        border-collapse:collapse;
+}
+
 .c1-1{width:380px;}
 .c2-1{width:310px;}
 .c3-1{width:350px;}
@@ -226,10 +343,10 @@ tr:nth-child(even){
     background-color:#EEEEEE;
 }
 
-#pmremark{
-        position:fixed; top:81.3%; left:0.9%;
-        height:24px;
-        width:98.1%;
+#pmremarktop{
+        position:relative; left:10px;
+        height:30px;
+        width:1882px;
         background-color:#6F6F6F;
 }
 #pmremarkhead{
@@ -239,42 +356,74 @@ tr:nth-child(even){
         font-size:16px;}
 
 #pmremarkbody{
-        position:fixed; top:84%; left:0.9%;
-        height:24px;
-        width:98.1%;
+        position:relative; left:10px;
+        height:40px;
+        width:1882px;
 }
 
 #pmremarktable{
         font-size:16px;
     	font-family: arial;
-    	width:98.1%;
 }
+#pmremarktable{
+        font-size:16px;
+    	font-family: arial;
+    	border:1px solid #6F6F6F;
+        border-collapse:collapse;
+}
+.r1{width:1323px;}
+.r2{width:659px;}
+.r1-1{width:1323px;
+      height:40px;}
+.r2-1{width:659px;}
 
 #pmchecksheetapprovaltop{
-        position:fixed; top:86.6%; left:0.9%;
+        position:relative; left:10px;
     	font-family: arial;
         font-size:16px;
         background-color:#6F6F6F;
         color:white;
         padding:1px;
-        width:98.1%;
+        width:1882px;
         }
 
 #pmchecksheetapproval{
-        position:fixed; top:89.3%; left:0.9%;
+        position:relative; left:10px;
         font-family: arial;
         font-size:16px;
         padding:10px;
-        width:98.1%;
+        width:1882px;
         border:1px solid #6F6F6F;
         border-collapse:collapse;
         }
 .c11{width:300px;
+    height:25px;
     background-color: #EEEEEE;}
 .c12{width:300px;
     background-color:white;}
 .c13{width:300px;
     background-color:white;}
+
+.u1{width:13.2%;
+background-color:#6F6F6F;}
+.u2{width:17.6%;
+background-color:#6F6F6F;}
+.u3{width:13.3%;
+background-color:#6F6F6F;}
+.u4{width:26.3%;
+background-color:#6F6F6F;}
+.u5{width:10.7%;
+background-color:#6F6F6F;}
+.u6{width:;
+background-color:#6F6F6F;}
+
+.u1-1{width:244px;
+height:25px;}
+.u2-1{width:328px;}
+.u3-1{width:247px}
+.u4-1{width:491px;}
+.u5-1{width:198px;}
+.u6-1{width:338px;}
 
 .print_button{
         position:fixed; top:97%; left:92.5%;
@@ -288,8 +437,9 @@ tr:nth-child(even){
     	font-family: arial;
         font-size:16px;
         cursor:pointer;
-        width:60px;
-}}
+        width:60px;}
+}
+
 </style>
 
 </head>
@@ -448,19 +598,59 @@ Preventive Maintenance Check Sheet
  </table>
 </div>
 
-<div id="pmremark">
+ <div id="usedparttop">
+    <table id="usedparthead" border="1">
+        <tr>
+            <td align="center" class="u7" colspan="6">Used Parts List</td>
+        </tr>
+       <tr>
+            <td align="center" class="u1">Code No.</td>
+            <td align="center" class="u2">Part Name</td>
+            <td align="center" class="u3">Vendor</td>
+            <td align="center" class="u4">Model Name</td>
+            <td align="center" class="u5">Quantity</td>
+            <td align="center" class="u6">Out Code</td>
+       </tr>
+   </table>
+ </div>
+ <div id="usedpartbody">
+   <table id="usedparttable" border="1">
+            {% for spare_out in spare_list %}
+       <tr>
+            <td align="center" class="u1-1">{{spare_out.codeno}}</td>
+            <td align="center" class="u2-1">{{spare_out.partname}}</td>
+            <td align="center" class="u3-1">{{spare_out.vendor}}</td>
+            <td align="center" class="u4-1">{{spare_out.modelno}}</td>
+            <td align="center" class="u5-1">{{spare_out.used_qy}}</td>
+            <td align="center" class="u6-1">{{spare_out.out_code}}</td>
+       </tr>
+            {% endfor %}
+   </table>
+ </div>
+
+ <div id="pmremarktop">
    <table id="pmremarkhead">
         <tr>
-            <td align="center" class="s1">Remark</td>
+            <td align="center" class="r1">Remark</td>
+            <td align="center" class="r2">Attach File</td>
         </tr>
    </table>
  </div>
 
  <div id="pmremarkbody">
-   <table id="pmremarktable">
+   <table id="pmremarktable"  border="1">
                 {% for pmlist in pmchecksheet_info  %}
      <tr>
-            <td align="left">{{pmlist.remark}}</td>
+            <td align="left" class="r1-1">{{pmlist.remark}}</td>
+            {% if url_comp == "Y" %}
+            <td align="left" class="r2-1">
+           <a href="{{pmlist.attach}}" target="_blank" class="upload_complete_css">Upload_ Complete</a>
+            </td>
+            {%else%}
+            <td align="left" class="r2-1">
+            <a class="upload_complete_css">N/A</a>
+            </td>
+            {% endif %}
      </tr>
                    {% endfor %}
    </table>

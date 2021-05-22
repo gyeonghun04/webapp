@@ -5,92 +5,117 @@
     <title>Title</title>
 </head>
 <style>
+
+#controlformtitle{
+        border-width: 8px 8px 0px 8px;
+        border-color: #6F6F6F;
+        border-style: solid;
+        margin-top:30px;
+        margin-left:7px;
+        padding-top:0.5cm;
+        padding-left:4cm;
+        font-size: 32px;
+        font-family: arial;
+        font-weight:bold;
+        width:22.6cm;
+}
+
+#controlformtext{
+        border-width: 0px 8px 0px 8px;
+        border-color: #6F6F6F;
+        border-style: solid;
+        position:relative; left:7px;
+        font-size: 16px;
+        font-family: arial;
+        height:1cm;
+        padding-left:1.6cm;
+        width:25cm;
+}
+
 #equipinfo{
+        -webkit-print-color-adjust: exact !important;
+        border-width: 0px 8px 0px 8px;
+        border-color: #6F6F6F;
+        border-style: solid;
+        position:relative; left:7px;
     	font-family: arial;
-        font-size:11px;
-        position:fixed;top:10%; left:39.6%;
+        font-size:14px;
         color:black;
-        width:59.98%;
-        border:1px solid #6F6F6F;
+        width:26.6cm;
+}
+#equipinfo_table{
         border-collapse:collapse;
+        -webkit-print-color-adjust: exact !important;
 }
 .table1{
         background-color: #EEEEEE;
-        width:17%;
-        height:20px;
+        width:5cm;
+        height:30px;
         font-weight:bold;
+        -webkit-print-color-adjust: exact !important;
 }
 .table2{
+        padding-left:5px;
         background-color: white;
-        width:30%;
+        width:8.3cm;
 }
-.border {
-        position:fixed;top:3.5%; left:39.2%;
-        border:8px solid #6F6F6F;
-        width:59.9%;
-        height:94.7%;
-    }
-.rev_no_button{
-        margin-left:255px;
-        font-size:11px;
-        cursor:pointer;
-        font-family: arial;}
-.rev_no_box{
-        font-family: arial;
-        font-size:11px;}
 
-controlformtitle{
-        position:fixed;top:5.5%; left:58%;
-        font-size: 20px;
-        font-family: arial;
-        font-weight:bold;
-}
-controlformtext{
-        position:fixed;top:7.8%; left:53%;
-        font-size: 11px;
-}
+
 #pmcontrolformtitle{
+        border-width: 0px 8px 0px 8px;
+        border-color: #6F6F6F;
+        border-style: solid;
     	font-family: arial;
-        font-size:11px;
-        position:fixed;top:22%; left:39.6%;
-        width:59.98%;
+        font-size:14px;
+        position:relative; left:7px;
+        width:26.6cm;
         background-color:#6F6F6F;
         color:white;
-        height:20px;
+        height:30px;
+        z-index:10;
+         -webkit-print-color-adjust: exact !important;
 }
 #pmcontrolformdesc{
-        position:fixed; top:24%; left:39.6%;
-        width:59.98%;
-        height:59.1%;
-        overflow-y:scroll;
+        border-width: 0px 8px 0px 8px;
+        border-color: #6F6F6F;
+        border-style: solid;
+        position:relative; left:7px;
+        width:26.6cm;
 }
 
 #pmsheet{
+        border-width: 0px 8px 0px 8px;
+        border-color: #6F6F6F;
+        border-style: solid;
+        position:relative; left:7px;
     	font-family: arial;
-        font-size:11px;
+        font-size:14px;
         height:20px;
-}
-#pmsheethead{
-        position:fixed; top:83.2%; left:39.6%;
-        width:59.98%;
-    	font-family: arial;
-        font-size:11px;
+        width:26.6cm;
         background-color:#6F6F6F;
         color:white;
-        height:20px;
+        height:30px;
+        -webkit-print-color-adjust: exact !important;
+}
+#pmsheethead{
+        height:30px;
+    	font-family: arial;
+        font-size:14px;
 }
 #pmsheetbody{
-        position:fixed; top:85.1%; left:39.6%;
-        height:64px;
-        width:59.98%;
-        overflow-y:scroll;
+        border-width: 0px 8px 0px 8px;
+        border-color: #6F6F6F;
+        border-style: solid;
+        position:relative; left:7px;
+        width:26.6cm;
 }
 
 #pmsheettable{
-        font-size:11px;
+        font-size:14px;
     	font-family: arial;
         border:1px solid #6F6F6F;
         border-collapse:collapse;
+        -webkit-print-color-adjust: exact !important;
 }
 
 .s1{width:150px;}
@@ -98,69 +123,109 @@ controlformtext{
 .s3{width:360px;}
 .s4{width:240px;}
 .s1-1{width:150px;
-      height:20px;}
+      height:30px;}
 .s2-1{width:400px;}
 .s3-1{width:360px;}
 .s4-1{width:240px;}
-
-#pmcontrolformtop{
-        position:fixed; top:91.5%; left:39.6%;
-        width:59.98%;
+#pmcontrolform_approval{
+        border-width: 0px 8px 0px 8px;
+        border-color: #6F6F6F;
+        border-style: solid;
     	font-family: arial;
-        font-size:11px;
+        font-size:14px;
+        position:relative; left:7px;
+        width:26.6cm;
         background-color:#6F6F6F;
         color:white;
-        padding:1px;
+        z-index:10;
+         -webkit-print-color-adjust: exact !important;
+}
+
+
+#pmcontrolformtop{
+        height:30px;
+    	font-family: arial;
+        font-size:14px;
         }
 
+#pmcontrolform_approval_table{
+        border-width: 0px 8px 8px 8px;
+        border-color: #6F6F6F;
+        border-style: solid;
+        position:relative; left:7px;
+        width:26.6cm;}
+
 #pmcontrolformapproval{
-        position:fixed; top:93.5%; left:39.6%;
-        width:59.98%;
-        font-family: arial;
-        font-size:11px;
-        padding:10px;
         border:1px solid #6F6F6F;
         border-collapse:collapse;
+        font-size:14px;
+        font-family: arial;
+        -webkit-print-color-adjust: exact !important;
         }
+
 #pmtable{
         border:1px solid #6F6F6F;
         border-collapse:collapse;
-        font-size:11px;
+        font-size:14px;
         font-family: arial;
+        -webkit-print-color-adjust: exact !important;
 }
 
-.c1{width:100px;}
-.c2{width:37px;}
-.c3{width:380px;}
-.c4{width:210px;}
+.c1{width:100px; height:30px;}
+.c2{width:70px;}
+.c3{width:400px;}
+.c4{width:280px;}
 .c5{width:200px;}
-.c6{width:90px;}
-.c7{width:100px;}
+.c6{width:100px;}
+.c7{width:130px;}
 
-.c1-1{width:100px; height:20px;}
-.c2-1{width:80px;}
+.c1-1{width:100px; height:30px;}
+.c2-1{width:70px;}
 .c3-1{width:400px;}
-.c4-1{width:300px;}
+.c4-1{width:280px;}
 .c5-1{width:200px;}
 .c6-1{width:100px;}
-.c7-1{width:100px;}
+.c7-1{width:130px;}
 
 .c11{width:300px;
-    height:15px;
+    height:30px;
     background-color: #EEEEEE;
-    font-weight:bold;}
-.c12{width:300px;
-    height:15px;
+    font-weight:bold;
+    -webkit-print-color-adjust: exact !important;
+}
+.c12{width:350px;
+    height:30px;
     background-color:white;}
-.c13{width:300px;
-    height:15px;
+.c13{width:350px;
+    height:30px;
     background-color:white;}
-
+.r1{
+    padding-left:450px;
+    height:30px;
+}
+@media print {
+  @page {
+    size:210mm 297mm;
+    margin: 25mm 12mm 25mm 12mm;
+  }
+  html, body { border:0; margin:0px; padding:0; }
+}
 </style>
 <body>
 <div class="border">
 </div>
-<table id="equipinfo" border= "1">
+
+
+<div id="controlformtitle">
+Preventive Maintenance Program Control Form
+</div>
+
+<div id="controlformtext">
+(To be used initiate additions modifications, or deletions of tasks or equipment to/from the Preventive Maintenance System)
+</div>
+
+<div id="equipinfo">
+<table id="equipinfo_table" border= "1">
                       {% for equipinfos in equipinfo %}
                       {% for equipinforevs in equipinforev %}
     <tr>
@@ -224,7 +289,7 @@ controlformtext{
              Revision No.
         </td>
         <td class="table2">
-            {{equipinfos.revno}}
+            Rev.{{equipinforevs.revno}}
         </td>
         <td class="table1">
             Assessment of Period
@@ -236,13 +301,7 @@ controlformtext{
                                  {% endfor %}
                                  {% endfor %}
 </table>
-
-<controlformtitle>
-Preventive Maintenance Program Control Form
-</controlformtitle>
-<controlformtext>
-(To be used initiate additions modifications, or deletions of tasks or equipment to/from the Preventive Maintenance System)
-</controlformtext>
+</div>
 
 <main>
 <div id="pmcontrolformtitle" >
@@ -260,6 +319,7 @@ Preventive Maintenance Program Control Form
         </thead>
      </table>
 </div>
+
 <div id="pmcontrolformdesc">
  <table style="word-break:break-all" border="1" id="pmtable">
      <tbody>
@@ -292,7 +352,7 @@ Preventive Maintenance Program Control Form
 
  <div id="pmsheetbody">
    <table id="pmsheettable"  border="1">
-               {% for pmsheetdb in pmsheet_temp %}
+               {% for pmsheetdb in pmsheet %}
      <tr>
             <td align="center" class="s1-1">{{pmsheetdb.freq}}</td>
             <td align="center" class="s2-1">{{pmsheetdb.pmsheetno}}</td>
@@ -302,15 +362,18 @@ Preventive Maintenance Program Control Form
                    {% endfor %}
    </table>
  </div>
- <div>
 
+
+ <div id="pmcontrolform_approval">
  <table style="word-break:break-all" id="pmcontrolformtop">
      <thead>
          <tr>
-            <td align="center">Review & Approved</td>
+            <td align="center" class="r1">Review & Approved</td>
         </tr>
      </thead>
  </table>
+ </div>
+ <div id="pmcontrolform_approval_table">
                 {% for equip_appoval in equipinforev%}
  <table style="word-break:break-all" id="pmcontrolformapproval" border="1">
     <tbody>
@@ -339,8 +402,9 @@ Preventive Maintenance Program Control Form
 
              //////////// 기본초기값 불러오기//////////////
      function init(){
-             window.resizeTo(595,842);
+             window.resizeTo(800,1000);
              window.print();
+             setTimeout("window.close();",500);
              }
       onload=init
 
