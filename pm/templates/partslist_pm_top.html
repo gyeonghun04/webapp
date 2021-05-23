@@ -40,7 +40,7 @@ titletext{
         cursor:pointer;
 }
 #searchbar{
-        position:fixed;top:5%; left:33%;
+        position:fixed;top:5%; left:32.8%;
 }
 b{
         position:fixed;top:5.3%; left:30.5%;
@@ -63,7 +63,7 @@ c{
 
 <c class="xi-calculator"><input type="button" value="Check Spare Parts" class="request_new" onclick="Cal_parts();"></c>
 <b class="xi-pen"><input type="button" value="New Request" class="request_new" onclick="Request_new();"></b>
-    <div id="searchbar">
+<div id="searchbar">
         <form action="" method="post">
             {% csrf_token %}
             <select class="selecttext" name="selecttext">&nbsp;

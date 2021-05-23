@@ -5026,9 +5026,18 @@ def pm_fullscreen(request):
             url_comp = "N"
         else:
             url_comp = "Y"
+    #####사용자재 시그널주기#####
+        used_chk = spare_out.objects.filter(used_y_n=pmcode)  # plandate 보내기
+        used_chk = used_chk.values('used_y_n')
+        df_used_chk = pd.DataFrame.from_records(used_chk)
+        used_chk_len = len(df_used_chk.index)
+        if used_chk_len == 0:
+            used_comp = "N"
+        else:
+            used_comp = "Y"
         context = {"loginid": loginid,"equipinfo": equipinfo, "equipinforev": equipinforev,
                    "pmchecksheet_result":pmchecksheet_result,"comp_signal":comp_signal,
-                   "pmchecksheet_before":pmchecksheet_before,"spare_list":spare_list,
+                   "pmchecksheet_before":pmchecksheet_before,"spare_list":spare_list,"used_comp":used_comp,
                    "pmcode": pmcode,"pmchecksheet_info": pmchecksheet_info,"plandate":plandate, "actiondate":actiondate,
                     "remark_get": remark_get,"url_comp":url_comp}
         context.update(users)

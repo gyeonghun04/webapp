@@ -23,19 +23,29 @@
         border-color: #6F6F6F;
         border-style: solid;
         margin-top: 35px;
+        margin-left:10px;
         font-size: 32px;
         font-family: arial;
         font-weight:bold;
-        width:297mm;
+        width:217mm;
+        padding-left:80mm;
+        padding-top:5mm;
 }
 
 #equipinfo{
-        margin-top:17px;
+        border-width: 0px 8px 0px 8px;
+        border-color: #6F6F6F;
+        border-style: solid;
+        padding-top:15px;
         position:relative; left:10px;
         width:297mm;
     	font-family: arial;
         font-size:12px;
         color:black;
+        -webkit-print-color-adjust: exact !important;
+        z-index:10;
+}
+#equipinfo_table{
         border:1px solid #6F6F6F;
         border-collapse:collapse;
         -webkit-print-color-adjust: exact !important;
@@ -43,15 +53,18 @@
 .table1{
         -webkit-print-color-adjust: exact !important;
         background-color: #EEEEEE;
-        width:17%;
+        width:376px;
         height:25px;
         font-weight:bold;
 }
 .table2{
         background-color: white;
-        width:30%;
+        width:565px;
 }
 #pmchecksheettitle{
+        border-width: 0px 8px 0px 8px;
+        border-color: #6F6F6F;
+        border-style: solid;
         -webkit-print-color-adjust: exact !important;
         position:relative; left:10px;
     	font-family: arial;
@@ -75,8 +88,12 @@
 .c8{width:150px;}
 
 #pmchecksheetdesc{
+        border-width: 0px 8px 0px 8px;
+        border-color: #6F6F6F;
+        border-style: solid;
         position:relative; left:10px;
         width:297mm;
+        z-index:10;
 }
 #pmtable{
         -webkit-print-color-adjust: exact !important;
@@ -86,29 +103,31 @@
         font-family: arial;
 }
 
-#usedparthead{
-        position:relative; left:9px;
+#usedparttop{
+        border-width: 0px 8px 0px 8px;
+        border-color: #6F6F6F;
+        border-style: solid;
+        position:relative; left:10px;
         width:297mm;
     	font-family: arial;
         font-size:11px;
         background-color:#6F6F6F;
-        color:white;
-        height:40px;
-        border:1px solid white;
-        border-collapse:collapse;
-        z-index:-10;
         -webkit-print-color-adjust: exact !important;
 }
 #usedpartbody{
-        margin-top:20px;
+        border-width: 0px 8px 0px 8px;
+        border-color: #6F6F6F;
+        border-style: solid;
         position:relative; left:10px;
         width:297mm;
         -webkit-print-color-adjust: exact !important;
 }
-#usedparttop{
+#usedparthead{
     	font-family: arial;
         font-size:11px;
-        height:20px;
+        color:white;
+        border:1px solid white;
+        border-collapse:collapse;
 }
 #usedparttable{
         font-size:12px;
@@ -118,7 +137,8 @@
         -webkit-print-color-adjust: exact !important;
 }
 
-.c1-1{width:380px;}
+.c1-1{width:380px;
+height:25px;}
 .c2-1{width:310px;}
 .c3-1{width:350px;}
 .c5-1{width:350px;}
@@ -132,6 +152,9 @@ tr:nth-child(even){
 }
 
 #pmremarktop{
+        border-width: 0px 8px 0px 8px;
+        border-color: #6F6F6F;
+        border-style: solid;
         position:relative; left:10px;
         height:30px;
         width:297mm;
@@ -146,6 +169,9 @@ tr:nth-child(even){
         font-size:12px;}
 
 #pmremarkbody{
+        border-width: 0px 8px 0px 8px;
+        border-color: #6F6F6F;
+        border-style: solid;
         position:relative; left:10px;
         height:40px;
         width:297mm;
@@ -168,67 +194,88 @@ tr:nth-child(even){
       height:40px;}
 .r2-1{width:659px;}
 
-#pmchecksheetapprovaltop{
+#pmchecksheetapproval{
+        border-width: 0px 8px 0px 8px;
+        border-color: #6F6F6F;
+        border-style: solid;
         position:relative; left:10px;
     	font-family: arial;
         font-size:12px;
+        height:30px;
         background-color:#6F6F6F;
         color:white;
-        padding:1px;
         width:297mm;
         -webkit-print-color-adjust: exact !important;
         }
 
-#pmchecksheetapproval{
+#pmchecksheetapproval_body{
+        border-width: 0px 8px 8px 8px;
+        border-color: #6F6F6F;
+        border-style: solid;
         position:relative; left:10px;
         font-family: arial;
         font-size:12px;
-        padding:10px;
         width:297mm;
+        -webkit-print-color-adjust: exact !important;
+        }
+#pmchecksheetapproval_table{
+        font-family: arial;
+        font-size:12px;
         border:1px solid #6F6F6F;
         border-collapse:collapse;
         -webkit-print-color-adjust: exact !important;
         }
-.c11{width:300px;
+.c0{padding-left:500px;}
+.c11{width:564px;
     height:25px;
     background-color: #EEEEEE;}
-.c12{width:300px;
+.c12{width:754px;
     background-color:white;}
-.c13{width:300px;
+.c13{width:754px;
     background-color:white;}
 
-.u1{width:13.2%;
+.u1{width:150px;
 background-color:#6F6F6F;
 -webkit-print-color-adjust: exact !important;
 }
-.u2{width:17.6%;
+.u2{width:200px;
 background-color:#6F6F6F;
 -webkit-print-color-adjust: exact !important;
 }
-.u3{width:13.3%;
+.u3{width:200px;
 background-color:#6F6F6F;
 -webkit-print-color-adjust: exact !important;
 }
-.u4{width:26.3%;
+.u4{width:350px;
 background-color:#6F6F6F;
 -webkit-print-color-adjust: exact !important;
 }
-.u5{width:10.7%;
+.u5{width:100px;
 background-color:#6F6F6F;
 -webkit-print-color-adjust: exact !important;
 }
-.u6{width:;
+.u6{width:105px;
+height:20px;
+background-color:#6F6F6F;
+-webkit-print-color-adjust: exact !important;
+}
+.u7{height:20px;
 background-color:#6F6F6F;
 -webkit-print-color-adjust: exact !important;
 }
 
-.u1-1{width:244px;
+.u1-1{width:150px;
 height:25px;}
-.u2-1{width:328px;}
-.u3-1{width:247px}
-.u4-1{width:491px;}
-.u5-1{width:198px;}
-.u6-1{width:338px;}
+.u2-1{width:200px;}
+.u3-1{width:200px}
+.u4-1{width:350px;}
+.u5-1{width:100px;}
+.u6-1{width:105px;}
+.na{
+font-family: arial;
+font-size:12px;
+height:30px;
+padding-top:10px;}
 }
 
 
@@ -253,18 +300,20 @@ height:25px;}
     	font-family: arial;
         font-size:16px;
         color:black;
+}
+#equipinfo_table{
         border:1px solid #6F6F6F;
         border-collapse:collapse;
 }
 .table1{
         background-color: #EEEEEE;
-        width:17%;
+        width:376px;
         height:25px;
         font-weight:bold;
 }
 .table2{
         background-color: white;
-        width:30%;
+        width:565px;
 }
 #pmchecksheettitle{
         position:relative; left:10px;
@@ -275,6 +324,7 @@ height:25px;}
         color:white;
         height:40px;
 }
+.c0{padding-left:850px;}
 .c1{width:400px;}
 .c2{width:300px;}
 .c3{width:330px;}
@@ -377,7 +427,7 @@ tr:nth-child(even){
       height:40px;}
 .r2-1{width:659px;}
 
-#pmchecksheetapprovaltop{
+#pmchecksheetapproval{
         position:relative; left:10px;
     	font-family: arial;
         font-size:16px;
@@ -387,21 +437,23 @@ tr:nth-child(even){
         width:1882px;
         }
 
-#pmchecksheetapproval{
+#pmchecksheetapproval_body{
         position:relative; left:10px;
         font-family: arial;
         font-size:16px;
-        padding:10px;
         width:1882px;
+        }
+#pmchecksheetapproval_table{
         border:1px solid #6F6F6F;
         border-collapse:collapse;
         }
-.c11{width:300px;
+
+.c11{width:564px;
     height:25px;
     background-color: #EEEEEE;}
-.c12{width:300px;
+.c12{width:753px;
     background-color:white;}
-.c13{width:300px;
+.c13{width:753px;
     background-color:white;}
 
 .u1{width:13.2%;
@@ -453,7 +505,8 @@ Preventive Maintenance Check Sheet
 <div class="border">
 </div>
 
-<table id="equipinfo" border= "1">
+<div id="equipinfo">
+<table id="equipinfo_table" border= "1">
                       {% for equipinfos in equipinfo %}
                       {% for equipinforevs in equipinforev %}
                       {% for pmchecksheet_schs in pmchecksheet_info %}
@@ -532,6 +585,7 @@ Preventive Maintenance Check Sheet
                                  {% endfor %}
                                  {% endfor %}
 </table>
+</div>
 
 <div id="pmchecksheettitle" >
      <table  style="word-break:break-all">
@@ -613,7 +667,9 @@ Preventive Maintenance Check Sheet
        </tr>
    </table>
  </div>
+
  <div id="usedpartbody">
+     {% if used_comp == "Y" %}
    <table id="usedparttable" border="1">
             {% for spare_out in spare_list %}
        <tr>
@@ -626,6 +682,9 @@ Preventive Maintenance Check Sheet
        </tr>
             {% endfor %}
    </table>
+     {% else %}
+     <div class="na">N/A</div>
+     {% endif %}
  </div>
 
  <div id="pmremarktop">
@@ -656,16 +715,18 @@ Preventive Maintenance Check Sheet
    </table>
  </div>
 
- <div>
- <table style="word-break:break-all" id="pmchecksheetapprovaltop">
+ <div id = "pmchecksheetapproval">
+ <table style="word-break:break-all" id="pmchecksheetapproval_top">
      <thead>
          <tr>
-            <td align="center">Review & Approved</td>
+            <td align="center" class="c0">Review & Approved</td>
         </tr>
      </thead>
  </table>
+ </div>
 
- <table style="word-break:break-all" id="pmchecksheetapproval" border="1">
+ <div id="pmchecksheetapproval_body">
+ <table style="word-break:break-all" id="pmchecksheetapproval_table" border="1">
                      {%if comp_signal == "N" %}
      <tbody>
         <tr>
