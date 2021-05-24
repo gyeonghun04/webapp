@@ -7,6 +7,18 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap');
 
+header{
+        height:30px;
+        background:#6F6F6F;
+        justify-content:space-between;
+        align-items:center;
+        position:fixed;
+        top:0;
+        left:0;
+        right:0;
+        z-index:10;
+        }
+
 .t1-2{width:50px;
 height:20px;
 font-weight:bold;
@@ -40,16 +52,21 @@ table_title{
         font-color:black;
 }
 text_main{
+padding-left:5px;
         font-family:'Rubik', sans-serif;
         font-size:20px;
-        font-color:black;
+        color:white;
 }
 #update_info{
-        margin-top:10px;
+        margin-top:40px;
         font-family:'Rubik', sans-serif;
         font-size:12px;
 }
-
+#alarm_info{
+        margin-top:200px;
+        font-family:'Rubik', sans-serif;
+        font-size:12px;
+}
 #version_info{
         position:fixed; top:470px; left:270px;
         font-family:'Rubik', sans-serif;
@@ -57,7 +74,9 @@ text_main{
 }
 </style>
 <body>
+<header>
 <text_main>Program Information</text_main>
+</header>
 
 <div id="update_info">
     <table_title>업데이트 내역</table_title>
@@ -66,6 +85,7 @@ text_main{
     <td align="center" class="t1-2">No.</td>
     <td align="center" class="t2-2">Description</td>
      <td align="center" class="t3-2">Date</td>
+</tr>
 <tr>
     <td align="center" class="t1">1</td>
     <td align="center" class="t2">Beta Version 오픈</td>
@@ -74,10 +94,27 @@ text_main{
 </table>
 </div>
 
+<div id="alarm_info">
+    <table_title>알림사항</table_title>
+<table>
+<tr>
+    <td align="center" class="t1-2">No.</td>
+    <td align="center" class="t2-2">Description</td>
+     <td align="center" class="t3-2">Link</td>
+</tr>
+<tr>
+    <td align="center" class="t1">1</td>
+    <td align="center" class="t2">Excel Export시 한글 깨짐현상</td>
+    <td align="center" class="t3">
+         <a href="https://smorning.tistory.com/269" target="_blank">Link</a>
+    </td>
+</tr>
+</table>
+</div>
 
 <div id="version_info">
     <table_title>버전정보</table_title>
-    <table_text>Beta V0.0</table_text>
+    <table_text>Beta V2.5</table_text>
 
 </div>
 

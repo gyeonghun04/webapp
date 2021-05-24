@@ -431,15 +431,15 @@ i{
     <form action="pmrefer_main" method="post">
         {% csrf_token %}
         <input type="hidden" value="{{loginid}}" name="loginid">
-        <input type="submit"value="PM Reference" class="Button"></form><br>
+        <input type="submit" value="PM Reference" class="Button"></form><br>
     <form action="user_info" method="post">
         {% csrf_token %}
         <input type="hidden" value="{{loginid}}" name="loginid">
-        <input type="submit"value="User Information" class="Button"></form><br>
+        <input type="submit" value="User Information" class="Button"></form><br>
     <form action="approval_info" method="post">
         {% csrf_token %}
         <input type="hidden" value="{{loginid}}" name="loginid">
-        <input type="submit"value="Approval Info." class="Button"></form>
+        <input type="submit" value="Approval Info." class="Button"></form>
     {%endif%}
         </tr>
         </table>

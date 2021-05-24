@@ -137,7 +137,7 @@ title_text{
 <form name="scan_result" method="post">
                 {% csrf_token %}
 <input type="hidden" value="{{loginid}}" name="loginid">
-<input type="text" name="search_text" class="search_text" value="{{reset_text}}"placeholder="Please Scan Barcode" onchange="Codeno();">
+<input type="text" name="search_text" class="search_text" value="{{reset_text}}"placeholder="Please Scan Barcode" onkeydown='barcode();'>
 </form>
 </div>
 
@@ -199,7 +199,7 @@ title_text{
         <tr>
             <td align="center" class="text_css">Control No.</td>
             <td align="center" class="input_css">
-                <input type="text" name="controlno_up" value="{{controlno}}"class="controlno_css" onchange="Controlno_upload();"></td>
+                <input type="text" name="controlno_up" value="{{controlno}}"class="controlno_css" onchange='Codeno()'></td>
         </tr>
         <tr>
             <td align="center" class="text_css">Team</td>
@@ -253,7 +253,6 @@ title_text{
         <input type="hidden" name="controlno"></form>
 
 <script>
-     // 클릭버전으로 바꾸기{현재 미사용}
       function Codeno(){
             var search_text = document.getElementsByName('search_text')[0].value;
             var len_check = search_text.length;
@@ -270,7 +269,7 @@ title_text{
             document.scan_result.submit();}}
       }
 
-      barcode_scan = setInterval(function(){
+            barcode_scan = setInterval(function(){
             var search_text = document.getElementsByName('search_text')[0].value;
             var len_check = search_text.length;
             if(len_check=="6"){

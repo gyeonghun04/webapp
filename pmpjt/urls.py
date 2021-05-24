@@ -290,6 +290,13 @@ urlpatterns = [
     path('history_of_equip_period', pm.views.history_of_equip_period, name='history_of_equip_period'),
     path('history_of_equip_control', pm.views.history_of_equip_control, name='history_of_equip_control'),
 
+##########################################################################################################################################
+##########################################################################################################################################
+####export####
+    path('masterlist_export', pm.views.masterlist_export, name='masterlist_export'),
+    path('equip_export', pm.views.equip_export, name='equip_export'),
+    path('spare_export', pm.views.spare_export, name='spare_export'),
+
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

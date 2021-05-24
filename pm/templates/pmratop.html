@@ -77,10 +77,18 @@ b{
 </body>
 <script>
     function pm_review(){
-            // 서버로 전송
-            document.pmra_review_form.action="pmra_review";
-            document.pmra_review_form.submit();
-            alert('PM Period review is complete.');
+                var today = new Date();
+                var dd = today.getDate();
+                var mm = today.getMonth()+1;
+                if (mm == '12'){
+                    // 서버로 전송
+                document.pmra_review_form.action="pmra_review";
+                document.pmra_review_form.submit();
+                alert('PM Period review is complete.');
+                }
+                else{
+                alert('It can only be implemented in December.');
+                }
             }
 </script>
 </html>

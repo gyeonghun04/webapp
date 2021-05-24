@@ -13,6 +13,7 @@ from dateutil.relativedelta import relativedelta
 from django.core.files.storage import FileSystemStorage
 from django.db.models import Count, Sum
 import re
+import csv
 
 ##############################################################################################################
 #################################################로그인페이지###################################################
@@ -2463,6 +2464,7 @@ def used_parts_link_submit(request):
         old_value = audit_check.usedpart_temp
         controlno = audit_check.usedpart_temp
     ####사용자재 링크저장하기###
+        euqip_info = pm_sch.objects.get(pmcode=pmcode)
         used_submit = spare_out.objects.filter(used_y_n_temp=pmcode)
         used_submit = used_submit.values('no')  # sql문 dataframe으로 변경
         df_used_submit = pd.DataFrame.from_records(used_submit)
@@ -2472,6 +2474,8 @@ def used_parts_link_submit(request):
             used_no_save = spare_out.objects.get(no=used_no)
             used_no_save.used_y_n = used_no_save.used_y_n_temp
             used_no_save.check_y_n = used_no_save.check_y_n_temp
+            used_no_save.controlno = euqip_info.controlno
+            used_no_save.equipname = euqip_info.name
             used_no_save.save()
     ####사용자재 Y 입력하기###
         used_check = pmchecksheet.objects.get(pmcode=pmcode, itemcode=itemcode)
@@ -9402,6 +9406,7 @@ def workorder_used_submit(request):
         user_div = users.user_division
         users = {"auth": auth, "password": password, "username": username, "userteam": userteam, "user_div": user_div}
     ####사용자재 링크저장하기###
+        euqip_info = workorder.objects.get(workorderno=workorderno)
         used_submit = spare_out.objects.filter(used_y_n_temp=workorderno)
         used_submit = used_submit.values('no')  # sql문 dataframe으로 변경
         df_used_submit = pd.DataFrame.from_records(used_submit)
@@ -9411,6 +9416,8 @@ def workorder_used_submit(request):
             used_no_save = spare_out.objects.get(no=used_no)
             used_no_save.used_y_n = used_no_save.used_y_n_temp
             used_no_save.check_y_n = used_no_save.check_y_n_temp
+            used_no_save.controlno = euqip_info.controlno
+            used_no_save.equipname = euqip_info.name
             used_no_save.save()
     ####사용자재 Y 입력하기###
         used_check = workorder.objects.get(workorderno=workorderno)
@@ -10010,13 +10017,13 @@ def spareparts_safety_stock(request):
             reset_get = spare_parts_list.objects.get(codeno=codeno_get)
             reset_get.used_qy_sum = ""
             reset_get.save()
-        import_part = spare_out.objects.filter(date__icontains=today_year).values('codeno').annotate(Count('codeno'))
+        import_part = spare_out.objects.filter(Q(date__icontains=today_year)&~Q(used_y_n="")).values('codeno').annotate(Count('codeno'))
         import_part = import_part.values('codeno')
         df_import_part = pd.DataFrame.from_records(import_part)
         import_part_len = len(df_import_part.index)
         for l in range(import_part_len):
             codeno_get = df_import_part.iat[l, 0]
-            qy_get = spare_out.objects.filter(date__icontains=today_year, codeno=codeno_get).aggregate(sum_qy=Sum('used_qy'))
+            qy_get = spare_out.objects.filter(Q(date__icontains=today_year, codeno=codeno_get)&~Q(used_y_n="")).aggregate(sum_qy=Sum('used_qy'))
             qy_cal = spare_parts_list.objects.get(codeno=codeno_get)
             qy_cal.used_qy_sum = int(qy_get['sum_qy'])
             qy_cal.save()
@@ -11916,45 +11923,17 @@ def pmrefer_new_submit(request):
 #################################################Test########################################################
 ##############################################################################################################
 def temp(request):
-    #c = canvas.Canvas("")
-    #c.setPageSize((57 * mm, 32 * mm))
-    #barcode = code128.Code128("DS0001")
-    #c.drawString(5,0,"Hello World")
-    #barcode.drawOn(c, 2 * mm, 20 * mm)
-    #c.showPage()
-    #c.save()
-    return render(request, 'temp.html')  # templates 내 html연결
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="users.csv"'
 
+    writer = csv.writer(response)
+    writer.writerow(['vendor', 'name', 'tel', 'email'])
 
-    #cap = cv2.VideoCapture(0)
-    #i = 0
-    #while (cap.isOpened()):
-    #    ret, img = cap.read()
-    #    if not ret:
-    #        continue
-    #    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    #    decoded = pyzbar.decode(gray)
-    #    for d in decoded:
-    #        x, y, w, h = d.rect
-    #        barcode_data = d.data.decode("utf-8")
-    #        barcode_type = d.type
-    #        cv2.rectangle(img, (x, y), (x + w, y + h), (0, 0, 255), 2)
-    #        text = '%s (%s)' % (barcode_data, barcode_type)
-    #        cv2.putText(img, text, (x, y), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 255), 2, cv2.LINE_AA)
-    #    cv2.imshow('img', img)
-    #    key = cv2.waitKey(1)
-    #    if key == ord('q'):
-    #        break
-    #    elif key == ord('s'):
-    #        i += 1
-    #        cv2.imwrite('c_%03d.jpg' % i, img)
-    #cap.release()
-    #cv2.destroyAllWindows()
-    #test= "111122223333"
-    #ean = barcode.get('ean13', test, writer=ImageWriter())
-    #fullname = ean.save(test)
+    users = vendor_list.objects.all().values_list('vendor', 'name', 'tel', 'email')
+    for user in users:
+        writer.writerow(user)
 
-
+    return response
 ##############################################################################################################
 #################################################info.########################################################
 ##############################################################################################################
@@ -13100,3 +13079,45 @@ def audittrail_click(request):
                    "audit_text":audit_text,"description":description,"loginid":loginid,"data":data,"type":type}
         context.update(users)
         return render(request, 'audittrail_main.html', context)  # templates 내 html연결
+
+##############################################################################################################
+#################################################엑셀 익스포트##################################################
+##############################################################################################################
+
+def masterlist_export(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="pm_master_list.csv"'
+    writer = csv.writer(response)
+    writer.writerow(['Team', 'Control No.', 'Equip. Name', 'Model Name','Serial', 'Maker', 'Room Name', 'Room No.',
+                     'Rev No.', 'Date','Frequency', 'R/A', 'Sheet No.', 'A/D','Maintenance Item', 'Check Standard',
+                     'Start Date', 'Division'])
+    texts = pmmasterlist.objects.all().values_list('team', 'controlno', 'name', 'model','serial', 'maker', 'roomname', 'roomno'
+                                                   ,'revno', 'date', 'freq', 'ra','sheetno', 'amd', 'item', 'check',
+                                                   'startdate', 'division')
+    for text in texts:
+        writer.writerow(text)
+    return response
+
+def equip_export(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="equipment_list.csv"'
+    writer = csv.writer(response)
+    writer.writerow(['Team', 'Control No.', 'Equip. Name', 'Model Name','Serial', 'Maker', 'Room Name', 'Room No.',
+                     'Setup Date','R/A', 'PQ','PM'])
+    texts2 = equiplist.objects.all().values_list('team', 'controlno', 'name', 'model','serial', 'maker', 'roomname', 'roomno'
+                                                   ,'setupdate','ra', 'pq', 'pmok')
+    for text2 in texts2:
+        writer.writerow(text2)
+    return response
+
+def spare_export(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="spare_parts_list.csv"'
+    writer = csv.writer(response)
+    writer.writerow(['Code No.', 'Team', 'Part Name', 'Vendor','Model Name', 'Spec', 'Location', 'Safety Stock',
+                     'Stock','Shortage QY.', 'Staff','PM Link'])
+    texts3 = spare_parts_list.objects.all().values_list('codeno', 'team', 'partname', 'vendor','modelno', 'spec', 'location',
+                                                'safety_stock','stock','short_qy','staff','pm_link')
+    for text3 in texts3:
+        writer.writerow(text3)
+    return response

@@ -1,11 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    <iframe style="width:100;height:100;" src="Barcode2.pdf">
-    </iframe>
-</body>
-</html>
+      function Codeno(){
+            var search_text = document.getElementsByName('search_text')[0].value;
+            var len_check = search_text.length;
+            if(len_check=="6"){
+      // type 값받기
+            var obj_length = document.getElementsByName("type").length;
+                for (var i=0; i<obj_length; i++) {
+                    if (document.getElementsByName("type")[i].checked == true) {
+                        var type = document.getElementsByName("type")[i].value;
+                        }
+                    }
+            if(type=="manual"){
+            document.scan_result.action="spareparts_release_scan";
+            document.scan_result.submit();}}
+      }
+
+
+
+            barcode_scan = setInterval(function(){
+            var search_text = document.getElementsByName('search_text')[0].value;
+            var len_check = search_text.length;
+            if(len_check=="6"){
+      // type 값받기
+            var obj_length = document.getElementsByName("type").length;
+                for (var i=0; i<obj_length; i++) {
+                    if (document.getElementsByName("type")[i].checked == true) {
+                        var type = document.getElementsByName("type")[i].value;
+                        }
+                    }
+            if(type=="auto"){
+            document.scan_result.action="spareparts_release_scan";
+            document.scan_result.submit();
+            clearInterval(barcode_scan);}}
+            },3000)

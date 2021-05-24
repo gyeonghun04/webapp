@@ -56,6 +56,20 @@ a{
         align-text:left;
         color:black;
 }
+d{
+        position:fixed;top:5.3%; left:50.3%;
+        align-text:left;
+        color:black;
+}
+.export{
+        font-family:'Rubik', sans-serif;
+        font-size:15px;
+        background-color: rgba(255, 255, 255, 0.0);
+        cursor:pointer;
+        border:0px;
+        font-color:black;
+        text-decoration:underline;
+}
 </style>
 </head>
 <body>
@@ -63,6 +77,13 @@ a{
 <table>
     <tr>
     <td><titletext>Spare Parts List</titletext></td>
+    <td>
+        <form action="spare_export" method="post">
+        {% csrf_token %}
+        <input type="hidden" value="{{loginid}}" name="loginid">
+        <d class="xi-paper-o"><text><input type="submit" value="Export" class="export"></text></d>
+        </form>
+    </td>
     <td>
         <c class="xi-redo"><input type="button" value="Safety Stock" class="new" onclick="safety_stock();"></c>
     </td>
@@ -111,10 +132,18 @@ a{
             }
 
             function safety_stock(){
-                        // 서버로 전송
-            document.spareparts_safety_form.action="spareparts_safety_stock";
-            document.spareparts_safety_form.submit();
-            alert('Safety Stock update is complete.');
+                var today = new Date();
+                var dd = today.getDate();
+                var mm = today.getMonth()+1;
+                if (mm == '5'){
+                                        // 서버로 전송
+                document.spareparts_safety_form.action="spareparts_safety_stock";
+                document.spareparts_safety_form.submit();
+                alert('Safety Stock Update is complete.');
+                }
+                else{
+                alert('It can only be implemented in December.');
+                }
             }
 </script>
 </body>

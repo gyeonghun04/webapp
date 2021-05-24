@@ -47,11 +47,30 @@ b{
         text-decoration:underline;
         padding-top:5px;
 }
+#export{
+        position:fixed;top:5.1%; left:67%;
+}
+.export{
+        font-family:'Rubik', sans-serif;
+        font-size:15px;
+        background-color: rgba(255, 255, 255, 0.0);
+        cursor:pointer;
+        border:0px;
+        font-color:black;
+        text-decoration:underline;
+}
 </style>
 </head>
 <body>
 <div id="tabletop" style="word-break:break-all">
     <titletext>Equipment List</titletext>
+</div>
+<div id="export">
+        <form action="equip_export" method="post">
+        {% csrf_token %}
+        <input type="hidden" value="{{loginid}}" name="loginid">
+        <i class="xi-paper-o"><text><input type="submit" value="Export" class="export"></text></i>
+        </form>
 </div>
 <b class="xi-pen"><input type="button" value="New Registration" class="new" onclick="Registration_new();"></b>
 <div id="searchbar">

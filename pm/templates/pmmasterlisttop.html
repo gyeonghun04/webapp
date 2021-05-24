@@ -16,7 +16,6 @@ titletext{
         font-weight:bold;
 }
 .selecttext{
-        margin-left:1205px;
         width:105px;
         height:20px;
 }
@@ -29,9 +28,21 @@ titletext{
         height:20px;
 }
 #searchbar{
-        padding-top:6px;
+        position:fixed;top:4.9%; left:79.4%;
         font-family:'Rubik', sans-serif;
         font-size:10px;
+}
+#export{
+        position:fixed;top:5.1%; left:75.2%;
+}
+.export{
+        font-family:'Rubik', sans-serif;
+        font-size:15px;
+        background-color: rgba(255, 255, 255, 0.0);
+        cursor:pointer;
+        border:0px;
+        font-color:black;
+        text-decoration:underline;
 }
 </style>
 </head>
@@ -40,8 +51,18 @@ titletext{
 <table>
     <tr>
     <td><titletext>PM Master List</titletext></td>
-    <td>
-    <div id="searchbar">
+    </tr>
+</table>
+</div>
+<div id="export">
+        <form action="masterlist_export" method="post">
+        {% csrf_token %}
+        <input type="hidden" value="{{loginid}}" name="loginid">
+        <i class="xi-paper-o"><text><input type="submit" value="Export" class="export"></text></i>
+        </form>
+</div>
+
+<div id="searchbar">
         <form action="pmmasterlist_main" method="post">
             {% csrf_token %}
             <select class="selecttext" name="selecttext">&nbsp;
@@ -54,9 +75,7 @@ titletext{
             <input type="search"  class="searchtext" placeholder="Keywords" name="searchtext">
             <input type="hidden" value="{{loginid}}" name="loginid">
             <input type="submit"  class="searchbutton" value="Search"></form>
-    </div></td>
-    </tr>
-</table>
 </div>
+
 </body>
 </html>

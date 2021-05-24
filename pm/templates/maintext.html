@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <title>Title</title>
 <style>
+#alarm_text{
+        position:fixed;top:45px; left:185px;
+        font-size:16px;
+        color:green;
+        font-weight:bold;
+        font-family:'Rubik', sans-serif;
+        }
 
 #pm_radius{
         box-shadow: 3px 4px 0px 0px #A9A9A9;
@@ -272,7 +279,9 @@ a{
 
 </head>
 <body>
-
+{% if user_div == "Engineer" %}
+<div id="alarm_text"></div>
+{%endif%}
 <main>
 <div id="pm_radius" >
 
@@ -706,6 +715,12 @@ a{
             day = dd;
             document.getElementById("month_today").innerHTML=month;
             document.getElementById("day_today").innerHTML=day;
+
+     // 알림창 설정
+            if (mm == '05'){
+            var alarm = "!_Message : [PM Period - Review] & [Spare Parts List - Safety Stock] has been activated."
+            document.getElementById("alarm_text").innerHTML=alarm;
+            }
             }
 
       onload=init

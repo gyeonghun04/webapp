@@ -324,7 +324,6 @@ class spare_parts_list(models.Model): #spare_parts_list
     check_y_n_temp = models.CharField(max_length=255)  #사용여부
     req_qy = models.CharField(max_length=255, default=0)  #요구수량
     short_qy = models.CharField(max_length=255)  #부족수량
-    barcode = models.CharField(max_length=255)  #바코드
     contact_y_n = models.CharField(max_length=255)  # 스페어 구매체크
     used_qy_sum = models.CharField(max_length=255)  # 작년도 소요슈량
 
