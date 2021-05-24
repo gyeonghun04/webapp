@@ -326,6 +326,7 @@ class spare_parts_list(models.Model): #spare_parts_list
     short_qy = models.CharField(max_length=255)  #부족수량
     barcode = models.CharField(max_length=255)  #바코드
     contact_y_n = models.CharField(max_length=255)  # 스페어 구매체크
+    used_qy_sum = models.CharField(max_length=255)  # 작년도 소요슈량
 
     class Meta:
         managed = False

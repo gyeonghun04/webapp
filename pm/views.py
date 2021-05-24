@@ -4475,7 +4475,6 @@ def pmra_review(request):
                     review_chk.pmscore = score_result
                     review_chk.status = "Review"
                     review_chk.save()
-        messages.error(request, "PM Period review is complete.")  # 경고
         context = {"equiplists":equiplists,"loginid":loginid,"selecttext":selecttext,"searchtext":searchtext}
         context.update(users)
         return render(request, 'pmra_main.html', context) #templates 내 html연결
@@ -9920,6 +9919,127 @@ def spareparts_main(request):
         context.update(users)
         return render(request, 'spareparts_main.html', context)  # templates 내 html연결
 
+def spareparts_safety_stock(request):
+    if request.method == 'POST':  # 매소드값이 post인 값만 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+    ##이름 및 권한 끌고다니기##
+        users = userinfo.objects.get(userid=loginid)
+        username = users.username
+        userteam = users.userteam
+        password = users.password
+        auth = users.auth1
+        user_div = users.user_division
+        users = {"auth": auth, "password": password, "username": username, "userteam": userteam, "user_div": user_div}
+        spare_list = spare_parts_list.objects.all().order_by('team','codeno')  # db 동기화
+    ####안전재고 자동계산####
+    ##금년도sch인거 업데이트하기##
+        today = date.datetime.today()
+        today_year = "20" + today.strftime('%y')  # 올해 년도 구하기
+        year_get = parts_pm.objects.all()
+        year_get = year_get.values('no')
+        df_year_get = pd.DataFrame.from_records(year_get)
+        year_get_len = len(df_year_get.index)
+        for i in range(year_get_len):
+            no_get = df_year_get.iat[i, 0]
+            info_get = parts_pm.objects.get(no=no_get)
+            info_get.plan_date = ""  ##plan_date 값 리셋하기
+            freq = info_get.freq  # 주기값 불러오기
+            plan_date = info_get.sch
+            if (freq[:2] == "10") or (freq[:2] == "11") or (freq[:2] == "12"):  ##계산식 할수있게 값 변형하기
+                f_num = freq[:2]
+            else:
+                f_num = freq[:1]
+            f_m_y = freq[2:4]
+            next_year = int(today_year) + 2
+            year_chk = today_year
+            plan_date_y = plan_date[:4]  ##년도
+            plan_date_m = plan_date[5:]  ##월
+            plan_date = date.datetime(int(plan_date_y), int(plan_date_m), 1)
+            qy_count = 0  ## pm반복횟수 초기값
+            if (f_m_y == "on") or (f_m_y == "Mo"):  ##주기가 월일경우
+                while int(year_chk) < int(next_year):
+                    next_plan = plan_date + relativedelta(months=int(f_num))
+                    next_plandate = "20" + next_plan.strftime('%y') + "-" + next_plan.strftime('%m')
+                    year_chk = "20" + next_plan.strftime('%y')
+                    plan_date = next_plandate
+                    plan_date_y = plan_date[:4]
+                    plan_date_m = plan_date[5:]
+                    plan_date = date.datetime(int(plan_date_y), int(plan_date_m), 1)
+                    if int(next_plandate[:4]) == int(today_year) + 1:
+                        qy_count = qy_count + 1
+                        info_get.plan_date = info_get.plan_date + " [" + next_plandate + "] "
+                        info_get.qy_plan = int(qy_count) * int(info_get.qy)
+                        info_get.save()
+            if freq == "1Year":  ##주기가 1년일 경우
+                next_plan = plan_date + relativedelta(years=1)
+                next_plandate = "20" + next_plan.strftime('%y') + "-" + next_plan.strftime('%m')
+                if int(next_plandate[:4]) == int(today_year) + 1:
+                    info_get.plan_date = next_plandate
+                    info_get.save()
+        next_year = int(today_year) + 1
+        ##수량계산하기##
+        ##리셋##
+        reset = spare_parts_list.objects.filter(~Q(req_qy=0))
+        reset = reset.values('codeno')
+        df_reset = pd.DataFrame.from_records(reset)
+        reset_len = len(df_reset.index)
+        for m in range(reset_len):
+            codeno_get = df_reset.iat[m, 0]
+            reset_get = spare_parts_list.objects.get(codeno=codeno_get)
+            reset_get.req_qy = ""
+            reset_get.short_qy = ""
+            reset_get.save()
+        ##수량입력##
+        spare_check = parts_pm.objects.filter(plan_date__icontains=next_year).values('codeno').annotate(Sum('qy_plan'))
+        spare_check = spare_check.values('codeno', 'qy_plan__sum')
+        df_spare_check = pd.DataFrame.from_records(spare_check)
+        spare_check_len = len(df_spare_check.index)
+        for j in range(spare_check_len):
+            codeno_get = df_spare_check.iat[j, 0]
+            qy_get = spare_parts_list.objects.get(codeno=codeno_get)
+            qy_get.req_qy = int(df_spare_check.iat[j, 1])
+            qy_get.short_qy = int(qy_get.stock) - int(qy_get.req_qy)
+            qy_get.save()
+    ##작년 사용분 계산하기##
+        reset = spare_parts_list.objects.filter(~Q(used_qy_sum=0))
+        reset = reset.values('codeno')
+        df_reset = pd.DataFrame.from_records(reset)
+        reset_len = len(df_reset.index)
+        for m in range(reset_len):
+            codeno_get = df_reset.iat[m, 0]
+            reset_get = spare_parts_list.objects.get(codeno=codeno_get)
+            reset_get.used_qy_sum = ""
+            reset_get.save()
+        import_part = spare_out.objects.filter(date__icontains=today_year).values('codeno').annotate(Count('codeno'))
+        import_part = import_part.values('codeno')
+        df_import_part = pd.DataFrame.from_records(import_part)
+        import_part_len = len(df_import_part.index)
+        for l in range(import_part_len):
+            codeno_get = df_import_part.iat[l, 0]
+            qy_get = spare_out.objects.filter(date__icontains=today_year, codeno=codeno_get).aggregate(sum_qy=Sum('used_qy'))
+            qy_cal = spare_parts_list.objects.get(codeno=codeno_get)
+            qy_cal.used_qy_sum = int(qy_get['sum_qy'])
+            qy_cal.save()
+    ##pm 예상 사용량이랑 더하기##
+        safety_cal = spare_parts_list.objects.all()
+        safety_cal = safety_cal.values("codeno")
+        df_safety_cal = pd.DataFrame.from_records(safety_cal)
+        safety_cal_len = len(df_safety_cal.index)
+        for k in range(safety_cal_len):
+            codeno_get = df_safety_cal.iat[k, 0]
+            qy_cal = spare_parts_list.objects.get(codeno=codeno_get)
+            try:
+                if int(qy_cal.req_qy) + int(qy_cal.used_qy_sum) != 0:
+                    qy_cal.safety_stock = int(qy_cal.req_qy) + int(qy_cal.used_qy_sum)
+                    qy_cal.save()
+            except:
+                if int(qy_cal.req_qy) != 0:
+                    qy_cal.safety_stock = int(qy_cal.req_qy)
+                    qy_cal.save()
+        context = {"spare_list": spare_list, "loginid": loginid}
+        context.update(users)
+        return render(request, 'spareparts_main.html', context)  # templates 내 html연결
+
 def spareparts_new(request):
     return render(request, 'spareparts_new.html') #templates 내 html연결
 
@@ -11144,8 +11264,8 @@ def partslist_pm_cal(request):
     for m in range(reset_len):
         codeno_get = df_reset.iat[m, 0]
         reset_get = spare_parts_list.objects.get(codeno=codeno_get)
-        reset_get.req_qy
-        reset_get.short_qy
+        reset_get.req_qy = ""
+        reset_get.short_qy = ""
         reset_get.save()
     ##수량입력##
     spare_check = parts_pm.objects.filter(plan_date__icontains=next_year).values('codeno').annotate(Sum('qy_plan'))
@@ -11186,6 +11306,74 @@ def spareparts_short_main(request):
         info_reset.save()
 ######기본정보 불러오기#####
     if type =="pm":
+        ##금년도sch인거 업데이트하기##
+        today = date.datetime.today()
+        today_year = "20" + today.strftime('%y')  # 올해 년도 구하기
+        year_get = parts_pm.objects.all()
+        year_get = year_get.values('no')
+        df_year_get = pd.DataFrame.from_records(year_get)
+        year_get_len = len(df_year_get.index)
+        for i in range(year_get_len):
+            no_get = df_year_get.iat[i, 0]
+            info_get = parts_pm.objects.get(no=no_get)
+            info_get.plan_date = ""  ##plan_date 값 리셋하기
+            freq = info_get.freq  # 주기값 불러오기
+            plan_date = info_get.sch
+            if (freq[:2] == "10") or (freq[:2] == "11") or (freq[:2] == "12"):  ##계산식 할수있게 값 변형하기
+                f_num = freq[:2]
+            else:
+                f_num = freq[:1]
+            f_m_y = freq[2:4]
+            next_year = int(today_year) + 2
+            year_chk = today_year
+            plan_date_y = plan_date[:4]  ##년도
+            plan_date_m = plan_date[5:]  ##월
+            plan_date = date.datetime(int(plan_date_y), int(plan_date_m), 1)
+            qy_count = 0  ## pm반복횟수 초기값
+            if (f_m_y == "on") or (f_m_y == "Mo"):  ##주기가 월일경우
+                while int(year_chk) < int(next_year):
+                    next_plan = plan_date + relativedelta(months=int(f_num))
+                    next_plandate = "20" + next_plan.strftime('%y') + "-" + next_plan.strftime('%m')
+                    year_chk = "20" + next_plan.strftime('%y')
+                    plan_date = next_plandate
+                    plan_date_y = plan_date[:4]
+                    plan_date_m = plan_date[5:]
+                    plan_date = date.datetime(int(plan_date_y), int(plan_date_m), 1)
+                    if int(next_plandate[:4]) == int(today_year) + 1:
+                        qy_count = qy_count + 1
+                        info_get.plan_date = info_get.plan_date + " [" + next_plandate + "] "
+                        info_get.qy_plan = int(qy_count) * int(info_get.qy)
+                        info_get.save()
+            if freq == "1Year":  ##주기가 1년일 경우
+                next_plan = plan_date + relativedelta(years=1)
+                next_plandate = "20" + next_plan.strftime('%y') + "-" + next_plan.strftime('%m')
+                if int(next_plandate[:4]) == int(today_year) + 1:
+                    info_get.plan_date = next_plandate
+                    info_get.save()
+        next_year = int(today_year) + 1
+        ##수량계산하기##
+        ##리셋##
+        reset = spare_parts_list.objects.filter(~Q(req_qy=0))
+        reset = reset.values('codeno')
+        df_reset = pd.DataFrame.from_records(reset)
+        reset_len = len(df_reset.index)
+        for m in range(reset_len):
+            codeno_get = df_reset.iat[m, 0]
+            reset_get = spare_parts_list.objects.get(codeno=codeno_get)
+            reset_get.req_qy = ""
+            reset_get.short_qy = ""
+            reset_get.save()
+        ##수량입력##
+        spare_check = parts_pm.objects.filter(plan_date__icontains=next_year).values('codeno').annotate(Sum('qy_plan'))
+        spare_check = spare_check.values('codeno', 'qy_plan__sum')
+        df_spare_check = pd.DataFrame.from_records(spare_check)
+        spare_check_len = len(df_spare_check.index)
+        for j in range(spare_check_len):
+            codeno_get = df_spare_check.iat[j, 0]
+            qy_get = spare_parts_list.objects.get(codeno=codeno_get)
+            qy_get.req_qy = int(df_spare_check.iat[j, 1])
+            qy_get.short_qy = int(qy_get.stock) - int(qy_get.req_qy)
+            qy_get.save()
         total = ""
         pm = "checked"
         parts_list = spare_parts_list.objects.filter(short_qy__icontains="-")

@@ -41,6 +41,11 @@ titletext{
         font-color:black;
         text-decoration:underline;
 }
+c{
+        position:fixed;top:5.3%; left:54.7%;
+        align-text:left;
+        color:black;
+}
 b{
         position:fixed;top:5.3%; left:71.5%;
         align-text:left;
@@ -58,6 +63,9 @@ a{
 <table>
     <tr>
     <td><titletext>Spare Parts List</titletext></td>
+    <td>
+        <c class="xi-redo"><input type="button" value="Safety Stock" class="new" onclick="safety_stock();"></c>
+    </td>
     <td>
         <a class="xi-calculator"><input type="button" value="Shortage Spare Parts" class="new" onclick="Check_spare();"></a>
     </td>
@@ -83,6 +91,12 @@ a{
     </tr>
 </table>
 </div>
+
+        <form method="post" name="spareparts_safety_form">
+             {% csrf_token %}
+        <input type="hidden" value="{{loginid}}" name="loginid">
+        </form>
+
 <script>
             function Registration_new(){
                         // 팝업창열기
@@ -96,6 +110,12 @@ a{
             window.open("/spareparts_short_main", "Shortage Spare Parts List", settings);
             }
 
+            function safety_stock(){
+                        // 서버로 전송
+            document.spareparts_safety_form.action="spareparts_safety_stock";
+            document.spareparts_safety_form.submit();
+            alert('Safety Stock update is complete.');
+            }
 </script>
 </body>
 </html>

@@ -185,6 +185,7 @@ urlpatterns = [
 ##########################################################################################################################################
 ####Spare Parts ####
     path('spareparts_main', pm.views.spareparts_main,name='spareparts_main'),
+    path('spareparts_safety_stock', pm.views.spareparts_safety_stock, name='spareparts_safety_stock'),
     path('spareparts_new', pm.views.spareparts_new, name='spareparts_new'),
     path('spareparts_new_submit', pm.views.spareparts_new_submit, name='spareparts_new_submit'),
     path('spareparts_release_main', pm.views.spareparts_release_main, name='spareparts_release_main'),
@@ -229,6 +230,7 @@ urlpatterns = [
     path('partslist_vendor_change', pm.views.partslist_vendor_change, name='partslist_vendor_change'),
     path('partslist_vendor_change_submit', pm.views.partslist_vendor_change_submit, name='partslist_vendor_change_submit'),
     path('spareparts_incoming_barcode', pm.views.spareparts_incoming_barcode, name='spareparts_incoming_barcode'),
+
 
 ##########################################################################################################################################
 ##########################################################################################################################################

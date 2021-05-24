@@ -69,7 +69,7 @@ b{
             <input type="submit"  class="searchbutton" value="Search"></form>
 </div>
 
-        <form action="" method="post" name="pmra_review_form">
+        <form method="post" name="pmra_review_form">
              {% csrf_token %}
         <input type="hidden" value="{{loginid}}" name="loginid">
         </form>
@@ -80,6 +80,7 @@ b{
             // 서버로 전송
             document.pmra_review_form.action="pmra_review";
             document.pmra_review_form.submit();
+            alert('PM Period review is complete.');
             }
 </script>
 </html>
