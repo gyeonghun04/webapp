@@ -231,15 +231,17 @@ b{
             window.open("/approval_info_change", "Authority Information Change", settings);
             }
 
-                function Auth_delete(obj){
+            function Auth_delete(obj){
             var i = obj.parentNode.parentNode.rowIndex;
             var division= document.getElementsByName('division_up')[i].value;
             var description= document.getElementsByName('description_up')[i].value;
             document.auth_info_delete.division.value = division;
             document.auth_info_delete.description.value = description;
+            var check_again = window.confirm("Do you want to proceed with the delete?","");
+                if (check_again == true){
             // 서버로 전송
             document.auth_info_delete.action="approval_info_delete";
-            document.auth_info_delete.submit();
+            document.auth_info_delete.submit();}
             }
 
 </script>

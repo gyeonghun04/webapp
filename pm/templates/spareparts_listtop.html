@@ -25,6 +25,8 @@ titletext{
 .searchbutton{
         width:60px;
         height:20px;
+        cursor:pointer;
+
 }
 #searchbar{
         position:fixed;top:4.3%; left:79.5%;
@@ -51,13 +53,18 @@ b{
         align-text:left;
         color:black;
 }
-a{
+e{
         position:fixed;top:5.3%; left:61.5%;
         align-text:left;
         color:black;
 }
 d{
         position:fixed;top:5.3%; left:50.3%;
+        align-text:left;
+        color:black;
+}
+f{
+        position:fixed;top:5.3%; left:42.8%;
         align-text:left;
         color:black;
 }
@@ -85,10 +92,13 @@ d{
         </form>
     </td>
     <td>
+        <f class="xi-building"><input type="button" value="Spare Storage" class="new" onclick="Location_btn();"></f>
+    </td>
+    <td>
         <c class="xi-redo"><input type="button" value="Safety Stock" class="new" onclick="safety_stock();"></c>
     </td>
     <td>
-        <a class="xi-calculator"><input type="button" value="Shortage Spare Parts" class="new" onclick="Check_spare();"></a>
+        <e class="xi-calculator"><input type="button" value="Shortage Spare Parts" class="new" onclick="Check_spare();"></e>
     </td>
     <td>
         <b class="xi-pen"><input type="button" value="New Registration" class="new" onclick="Registration_new();"></b>
@@ -145,6 +155,13 @@ d{
                 alert('It can only be implemented in December.');
                 }
             }
+
+            function Location_btn(){
+                        // 팝업창열기
+            var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=1650,height=800, left=50, top=10';
+            window.open("/spareparts_location", "Spare Parts Storage", settings);
+            }
+
 </script>
 </body>
 </html>

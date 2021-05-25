@@ -174,7 +174,7 @@ title_text{
 <header2>
 </header2>
 <title_text>Equipment Information Change</title_text>
-<form action="equipmentlist_change_submit" method="post" name="equip_change">
+<form action="" method="post" name="equip_change">
     {% csrf_token %}
 <div id="table_location">
    <table id="auth_table" border="1">
@@ -274,7 +274,7 @@ title_text{
    </table>
 </div>
 <input type="hidden" name="loginid">
-<input type="submit" class="submit_btn" value="Submit"></form>
+<input type="button" class="submit_btn" value="Submit" onclick="Equip_change();"></form>
 <input type="hidden" value="{{comp_signal}}" name="comp_signal">
 <input type="hidden" value="{{team_signal}}" name="team_signal">
 
@@ -376,6 +376,13 @@ title_text{
             document.roomno_form.action="equipmentlist_change_room";
             document.roomno_form.submit();
     }
+
+    function Equip_change(){
+          var check_again = window.confirm("Do you want to proceed with the change?","");
+        if (check_again == true){
+            document.equip_change.action="equipmentlist_change_submit";
+            document.equip_change.submit();}
+     }
 </script>
 </body>
 </html>

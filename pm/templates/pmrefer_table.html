@@ -135,7 +135,7 @@ b{
             <td align="center" class="m0-1">{{pm_refers.description}}</td>
             <td align="center" class="m1-1">{{pm_refers.freq_m_y}}</td>
             <td align="center" class="m2-1">{{pm_refers.m_y}}</td>
-            <form action="pmrefer_change" method="post">
+            <form action="pmrefer_change" method="post" name="pmrefer_change_form">
                     {% csrf_token %}
             <td align="center" class="m1-2">
                 <input type="text" name="new_freq" class="input_css1" required></td>
@@ -146,14 +146,14 @@ b{
                 <input type="hidden" value="{{loginid}}" id="loginid_up">
                 <input type="hidden" value="{{pm_refers.freq_m_y}}" name="m_y">
                 <input type="hidden" value="{{pm_refers.no}}" name="no">
-                <input type="submit" class="delete_button" value="Change"></form>
+                <input type="button" class="delete_button" value="Change" onclick="pmrefer_change();"></form>
             </td>
             <td align="center" class="m3-2">
-                <form action="pmrefer_delete" method="post">
+                <form action="" method="post" name="pmrefer_delete_form">
                     {% csrf_token %}
                 <input type="hidden" value="{{loginid}}" name="loginid">
                 <input type="hidden" value="{{pm_refers.no}}" name="no">
-                <input type="submit" class="delete_button" value="Delete"></form>
+                <input type="button" class="delete_button" value="Delete" onclick="pmrefer_delete();"></form>
             </td>
         </tr>
             {% endfor %}
@@ -171,6 +171,21 @@ b{
             var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=380, height=220, left=50, top=10';
             window.open("/pmrefer_new", "PM Reference Registration", settings);
     }
+
+    function pmrefer_delete(){
+      var check_again = window.confirm("Do you want to proceed with the delete?","");
+        if (check_again == true){
+            document.pmrefer_delete_form.action="pmrefer_delete";
+            document.pmrefer_delete_form.submit();}
+     }
+
+    function pmrefer_change(){
+      var check_again = window.confirm("Do you want to proceed with the change?","");
+        if (check_again == true){
+            document.pmrefer_change_form.action="pmrefer_change";
+            document.pmrefer_change_form.submit();}
+     }
+
 </script>
 </body>
 </html>

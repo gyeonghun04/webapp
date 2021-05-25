@@ -4,8 +4,33 @@
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap');
+
+#end{
+        position: fixed; left:700px; top:300px;
+    	font-family:'Rubik', sans-serif;
+        font-size:32px;
+        font-weight:bold;
+}
+
+#_radius{
+        box-shadow: 3px 4px 0px 0px #A9A9A9;
+        position:fixed;top:200px; left:500px;
+        border:2px solid #6F6F6F;
+        border-radius:1%;
+        width:950px;
+        height:300px;
+    }
+</style>
+
 <body>
-세션이 종료되었습니다.
+<div id="_radius">
+</div>
+
+<div id="end">
+시간이 만료되어 세션이 종료되었습니다.
+</div>
 </body>
 <script>
 //페이지 BACK불가

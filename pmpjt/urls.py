@@ -230,7 +230,11 @@ urlpatterns = [
     path('partslist_vendor_change', pm.views.partslist_vendor_change, name='partslist_vendor_change'),
     path('partslist_vendor_change_submit', pm.views.partslist_vendor_change_submit, name='partslist_vendor_change_submit'),
     path('spareparts_incoming_barcode', pm.views.spareparts_incoming_barcode, name='spareparts_incoming_barcode'),
-
+    path('spareparts_attached_file', pm.views.spareparts_attached_file, name='spareparts_attached_file'),
+    path('spareparts_attached_upload', pm.views.spareparts_attached_upload, name='spareparts_attached_upload'),
+    path('spareparts_location', pm.views.spareparts_location, name='spareparts_location'),
+    path('spareparts_location_rack', pm.views.spareparts_location_rack, name='spareparts_location_rack'),
+    path('spareparts_location_box', pm.views.spareparts_location_box, name='spareparts_location_box'),
 
 ##########################################################################################################################################
 ##########################################################################################################################################

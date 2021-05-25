@@ -187,6 +187,8 @@ tr:nth-child(even){
 
     <form name="info_delete_form" method="post">
                      {% csrf_token %}
+        <input type="hidden" value="{{selecttext}}" name="selecttext">
+        <input type="hidden" value="{{searchtext}}" name="searchtext">
        <input type="hidden" value="{{loginid}}" name="loginid">
        <input type="hidden" name="controlno"></form>
 
@@ -221,9 +223,11 @@ tr:nth-child(even){
             var i = obj.parentNode.parentNode.rowIndex;
             var controlno= document.getElementsByName('controlno_up')[i].value;
             document.info_delete_form.controlno.value = controlno;
+            var check_again = window.confirm("Do you want to proceed with the delete?","");
+            if (check_again == true){
             // 서버로 전송
-            document.info_delete_form.action="equipmentlist_delete";
-            document.info_delete_form.submit();
+                document.info_delete_form.action="equipmentlist_delete";
+                document.info_delete_form.submit();}
             }
 </script>
 </body>

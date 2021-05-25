@@ -159,18 +159,20 @@ tr:nth-child(even){
 
 .n1{width:70px;}
 .n2{width:80px;}
-.n3{width:150px;}
-.n4{width:100px;}
-.n5{width:200px;}
+.n3{width:130px;}
+.n4{width:90px;}
+.n5{width:180px;}
 .n6{width:50px;}
+.n7{width:50px;}
 
 .n1-1{width:70px;
 height:20px;}
 .n2-1{width:80px;}
-.n3-1{width:150px;}
-.n4-1{width:100px;}
-.n5-1{width:200px;}
+.n3-1{width:130px;}
+.n4-1{width:90px;}
+.n5-1{width:180px;}
 .n6-1{width:50px;}
+.n7-1{width:50px;}
 
 .req_qy_css{
     font-size:11px;
@@ -221,10 +223,16 @@ height:20px;}
     }
 #select_radio{
         margin-top:5px;
-        margin-left:330px;
+        margin-left:248px;
         font-family: 'Rubik', sans-serif;
         font-size:11px;
         font-weight:bold;
+}
+.radio{
+    cursor:pointer;
+}
+.check_box{
+    cursor:pointer;
 }
 </style>
 </head>
@@ -244,8 +252,9 @@ height:20px;}
     <td><titletext>Shortage Spare Parts List</titletext></td>
     <td>
     <div id="select_radio">
-            <input type="radio" name="type" value="total" {{total}} onclick="Select_radio();">Total&emsp;
-            <input type="radio" name="type" value="pm" {{pm}} onclick="Select_radio();">PM&emsp;
+            <input type="radio" class="radio" name="type" value="total" {{total}} onclick="Select_radio();">Zero&emsp;
+            <input type="radio" class="radio" name="type" value="pm" {{pm}} onclick="Select_radio();">PM&emsp;
+            <input type="radio" class="radio" name="type" value="short" {{short}} onclick="Select_radio();">Shortage&emsp;
     </div>
     </td>
     <td>
@@ -257,7 +266,7 @@ height:20px;}
             </select>
             <input type="search"  class="searchtext" value="{{searchtext}}" placeholder="Keywords" name="searchtext">
             <input type="hidden" value="{{loginid}}" name="loginid">
-             <input type="hidden" value="{{selecttext}}" name="selecttext">
+            <input type="hidden" value="{{selecttext}}" name="selecttext">
             <input type="hidden" value="{{searchtext}}" name="searchtext">
             <input type="submit"  class="searchbutton" value="Search"></form>
     </div></td>
@@ -297,11 +306,13 @@ height:20px;}
             <td align="center" class="m7-1">{{sp_list.location}}</td>
             {% if pm == "checked" %}
             <td align="center" class="m8-1">{{sp_list.short_qy}}</td>
+            {% elif short == "checked" %}
+            <td align="center" class="m8-1">{{sp_list.short_qy}}</td>
             {% else %}
             <td align="center" class="m8-1">{{sp_list.safety_stock}}</td>
             {%endif%}
             <td align="center" class="m9-1">
-                <input type="checkbox" name="checks[]"  value="{{sp_list.codeno}}" {{sp_list.contact_y_n}}>
+                <input type="checkbox" class="check_box" name="checks[]"  value="{{sp_list.codeno}}" {{sp_list.contact_y_n}}>
                 <input type="hidden" value="{{sp_list.no}}" name="no_up">
             </td>
         </tr>
@@ -332,6 +343,7 @@ height:20px;}
             <td align="center" class="n3">Parts Name</td>
             <td align="center" class="n4">Vendor</td>
             <td align="center" class="n5">Model Name</td>
+            <td align="center" class="n7">S_QY</td>
             <td align="center" class="n6">QY</td>
         </tr>
         </thead>
@@ -350,6 +362,13 @@ height:20px;}
             <td align="center" class="n3-1">{{sp_list.partname}}</td>
             <td align="center" class="n4-1">{{sp_list.vendor}}</td>
             <td align="center" class="n5-1">{{sp_list.modelno}}</td>
+            {% if pm == "checked" %}
+            <td align="center" class="n7-1">{{sp_list.short_qy}}</td>
+            {% elif short == "checked" %}
+            <td align="center" class="n7-1">{{sp_list.short_qy}}</td>
+            {% else %}
+            <td align="center" class="n7-1">{{sp_list.safety_stock}}</td>
+            {%endif%}
             <td align="center" class="n6-1">
                 <input type="hidden" name="codeno[]" value="{{sp_list.codeno}}">
                 <input type="text" class="req_qy_css" name="req_qy[]">
@@ -377,7 +396,7 @@ height:20px;}
             <td align="center" class="v2-1">{{vendorlists.name}}</td>
             <td align="center" class="v3-1">{{vendorlists.email}}</td>
             <td align="center" class="v4-1">
-                <input type="checkbox" name="email_chk[]" value="{{vendorlists.no}}">
+                <input type="checkbox" class="check_box" name="email_chk[]" value="{{vendorlists.no}}">
                 <input type="hidden" value="{{vendorlists.no}}" name="no_up"></td>
         </tr>
                 {%endfor%}

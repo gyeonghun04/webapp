@@ -25,6 +25,7 @@ titletext{
 .searchbutton{
         width:60px;
         height:20px;
+        cursor:pointer;
 }
 #searchbar{
         position:fixed;top:4%; left:79.5%;
@@ -74,7 +75,7 @@ b{
 </div>
 <b class="xi-pen"><input type="button" value="New Registration" class="new" onclick="Registration_new();"></b>
 <div id="searchbar">
-        <form action="search" method="post">
+        <form action="equipmentlist_main" method="post">
             {% csrf_token %}
             <select class="selecttext" name="selecttext">&nbsp;
             <option value="team">Team</option>
@@ -87,7 +88,6 @@ b{
             <input type="search"  class="searchtext" placeholder="Keywords" name="searchtext">
             <input type="hidden" value="{{loginid}}" name="loginid">
             <input type="hidden" value="{{loginid}}" id="loginid_up">
-
             <input type="submit"  class="searchbutton" value="Search"></form>
 </div>
 </body>

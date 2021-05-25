@@ -264,9 +264,11 @@ b{
             var i = obj.parentNode.parentNode.rowIndex;
             var userid= document.getElementsByName('userid_give')[i].value;
             document.user_info_delete.userid.value = userid;
+            var check_again = window.confirm("Do you want to proceed with the delete?","");
+            if (check_again == true){
             // 서버로 전송
             document.user_info_delete.action="user_info_change_delete";
-            document.user_info_delete.submit();
+            document.user_info_delete.submit();}
     }
 
     function Registration_new(){

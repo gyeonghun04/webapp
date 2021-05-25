@@ -97,13 +97,13 @@ tr:nth-child(even){
                 </form>
             </td>
             <td align="center" class="m7-1">
-                <form action="partslist_pm_delete" method="post" >
+                <form action="" method="post" name="partslist_pm_form">
                 {% csrf_token %}
                 <input type="hidden" value="{{loginid}}" name="loginid">
                 <input type="hidden" value="{{pm_list.itemcode}}" name="itemcode">
                 <input type="hidden" value="{{searchtext}}" name="searchtext">
                 <input type="hidden" value="{{selecttext}}" name="selecttext">
-                <input type="submit" class="button" value="Delete">
+                <input type="button" class="button" value="Delete" onclick="Partslist_delete();">
                 </form>
             </td>
         </tr>
@@ -116,5 +116,13 @@ tr:nth-child(even){
 </mainline>
 </div>
 </main>
+<script>
+     function Partslist_delete(){
+        var check_again = window.confirm("Do you want to proceed with the delete?","");
+        if (check_again == true){
+            document.partslist_pm_form.action="partslist_pm_delete";
+            document.partslist_pm_form.submit();}
+     }
+</script>
 </body>
 </html>

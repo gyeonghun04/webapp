@@ -170,7 +170,7 @@ spareparts{
 </header2>
 <spareparts>User Information</spareparts>
 
-<form action="approval_info_change_submit" method="post" name="auth_info_form">
+<form action="" method="post" name="auth_info_form">
     {% csrf_token %}
 <div id="table_location">
    <table id="sparepartstable" border="1">
@@ -208,7 +208,7 @@ spareparts{
 </table>
 </div>
 <input type="hidden" name="loginid">
-<input type="submit" class="submit_btn" value="Submit"></form>
+<input type="button" class="submit_btn" value="Submit" onclick="auth_info_submit();"></form>
 <input type="hidden" value="{{comp_signal}}" name="comp_signal">
 
 <script>
@@ -250,6 +250,13 @@ spareparts{
             opener.document.location.reload();
             self.close();
         }
+
+     function auth_info_submit(){
+      var check_again = window.confirm("Do you want to proceed with the change?","");
+        if (check_again == true){
+            document.auth_info_form.action="approval_info_change_submit";
+            document.auth_info_form.submit();}
+     }
 </script>
 </body>
 </html>

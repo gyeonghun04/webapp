@@ -6831,7 +6831,25 @@ def pmmanual_submit(request):
 
 def equipmentlist_main(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
-        equiplists = equiplist.objects.all().order_by('no') #db 동기화
+        selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
+        searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
+        try:
+                if selecttext == "team":
+                    equiplists = equiplist.objects.filter(team__icontains=searchtext).order_by('no')
+                elif selecttext == "controlno":
+                    equiplists = equiplist.objects.filter(controlno__icontains=searchtext).order_by('no')
+                elif selecttext == "equipname":
+                    equiplists = equiplist.objects.filter(name__icontains=searchtext).order_by('no')
+                elif selecttext == "manufacturer":
+                    equiplists = equiplist.objects.filter(maker__icontains=searchtext).order_by('no')
+                elif selecttext == "roomno":
+                    equiplists = equiplist.objects.filter(roomno__icontains=searchtext).order_by('no')
+                elif selecttext == "pmok":
+                    equiplists = equiplist.objects.filter(pmok__icontains=searchtext).order_by('no')
+                else:
+                    equiplists = equiplist.objects.all().order_by('no') #db 동기화
+        except:
+                equiplists = equiplist.objects.all().order_by('no') #db 동기화
         loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
@@ -6841,13 +6859,12 @@ def equipmentlist_main(request):
         auth = users.auth1
         user_div = users.user_division
         users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
-        context = {"equiplists":equiplists, "loginid":loginid}
+        context = {"equiplists":equiplists, "loginid":loginid,"selecttext":selecttext,"searchtext":searchtext}
         context.update(users)
         return render(request, 'equipmentlist_main.html', context) #templates 내 html연결
 
 def equipmentlist_delete(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
-        equiplists = equiplist.objects.all().order_by('no') #db 동기화
         loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
         controlno = request.POST.get('controlno')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
@@ -6858,8 +6875,28 @@ def equipmentlist_delete(request):
         auth = users.auth1
         user_div = users.user_division
         users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
+    ###검색어 설정###
+        selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
+        searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
+        try:
+                if selecttext == "team":
+                    equiplists = equiplist.objects.filter(team__icontains=searchtext).order_by('no')
+                elif selecttext == "controlno":
+                    equiplists = equiplist.objects.filter(controlno__icontains=searchtext).order_by('no')
+                elif selecttext == "equipname":
+                    equiplists = equiplist.objects.filter(name__icontains=searchtext).order_by('no')
+                elif selecttext == "manufacturer":
+                    equiplists = equiplist.objects.filter(maker__icontains=searchtext).order_by('no')
+                elif selecttext == "roomno":
+                    equiplists = equiplist.objects.filter(roomno__icontains=searchtext).order_by('no')
+                elif selecttext == "pmok":
+                    equiplists = equiplist.objects.filter(pmok__icontains=searchtext).order_by('no')
+                else:
+                    equiplists = equiplist.objects.all().order_by('no') #db 동기화
+        except:
+                equiplists = equiplist.objects.all().order_by('no') #db 동기화
     ##데이터 삭제## <<고민좀 해보자~
-        context = {"equiplists":equiplists, "loginid":loginid}
+        context = {"equiplists":equiplists, "loginid":loginid,"selecttext":selecttext,"searchtext":searchtext}
         context.update(users)
         return render(request, 'equipmentlist_main.html', context) #templates 내 html연결
 
@@ -10422,6 +10459,61 @@ def spareparts_incoming_submit(request):
 def spareparts_incoming_barcode(request):
     return render(request, 'spareparts_incoming_barcode.html')  # templates 내 html연결
 
+def spareparts_attached_file(request):
+    return render(request, 'spareparts_attached_file.html')  # templates 내 html연결
+
+def spareparts_location(request):
+    return render(request, 'spareparts_location.html')  # templates 내 html연결
+
+def spareparts_location_box(request):
+    if request.method == 'POST':  # 매소드값이 post인 값만 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        rack = request.POST.get('rack')  # html에서 해당 값을 받는다
+        box = request.POST.get('box')  # html에서 해당 값을 받는다
+        box_view = spare_parts_list.objects.filter(Q(location__icontains=rack) & ~Q(location__icontains=",")).values('location').annotate(Count('location'))
+        parts_view = spare_parts_list.objects.filter(location__icontains=box)
+        box_signal ="Y"
+        context={"box_view":box_view,"loginid":loginid,"rack":rack,"parts_view":parts_view,"box":box,"box_signal":box_signal}
+    return render(request, 'spareparts_location.html' ,context)  # templates 내 html연결
+
+def spareparts_location_rack(request):
+    if request.method == 'POST':  # 매소드값이 post인 값만 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        rack = request.POST.get('rack')  # html에서 해당 값을 받는다
+        box_view = spare_parts_list.objects.filter(Q(location__icontains=rack) & ~Q(location__icontains=",")).values('location').annotate(Count('location'))
+        context={"box_view":box_view,"loginid":loginid,"rack":rack}
+    return render(request, 'spareparts_location.html' ,context)  # templates 내 html연결
+
+def spareparts_attached_upload(request):
+    if request.method == 'POST':  # 매소드값이 post인 값만 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        codeno = request.POST.get('codeno')  # html에서 해당 값을 받는다
+        ##이름 및 권한 끌고다니기##
+        users = userinfo.objects.get(userid=loginid)
+        username = users.username
+        userteam = users.userteam
+        password = users.password
+        auth = users.auth1
+        user_div = users.user_division
+        users = {"auth": auth, "password": password, "username": username, "userteam": userteam, "user_div": user_div}
+    #################파일업로드하기##################
+        if "upload_file" in request.FILES:
+            # 파일 업로드 하기!!!
+            upload_file = request.FILES["upload_file"]
+            fs = FileSystemStorage()
+            name = fs.save(upload_file.name, upload_file)  # 파일저장 // 이름저장
+            # 파일 읽어오기!!!
+            url = fs.url(name)
+        else:
+            file_name = "-"
+        url_up = spare_parts_list.objects.get(codeno=codeno)
+        url_up.attach = url
+        url_up.attach_tag = "View"
+        url_up.save()
+        comp_signal="Y"
+        context = {"comp_signal": comp_signal}
+    return render(request, 'spareparts_attached_file.html', context)  # templates 내 html연결
+
 def spareparts_incoming_list(request):
     selecttext = request.GET.get('selecttext')  # html 선택조건의 값을 받는다
     searchtext = request.GET.get('searchtext')  # html 입력 값을 받는다
@@ -10853,7 +10945,6 @@ def spareparts_cert_upload(request):
         loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
         codeno = request.POST.get('codeno')  # html에서 해당 값을 받는다
         upload_file = request.POST.get('upload_file')  # html에서 해당 값을 받는다
-        print(upload_file)
         ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -11383,12 +11474,28 @@ def spareparts_short_main(request):
             qy_get.save()
         total = ""
         pm = "checked"
+        short = ""
+        parts_list = spare_parts_list.objects.filter(short_qy__icontains="-")
+    elif type =="short":
+        short_cal = spare_parts_list.objects.all()
+        short_cal = short_cal.values('codeno')
+        df_short_cal = pd.DataFrame.from_records(short_cal)
+        short_cal_len = len(df_short_cal.index)
+        for i in range(short_cal_len):
+            codeno_get = df_short_cal.iat[i, 0]
+            cal = spare_parts_list.objects.get(codeno=codeno_get)
+            cal.short_qy = int(cal.stock) - int(cal.safety_stock)
+            cal.save()
+        total= ""
+        pm = ""
+        short = "checked"
         parts_list = spare_parts_list.objects.filter(short_qy__icontains="-")
     else:
         total= "checked"
         pm = ""
+        short = ""
         parts_list = spare_parts_list.objects.filter(stock="0")
-    context = {"parts_list": parts_list,"total":total,"pm":pm,"type":type}
+    context = {"parts_list": parts_list,"total":total,"pm":pm,"type":type,"short":short}
     return render(request, 'spareparts_short_main.html', context)
 
 def spareparts_short_request(request):
@@ -11412,15 +11519,24 @@ def spareparts_short_request(request):
             check_get.save()
         spare_check = spare_parts_list.objects.filter(contact_y_n="checked")
         vendorlist = vendor_list.objects.all()
+    ####
         if type == "pm":
             total = ""
             pm = "checked"
+            short=""
+            parts_list = spare_parts_list.objects.filter(short_qy__icontains="-")
+        elif type == "short":
+            short = "checked"
+            total = ""
+            pm = ""
             parts_list = spare_parts_list.objects.filter(short_qy__icontains="-")
         else:
+            short = ""
             total = "checked"
             pm = ""
             parts_list = spare_parts_list.objects.filter(stock="0")
-        context = {"parts_list": parts_list,"spare_check":spare_check,"vendorlist":vendorlist,"total":total,"pm":pm,"type":type}
+        context = {"parts_list": parts_list,"spare_check":spare_check,"vendorlist":vendorlist,"total":total,"pm":pm,"type":type
+                   , "short":short}
         context.update(users)
     return render(request, 'spareparts_short_main.html', context)
 

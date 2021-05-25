@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap');
+
+header{
+        height:30px;
+        background:#6F6F6F;
+        justify-content:space-between;
+        align-items:center;
+        position:fixed;
+        top:0;
+        left:0;
+        right:0;
+        z-index:10;
+        }
+header2{
+        height:0.3px;
+        padding-top:3px;
+        background:#EEEEEE;
+        display:flex;
+        justify-content:space-between;
+        position:fixed;
+        top:30px;
+        left:0;
+        right:0;
+        z-index:10;
+}
+#logindata{
+        position:fixed; top:1px; left:100px;
+        font-family: 'Rubik', sans-serif;
+        font-size:18px;
+        vertical-align:top;
+        font-weight:bold;
+        color:white;
+}
+toptext{
+        font-family: 'Rubik', sans-serif;
+        font-size:18px;
+        vertical-align:top;
+        font-weight:bold;
+        padding-left:10px;
+        color:white;
+}
+.Button {
+        position:fixed; left:1570px;
+        font-family:'Rubik', sans-serif;
+        font-size:18px;
+        background-color: rgba(255, 255, 255, 0.0);
+        cursor:pointer;
+        border:0px;
+        color:white;
+        font-weight:bold;
+}
+titletext{
+        position:fixed; left:10px; top:40px;
+    	font-family:'Rubik', sans-serif;
+        font-size:20px;
+        font-weight:bold;
+}
+.rack_text{
+        font-family: 'Rubik', sans-serif;
+        font-size:18px;
+        font-weight:bold;
+        width:100px;
+        background-color:#EEEEEE;
+        border-radius:5%;
+}
+.rack_button{
+        font-family:'Rubik', sans-serif;
+        font-size:16px;
+        background-color: rgba(255, 255, 255, 0.0);
+        cursor:pointer;
+        border:0px;
+        font-color:black;
+        padding-left:4%;
+        outline:0;
+}
+.rack_radius{
+        box-shadow: 3px 4px 0px 0px #A9A9A9;
+        border:2px solid #EEEEEE;
+        border-radius:5%;
+        width:100px;
+        height:50px;
+        font-family: 'Rubik', sans-serif;
+        background-color:white;
+    }
+#ds_location{
+    position:fixed; left:10px; top:110px;
+}
+#dp_location{
+    position:fixed; left:10px; top:260px;
+}
+#so_location{
+    position:fixed; left:10px; top:410px;
+}
+#etc_location{
+    position:fixed; left:10px; top:500px;
+
+}
+
+#rack_view{
+    position:fixed; left:550px; top:67px;
+    font-family: 'Rubik', sans-serif;
+}
+.rack_select{
+        background-color:#EEEEEE;
+        border-radius:5%;
+        width:130px;
+        height:40px;
+        font-weight:bold;
+}
+.box_radius{
+        box-shadow: 3px 4px 0px 0px #A9A9A9;
+        border:2px solid #EEEEEE;
+        border-radius:5%;
+        width:130px;
+        height:30px;
+        background-color:white;
+    }
+
+#box_select{
+    position:fixed; left:720px; top:75px;
+    font-family: 'Rubik', sans-serif;
+    font-size:20px;
+    font-weight:bold;
+    background-color:white;
+    z-index:10;
+    }
+
+#rack_select{
+    position:fixed; left:150px; top:75px;
+    font-family: 'Rubik', sans-serif;
+    font-size:20px;
+    font-weight:bold;
+    background-color:white;
+    z-index:10;
+}
+
+#tablemenu{
+    	font-family: arial;
+        font-size:11px;
+        position:fixed; left:720px; top:115px;
+        background-color:#6F6F6F;
+        color:white;
+}
+
+#table_desc{
+        position:fixed; left:720px; top:140px;
+        z-index:10;
+        font-family: arial;
+        font-size:11px;
+
+}
+.m1{width:90px;
+height:20px;}
+.m2{width:100px;}
+
+.m3{width:170px;}
+.m4{width:120px;}
+.m5{width:200px;}
+.m6{width:70px;}
+.m7{width:70px;}
+
+tr:nth-child(even){
+    background-color:#EEEEEE;
+}
+
+#rack{
+        position:fixed; left:5px; top:87px;
+        border:2px solid #6F6F6F;
+        border-radius:3%;
+        width:440px;
+        height:500px;
+        font-family: 'Rubik', sans-serif;
+    }
+
+</style>
+<body>
+
+<header>
+<toptext>Welcome,&nbsp;</toptext>
+<div id="logindata"></div>
+
+<input type="button"value="Close" class="Button" onclick="Close();">
+</header>
+<header2>
+</header2>
+
+<titletext>Spare Parts Storage</titletext>
+
+
+<div id="rack_select">
+    <box_select>Spare Parts Rack</box_select>
+</div>
+
+<div id="rack"></div>
+
+<div id="ds_location">
+<table>
+    <tr>
+        <td align="center" class="rack_text" rowspan="2">DS Rack</td>
+        <td align="center" class="rack_radius">
+            <form action="spareparts_location_rack" method="post">
+                {% csrf_token %}
+            <input type="hidden" value="DS01" name="rack">
+            <input type="submit" value="DS01" class="rack_button"></form>
+        </td>
+        <td align="center" class="rack_radius">
+            <form action="spareparts_location_rack" method="post">
+                {% csrf_token %}
+            <input type="hidden" value="DS02" name="rack">
+            <input type="submit"value="DS02" class="rack_button"></form>
+        </td>
+        <td align="center" class="rack_radius">
+            <form action="spareparts_location_rack" method="post">
+                {% csrf_token %}
+            <input type="hidden" value="DS03" name="rack">
+            <input type="submit"value="DS03" class="rack_button"></form>
+        </td>
+    </tr>
+    <tr>
+        <td align="center" class="rack_radius">
+            <form action="spareparts_location_rack" method="post">
+                {% csrf_token %}
+            <input type="hidden" value="DS04" name="rack">
+                <input type="button"value="DS04" class="rack_button"></form>
+        </td>
+        <td align="center" class="rack_radius">
+            <form action="spareparts_location_rack" method="post">
+                {% csrf_token %}
+            <input type="hidden" value="DS05" name="rack">
+            <input type="button"value="DS05" class="rack_button"></form>
+        </td>
+        <td align="center" class="rack_radius">
+             <form action="spareparts_location_rack" method="post">
+                {% csrf_token %}
+            <input type="hidden" value="DS06" name="rack">
+            <input type="button"value="DS06" class="rack_button"></form>
+        </td>
+    </tr>
+</table>
+</div>
+
+<div id="dp_location">
+<table>
+    <tr>
+        <td align="center" class="rack_text" rowspan="2">DP Rack</td>
+        <td align="center" class="rack_radius">
+            <form action="spareparts_location_rack" method="post">
+                {% csrf_token %}
+            <input type="hidden" value="DP01" name="rack">
+            <input type="submit"value="DP01" class="rack_button"></form>
+        </td>
+        <td align="center" class="rack_radius">
+            <form action="spareparts_location_rack" method="post">
+                {% csrf_token %}
+            <input type="hidden" value="DP02" name="rack">
+            <input type="submit"value="DP02" class="rack_button"></form>
+        </td>
+        <td align="center" class="rack_radius">
+            <form action="spareparts_location_rack" method="post">
+                {% csrf_token %}
+            <input type="hidden" value="DP03" name="rack">
+            <input type="submit"value="DP03" class="rack_button"></form>
+        </td>
+
+    </tr>
+    <tr>
+        <td align="center" class="rack_radius">
+            <form action="spareparts_location_rack" method="post">
+                {% csrf_token %}
+            <input type="hidden" value="DP04" name="rack">
+            <input type="submit"value="DP04" class="rack_button"></form>
+        </td>
+        <td align="center" class="rack_radius">
+            <form action="spareparts_location_rack" method="post">
+                {% csrf_token %}
+            <input type="hidden" value="DP05" name="rack">
+            <input type="submit"value="DP05" class="rack_button"></form>
+        </td>
+        <td align="center" class="rack_radius">
+            <form action="spareparts_location_rack" method="post">
+                {% csrf_token %}
+            <input type="hidden" value="DP06" name="rack">
+            <input type="submit"value="DP06" class="rack_button"></form>
+        </td>
+    </tr>
+</table>
+</div>
+
+<div id="so_location">
+<table>
+    <tr>
+        <td align="center" class="rack_text" rowspan="2">SO Rack</td>
+        <td align="center" class="rack_radius">
+            <form action="spareparts_location_rack" method="post">
+                {% csrf_token %}
+            <input type="hidden" value="SO01" name="rack">
+            <input type="submit"value="SO01" class="rack_button"></form>
+        </td>
+        <td align="center" class="rack_radius">
+            <form action="spareparts_location_rack" method="post">
+                {% csrf_token %}
+            <input type="hidden" value="SO02" name="rack">
+            <input type="submit"value="SO02" class="rack_button"></form>
+        </td>
+        <td align="center" class="rack_radius">
+            <form action="spareparts_location_rack" method="post">
+                {% csrf_token %}
+            <input type="hidden" value="SO03" name="rack">
+            <input type="submit"value="SO03" class="rack_button"></form>
+        </td>
+    </tr>
+</table>
+</div>
+
+<div id="etc_location">
+<table>
+    <tr>
+        <td align="center" class="rack_text" rowspan="2">ETC Rack</td>
+        <td align="center" class="rack_radius">
+            <form action="spareparts_location_rack" method="post">
+                {% csrf_token %}
+            <input type="hidden" value="ETC01" name="rack">
+            <input type="submit"value="ETC01" class="rack_button"></form>
+        </td>
+        <td align="center" class="rack_radius">
+            <form action="spareparts_location_rack" method="post">
+                {% csrf_token %}
+            <input type="hidden" value="ETC02" name="rack">
+            <input type="submit"value="ETC02" class="rack_button"></form>
+        </td>
+        <td align="center" class="rack_radius">
+            <form action="spareparts_location_rack" method="post">
+                {% csrf_token %}
+            <input type="hidden" value="ETC03" name="rack">
+            <input type="submit"value="ETC03" class="rack_button"></form>
+        </td>
+    </tr>
+</table>
+</div>
+
+<div id="rack_view">
+<table>
+    <tr>
+        <td align="center" class="rack_select">{{rack}} Rack</td>
+    </tr>
+            {%for box_views in box_view%}
+    <tr>
+        <td align="center" class="box_radius">
+            <form action="spareparts_location_box" method="post" >
+                {% csrf_token %}
+            <input type="hidden" value="{{rack}}" name="rack">
+            <input type="hidden" value="{{box_views.location}}" name="box">
+            <input type="submit"value="[{{box_views.location}}]Box" class="rack_button"></form>
+            </td>
+    </tr>
+            {%endfor%}
+</table>
+</div>
+
+    {%if box_signal == "Y" %}
+<div id="box_select">
+    <box_select>[{{box}}]Box Parts List</box_select>
+</div>
+
+<div id="tablemenu">
+<table>
+    <tr>
+            <td align="center" class="m1">Code No.</td>
+            <td align="center" class="m3">Parts Name</td>
+            <td align="center" class="m4">Vendor</td>
+            <td align="center" class="m5">Model Name</td>
+            <td align="center" class="m2">Location</td>
+            <td align="center" class="m6">Staff</td>
+            <td align="center" class="m7">Stock</td>
+            <td align="center" class="m7">S_Stock</td>
+    </tr>
+</table>
+</div>
+
+<div id="table_desc">
+<table>
+            {% for parts_views in parts_view %}
+        <tr>
+            <td align="center" class="m1">{{parts_views.codeno}}</td>
+            <td align="center" class="m3">{{parts_views.partname}}</td>
+            <td align="center" class="m4">{{parts_views.vendor}}</td>
+            <td align="center" class="m5">{{parts_views.modelno}}</td>
+            <td align="center" class="m2">{{parts_views.location}}</td>
+            <td align="center" class="m6">{{parts_views.staff}}</td>
+            <td align="center" class="m7">{{parts_views.stock}}</td>
+            <td align="center" class="m7">{{parts_views.safety_stock}}</td>
+        </tr>
+            {% endfor %}
+</table>
+</div>
+    {%endif%}
+</body>
+<script>
+        //////////// 기본초기값 불러오기//////////////
+     function init(){
+            loginid = opener.document.getElementById("loginid_up").value;
+       ////아이디 정보 보내기
+            var loginid_up = loginid;
+            document.getElementById("logindata").innerHTML=loginid_up;
+            }
+
+      onload=init
+
+     function Close(){
+    self.close();
+    }
+</script>
+</html>

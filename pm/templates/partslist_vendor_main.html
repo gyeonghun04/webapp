@@ -185,9 +185,11 @@ b{
             var i = obj.parentNode.parentNode.rowIndex;
             var no= document.getElementsByName('no')[i].value;
             document.vendor_delete.no.value = no;
+            var check_again = window.confirm("Do you want to proceed with the delete?","");
+            if (check_again == true){
             // 서버로 전송
             document.vendor_delete.action="partslist_vendor_delete";
-            document.vendor_delete.submit();
+            document.vendor_delete.submit();}
     }
 
     function Registration_new(){

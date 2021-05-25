@@ -91,8 +91,9 @@ spareparts{
       height:25px;
       }
 .input_css{
-      width:220px;
+      width:200px;
       height:25px;
+      padding-left:10px;
 }
 .location_css{
       width:120px;
@@ -100,7 +101,7 @@ spareparts{
 }
 .select_css{
       font-size:13px;
-      width:125px;
+      width:254px;
       height:27px;
 }
 .location_btn{
@@ -113,8 +114,12 @@ spareparts{
     	font-family: arial;
         font-size:12px;
         cursor:pointer;
-        position:fixed; top:320px; left:315px;
-
+        position:fixed; top:330px; left:330px;
+}
+.upload_button{
+    	font-family: arial;
+        font-size:12px;
+        cursor:pointer;
 }
 </style>
 </head>
@@ -129,79 +134,49 @@ spareparts{
 </header>
 <header2>
 </header2>
-<spareparts>Spare Parts New Registration</spareparts>
-<form action="spareparts_new_submit" method="post" name="spare_registration">
-    {% csrf_token %}
+<spareparts>Spare Parts File Upload</spareparts>
 <div id="table_location">
    <table id="sparepartstable" border="1">
         <tr>
-            <td align="center" class="text_css">Team</td>
-            <td align="left" colspan="2"><select class="select_css" name="team">&nbsp;
-            <option value="DS">DS</option>
-            <option value="DP">DP</option>
-            <option value="ENG">ENG</option>
-            <option value="QC">QC</option>
-            <option value="SCM">SCM</option>
-            <option value="ETC">ETC</option></select></td>
-        </tr>
-        <tr>
-            <td align="center" class="text_css">Parts Name</td>
-            <td align="center" colspan="2">
-            <input type="text" name="partsname"  class="input_css" required ></td>
-        </tr>
-        <tr>
-            <td align="center" class="text_css">Vendor</td>
-            <td align="center" colspan="2">
-            <input type="text" name="vendor"  class="input_css" required></td>
-        </tr>
-        <tr>
-            <td align="center" class="text_css">Model Name</td>
-            <td align="center" colspan="2">
-            <input type="text" name="modelno"  class="input_css" required></td>
-        </tr>
-        <tr>
-            <td align="center" class="text_css">Spec</td>
-            <td align="center" colspan="2">
-            <input type="text" name="spec"  class="input_css" required></td>
-        </tr>
-        <tr>
-            <td align="center" class="text_css">Location</td>
-             <td align="left">
-            <input type="text" name="location"  class="location_css" required></td>
-            <td align="right"><input type="button" class="location_btn" value="Search" onclick="Location_btn();"></td>
-        </tr>
-        <tr>
-            <td align="center" class="text_css">Safety Stock</td>
-            <td align="center" colspan="2">
-            <input type="text" name="safety_stock"  class="input_css" required></td>
+            <td align="center" class="text_css">Uplaod File</td>
+            <td align="center" class="input_css">
+            <form action="spareparts_attached_upload" method="post" name="upload_file_form" enctype="multipart/form-data">
+                                {% csrf_token %}
+                <input type="hidden" name="loginid">
+                <input type="hidden" name="codeno">
+                <input type="file" name="upload_file" id="upload_file"><br>
+                <input type="submit" value="Upload" class="upload_button"></form>
+            </td>
         </tr>
    </table>
 </div>
-    <input type="hidden" name="loginid" id="loginid_up">
-<input type="submit" class="submit_btn" value="Submit"></form>
+
+<input type="hidden" value="{{comp_signal}}" name="comp_signal">
+
 <script>
     //////////// 기본초기값 불러오기//////////////
      function init(){
             loginid = opener.document.getElementById("loginid_up").value;
-            document.spare_registration.loginid.value = loginid;
+            codeno = opener.document.getElementById("codeno_up2").value;
+            document.upload_file_form.codeno.value = codeno;
+            document.upload_file_form.loginid.value = loginid;
        ////아이디 정보 보내기
             var loginid_up = loginid;
             document.getElementById("logindata").innerHTML=loginid_up;
+       // 자동닫기
+            var close_signal= document.getElementsByName('comp_signal')[0].value;
+            if (close_signal=="Y"){
+                window.resizeTo(600,200);
+                alert("Spare Parts File Upload is complete.");
+               opener.document.location.reload();
+               self.close();}
             }
 
       onload=init
 
-
     function Close(){
     self.close();
     }
-
-    function Location_btn(){
-                        // 팝업창열기
-            var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=1650,height=800, left=50, top=10';
-            window.open("/spareparts_location", "Spare Parts Storage", settings);
-    }
-
 
 </script>
 </body>

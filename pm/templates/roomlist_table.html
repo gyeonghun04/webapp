@@ -158,7 +158,7 @@ b{
 <div id="tabledesc">
  <table style="word-break:break-all">
      <tbody>
-        <form action="roomlist_change" method="post">
+        <form action="roomlist_change" method="post" name="roomlist_change_form">
                     {% csrf_token %}
             {% for room_lists in room_list %}
         <tr>
@@ -174,14 +174,14 @@ b{
                 <input type="hidden" value="{{loginid}}" id="loginid_up">
                 <input type="hidden" value="{{room_lists.roomno}}" name="roomno">
                 <input type="hidden" value="{{room_lists.no}}" name="no">
-                <input type="submit" class="delete_button" value="Change"></form>
+                <input type="button" class="delete_button" value="Change" onclick="roomlist_change();"></form>
             </td>
             <td align="center" class="m3-2">
-                <form action="roomlist_delete" method="post">
+                <form action="roomlist_delete" method="post" name="roomlist_delete_form">
                     {% csrf_token %}
                 <input type="hidden" value="{{loginid}}" name="loginid">
                 <input type="hidden" value="{{room_lists.no}}" name="no">
-                <input type="submit" class="delete_button" value="Delete"></form>
+                <input type="button" class="delete_button" value="Delete" onclick="roomlist_delete();"></form>
             </td>
         </tr>
             {% endfor %}
@@ -199,6 +199,20 @@ b{
             var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=380, height=180, left=50, top=10';
             window.open("/roomlist_new", "Room Information Registration", settings);
     }
+
+    function roomlist_change(){
+      var check_again = window.confirm("Do you want to proceed with the change?","");
+        if (check_again == true){
+            document.roomlist_change_form.action="roomlist_change";
+            document.roomlist_change_form.submit();}
+     }
+
+    function roomlist_delete(){
+      var check_again = window.confirm("Do you want to proceed with the delete?","");
+        if (check_again == true){
+            document.roomlist_delete_form.action="roomlist_delete";
+            document.roomlist_delete_form.submit();}
+     }
 </script>
 </body>
 </html>

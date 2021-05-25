@@ -172,7 +172,7 @@ textarea{
 </header2>
 <spareparts>Vendor Information</spareparts>
 
-<form action="partslist_vendor_change_submit" method="post" name="vendor_info_form">
+<form action="" method="post" name="vendor_info_form">
     {% csrf_token %}
 <div id="table_location">
    <table id="vendortable" border="1">
@@ -211,7 +211,7 @@ textarea{
 </div>
 <input type="hidden" name="loginid">
 <input type="hidden" name="no">
-<input type="submit" class="submit_btn" value="Submit"></form>
+<input type="button" class="submit_btn" value="Submit" onclick="Vendor_info();"></form>
 <input type="hidden" value="{{comp_signal}}" name="comp_signal">
 
 <script>
@@ -255,6 +255,13 @@ textarea{
             opener.document.location.reload();
             self.close();
         }
+
+     function Vendor_info(){
+        var check_again = window.confirm("Do you want to proceed with the change?","");
+        if (check_again == true){
+            document.vendor_info_form.action="partslist_vendor_change_submit";
+            document.vendor_info_form.submit();}
+     }
 </script>
 </body>
 </html>
