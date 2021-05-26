@@ -10449,6 +10449,8 @@ def spareparts_incoming_submit(request):
             new_stock = int(now_stock) + int(use_get)
             stock_get = spare_parts_list.objects.get(codeno=codeno)
             stock_get.stock = new_stock
+            stock_get.status = "견적X"
+            stock_get.status_staff = "미지정"
             stock_get.save()
     ##location 신규저장하기##
         location_check = spare_in.objects.filter(~Q(temp_y_n="Y") & Q(staff=username))
@@ -11648,9 +11650,7 @@ def spareparts_short_status(request):
         users = {"auth": auth, "password": password, "username": username, "userteam": userteam, "user_div": user_div}
     ###상태변경하기###
         status_change = spare_parts_list.objects.get(no=no)
-        if status_change.status == "견적X":
-            status_change.status = "견적X"
-        elif status_change.status == "견적요청":
+        if status_change.status == "견적요청":
             status_change.status = "견젹O"
         elif status_change.status == "견젹O":
             status_change.status = "발주완료"

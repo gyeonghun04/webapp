@@ -303,6 +303,7 @@ class workorder(models.Model):  #
     repair_method = models.TextField(default="")
     description_info = models.TextField()
     workorder_y_n = models.CharField(max_length=255,default="N")
+
     class Meta:
         managed = False
         db_table = "workorder"
