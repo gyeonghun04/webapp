@@ -10145,7 +10145,7 @@ def spareparts_incoming_main(request):
         auth = users.auth1
         user_div = users.user_division
         users = {"auth": auth, "password": password, "username": username, "userteam": userteam, "user_div": user_div}
-        spare_incoming = spare_in.objects.filter(temp_y_n="N", staff=username)
+        spare_incoming = spare_in.objects.filter(~Q(temp_y_n="Y") & Q(staff=username))
         context = {"spare_incoming": spare_incoming, "loginid": loginid}
         context.update(users)
         return render(request, 'spareparts_incoming_main.html', context)  # templates 내 html연결
@@ -10178,7 +10178,7 @@ def spareparts_incoming_search(request):
                                                      |Q(team__icontains=searchtext)).order_by('codeno')
         elif selecttext == "modelno":
             search_result = spare_parts_list.objects.filter(modelno__icontains=searchtext).order_by('codeno')  # db 동기화
-        spare_incoming = spare_in.objects.filter(temp_y_n="N", staff=username)
+        spare_incoming = spare_in.objects.filter(~Q(temp_y_n="Y") & Q(staff=username))
         context = {"spare_incoming": spare_incoming, "loginid": loginid,"searchtext":searchtext,
                    "search_result":search_result,"selecttext":selecttext}
         context.update(users)
@@ -10218,7 +10218,7 @@ def spareparts_incoming_select(request):
                 'codeno')  # db 동기화
     ##검색테이블##
         select_result = spare_parts_list.objects.filter(codeno=codeno)
-        spare_incoming = spare_in.objects.filter(temp_y_n="N", staff=username)
+        spare_incoming = spare_in.objects.filter(~Q(temp_y_n="Y") & Q(staff=username))
         context = {"spare_incoming": spare_incoming, "loginid": loginid,"searchtext":searchtext,
                    "search_result":search_result,"selecttext":selecttext,"select_result":select_result,"codeno":codeno}
         context.update(users)
@@ -10259,7 +10259,7 @@ def spareparts_incoming_sel_submit(request):
             ).save()
         except:
             pass
-        spare_incoming = spare_in.objects.filter(temp_y_n="N", staff=username)
+        spare_incoming = spare_in.objects.filter(~Q(temp_y_n="Y") & Q(staff=username))
         context = {"spare_incoming": spare_incoming, "loginid": loginid}
         context.update(users)
         return render(request, 'spareparts_incoming_main.html', context)  # templates 내 html연결
@@ -10268,6 +10268,7 @@ def spareparts_incoming_delete(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
         loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
         no = request.POST.get('no')  # html에서 해당 값을 받는다
+        pInput = request.POST.get('pInput')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -10278,18 +10279,24 @@ def spareparts_incoming_delete(request):
         users = {"auth": auth, "password": password, "username": username, "userteam": userteam, "user_div": user_div}
     ##삭제##
         del_check = spare_in.objects.get(no=no)
+      ##출고에 표시내용 취소##
         if del_check.division == "미사용 반납":
-            messages.error(request, "[미사용반납] cannot be deleted.")  # 경고
-            spare_incoming = spare_in.objects.filter(temp_y_n="N", staff=username)
-            context = {"spare_incoming": spare_incoming, "loginid": loginid}
-            context.update(users)
-            return render(request, 'spareparts_incoming_main.html', context)  # templates 내 html연결
+            cancle_check = spare_out.objects.get(no=del_check.temp_y_n)
+            print(del_check.temp_y_n)
+            cancle_check.check_y_n = ""
+            cancle_check.check_y_n_temp = ""
+            cancle_check.used_qy = cancle_check.qy
+            cancle_check.used_y_n_temp = ""
+            cancle_check.used_y_n = ""
+            cancle_check.controlno = str(cancle_check.controlno)[3:]
+            cancle_check.equipname = str(cancle_check.equipname)[3:]
+            cancle_check.save()
         try:
             qy_check = spare_in.objects.get(no=no)
             qy_check.delete()
         except:
             pass
-        spare_incoming = spare_in.objects.filter(temp_y_n="N", staff=username)
+        spare_incoming = spare_in.objects.filter(~Q(temp_y_n="Y") & Q(staff=username))
         context = {"spare_incoming": spare_incoming, "loginid": loginid}
         context.update(users)
         return render(request, 'spareparts_incoming_main.html', context)  # templates 내 html연결
@@ -10310,7 +10317,7 @@ def spareparts_incoming_plus(request):
         del_check = spare_in.objects.get(no=no)
         if del_check.division == "미사용 반납":
             messages.error(request, "[미사용반납] cannot be changed.")  # 경고
-            spare_incoming = spare_in.objects.filter(temp_y_n="N", staff=username)
+            spare_incoming = spare_in.objects.filter(~Q(temp_y_n="Y") & Q(staff=username))
             context = {"spare_incoming": spare_incoming, "loginid": loginid}
             context.update(users)
             return render(request, 'spareparts_incoming_main.html', context)  # templates 내 html연결
@@ -10320,7 +10327,7 @@ def spareparts_incoming_plus(request):
         qy = qy + 1
         qy_check.qy = qy
         qy_check.save()
-        spare_incoming = spare_in.objects.filter(temp_y_n="N", staff=username)
+        spare_incoming = spare_in.objects.filter(~Q(temp_y_n="Y") & Q(staff=username))
         context = {"spare_incoming": spare_incoming, "loginid": loginid}
         context.update(users)
         return render(request, 'spareparts_incoming_main.html', context)  # templates 내 html연결
@@ -10341,7 +10348,7 @@ def spareparts_incoming_minus(request):
         del_check = spare_in.objects.get(no=no)
         if del_check.division == "미사용 반납":
             messages.error(request, "[미사용반납] cannot be changed.")  # 경고
-            spare_incoming = spare_in.objects.filter(temp_y_n="N", staff=username)
+            spare_incoming = spare_in.objects.filter(~Q(temp_y_n="Y") & Q(staff=username))
             context = {"spare_incoming": spare_incoming, "loginid": loginid}
             context.update(users)
             return render(request, 'spareparts_incoming_main.html', context)  # templates 내 html연결
@@ -10354,7 +10361,7 @@ def spareparts_incoming_minus(request):
             qy = qy - 1
         qy_check.qy = qy
         qy_check.save()
-        spare_incoming = spare_in.objects.filter(temp_y_n="N", staff=username)
+        spare_incoming = spare_in.objects.filter(~Q(temp_y_n="Y") & Q(staff=username))
         context = {"spare_incoming": spare_incoming, "loginid": loginid}
         context.update(users)
         return render(request, 'spareparts_incoming_main.html', context)  # templates 내 html연결
@@ -10379,7 +10386,7 @@ def spareparts_incoming_reset(request):
             no_change = df_del_check.iat[k, 0]
             qy_check = spare_in.objects.get(no=no_change)
             qy_check.delete()
-        spare_incoming = spare_in.objects.filter(temp_y_n="N", staff=username)
+        spare_incoming = spare_in.objects.filter(~Q(temp_y_n="Y") & Q(staff=username))
         context = {"spare_incoming": spare_incoming, "loginid": loginid}
         context.update(users)
         return render(request, 'spareparts_incoming_main.html', context)  # templates 내 html연결
@@ -10401,7 +10408,7 @@ def spareparts_incoming_location(request):
         location_check = spare_in.objects.get(no=no)
         location_check.location = location_up
         location_check.save()
-        spare_incoming = spare_in.objects.filter(temp_y_n="N", staff=username)
+        spare_incoming = spare_in.objects.filter(~Q(temp_y_n="Y") & Q(staff=username))
         context = {"spare_incoming": spare_incoming, "loginid": loginid}
         context.update(users)
         return render(request, 'spareparts_incoming_main.html', context)  # templates 내 html연결
@@ -10428,7 +10435,7 @@ def spareparts_incoming_submit(request):
         in_code_gen_len = len(df_in_code_gen.index)
         in_code_gen = str(code_date) + "/" + str(in_code_gen_len)
     ##토탈계산하기##
-        count_check = spare_in.objects.filter(temp_y_n="N", staff=username)
+        count_check = spare_in.objects.filter(~Q(temp_y_n="Y") & Q(staff=username))
         count_check = count_check.values()
         df_count_check = pd.DataFrame.from_records(count_check)
         count_check_len = len(df_count_check.index)
@@ -10444,7 +10451,7 @@ def spareparts_incoming_submit(request):
             stock_get.stock = new_stock
             stock_get.save()
     ##location 신규저장하기##
-        location_check = spare_in.objects.filter(temp_y_n="N", staff=username)
+        location_check = spare_in.objects.filter(~Q(temp_y_n="Y") & Q(staff=username))
         location_check = location_check.values('no')
         df_location_check = pd.DataFrame.from_records(location_check)
         location_check_len = len(df_location_check.index)
@@ -10456,13 +10463,13 @@ def spareparts_incoming_submit(request):
             location_chk = spare_parts_list.objects.get(codeno=codeno_get)
             location_get2 = location_chk.location
             try:
-                location = spare_parts_list.objects.get(codeno=codeno_get,location__icontains=location_get)
+                location = spare_parts_list.objects.get(codeno=codeno_get, location__icontains=location_get)
             except:
                 location_new = str(location_get2) + ", " + str(location_get)
                 location_chk.location = location_new
                 location_chk.save()
     ##status 변경하기##
-        status_check = spare_in.objects.filter(temp_y_n="N", staff=username)
+        status_check = spare_in.objects.filter(~Q(temp_y_n="Y") & Q(staff=username))
         status_check = status_check.values('no')
         df_status_check = pd.DataFrame.from_records(status_check)
         status_check_len = len(df_status_check.index)
@@ -10473,7 +10480,7 @@ def spareparts_incoming_submit(request):
             status_change.date = today_date
             status_change.in_code = in_code_gen
             status_change.save()
-        spare_incoming = spare_in.objects.filter(temp_y_n="N", staff=username)
+        spare_incoming = spare_in.objects.filter(~Q(temp_y_n="Y") & Q(staff=username))
         in_code_num = in_code_gen
         context = {"spare_incoming": spare_incoming, "loginid": loginid,"in_code_num":in_code_num}
         context.update(users)
@@ -10556,35 +10563,34 @@ def spareparts_incoming_not_use_submit(request):
         auth = users.auth1
         user_div = users.user_division
         users = {"auth": auth, "password": password, "username": username, "userteam": userteam, "user_div": user_div}
-        try:
-            codeno_check = spare_out.objects.get(out_code=checks)
-            if codeno != codeno_check.codeno:
-                messages.error(request, "Parts Code No. does not match.")  # 경고
-                spareparts_release = spare_out.objects.filter(temp_y_n="Y", used_y_n="").order_by('date', 'out_code',
-                                                                                                  'team')  # db 동기화
-                context = {"spareparts_release": spareparts_release}
-                context.update(users)
-                return render(request, 'spareparts_incoming_not_use.html', context)  # templates 내 html연결
-    ##값 저장하기##
-            today = date.datetime.today()
-            return_date = "20" + today.strftime('%y') + "-" + today.strftime('%m')
-            return_check = spare_out.objects.get(out_code=checks)
-            return_check.check_y_n = "checked"
-            return_check.check_y_n_temp = "checked"
-            return_check.used_qy = return_check.qy
-            return_check.used_y_n_temp = "Returned/" + return_date
-            return_check.used_y_n = "Returned/" + return_date
-            return_check.controlno = "Returned"
-            return_check.equipname = "N/A"
-            return_check.save()
-            close_signal = "Y"
+        codeno_check = spare_out.objects.get(no=checks)
+        if codeno != codeno_check.codeno:
+            messages.error(request, "Parts Code No. does not match.")  # 경고
             spareparts_release = spare_out.objects.filter(temp_y_n="Y", used_y_n="").order_by('date', 'out_code',
+                                                                                                  'team')  # db 동기화
+            context = {"spareparts_release": spareparts_release}
+            context.update(users)
+            return render(request, 'spareparts_incoming_not_use.html', context)  # templates 내 html연결
+    ##값 저장하기##
+        today = date.datetime.today()
+        return_date = "20" + today.strftime('%y') + "-" + today.strftime('%m')
+        return_check = spare_out.objects.get(no=checks)
+        return_check.check_y_n = "checked"
+        return_check.check_y_n_temp = "checked"
+        return_check.used_qy = return_check.qy
+        return_check.used_y_n_temp = "Returned/" + return_date
+        return_check.used_y_n = "Returned/" + return_date
+        return_check.controlno = "(R)" + return_check.controlno
+        return_check.equipname = "(R)" + return_check.equipname
+        return_check.save()
+        close_signal = "Y"
+        spareparts_release = spare_out.objects.filter(temp_y_n="Y", used_y_n="").order_by('date', 'out_code',
                                                                                               'team')  # db 동기화
     ##입고 정보값 저장하기##
-            today = date.datetime.today()
-            today_date = "20" + today.strftime('%y') + "-" + today.strftime('%m') + "-" + today.strftime('%d')
-            info_get = spare_parts_list.objects.get(codeno=codeno)
-            spare_in(
+        today = date.datetime.today()
+        today_date = "20" + today.strftime('%y') + "-" + today.strftime('%m') + "-" + today.strftime('%d')
+        info_get = spare_parts_list.objects.get(codeno=codeno)
+        spare_in(
                 codeno=info_get.codeno,
                 team=info_get.team,
                 partname=info_get.partname,
@@ -10593,14 +10599,10 @@ def spareparts_incoming_not_use_submit(request):
                 staff=username,
                 qy=return_check.qy,
                 date=today_date,
-                temp_y_n="N",
+                temp_y_n=checks,
                 location=info_get.location,
                 division="미사용 반납",
-            ).save()
-        except:
-            close_signal = "N"
-            spareparts_release = spare_out.objects.filter(temp_y_n="Y", used_y_n="").order_by('date', 'out_code',
-                                                                                              'team')  # db 동기화
+        ).save()
         context = {"spareparts_release": spareparts_release,"close_signal":close_signal}
         context.update(users)
     return render(request, 'spareparts_incoming_not_use.html', context)  # templates 내 html연결
@@ -11627,10 +11629,51 @@ def spareparts_short_request(request):
             pm = ""
             parts_list = spare_parts_list.objects.filter(stock="0")
         context = {"parts_list": parts_list,"spare_check":spare_check,"vendorlist":vendorlist,"total":total,"pm":pm,"type":type
-                   , "short":short}
+                   , "short":short,"loginid":loginid}
         context.update(users)
     return render(request, 'spareparts_short_main.html', context)
 
+def spareparts_short_status(request):
+    if request.method == 'POST':  # 매소드값이 post인 값만 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        no = request.POST.get('no')  # html에서 해당 값을 받는다
+        type = request.POST.get('type')
+    ##이름 및 권한 끌고다니기##
+        users = userinfo.objects.get(userid=loginid)
+        username = users.username
+        userteam = users.userteam
+        password = users.password
+        auth = users.auth1
+        user_div = users.user_division
+        users = {"auth": auth, "password": password, "username": username, "userteam": userteam, "user_div": user_div}
+    ###상태변경하기###
+        status_change = spare_parts_list.objects.get(no=no)
+        if status_change.status == "견적X":
+            status_change.status = "견적X"
+        elif status_change.status == "견적요청":
+            status_change.status = "견젹O"
+        elif status_change.status == "견젹O":
+            status_change.status = "발주완료"
+        status_change.save()
+    ###정보보내기###
+        if type == "pm":
+            total = ""
+            pm = "checked"
+            short=""
+            parts_list = spare_parts_list.objects.filter(short_qy__icontains="-")
+        elif type == "short":
+            short = "checked"
+            total = ""
+            pm = ""
+            parts_list = spare_parts_list.objects.filter(short_qy__icontains="-")
+        else:
+            short = ""
+            total = "checked"
+            pm = ""
+            parts_list = spare_parts_list.objects.filter(stock="0")
+        context = {"parts_list": parts_list,"total":total,"pm":pm,"type":type, "short":short,"loginid":loginid}
+        context.update(users)
+    return render(request, 'spareparts_short_main.html', context)
 def spareparts_short_submit(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
         loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
@@ -11647,7 +11690,7 @@ def spareparts_short_submit(request):
         auth = users.auth1
         user_div = users.user_division
         users = {"auth": auth, "password": password, "username": username, "userteam": userteam, "user_div": user_div}
-        ##미입력분 확인하기##
+    ##미입력분 확인하기##
         len_check = spare_parts_list.objects.filter(stock="0", contact_y_n="checked")
         len_check = len_check.values('codeno')
         df_len_check = pd.DataFrame.from_records(len_check)
@@ -11715,6 +11758,15 @@ def spareparts_short_submit(request):
             email = EmailMessage(title_text, email_text, to=repemail)
             email.send()
         email_comp="Y"
+    ######status변경하기#####
+        j = 0
+        while j < (len(qy_var)):
+            codeno_get = codeno_var[j]
+            status_get = spare_parts_list.objects.get(codeno=codeno_get)
+            status_get.status = "견적요청"
+            status_get.status_staff = username
+            status_get.save()
+            j = j + 1
         parts_list = spare_parts_list.objects.filter(stock="0")
         spare_check = spare_parts_list.objects.filter(stock="0", contact_y_n="checked")
         vendorlist = vendor_list.objects.all()

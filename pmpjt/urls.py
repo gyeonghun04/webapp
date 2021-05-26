@@ -237,6 +237,7 @@ urlpatterns = [
     path('spareparts_location_box', pm.views.spareparts_location_box, name='spareparts_location_box'),
     path('spareparts_incoming_not_use', pm.views.spareparts_incoming_not_use, name='spareparts_incoming_not_use'),
     path('spareparts_incoming_not_use_submit', pm.views.spareparts_incoming_not_use_submit, name='spareparts_incoming_not_use_submit'),
+    path('spareparts_short_status', pm.views.spareparts_short_status, name='spareparts_short_status'),
 
 ##########################################################################################################################################
 ##########################################################################################################################################

@@ -327,6 +327,8 @@ class spare_parts_list(models.Model): #spare_parts_list
     contact_y_n = models.CharField(max_length=255)  # 스페어 구매체크
     used_qy_sum = models.CharField(max_length=255)  # 작년도 소요슈량
     attach_tag = models.CharField(max_length=255, default="")  # attack_tag
+    status = models.CharField(max_length=255, default="견적X")  # 부족분 진행 상태
+    status_staff = models.CharField(max_length=255, default="미지정")  # 부족분 진행 담당자
 
     class Meta:
         managed = False

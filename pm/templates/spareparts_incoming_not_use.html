@@ -230,7 +230,7 @@ tr:nth-child(even){
             <td align="center" class="m11-1">{{spare_out.equipname}}</td>
             <td align="center" class="m12-1">{{spare_out.out_code}}</td>
             <td align="center" class="m13-1">
-                <input type="checkbox" name="checks" value="{{spare_out.out_code}}" onclick='checkOnlyOne(this)'>
+                <input type="checkbox" name="checks" value="{{spare_out.no}}" onclick='checkOnlyOne(this)'>
                 <input type="hidden" value="{{spare_out.out_code}}" name="out_code_up">
                 <input type="hidden" value="{{spare_out.no}}" name="no_up">
             </td>
@@ -242,7 +242,7 @@ tr:nth-child(even){
 </div>
 <input type="hidden" name="loginid">
 <input type="hidden" name="codeno">
-<input type="submit"  class="submit_btn" value="Submit"></form>
+<input type="submit"  class="submit_btn" value="Submit" onclick="setParentText();"></form>
 <input type="hidden" name="close_signal" value="{{close_signal}}">
 
 </div>
@@ -278,6 +278,7 @@ tr:nth-child(even){
           })
           element.checked = true;
         }
+
 </script>
 </body>
 </html>

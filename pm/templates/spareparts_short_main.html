@@ -106,22 +106,26 @@ titletext{
 .m2{width:80px;}
 .m3{width:150px;}
 .m4{width:100px;}
-.m5{width:200px;}
-.m6{width:200px;}
+.m5{width:150px;}
+.m6{width:150px;}
 .m7{width:100px;}
-.m8{width:100px;}
+.m8{width:70px;}
 .m9{width:50px;}
+.m10{width:80px;}
+.m11{width:50px;}
 
 .m1-1{width:70px;
 height:20px;}
 .m2-1{width:80px;}
 .m3-1{width:150px;}
 .m4-1{width:100px;}
-.m5-1{width:200px;}
-.m6-1{width:200px;}
+.m5-1{width:150px;}
+.m6-1{width:150px;}
 .m7-1{width:100px;}
-.m8-1{width:100px;}
+.m8-1{width:70px;}
 .m9-1{width:50px;}
+.m10-1{width:80px;}
+.m11-1{width:50px;}
 
 body{overflow:hidden;}
 
@@ -229,10 +233,16 @@ height:20px;}
         font-weight:bold;
 }
 .radio{
-    cursor:pointer;
+        cursor:pointer;
 }
 .check_box{
-    cursor:pointer;
+        cursor:pointer;
+}
+.status_btn{
+        font-family: arial;
+        font-size:10px;
+        cursor:pointer;
+        width:60px;
 }
 </style>
 </head>
@@ -285,6 +295,8 @@ height:20px;}
             <td align="center" class="m6">Spec</td>
             <td align="center" class="m7">Location</td>
             <td align="center" class="m8">Shortage QY</td>
+            <td align="center" class="m10">Status</td>
+            <td align="center" class="m11">Staff</td>
             <td align="center" class="m9">Check</td>
         </tr>
         </thead>
@@ -311,6 +323,9 @@ height:20px;}
             {% else %}
             <td align="center" class="m8-1">{{sp_list.safety_stock}}</td>
             {%endif%}
+            <td align="center" class="m10-1">
+                <input type="button"  value="{{sp_list.status}}" name="status" class="status_btn" onclick="Status_change(this);"></td>
+            <td align="center" class="m11-1">{{sp_list.status_staff}}</td>
             <td align="center" class="m9-1">
                 <input type="checkbox" class="check_box" name="checks[]"  value="{{sp_list.codeno}}" {{sp_list.contact_y_n}}>
                 <input type="hidden" value="{{sp_list.no}}" name="no_up">
@@ -324,6 +339,7 @@ height:20px;}
 <input type="hidden" name="total" value="{{total}}">
 <input type="hidden" name="pm" value="{{pm}}">
 <input type="hidden" name="type" value="{{type}}">
+<input type="hidden" name="short" value="{{short}}">
 <input type="submit" class="request_btn" value="Request"></form>
 
 <form action="spareparts_short_main" method="post" name="spareparts_request_reset">
@@ -406,6 +422,7 @@ height:20px;}
     <input type="hidden" name="loginid">
     <input type="hidden" name="type" value="{{type}}">
     <input type="hidden" name="total" value="{{total}}">
+    <input type="hidden" name="short" value="{{short}}">
     <input type="hidden" name="pm" value="{{pm}}">
     <input type="submit"  class="submit_btn" value="e-mail" onclick="this.disabled=true;this.value='e-mail'; this.form.submit();"></form>
 <input type="hidden" value="{{email_comp}}" name="email_comp">
@@ -415,12 +432,23 @@ height:20px;}
 <input type="hidden" name="type">
 </form>
 
+<form method="post" name="status_change_form">
+    {% csrf_token %}
+    <input type="hidden" name="type" value="{{type}}">
+    <input type="hidden" name="total" value="{{total}}">
+    <input type="hidden" name="pm" value="{{pm}}">
+    <input type="hidden" name="short" value="{{short}}">
+    <input type="hidden" name="no">
+    <input type="hidden" name="loginid">
+</form>
+
 <script>
      function init(){
             loginid = opener.document.getElementById("loginid_up").value;
             var loginid_up = loginid;
             document.spareparts_request_form.loginid.value = loginid_up;
             document.spareparts_submit_form.loginid.value = loginid_up;
+            document.status_change_form.loginid.value = loginid_up;
             document.getElementById("logindata").innerHTML=loginid_up;
             var close_signal= document.getElementsByName('email_comp')[0].value;
             if (close_signal=="Y"){
@@ -448,6 +476,15 @@ height:20px;}
                            // 서버연결
            document.spareparts_short_type.action="spareparts_short_main";
            document.spareparts_short_type.submit();
+    }
+
+    function Status_change(obj){
+                    // 행위치값과 플랜데이트 받기
+            var i = obj.parentNode.parentNode.rowIndex;
+            var no = document.getElementsByName('no_up')[i].value;
+            document.status_change_form.no.value = no;
+            document.status_change_form.action="spareparts_short_status";
+            document.status_change_form.submit();
     }
 </script>
 </body>
