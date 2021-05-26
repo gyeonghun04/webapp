@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Work Order Spare Parts</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap');
+
+header{
+        height:30px;
+        background:#6F6F6F;
+        justify-content:space-between;
+        align-items:center;
+        position:fixed;
+        top:0;
+        left:0;
+        right:0;
+        z-index:10;
+        }
+header2{
+        height:0.3px;
+        padding-top:3px;
+        background:#EEEEEE;
+        display:flex;
+        justify-content:space-between;
+        position:fixed;
+        top:30px;
+        left:0;
+        right:0;
+        z-index:10;
+}
+#logindata{
+        position:fixed; top:1px; left:100px;
+        font-family: 'Rubik', sans-serif;
+        font-size:18px;
+        vertical-align:top;
+        font-weight:bold;
+        color:white;
+}
+toptext{
+        font-family: 'Rubik', sans-serif;
+        font-size:18px;
+        vertical-align:top;
+        font-weight:bold;
+        padding-left:10px;
+        color:white;
+}
+.Button {
+        position:fixed; left:1250px;
+        font-family:'Rubik', sans-serif;
+        font-size:18px;
+        background-color: rgba(255, 255, 255, 0.0);
+        cursor:pointer;
+        border:0px;
+        color:white;
+        font-weight:bold;
+}
+#tabletop{
+    	font-family: arial;
+        position:fixed;top:27px;
+        height:30px;
+}
+titletext{
+    	font-family:'Rubik', sans-serif;
+        font-size:20px;
+        font-weight:bold;
+}
+#tablemenu{
+    	font-family: arial;
+        font-size:11px;
+        position:fixed;top:60px;
+        height:20px;
+        background-color:#6F6F6F;
+        color:white;
+}
+#tabledesc{
+        position:absolute;top:80px;
+        z-index:10;
+        font-family: arial;
+        font-size:11px;
+        overflow-y:scroll;
+        height:680px;
+}
+
+.m1{width:70px;}
+.m2{width:50px;}
+.m3{width:150px;}
+.m4{width:100px;}
+.m5{width:170px;}
+.m6{width:63px;}
+.m7{width:83px;}
+.m8{width:100px;}
+.m9{width:95px;}
+.m10{width:85px;}
+.m11{width:150px;}
+.m12{width:75px;}
+.m13{width:50px;
+padding-left:10px;}
+
+.m1-1{width:70px;
+height:20px;}
+.m2-1{width:50px;}
+.m3-1{width:150px;}
+.m4-1{width:100px;}
+.m5-1{width:165px;}
+.m6-1{width:70px;}
+.m7-1{width:78px;}
+.m8-1{width:100px;}
+.m9-1{width:100px;}
+.m10-1{width:80px;}
+.m11-1{width:150px;}
+.m12-1{width:80px;}
+.m13-1{width:40px;}
+
+body{overflow:hidden;}
+
+tr:nth-child(even){
+    background-color:#EEEEEE;
+}
+.qy_btn_minus{
+        font-weight:bold;
+        background-color: rgba(255, 255, 255, 0.0);
+        outline:0;
+        font-size:15px;
+        height:20px;
+        cursor:pointer;
+        border:1px;
+        width:20px;
+        color:red;
+}
+.qy_btn_plus{
+        font-weight:bold;
+        background-color: rgba(255, 255, 255, 0.0);
+        outline:0;
+        cursor:pointer;
+        border:1px;
+        width:20px;
+        color:blue;
+}
+.submit_btn{
+        position:fixed;top:770px; left:1240px;
+        font-size:14px;
+        cursor:pointer;
+        font-family: arial;
+}
+
+#messages_location{
+        position:fixed; top:3px; left:500px;
+        font-size:18px;
+        font-weight:bold;
+        animation-iteration-count:5;
+	    animation-duration:1s;
+	    animation-name: changecolor;
+       	color:#6F6F6F;
+       	z-index:10;
+}
+@keyframes changecolor{
+    from{
+       	  color:white;    }
+    to{
+          color:red;    }
+}
+
+</style>
+</head>
+<body>
+<header>
+<toptext>Welcome,&nbsp;</toptext>
+<div id="logindata"></div>
+
+<input type="button"value="Close" class="Button" onclick="Close();">
+</header>
+<header2>
+</header2>
+
+<div id="messages_location">
+{%if messages %}
+{%for message in messages%}
+{{message}}
+{%endfor%}
+{%endif%}
+</div>
+
+<div id="tabletop" style="word-break:break-all">
+<table>
+    <tr>
+    <td><titletext>Spare Parts Release List</titletext></td>
+    </tr>
+</table>
+</div>
+
+<div id="tablemenu">
+     <table  style="word-break:break-all">
+        <thead>
+        <tr>
+            <td align="center" class="m1">Code No.</td>
+            <td align="center" class="m2">Team</td>
+            <td align="center" class="m3">Parts Name</td>
+            <td align="center" class="m4">Vendor</td>
+            <td align="center" class="m5">Model Name</td>
+            <td align="center" class="m6">Staff</td>
+            <td align="center" class="m7">QY</td>
+            <td align="center" class="m8">Location</td>
+            <td align="center" class="m9">Date</td>
+            <td align="center" class="m10">Control No.</td>
+            <td align="center" class="m11">Equipment Name</td>
+            <td align="center" class="m12">Out Code</td>
+            <td align="left" class="m13">Check</td>
+        </tr>
+        </thead>
+     </table>
+</div>
+            <form action="spareparts_incoming_not_use_submit" method="post" name="spareparts_incoming_not_use_form">
+                                     {% csrf_token %}
+<div id="tabledesc">
+ <table style="word-break:break-all">
+     <tbody>
+            {% for spare_out in spareparts_release %}
+        <tr>
+            <td align="center" class="m1-1">{{spare_out.codeno}}</td>
+            <td align="center" class="m2-1">{{spare_out.team}}</td>
+            <td align="center" class="m3-1">{{spare_out.partname}}</td>
+            <td align="center" class="m4-1">{{spare_out.vendor}}</td>
+            <td align="center" class="m5-1">{{spare_out.modelno}}</td>
+            <td align="center" class="m6-1">{{spare_out.staff}}</td>
+            <td align="center" class="m7-1">{{spare_out.used_qy}}</td>
+            <td align="center" class="m8-1">{{spare_out.location}}</td>
+            <td align="center" class="m9-1">{{spare_out.date}}</td>
+            <td align="center" class="m10-1">{{spare_out.controlno}}</td>
+            <td align="center" class="m11-1">{{spare_out.equipname}}</td>
+            <td align="center" class="m12-1">{{spare_out.out_code}}</td>
+            <td align="center" class="m13-1">
+                <input type="checkbox" name="checks" value="{{spare_out.out_code}}" onclick='checkOnlyOne(this)'>
+                <input type="hidden" value="{{spare_out.out_code}}" name="out_code_up">
+                <input type="hidden" value="{{spare_out.no}}" name="no_up">
+            </td>
+        </tr>
+            {% endfor %}
+        </tbody>
+
+ </table>
+</div>
+<input type="hidden" name="loginid">
+<input type="hidden" name="codeno">
+<input type="submit"  class="submit_btn" value="Submit"></form>
+<input type="hidden" name="close_signal" value="{{close_signal}}">
+
+</div>
+
+<script>
+     function init(){
+        ////부모창에서 값 받아오기///
+            loginid = opener.document.getElementById("loginid_up").value;
+            codeno = opener.document.getElementById("codeno_up").value;
+        ///HTML로 값 전송////
+            document.getElementById("logindata").innerHTML=loginid;
+            document.spareparts_incoming_not_use_form.loginid.value = loginid;
+            document.spareparts_incoming_not_use_form.codeno.value = codeno;
+            var close_signal= document.getElementsByName('close_signal')[0].value;
+            if (close_signal=="Y"){
+                        window.resizeTo(600,200);
+                        alert("Used Parts registration is complete.");
+                        opener.document.location.reload();
+                        self.close();}
+            }
+
+      onload=init
+
+    function Close(){
+            self.close();
+    }
+
+    function checkOnlyOne(element) {
+          const checkboxes
+              = document.getElementsByName("checks");
+          checkboxes.forEach((cb) => {
+            cb.checked = false;
+          })
+          element.checked = true;
+        }
+</script>
+</body>
+</html>

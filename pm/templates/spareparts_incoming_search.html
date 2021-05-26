@@ -294,7 +294,9 @@ position:fixed;top:73%; left:56%;
     </thead>
             {%for select in select_result%}
     <tbody id="select_tbody">
-        <td align="center" class="a1">{{select.codeno}}</td>
+        <td align="center" class="a1">
+        <input type="hidden" id="codeno_up" value="{{select.codeno}}">
+            {{select.codeno}}</td>
         <td align="center" class="a6">{{select.team}}</td>
         <td align="center" class="a2">{{select.partname}}</td>
         <td align="center" class="a3">{{select.vendor}}</td>
@@ -334,7 +336,7 @@ position:fixed;top:73%; left:56%;
 </div>
 <div id="division_select">
     <title_text>Division</title_text>&emsp;
-     &nbsp;<select class="division_text" name="division_text">&nbsp;
+     &nbsp;<select class="division_text" name="division_text" onchange="Division_sel();">&nbsp;
             <option value="신규구매">신규구매</option>
             <option value="미사용 반납">미사용 반납</option>
             <option value="업체 무상제공">업체 무상제공</option>
@@ -342,6 +344,7 @@ position:fixed;top:73%; left:56%;
             <input type="hidden" name="loginid" value="{{loginid}}">
             <input type="hidden" name="codeno" value="{{codeno}}">
             <input type="submit" value="Submit" class="btn_select_submit">
+
 </div>
         </form>
 
@@ -358,6 +361,7 @@ position:fixed;top:73%; left:56%;
              <form action="spareparts_incoming_submit" name="Submit_incoming" method="post">
                 {% csrf_token %}
             <input type="hidden" name="loginid" value="{{loginid}}">
+            <input type="hidden" id="loginid_up" value="{{loginid}}">
             <input type="submit" value="Submit" class="btn_submit">
                 </form></td>
         </tr>
@@ -371,6 +375,7 @@ position:fixed;top:73%; left:56%;
         <input type="hidden" name="select_text" value="{{selecttext}}">
         </form>
 
+
 <script>
         function Select_codeno(obj){
             var i = obj.parentNode.parentNode.rowIndex;
@@ -381,6 +386,13 @@ position:fixed;top:73%; left:56%;
             document.select_codeno_form.submit();
             }
 
+        function Division_sel(){
+             var division_text= document.getElementsByName('division_text')[0].value;
+                if (division_text == "미사용 반납"){
+                var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=1320,height=800, left=50, top=10';
+                window.open("/spareparts_incoming_not_use", "Spare Parts Return", settings);
+                }
+        }
 
 </script>
 </body>

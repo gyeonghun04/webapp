@@ -10277,6 +10277,13 @@ def spareparts_incoming_delete(request):
         user_div = users.user_division
         users = {"auth": auth, "password": password, "username": username, "userteam": userteam, "user_div": user_div}
     ##삭제##
+        del_check = spare_in.objects.get(no=no)
+        if del_check.division == "미사용 반납":
+            messages.error(request, "[미사용반납] cannot be deleted.")  # 경고
+            spare_incoming = spare_in.objects.filter(temp_y_n="N", staff=username)
+            context = {"spare_incoming": spare_incoming, "loginid": loginid}
+            context.update(users)
+            return render(request, 'spareparts_incoming_main.html', context)  # templates 내 html연결
         try:
             qy_check = spare_in.objects.get(no=no)
             qy_check.delete()
@@ -10299,6 +10306,14 @@ def spareparts_incoming_plus(request):
         auth = users.auth1
         user_div = users.user_division
         users = {"auth": auth, "password": password, "username": username, "userteam": userteam, "user_div": user_div}
+    ##수량조절 불가##
+        del_check = spare_in.objects.get(no=no)
+        if del_check.division == "미사용 반납":
+            messages.error(request, "[미사용반납] cannot be changed.")  # 경고
+            spare_incoming = spare_in.objects.filter(temp_y_n="N", staff=username)
+            context = {"spare_incoming": spare_incoming, "loginid": loginid}
+            context.update(users)
+            return render(request, 'spareparts_incoming_main.html', context)  # templates 내 html연결
     ##수량조절하기##
         qy_check = spare_in.objects.get(no=no)
         qy = int(qy_check.qy)
@@ -10322,6 +10337,14 @@ def spareparts_incoming_minus(request):
         auth = users.auth1
         user_div = users.user_division
         users = {"auth": auth, "password": password, "username": username, "userteam": userteam, "user_div": user_div}
+        ##수량조절 불가##
+        del_check = spare_in.objects.get(no=no)
+        if del_check.division == "미사용 반납":
+            messages.error(request, "[미사용반납] cannot be changed.")  # 경고
+            spare_incoming = spare_in.objects.filter(temp_y_n="N", staff=username)
+            context = {"spare_incoming": spare_incoming, "loginid": loginid}
+            context.update(users)
+            return render(request, 'spareparts_incoming_main.html', context)  # templates 내 html연결
         ##수량조절하기##
         qy_check = spare_in.objects.get(no=no)
         qy = int(qy_check.qy)
@@ -10513,6 +10536,74 @@ def spareparts_attached_upload(request):
         comp_signal="Y"
         context = {"comp_signal": comp_signal}
     return render(request, 'spareparts_attached_file.html', context)  # templates 내 html연결
+
+def spareparts_incoming_not_use(request):
+    spareparts_release = spare_out.objects.filter(temp_y_n="Y", used_y_n="").order_by('date', 'out_code',
+                                                                                      'team')  # db 동기화
+    context = {"spareparts_release": spareparts_release}
+    return render(request, 'spareparts_incoming_not_use.html', context)  # templates 내 html연결
+
+def spareparts_incoming_not_use_submit(request):
+    if request.method == 'POST':  # 매소드값이 post인 값만 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        checks = request.POST.get('checks')  # html에서 해당 값을 받는다
+        codeno = request.POST.get('codeno')  # html에서 해당 값을 받는다
+    ##이름 및 권한 끌고다니기##
+        users = userinfo.objects.get(userid=loginid)
+        username = users.username
+        userteam = users.userteam
+        password = users.password
+        auth = users.auth1
+        user_div = users.user_division
+        users = {"auth": auth, "password": password, "username": username, "userteam": userteam, "user_div": user_div}
+        try:
+            codeno_check = spare_out.objects.get(out_code=checks)
+            if codeno != codeno_check.codeno:
+                messages.error(request, "Parts Code No. does not match.")  # 경고
+                spareparts_release = spare_out.objects.filter(temp_y_n="Y", used_y_n="").order_by('date', 'out_code',
+                                                                                                  'team')  # db 동기화
+                context = {"spareparts_release": spareparts_release}
+                context.update(users)
+                return render(request, 'spareparts_incoming_not_use.html', context)  # templates 내 html연결
+    ##값 저장하기##
+            today = date.datetime.today()
+            return_date = "20" + today.strftime('%y') + "-" + today.strftime('%m')
+            return_check = spare_out.objects.get(out_code=checks)
+            return_check.check_y_n = "checked"
+            return_check.check_y_n_temp = "checked"
+            return_check.used_qy = return_check.qy
+            return_check.used_y_n_temp = "Returned/" + return_date
+            return_check.used_y_n = "Returned/" + return_date
+            return_check.controlno = "Returned"
+            return_check.equipname = "N/A"
+            return_check.save()
+            close_signal = "Y"
+            spareparts_release = spare_out.objects.filter(temp_y_n="Y", used_y_n="").order_by('date', 'out_code',
+                                                                                              'team')  # db 동기화
+    ##입고 정보값 저장하기##
+            today = date.datetime.today()
+            today_date = "20" + today.strftime('%y') + "-" + today.strftime('%m') + "-" + today.strftime('%d')
+            info_get = spare_parts_list.objects.get(codeno=codeno)
+            spare_in(
+                codeno=info_get.codeno,
+                team=info_get.team,
+                partname=info_get.partname,
+                vendor=info_get.vendor,
+                modelno=info_get.modelno,
+                staff=username,
+                qy=return_check.qy,
+                date=today_date,
+                temp_y_n="N",
+                location=info_get.location,
+                division="미사용 반납",
+            ).save()
+        except:
+            close_signal = "N"
+            spareparts_release = spare_out.objects.filter(temp_y_n="Y", used_y_n="").order_by('date', 'out_code',
+                                                                                              'team')  # db 동기화
+        context = {"spareparts_release": spareparts_release,"close_signal":close_signal}
+        context.update(users)
+    return render(request, 'spareparts_incoming_not_use.html', context)  # templates 내 html연결
 
 def spareparts_incoming_list(request):
     selecttext = request.GET.get('selecttext')  # html 선택조건의 값을 받는다
