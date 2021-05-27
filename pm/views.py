@@ -11970,14 +11970,16 @@ def spareparts_short_submit(request):
         users = {"auth": auth, "password": password, "username": username, "userteam": userteam, "user_div": user_div}
     ##미입력분 확인하기##
         if type == "pm":
-            len_check = spare_parts_list.objects.filter(stock="0", contact_y_n="checked")
+            len_check = spare_parts_list.objects.filter(short_qy__icontains="-", contact_y_n="checked")
         elif type == "short":
             len_check = spare_parts_list.objects.filter(short_qy__icontains="-", contact_y_n="checked")
         else:
-            len_check = spare_parts_list.objects.filter(short_qy__icontains="-", contact_y_n="checked")
+            len_check = spare_parts_list.objects.filter(stock="0", contact_y_n="checked")
         len_check = len_check.values('codeno')
         df_len_check = pd.DataFrame.from_records(len_check)
         check_len = len(df_len_check.index)
+        print(check_len)
+        print(len(qy_var))
         if check_len != len(qy_var):
             messages.error(request, "There are entries not entered.")  # 경고
             check_reset = spare_parts_list.objects.filter(stock="0", contact_y_n="checked")

@@ -251,6 +251,25 @@ height:20px;}
 .status_btn:hover {
         color:blue;
 }
+#messages_location{
+        position:fixed; top:0.1%; left:40%;
+        font-size:18px;
+        font-weight:bold;
+        animation-iteration-count:10;
+	    animation-duration:1s;
+	    animation-name: changecolor;
+       	color:#6F6F6F;
+}
+@keyframes changecolor{
+    from{
+       	  color:white;    }
+    to{
+          color:red;    }
+}
+k{
+        position:fixed; top:0%; left:94.5%;
+        color:white;
+}
 </style>
 </head>
 <body>
@@ -262,6 +281,14 @@ height:20px;}
 </header>
 <header2>
 </header2>
+
+<div id="messages_location">
+{%if messages %}
+{%for message in messages%}
+{{message}}
+{%endfor%}
+{%endif%}
+</div>
 
 <div id="tabletop" style="word-break:break-all">
 <table>

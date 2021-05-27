@@ -146,6 +146,14 @@ position:fixed;top:100px; left:1655px;
         font-weight:bold;
         text-decoration: underline;
 }
+.team_css{
+        font-family:'Rubik', sans-serif;
+        font-size:12px;
+        font-color:black;
+        width:65px;
+        height:30px;
+        background-color:#D8D8D8;
+}
 </style>
 <body>
 <div id="btn">
@@ -230,7 +238,7 @@ position:fixed;top:100px; left:1655px;
         <tbody id="team_sort">
         {% for team_gets in team_get%}
          <tr>
-             <td class="pm_text" align="center">{{team_gets}}</td>
+             <td class="team_css" align="center">{{team_gets}}</td>
          </tr>
         {%endfor%}
         <tr>
@@ -329,13 +337,13 @@ position:fixed;top:100px; left:1655px;
         </thead>
         <tbody>
         <tr>
-             <td class="pm_text" align="center">Complete</td>
+             <td class="team_css" align="center">Complete</td>
              {% for pm_comps in pm_comp%}
              <td class="pm_text" align="center">{{pm_comps}}</td>
             {%endfor%}
         </tr>
                 <tr>
-             <td class="pm_text" align="center">Not Complete</td>
+             <td class="team_css" align="center">Not Complete</td>
              {% for pm_nots in pm_not%}
              <td class="pm_text" align="center">{{pm_nots}}</td>
             {%endfor%}
