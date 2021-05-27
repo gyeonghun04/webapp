@@ -184,7 +184,7 @@ approve_text{
     font-size:12px;
 }
 #btn_location{
-        position:fixed; top:96.8%; left:75.7%;
+        position:fixed; top:96.8%; left:63.5%;
 }
 .button_submit{
         font-size:12px;
@@ -308,39 +308,69 @@ Preventive Maintenance Program Control Form
 <div id="btn_location">
 <table>
     <tr>
+     {%if signal == "Complete" %}
+           <td>
+    <b class="xi-list-number"><input type="button" value="Change With Other Equip." class="new" onclick="Change_equip();"></b>&emsp;</td>
         <td>
     <b class="xi-central-signal"><input type="button" value="Link To Other Equip." class="new" onclick="Link_of_equip();"></b>&emsp;</td>
         <td>
     <b class="xi-pen"><input type="button" value="New Maintnance Item" class="new" onclick="Registration_new();"></b>&emsp;</td>
-     {%if signal == "Complete" %}
      <td><form action="pmcontrolform_submit" method="post" >
                 {% csrf_token %}
      <input type="hidden" value="{{loginid}}" name="loginid">
      <input type="hidden" value="{{controlno}}" name="controlno">
      <input type="submit" class="button_submit" value="Submit" class="button">
      </form></td>
+
      {%elif signal == "New" %}
+           <td>
+    <b class="xi-list-number"><input type="button" value="Change With Other Equip." class="new" onclick="Change_equip();"></b>&emsp;</td>
+        <td>
+    <b class="xi-central-signal"><input type="button" value="Link To Other Equip." class="new" onclick="Link_of_equip();"></b>&emsp;</td>
+        <td>
+    <b class="xi-pen"><input type="button" value="New Maintnance Item" class="new" onclick="Registration_new();"></b>&emsp;</td>
       <td><form action="pmcontrolform_submit" method="post" >
                 {% csrf_token %}
      <input type="hidden" value="{{loginid}}" name="loginid">
      <input type="hidden" value="{{controlno}}" name="controlno">
      <input type="submit" class="button_submit" value="Submit" class="button">
      </form></td>
+
       {%elif signal == "Reject" %}
+           <td>
+    <b class="xi-list-number"><input type="button" value="Change With Other Equip." class="new" onclick="Change_equip();"></b>&emsp;</td>
+        <td>
+    <b class="xi-central-signal"><input type="button" value="Link To Other Equip." class="new" onclick="Link_of_equip();"></b>&emsp;</td>
+        <td>
+    <b class="xi-pen"><input type="button" value="New Maintnance Item" class="new" onclick="Registration_new();"></b>&emsp;</td>
       <td><form action="pmcontrolform_submit" method="post" >
                 {% csrf_token %}
      <input type="hidden" value="{{loginid}}" name="loginid">
      <input type="hidden" value="{{controlno}}" name="controlno">
      <input type="submit" class="button_submit" value="Submit" class="button">
      </form></td>
+
      {%elif signal == "Review" %}
+           <td>
+    <b class="xi-list-number"><input type="button" value="Change With Other Equip." class="new" onclick="Change_equip();"></b>&emsp;</td>
+        <td>
+    <b class="xi-central-signal"><input type="button" value="Link To Other Equip." class="new" onclick="Link_of_equip();"></b>&emsp;</td>
+        <td>
+    <b class="xi-pen"><input type="button" value="New Maintnance Item" class="new" onclick="Registration_new();"></b>&emsp;</td>
       <td><form action="pmcontrolform_submit" method="post" >
                 {% csrf_token %}
      <input type="hidden" value="{{loginid}}" name="loginid">
      <input type="hidden" value="{{controlno}}" name="controlno">
      <input type="submit" class="button_submit" value="Submit" class="button">
      </form></td>
+
      {%else%}
+        <td>
+     <b class="xi-list-number"><input type="button" value="Change With Other Equip." class="new" onclick="Alarm_text();"></b>&emsp;</td>
+        <td>
+    <b class="xi-central-signal"><input type="button" value="Link To Other Equip." class="new" onclick="Alarm_text();"></b>&emsp;</td>
+        <td>
+    <b class="xi-pen"><input type="button" value="New Maintnance Item" class="new" onclick="Alarm_text();"></b>&emsp;</td>
       <td><form action="pmcontrolform_return" method="post" >
                 {% csrf_token %}
      <input type="hidden" value="{{loginid}}" name="loginid">
@@ -385,6 +415,16 @@ function Link_of_equip(){
             var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=740, height=650, left=50, top=200';
             window.open("/pmcontrolform_change_link", "Link To Other Equipment", settings);
 }
+
+function Alarm_text(){
+alert("You can't change it while approval");
+}
+
+function Change_equip(){
+                        // 팝업창열기
+
+}
+
 </script>
 </body>
 </html>

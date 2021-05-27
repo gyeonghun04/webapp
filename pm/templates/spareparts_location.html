@@ -178,7 +178,31 @@ tr:nth-child(even){
         height:500px;
         font-family: 'Rubik', sans-serif;
     }
+#layout_text{
+    position:fixed; left:150px; top:610px;
+    font-family: 'Rubik', sans-serif;
+    font-size:20px;
+    font-weight:bold;
+    background-color:white;
+    z-index:10;
+}
 
+#pic{
+        position:fixed; left:15px; top:645px;
+}
+
+#upload_pic{
+        position:fixed; left:460px; top:865px;
+}
+
+#layout{
+        position:fixed; left:5px; top:620px;
+        border:2px solid #6F6F6F;
+        border-radius:3%;
+        width:440px;
+        height:290px;
+        font-family: 'Rubik', sans-serif;
+}
 </style>
 <body>
 
@@ -345,6 +369,22 @@ tr:nth-child(even){
 </table>
 </div>
 
+<div id="layout_text">
+    <box_select>Storage Layout</box_select>
+</div>
+
+<div id="layout"></div>
+<div id="upload_pic">
+           <form name="spareparts_loyout_form" method="post" enctype="multipart/form-data" class="uploadfile">
+            {% csrf_token %}
+            <input type="file" name="upload_layout" id="upload_layout" class="button_css1"><br>
+            <input type="button" value="Upload" class="button_css" onclick="Spareparts_loyout();"></form>
+</div>
+<div id="pic">
+        <img src="/media/spare_location.jpg" height="260" width="425" class="pic_css">
+</div>
+
+
 <div id="rack_view">
 <table>
     <tr>
@@ -401,6 +441,7 @@ tr:nth-child(even){
 </table>
 </div>
     {%endif%}
+
 </body>
 <script>
         //////////// 기본초기값 불러오기//////////////
@@ -415,6 +456,13 @@ tr:nth-child(even){
 
      function Close(){
     self.close();
+    }
+
+    function Spareparts_loyout(){
+          var check_again = window.confirm("파일명[spare_location], 확장자[jpg]의 경우에만 업로드 가능합니다\n사진을 업로드하시겠습니까?","");
+        if (check_again == true){
+            document.spareparts_loyout_form.action="spareparts_loyout_upload";
+            document.spareparts_loyout_form.submit();}
     }
 </script>
 </html>

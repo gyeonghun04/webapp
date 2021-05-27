@@ -241,6 +241,7 @@ urlpatterns = [
     path('spareparts_short_status', pm.views.spareparts_short_status, name='spareparts_short_status'),
     path('spareparts_change', pm.views.spareparts_change, name='spareparts_change'),
     path('spareparts_change_submit', pm.views.spareparts_change_submit, name='spareparts_change_submit'),
+    path('spareparts_loyout_upload', pm.views.spareparts_loyout_upload, name='spareparts_loyout_upload'),
 
 ##########################################################################################################################################
 ##########################################################################################################################################

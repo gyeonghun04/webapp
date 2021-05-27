@@ -14,7 +14,7 @@ from django.core.files.storage import FileSystemStorage
 from django.db.models import Count, Sum
 import re
 import csv
-
+import os
 ##############################################################################################################
 #################################################로그인페이지###################################################
 ##############################################################################################################
@@ -2472,11 +2472,38 @@ def used_parts_link_submit(request):
         for k in range(df_used_submit_len):
             used_no = df_used_submit.iat[k, 0]
             used_no_save = spare_out.objects.get(no=used_no)
-            used_no_save.used_y_n = used_no_save.used_y_n_temp
-            used_no_save.check_y_n = used_no_save.check_y_n_temp
-            used_no_save.controlno = euqip_info.controlno
-            used_no_save.equipname = euqip_info.name
-            used_no_save.save()
+            if int(used_no_save.qy) == int(used_no_save.used_qy):
+                used_no_save.used_y_n = used_no_save.used_y_n_temp
+                used_no_save.check_y_n = used_no_save.check_y_n_temp
+                used_no_save.controlno = euqip_info.controlno
+                used_no_save.equipname = euqip_info.name
+                used_no_save.save()
+            else:
+                count_qy = int(used_no_save.qy) - int(used_no_save.used_qy)
+        #####기존DB저장####
+                used_no_save.used_y_n = used_no_save.used_y_n_temp
+                used_no_save.check_y_n = used_no_save.check_y_n_temp
+                used_no_save.controlno = euqip_info.controlno
+                used_no_save.equipname = euqip_info.name
+                used_no_save.qy = used_no_save.used_qy
+                used_no_save.save()
+        #####잔여분 신규DB생성####
+                spare_out(
+                    codeno = used_no_save.codeno,
+                    team = used_no_save.team,
+                    partname = used_no_save.partname,
+                    vendor = used_no_save.vendor,
+                    modelno=used_no_save.modelno,
+                    staff=used_no_save.staff,
+                    qy=count_qy,
+                    date=used_no_save.date,
+                    temp_y_n="Y",
+                    location=used_no_save.location,
+                    used_qy=count_qy,
+                    controlno=used_no_save.location,
+                    equipname=used_no_save.equipname,
+                    out_code=used_no_save.out_code,
+                ).save()
     ####사용자재 Y 입력하기###
         used_check = pmchecksheet.objects.get(pmcode=pmcode, itemcode=itemcode)
         used_check.usedpart_temp="Y"
@@ -9599,11 +9626,38 @@ def workorder_used_submit(request):
         for k in range(df_used_submit_len):
             used_no = df_used_submit.iat[k, 0]
             used_no_save = spare_out.objects.get(no=used_no)
-            used_no_save.used_y_n = used_no_save.used_y_n_temp
-            used_no_save.check_y_n = used_no_save.check_y_n_temp
-            used_no_save.controlno = euqip_info.controlno
-            used_no_save.equipname = euqip_info.name
-            used_no_save.save()
+            if int(used_no_save.qy) == int(used_no_save.used_qy):
+                used_no_save.used_y_n = used_no_save.used_y_n_temp
+                used_no_save.check_y_n = used_no_save.check_y_n_temp
+                used_no_save.controlno = euqip_info.controlno
+                used_no_save.equipname = euqip_info.name
+                used_no_save.save()
+            else:
+                count_qy = int(used_no_save.qy) - int(used_no_save.used_qy)
+                #####기존DB저장####
+                used_no_save.used_y_n = used_no_save.used_y_n_temp
+                used_no_save.check_y_n = used_no_save.check_y_n_temp
+                used_no_save.controlno = euqip_info.controlno
+                used_no_save.equipname = euqip_info.name
+                used_no_save.qy = used_no_save.used_qy
+                used_no_save.save()
+                #####잔여분 신규DB생성####
+                spare_out(
+                    codeno=used_no_save.codeno,
+                    team=used_no_save.team,
+                    partname=used_no_save.partname,
+                    vendor=used_no_save.vendor,
+                    modelno=used_no_save.modelno,
+                    staff=used_no_save.staff,
+                    qy=count_qy,
+                    date=used_no_save.date,
+                    temp_y_n="Y",
+                    location=used_no_save.location,
+                    used_qy=count_qy,
+                    controlno=used_no_save.location,
+                    equipname=used_no_save.equipname,
+                    out_code=used_no_save.out_code,
+                ).save()
     ####사용자재 Y 입력하기###
         used_check = workorder.objects.get(workorderno=workorderno)
         used_check.usedpart="Y"
@@ -10113,6 +10167,24 @@ def spareparts_main(request):
 
 def spareparts_change(request):
     return render(request, 'spareparts_change.html')  # templates 내 html연결
+
+def spareparts_loyout_upload(request):
+    if request.method == 'POST':  # 매소드값이 post인 값만 받는다
+        #################파일업로드하기##################
+        try:
+            os.remove("media/spare_location.jpg")
+        except:
+            pass
+        if "upload_layout" in request.FILES:
+            # 파일 업로드 하기!!!
+            upload_file = request.FILES["upload_layout"]
+            fs = FileSystemStorage()
+            name = fs.save(upload_file.name, upload_file)  # 파일저장 // 이름저장
+            # 파일 읽어오기!!!
+            url = fs.url(name)
+        else:
+            file_name = "-"
+    return render(request, 'spareparts_location.html')  # templates 내 html연결
 
 def spareparts_change_submit(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
@@ -11897,7 +11969,12 @@ def spareparts_short_submit(request):
         user_div = users.user_division
         users = {"auth": auth, "password": password, "username": username, "userteam": userteam, "user_div": user_div}
     ##미입력분 확인하기##
-        len_check = spare_parts_list.objects.filter(stock="0", contact_y_n="checked")
+        if type == "pm":
+            len_check = spare_parts_list.objects.filter(stock="0", contact_y_n="checked")
+        elif type == "short":
+            len_check = spare_parts_list.objects.filter(short_qy__icontains="-", contact_y_n="checked")
+        else:
+            len_check = spare_parts_list.objects.filter(short_qy__icontains="-", contact_y_n="checked")
         len_check = len_check.values('codeno')
         df_len_check = pd.DataFrame.from_records(len_check)
         check_len = len(df_len_check.index)
@@ -11916,8 +11993,15 @@ def spareparts_short_submit(request):
             if type == "pm":
                 total = ""
                 pm = "checked"
+                short = ""
+                parts_list = spare_parts_list.objects.filter(short_qy__icontains="-")
+            elif type == "short":
+                short = "checked"
+                total = ""
+                pm = ""
                 parts_list = spare_parts_list.objects.filter(short_qy__icontains="-")
             else:
+                short = ""
                 total = "checked"
                 pm = ""
                 parts_list = spare_parts_list.objects.filter(stock="0")

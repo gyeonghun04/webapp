@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>Title</title>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap');
+
 header{
         height:30px;
         background:#6F6F6F;
@@ -116,7 +118,7 @@ tr:nth-child(even){
     background-color:#EEEEEE;
 }
 #submit_location{
-        position:fixed;top:770px; left:1240px;
+        position:fixed;top:770px; left:1250px;
 
 }
 .qy_btn_minus{
@@ -138,6 +140,14 @@ tr:nth-child(even){
         border:1px;
         width:20px;
         color:blue;
+}
+.submit_btn{
+    	font-family: arial;
+        font-size:12px;
+        cursor:pointer;
+}
+.check{
+        cursor:pointer;
 }
 </style>
 </head>
@@ -210,7 +220,7 @@ tr:nth-child(even){
             <td align="center" class="m11-1">{{spare_out.equipname}}</td>
             <td align="center" class="m12-1">{{spare_out.out_code}}</td>
             <td align="center" class="m13-1">
-                <input type="checkbox" name="used_part" onclick="Used_part(this);" {{spare_out.check_y_n_temp}}>
+                <input type="checkbox" name="used_part" class="check" onclick="Used_part(this);" {{spare_out.check_y_n_temp}}>
                 <input type="hidden" value="{{spare_out.out_code}}" name="out_code_up">
                 <input type="hidden" value="{{spare_out.no}}" name="no_up">
             </td>
@@ -225,7 +235,7 @@ tr:nth-child(even){
 <input type="hidden" name="loginid">
 <input type="hidden" name="pmcode">
 <input type="hidden" name="itemcode">
-<input type="submit"  class="searchbutton" value="Submit"></form>
+<input type="submit"  class="submit_btn" value="Submit"></form>
 <input type="hidden" name="close_signal" value="{{close_signal}}">
 
 </div>
