@@ -141,6 +141,7 @@ urlpatterns = [
     path('workrequest_main', pm.views.workrequest_main, name='workrequest_main'),
     path('workrequest_controlno', pm.views.workrequest_controlno, name='workrequest_controlno'),
     path('workrequest_submit', pm.views.workrequest_submit, name='workrequest_submit'),
+    path('workrequest_submit_e', pm.views.workrequest_submit_e, name='workrequest_submit_e'),
     path('workrequest_upload', pm.views.workrequest_upload, name='workrequest_upload'),
     path('workrequest_comp', pm.views.workrequest_comp, name='workrequest_comp'),
     path('workrequest_view', pm.views.workrequest_view, name='workrequest_view'),
@@ -238,6 +239,8 @@ urlpatterns = [
     path('spareparts_incoming_not_use', pm.views.spareparts_incoming_not_use, name='spareparts_incoming_not_use'),
     path('spareparts_incoming_not_use_submit', pm.views.spareparts_incoming_not_use_submit, name='spareparts_incoming_not_use_submit'),
     path('spareparts_short_status', pm.views.spareparts_short_status, name='spareparts_short_status'),
+    path('spareparts_change', pm.views.spareparts_change, name='spareparts_change'),
+    path('spareparts_change_submit', pm.views.spareparts_change_submit, name='spareparts_change_submit'),
 
 ##########################################################################################################################################
 ##########################################################################################################################################

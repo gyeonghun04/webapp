@@ -5,6 +5,8 @@
     <title>Title</title>
 </head>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap');
+
 workrequesttitle{
         position:fixed;top:64.8px; left:28.8px;
         font-size: 24px;
@@ -180,13 +182,15 @@ close_text{
         position:fixed;top:797.04px; left:10px;
         font-size:18px;
         font-weight:bold;
-        font-family: arial;
+        font-family: 'Rubik', sans-serif;
         color: blue;
 }
 </style>
 <body>
 <div class="border">
 </div>
+
+{% include "pmchecksheet_workrequest_top.html"%}
 
 <div id="messages_location">
 {%if messages %}

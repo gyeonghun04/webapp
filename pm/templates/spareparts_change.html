@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+    <title>Title</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap');
+
+header{
+        height:30px;
+        background:#6F6F6F;
+        justify-content:space-between;
+        align-items:center;
+        position:fixed;
+        top:0;
+        left:0;
+        right:0;
+        z-index:10;
+        }
+header2{
+        height:0.3px;
+        padding-top:3px;
+        background:#EEEEEE;
+        display:flex;
+        justify-content:space-between;
+        position:fixed;
+        top:30px;
+        left:0;
+        right:0;
+        z-index:10;
+}
+toptext{
+        font-family: 'Rubik', sans-serif;
+        font-size:18px;
+        vertical-align:top;
+        font-weight:bold;
+        padding-left:5px;
+        color:white;
+}
+#logindata{
+        position:fixed; top:1px; left:90px;
+        font-family: 'Rubik', sans-serif;
+        font-size:18px;
+        vertical-align:top;
+        font-weight:bold;
+        color:white;
+}
+l{
+        margin-left:1%;
+        color:white;
+}
+m{
+        margin-left:1%;
+        color:white;
+}
+k{
+        position:fixed; top:0%; left:94.5%;
+        color:white;
+}
+.Button {
+        position:fixed; left:530px;
+        font-family:'Rubik', sans-serif;
+        font-size:18px;
+        background-color: rgba(255, 255, 255, 0.0);
+        cursor:pointer;
+        border:0px;
+        color:white;
+        font-weight:bold;
+}
+title_text{
+        position:fixed; top:35px; left:5px;
+        font-family: 'Rubik', sans-serif;
+        font-size:18px;
+        font-weight:bold;
+}
+#table_location{
+        position:fixed; top:70px; left:5px;
+}
+
+#auth_table{
+        border:1px solid white;
+        border-collapse:collapse;
+}
+.text_css{
+      font-family:'Rubik', sans-serif;
+      font-size:13px;
+      color:black;
+      background-color:#D8D8D8;
+      width:130px;
+      height:25px;
+      }
+.input_css{
+      font-family: arial;
+      font-size:13px;
+      width:220px;
+      height:25px;
+}
+.input_css2{
+      background-color:#EEEEEE;
+      font-family: arial;
+      font-size:13px;
+      width:220px;
+      height:25px;
+}
+
+.location_css{
+      width:120px;
+      height:25px;
+}
+.select_css{
+      font-size:13px;
+      width:125px;
+      height:27px;
+}
+.location_btn{
+        margin-top:11px;
+    	font-family: arial;
+        font-size:12px;
+        cursor:pointer;
+}
+.submit_btn{
+    	font-family: arial;
+        font-size:12px;
+        cursor:pointer;
+        position:fixed; top:380px; left:530px;
+}
+#messages_location{
+        position:fixed; top:1px; left:250px;
+        font-size:18px;
+        font-weight:bold;
+        animation-iteration-count:10;
+	    animation-duration:1s;
+	    animation-name: changecolor;
+       	color:#6F6F6F;
+       	}
+
+@keyframes changecolor{
+    from{
+       	  color:white;    }
+    to{
+          color:red;    }
+}
+.room_btn{
+    font-family: arial;
+    font-size:12px;
+    cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+<header>
+<toptext>Welcome,&nbsp;</toptext>
+<div id="logindata"></div>
+
+<div id="messages_location">
+{%if messages %}
+{%for message in messages%}
+{{message}}
+{%endfor%}
+{%endif%}
+</div>
+
+<input type="button"value="Close" class="Button" onclick="Close();">
+
+</header>
+<header2>
+</header2>
+<title_text>Spare Parts Information Change</title_text>
+<form method="post" name="spare_change">
+    {% csrf_token %}
+<div id="table_location">
+   <table id="auth_table" border="1">
+        <tr>
+            <td align="center" class="text_css">Division</td>
+            <td align="center" class="text_css">Now Value</td>
+            <td align="center" class="text_css" colspan="2">Change Value</td>
+        </tr>
+        <tr>
+            <td align="center" class="text_css">Code No.</td>
+            <td align="center" class="input_css2"><div id="codeno_get"></div></td>
+            <td align="center"><input type="text" name="codeno" class="input_css" readonly></td>
+        </tr>
+        <tr>
+            <td align="center" class="text_css">Team</td>
+            <td align="center" class="input_css2"><div id="team_get"></div></td>
+            <td align="center">
+            <input type="text" name="team" class="input_css" required></td>
+        </tr>
+        <tr>
+            <td align="center" class="text_css">Vendor</td>
+            <td align="center" class="input_css2"><div id="vendor_get"></div></td>
+            <td align="center">
+            <input type="text" name="vendor"  class="input_css" required></td>
+        </tr>
+        <tr>
+            <td align="center" class="text_css">Parts Name</td>
+            <td align="center" class="input_css2"><div id="partname_get"></div></td>
+            <td align="center">
+            <input type="text" name="partname" class="input_css" required></td>
+        </tr>
+        <tr>
+            <td align="center" class="text_css">Model Name</td>
+            <td align="center" class="input_css2"><div id="modelno_get"></div></td>
+            <td align="center">
+            <input type="text" name="modelno" class="input_css" required></td>
+        </tr>
+        <tr>
+            <td align="center" class="text_css">Spec</td>
+            <td align="center" class="input_css2"><div id="spec_get"></div></td>
+            <td align="center">
+            <input type="text" name="spec" class="input_css" required></td>
+        </tr>
+        <tr>
+            <td align="center" class="text_css">Location</td>
+            <td align="center" class="input_css2"><div id="locations_get"></div></td>
+            <td align="left">
+            <input type="text" name="locations" class="input_css" required></td>
+        </tr>
+        <tr>
+            <td align="center" class="text_css">Staff</td>
+            <td align="center" class="input_css2"><div id="staff_get"></div></td>
+            <td align="center">
+            <input type="text" name="staff" class="input_css" required></td>
+        </tr>
+   </table>
+</div>
+<input type="hidden" name="loginid">
+<input type="button" class="submit_btn" value="Submit" onclick="Equip_change();"></form>
+<input type="hidden" value="{{comp_signal}}" name="comp_signal">
+
+
+<script>
+
+    //////////// 기본초기값 불러오기//////////////
+     function init(){
+            loginid = opener.document.getElementById("loginid_up").value;
+            codeno = opener.document.getElementById("codeno_up3").value;
+            locations = opener.document.getElementById("location_up3").value;
+            partname = opener.document.getElementById("partname_up3").value;
+            vendor = opener.document.getElementById("vendor_up3").value;
+            modelno = opener.document.getElementById("modelno_up3").value;
+            spec = opener.document.getElementById("spec_up3").value;
+            staff = opener.document.getElementById("staff_up3").value;
+            team = opener.document.getElementById("team_up3").value;
+        // 기존값 보내기
+            document.spare_change.codeno.value = codeno;
+            document.spare_change.loginid.value = loginid;
+            document.spare_change.locations.value = locations;
+            document.spare_change.partname.value = partname;
+            document.spare_change.vendor.value = vendor;
+            document.spare_change.modelno.value = modelno;
+            document.spare_change.spec.value = spec;
+            document.spare_change.team.value = team;
+            document.spare_change.staff.value = staff;
+       // 값 표현하기
+            document.getElementById("team_get").innerHTML=team;
+            document.getElementById("codeno_get").innerHTML=codeno;
+            document.getElementById("locations_get").innerHTML=locations;
+            document.getElementById("partname_get").innerHTML=partname;
+            document.getElementById("vendor_get").innerHTML=vendor;
+            document.getElementById("modelno_get").innerHTML=modelno;
+            document.getElementById("spec_get").innerHTML=spec;
+            document.getElementById("staff_get").innerHTML=staff;
+       ////아이디 정보 보내기
+            var loginid_up = loginid;
+            document.getElementById("logindata").innerHTML=loginid_up;
+            var close_signal= document.getElementsByName('comp_signal')[0].value;
+            if (close_signal=="Y"){
+                window.resizeTo(600,200);
+                alert("Equipment Information Change is complete.");
+                opener.document.location.reload();
+                self.close();}
+            }
+
+      onload=init
+
+    function Close(){
+            self.close();
+    }
+
+    function Equip_change(){
+          var check_again = window.confirm("Do you want to proceed with the change?","");
+        if (check_again == true){
+            document.spare_change.action="spareparts_change_submit";
+            document.spare_change.submit();}
+     }
+</script>
+</body>
+</html>

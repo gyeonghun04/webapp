@@ -513,8 +513,13 @@ Work Request Form
             document.Submit_request.type.value = type;
             document.Submit_request.url.value = url;
             // 서버연결
-            document.Submit_request.action="workrequest_submit";
-            document.Submit_request.submit();
+             var check_again = window.confirm("해당 Work Request 팀장 및 설비담당자에게 메일발송 하시겠습니까?\n메일발송 시 약간의 시간이 소요됩니다.","");
+            if (check_again == false){
+                document.Submit_request.action="workrequest_submit";
+                document.Submit_request.submit();}
+            if (check_again == true){
+            document.Submit_request.action="workrequest_submit_e";
+            document.Submit_request.submit();}
             }
 </script>
 </body>

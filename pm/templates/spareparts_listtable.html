@@ -25,34 +25,36 @@
         height:89.8%;
 }
 .m1{width:100px;}
-.m2{width:80px;}
-.m3{width:200px;}
+.m2{width:50px;}
+.m3{width:195px;}
 .m4{width:200px;}
 .m5{width:250px;}
 .m6{width:240px;}
 .m7{width:100px;}
-.m8{width:70px;}
-.m9{width:100px;}
+.m8{width:60px;}
+.m9{width:80px;}
 .m10{width:100px;}
 .m11{width:70px;}
 .m12{width:60px;}
-.m13{width:100px;}
+.m13{width:80px;}
+.m14{width:80px;}
 
 .m1-1{width:100px;
 height:20px;}
-.m2-1{width:80px;}
+.m2-1{width:50px;}
 .m3-1{width:200px;}
 .m4-1{width:200px;}
 .m5-1{width:250px;}
 .m6-1{width:250px;}
 .m7-1{width:100px;}
-.m8-1{width:70px;}
-.m9-1{width:100px;}
+.m8-1{width:60px;}
+.m9-1{width:80px;}
 .m10-1{width:90px;
 padding-right:10px;}
 .m11-1{width:70px;}
 .m12-1{width:60px;}
-.m13-1{width:100px;}
+.m13-1{width:80px;}
+.m14-1{width:80px;}
 
 body{overflow:hidden;}
 
@@ -91,6 +93,7 @@ tr:nth-child(even){
             <td align="center" class="m11">Safety Stock</td>
             <td align="center" class="m12">PM Link</td>
             <td align="center" class="m13">Barcode</td>
+            <td align="center" class="m14">Change</td>
         </tr>
         </thead>
      </table>
@@ -123,6 +126,12 @@ tr:nth-child(even){
                 <input type="hidden" value="{{sp_list.location}}" name="location_give">
                <input type="button" value="Barcode" class="btn" onclick="Barcode(this);">
             </td>
+            <td align="center" class="m14-1">
+                <input type="hidden" value="{{sp_list.spec}}" name="spec_give">
+                <input type="hidden" value="{{sp_list.staff}}" name="staff_give">
+                <input type="hidden" value="{{sp_list.team}}" name="team_give">
+                <input type="button" value="Change" class="btn" onclick="Change_info(this);">
+            </td>
         </tr>
             {%endfor%}
         </tbody>
@@ -146,11 +155,21 @@ tr:nth-child(even){
         <input type="hidden" value="{{loginid}}" id="loginid_up">
         </form>
 
+              <form name="spare_change_form">
+        <input type="hidden" name="codeno" id="codeno_up3">
+        <input type="hidden" name="location" id="location_up3">
+        <input type="hidden" name="partname" id="partname_up3">
+        <input type="hidden" name="vendor" id="vendor_up3">
+        <input type="hidden" name="modelno" id="modelno_up3">
+        <input type="hidden" name="spec" id="spec_up3">
+        <input type="hidden" name="staff" id="staff_up3">
+        <input type="hidden" name="team" id="team_up3">
+        </form>
+
 </main>
 
 <script>
      function Barcode(obj){
-
             var i = obj.parentNode.parentNode.rowIndex;
             var codeno = document.getElementsByName('codeno_give')[i].value;
             var location = document.getElementsByName('location_give')[i].value;
@@ -172,6 +191,27 @@ tr:nth-child(even){
             document.attached_file_form.codeno.value = codeno;
              var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=400,height=135,left=50,top=10';
                 window.open("/spareparts_attached_file", "Spare Parts Attached File", settings);
+       }
+     function Change_info(obj){
+            var i = obj.parentNode.parentNode.rowIndex;
+            var codeno = document.getElementsByName('codeno_give')[i].value;
+            var location = document.getElementsByName('location_give')[i].value;
+            var partname = document.getElementsByName('partname_give')[i].value;
+            var vendor = document.getElementsByName('vendor_give')[i].value;
+            var modelno = document.getElementsByName('modelno_give')[i].value;
+            var spec = document.getElementsByName('spec_give')[i].value;
+            var staff = document.getElementsByName('staff_give')[i].value;
+            var team = document.getElementsByName('team_give')[i].value;
+            document.spare_change_form.codeno.value = codeno;
+            document.spare_change_form.location.value = location;
+            document.spare_change_form.partname.value = partname;
+            document.spare_change_form.vendor.value = vendor;
+            document.spare_change_form.modelno.value = modelno;
+            document.spare_change_form.spec.value = spec;
+            document.spare_change_form.staff.value = staff;
+            document.spare_change_form.team.value = team;
+            var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=600, height=420, left=50, top=10';
+            window.open("/spareparts_change", "Spare Parts Information Change", settings);
        }
 </script>
 

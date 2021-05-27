@@ -2499,8 +2499,6 @@ def used_parts_link_submit(request):
                 new_value=used_check.usedpart_temp,
                 comment="Used Parts",
             ).save()
-
-
         close_signal ="Y"
         context = {"spareparts_release": spareparts_release,"close_signal":close_signal}
         return render(request, 'used_parts_link.html', context)  # templates 내 html연결
@@ -7425,9 +7423,159 @@ def workrequest_submit(request):
                             workorderno = workorderno,
                             r_attach = url
                         ).save()
-                        ##해당팀장에 메일보내기##
+                        context = {"loginid": loginid, "equipname": equipname, "equipteam": equipteam, "capa": capa,
+                                    "description": description, "req_reason": req_reason, "request_date": request_date,
+                                       "controlno": controlno, "roomno": roomno, "roomname": roomname,"req_date":req_date,
+                                   "bm": bm, "cm": cm, "pm": pm, "it": it,"url":url}
+                        context.update(users)
+                        return render(request, 'workrequest_comp.html', context)  # templates 내 html연결
+    ##입력칸 미 입력 시##
+        messages.error(request, "There are entries not entered.")
+        context = {"loginid":loginid,"equipname":equipname,"equipteam":equipteam,"capa":capa,
+                    "description":description,"req_reason":req_reason,"request_date":request_date,
+                    "controlno":controlno,"roomno":roomno,"roomname":roomname,
+                    "bm": bm, "cm": cm, "pm": pm, "it": it,"req_date":req_date,"url_comp":url_comp,"url":url}
+        context.update(users)
+        return render(request, 'workrequest_new.html', context) #templates 내 html연결
 
-
+def workrequest_submit_e(request):
+    if request.method =='POST': #매소드값이 post인 값만 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        controlno = request.POST.get('controlno')  # html에서 해당 값을 받는다
+        capa = request.POST.get('capa')  # html에서 해당 값을 받는다
+        equipteam = request.POST.get('equipteam')  # html에서 해당 값을 받는다
+        description = request.POST.get('description')  # html에서 해당 값을 받는다
+        req_date = request.POST.get('req_date')  # html에서 해당 값을 받는다
+        req_reason = request.POST.get('req_reason')  # html에서 해당 값을 받는다
+        request_date = request.POST.get('date')  # html에서 해당 값을 받는다
+        equipname = request.POST.get('equipname')  # html에서 해당 값을 받는다
+        roomname = request.POST.get('roomname')  # html에서 해당 값을 받는다
+        roomno = request.POST.get('roomno')  # html에서 해당 값을 받는다
+        type = request.POST.get('type')  # html에서 해당 값을 받는다
+        url = request.POST.get('url')  # html에서 해당 값을 받는다
+    ##이름 및 권한 끌고다니기##
+        users = userinfo.objects.get(userid=loginid)
+        username = users.username
+        userteam = users.userteam
+        password = users.password
+        auth = users.auth1
+        user_div = users.user_division
+        users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
+    ##type 체크값 전송하기##
+        if type == "BM":
+            bm = "checked"
+            cm = ""
+            pm = ""
+            it = ""
+        elif type == "CM":
+            cm = "checked"
+            bm = ""
+            pm = ""
+            it = ""
+        elif type == "PM":
+            pm = "checked"
+            cm = ""
+            bm = ""
+            it = ""
+        elif type == "IT":
+            it = "checked"
+            cm = ""
+            pm = ""
+            bm = ""
+        else:
+            it = ""
+            cm = ""
+            pm = ""
+            bm = ""
+    ##url comp_url 체크하기##
+        if url == "":
+            url_comp = "N"
+        else:
+            url_comp = "Y"
+    ##req_date입력 후 요청사유 미 입력 시##
+        if req_date != "N/A":
+            if req_reason == "N/A":
+                messages.error(request, "error1")  # 아이디 중복
+                context = {"loginid": loginid, "equipname": equipname, "equipteam": equipteam, "capa": capa,
+                           "description": description, "req_reason": req_reason, "request_date": request_date,
+                           "controlno": controlno, "roomno": roomno, "roomname": roomname,
+                           "bm":bm,"cm":cm,"pm":pm,"it":it,"req_date":req_date,"url_comp":url_comp,"url":url}
+                context.update(users)
+                return render(request, 'workrequest_new.html', context)  # templates 내 html연결
+    ##req_date입력확인##
+        if req_date != "":
+            if req_reason != "":
+                if description != "":
+                    if capa != "":
+                    ##workodrerno생성
+                        today = date.datetime.today()
+                        date_check = "20" + today.strftime('%y') +"-"+ today.strftime('%m') +"-"+ today.strftime('%d')
+                        workorder_date = today.strftime('%y') + today.strftime('%m') + today.strftime('%d')
+                        workorder_count = workorder.objects.filter(date=date_check)
+                        workorder_count = workorder_count.values('date')
+                        df_workorder_count = pd.DataFrame.from_records(workorder_count)
+                        df_workorder_count_len = len(df_workorder_count.index)  # itemcode 하나씩 넘기기
+                        workorderno_no = int(df_workorder_count_len) + 1
+                        workorderno = workorder_date +"/"+ equipteam +"/"+ str(workorderno_no)
+                    ##db저장하기##
+                        workorder(
+                            type = type,
+                            capa = capa,
+                            requestor = username,
+                            team = equipteam,
+                            controlno = controlno,
+                            description = description,
+                            req_date = req_date,
+                            req_reason = req_reason,
+                            date = request_date,
+                            status = "Request",
+                            equipname = equipname,
+                            roomname = roomname,
+                            roomno = roomno,
+                            workorderno = workorderno,
+                            r_attach = url
+                        ).save()
+                    ##메일 내용만들기##
+                        title_text = "(자동메일)설비 수리요청의 건 [Work Order No.: " + workorderno + "]"
+                        email_text = "Work Order No: " + workorderno + "가 접수되었습니다." + \
+                                     "\n\nWork Order No.: " + workorderno + \
+                                     "\n팀: " + equipteam + \
+                                     "\n요청자: " + username + \
+                                     "\n요청일자: " + request_date + \
+                                     "\n설비명 (Control No.): " + equipname + " ("+ controlno +")" \
+                                     "\nRoom Name (Room No.): " + roomname + " ("+ roomno +")" \
+                                     "\n요청내용: " + description + \
+                                     "\n완료요처일: " + request_date + \
+                                     "\n완료요청사유: " + req_reason + \
+                                     "\n\n ※ 상기 메일 자동발신 메일이며 회신은 불가합니다."
+                    ##팀장 메일주소 불러오기##
+                        manager_get = userinfo.objects.filter(userteam=equipteam, user_division__icontains="Manager")
+                        manager_get = manager_get.values('no')
+                        df_manager_get = pd.DataFrame.from_records(manager_get)
+                        manager_get_len = len(df_manager_get.index)
+                        for i in range(manager_get_len):
+                            no_get = df_manager_get.iat[i, 0]
+                            try:
+                                email_get = userinfo.objects.get(no=no_get)
+                                email_add = [email_get.useremail]
+                                email = EmailMessage(title_text, email_text, to=email_add)
+                                email.send()
+                            except:
+                                pass
+                    ##설비담당자 메일주소 불러오기##
+                        eng_get = userinfo.objects.filter(user_division__icontains="Engineer")
+                        eng_get = eng_get.values('no')
+                        df_eng_get = pd.DataFrame.from_records(eng_get)
+                        eng_get_len = len(df_eng_get.index)
+                        for j in range(eng_get_len):
+                            no_get = df_eng_get.iat[j, 0]
+                            try:
+                                email_get = userinfo.objects.get(no=no_get)
+                                email_add = [email_get.useremail]
+                                email = EmailMessage(title_text, email_text, to=email_add)
+                                email.send()
+                            except:
+                                pass
                         context = {"loginid": loginid, "equipname": equipname, "equipteam": equipteam, "capa": capa,
                                     "description": description, "req_reason": req_reason, "request_date": request_date,
                                        "controlno": controlno, "roomno": roomno, "roomname": roomname,"req_date":req_date,
@@ -9962,6 +10110,64 @@ def spareparts_main(request):
         context = {"spare_list": spare_list, "loginid": loginid}
         context.update(users)
         return render(request, 'spareparts_main.html', context)  # templates 내 html연결
+
+def spareparts_change(request):
+    return render(request, 'spareparts_change.html')  # templates 내 html연결
+
+def spareparts_change_submit(request):
+    if request.method == 'POST':  # 매소드값이 post인 값만 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        codeno = request.POST.get('codeno')  # html에서 해당 값을 받는다
+        team = request.POST.get('team')  # html에서 해당 값을 받는다
+        vendor = request.POST.get('vendor')  # html에서 해당 값을 받는다
+        partname = request.POST.get('partname')  # html에서 해당 값을 받는다
+        modelno = request.POST.get('modelno')  # html에서 해당 값을 받는다
+        spec = request.POST.get('spec')  # html에서 해당 값을 받는다
+        locations = request.POST.get('locations')  # html에서 해당 값을 받는다
+        staff = request.POST.get('staff')  # html에서 해당 값을 받는다
+    ##이름 및 권한 끌고다니기##
+        users = userinfo.objects.get(userid=loginid)
+        username = users.username
+        userteam = users.userteam
+        password = users.password
+        auth = users.auth1
+        user_div = users.user_division
+        users = {"auth": auth, "password": password, "username": username, "userteam": userteam, "user_div": user_div}
+    ##기존값 받기##
+        df_spare_origin = pd.DataFrame.from_records(spare_parts_list.objects.filter(codeno=codeno).values())
+        count = len(df_spare_origin.columns)
+    ##정보변경##
+        info_change = spare_parts_list.objects.get(codeno=codeno)
+        info_change.team = team
+        info_change.partname = partname
+        info_change.vendor = vendor
+        info_change.modelno = modelno
+        info_change.spec = spec
+        info_change.location = locations
+        info_change.staff = staff
+        info_change.save()
+    #####audit추출####
+        today = date.datetime.today()
+        audit_date = "20" + today.strftime('%y') + "-" + today.strftime('%m') + "-" + today.strftime('%d')
+        audit_time = today.strftime('%H') + ":" + today.strftime('%M') + ":" + today.strftime('%S')
+        df_spare_change = pd.DataFrame.from_records(spare_parts_list.objects.filter(codeno=codeno).values())
+        for i in range(count):
+            old_value = df_spare_origin.iat[0, i]
+            new_value = df_spare_change.iat[0, i]
+            if old_value != new_value:
+                audit_trail(
+                    date=audit_date,
+                    document="Spare_info",
+                    time=audit_time,
+                    user=loginid,
+                    division="Change",
+                    old_value=old_value,
+                    new_value=new_value,
+                ).save()
+        comp_signal ="Y"
+        context = {"comp_signal": comp_signal, "loginid": loginid}
+        context.update(users)
+    return render(request, 'spareparts_change.html', context)  # templates 내 html연결
 
 def spareparts_safety_stock(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
