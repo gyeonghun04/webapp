@@ -211,6 +211,7 @@ b{
                 <input type="hidden" value="{{user.user_division}}" name="user_div_give">
                 <input type="hidden" value="{{loginid}}" name="loginid_give">
                 <input type="hidden" value="{{user.userid}}" name="userid_give">
+                <input type="hidden" value="{{user.login_lock}}" name="login_lock_give">
                 <input type="button" class="delete_button" value="Change" onclick="Id_change(this);"></td>
             <td align="center" class="m7-1">
                 <input type="button" class="delete_button" value="Delete" onclick="Id_delete(this);"></td>
@@ -229,6 +230,7 @@ b{
         <input type="hidden" name="auth_1_up" id="auth_1_up">
         <input type="hidden" name="userid_up" id="userid_up">
         <input type="hidden" value="{{loginid}}" id="loginid_up">
+         <input type="hidden" name="login_lock_up" id="login_lock_up">
         <input type="hidden" name="user_div_up" id="user_div_up"></form>
 
     <form name="user_info_delete" method="post">
@@ -248,6 +250,7 @@ b{
             var auth_1= document.getElementsByName('auth_1_give')[i].value;
             var user_div= document.getElementsByName('user_div_give')[i].value;
             var userid= document.getElementsByName('userid_give')[i].value;
+            var login_lock= document.getElementsByName('login_lock_give')[i].value;
                 // html로 값보내기
             document.user_info_change.userteam_up.value = userteam;
             document.user_info_change.password_up.value = password;
@@ -255,8 +258,9 @@ b{
             document.user_info_change.auth_1_up.value = auth_1;
             document.user_info_change.user_div_up.value = user_div;
             document.user_info_change.userid_up.value = userid;
+            document.user_info_change.login_lock_up.value = login_lock;
                         // 팝업창열기
-            var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=550, height=280, left=50, top=10';
+            var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=550, height=300, left=50, top=10';
             window.open("/user_info_change", "User Information Change", settings);
     }
 

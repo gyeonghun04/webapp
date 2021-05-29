@@ -112,6 +112,23 @@ login{
 {%endif%}
 </div>
 
+<input type="hidden" name="password_change" value="{{password_change}}">
+<input type="hidden" name="password" value="{{password}}" id="password_up">
+<input type="hidden" name="loginid" value="{{loginid}}" id="loginid_up">
+
 </main>
+
+<script>
+     function init(){
+            var password_change= document.getElementsByName('password_change')[0].value;
+            if (password_change=="Y"){
+                var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=550, height=205, left=50, top=10';
+                window.open("/login_password", "Password Change Information", settings);
+                    }
+            }
+
+      onload=init
+</script>
+
 </body>
 </html>

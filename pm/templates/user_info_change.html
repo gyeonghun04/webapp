@@ -121,7 +121,7 @@ spareparts{
     	font-family: arial;
         font-size:12px;
         cursor:pointer;
-        position:fixed; top:250px; left:488px;
+        position:fixed; top:270px; left:488px;
 }
 #userteam_get{
     	font-family: arial;
@@ -140,6 +140,10 @@ spareparts{
         font-size:13px;
 }
 #user_div_get{
+    	font-family: arial;
+        font-size:13px;
+}
+#login_lock_get{
     	font-family: arial;
         font-size:13px;
 }
@@ -219,6 +223,14 @@ spareparts{
                 </select></td>
     </tr>
 
+    <tr>
+        <td align="center" class="text_css">ID Status</td>
+        <td><div id="login_lock_get"></div></td>
+        <td><select class="div_text" name="login_lock" required>
+                <option value="Unlock">Unlock</option>
+                <option value="Lock">Lock</option>
+        </select></td>
+    </tr>
 </table>
 </div>
     <input type="hidden" name="userid">
@@ -236,6 +248,7 @@ spareparts{
             useremail = opener.document.getElementById("useremail_up").value;
             auth_1 = opener.document.getElementById("auth_1_up").value;
             user_div = opener.document.getElementById("user_div_up").value;
+            login_lock = opener.document.getElementById("login_lock_up").value;
         // 기존값 보내기
             document.user_info_form.userid.value = userid;
             document.user_info_form.userteam.value = userteam;
@@ -249,6 +262,7 @@ spareparts{
             document.getElementById("auth_1_get").innerHTML=auth_1;
             document.getElementById("user_div_get").innerHTML=user_div;
             document.getElementById("logindata").innerHTML=loginid_up;
+            document.getElementById("login_lock_get").innerHTML=login_lock;
         // 자동닫기
             var close_signal= document.getElementsByName('comp_signal')[0].value;
             if (close_signal=="Y"){

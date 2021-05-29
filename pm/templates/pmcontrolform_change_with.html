@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+    <title>Title</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap');
+
+header{
+        height:30px;
+        background:#6F6F6F;
+        justify-content:space-between;
+        align-items:center;
+        position:fixed;
+        top:0;
+        left:0;
+        right:0;
+        z-index:10;
+        }
+header2{
+        height:0.3px;
+        padding-top:3px;
+        background:#EEEEEE;
+        display:flex;
+        justify-content:space-between;
+        position:fixed;
+        top:30px;
+        left:0;
+        right:0;
+        z-index:10;
+}
+toptext{
+        font-family: 'Rubik', sans-serif;
+        font-size:18px;
+        vertical-align:top;
+        font-weight:bold;
+        padding-left:5px;
+        color:white;
+}
+#logindata{
+        position:fixed; top:1px; left:90px;
+        font-family: 'Rubik', sans-serif;
+        font-size:18px;
+        vertical-align:top;
+        font-weight:bold;
+        color:white;
+}
+l{
+        margin-left:1%;
+        color:white;
+}
+m{
+        margin-left:1%;
+        color:white;
+}
+k{
+        position:fixed; top:0%; left:94.5%;
+        color:white;
+}
+.Button {
+        position:fixed; left:990px;
+        font-family:'Rubik', sans-serif;
+        font-size:18px;
+        background-color: rgba(255, 255, 255, 0.0);
+        cursor:pointer;
+        border:0px;
+        color:white;
+        font-weight:bold;
+}
+pm{
+        position:fixed; top:35px; left:5px;
+        font-family: 'Rubik', sans-serif;
+        font-size:18px;
+        font-weight:bold;
+}
+#table_location{
+        position:fixed; top:385px; left:550px;
+}
+#tablemenu{
+    	font-family: arial;
+        font-size:11px;
+        position:fixed; top:70px; left:10px;
+        width:530px;
+        background-color:#6F6F6F;
+        color:white;
+}
+#tablemenu_s{
+    	font-family: arial;
+        font-size:11px;
+        position:fixed; top:70px; left:550px;
+        width:500px;
+        background-color:#6F6F6F;
+        color:white;
+}
+#tabledesc_s{
+        position:fixed; top:100px; left:550px;
+        z-index:10;
+        width:500px;
+        font-family: arial;
+        font-size:11px;
+        height:230px;
+        overflow-y:scroll;
+}
+
+#tabledesc{
+        position:fixed; top:100px; left:10px;
+        z-index:10;
+        width:530px;
+        font-family: arial;
+        font-size:11px;
+        height:450px;
+        overflow-y:scroll;
+}
+#pm_table{
+        border:1px solid white;
+        border-collapse:collapse;
+}
+.text_css{
+      font-family:'Rubik', sans-serif;
+      font-size:13px;
+      color:black;
+      background-color:#D8D8D8;
+      width:130px;
+      height:25px;
+      }
+.input_css{
+      font-size:13px;
+      width:350px;
+      height:25px;
+}
+.input_css2{
+      font-size:13px;
+      width:350px;
+      height:25px;
+      background-color:white;
+}
+.location_btn{
+        margin-top:11px;
+    	font-family: arial;
+        font-size:12px;
+        cursor:pointer;
+}
+.submit_btn{
+    	font-family: arial;
+        font-size:12px;
+        cursor:pointer;
+        position:fixed; top:560px; left:990px;
+}
+.authtext{
+    	font-family: arial;
+        padding-top:2px;
+        padding-bottom:3px;
+        width:140px;
+        }
+.freq_no{
+    width:150px;
+    font-family: arial;
+    font-size:13px;
+    height: 25px;
+}
+.freq_my{
+    width:150px;
+    font-family: arial;
+    font-size:13px;
+    height: 25px;
+}
+.division{
+    width:150px;
+    font-family: arial;
+    font-size:13px;
+    height:31px;
+}
+.division_css{
+    width:142px;
+    font-family: arial;
+    font-size:13px;
+    height: 25px;}
+
+.m1{width:50px;}
+.m2{width:80px;}
+.m3{width:100px;}
+.m4{width:100px;}
+.m5{width:125px;}
+.m7{width:130px;}
+
+.m1-1{width:50px;}
+.m2-1{width:80px;}
+.m3-1{width:100px;}
+.m4-1{width:100px;}
+.m5-1{width:120px;}
+.m6-1{width:35px;}
+.m7-1{width:130px;}
+
+tr:nth-child(even){
+    background-color:#EEEEEE;
+}
+.check_css{
+    cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+<header>
+<toptext>Welcome,&nbsp;</toptext>
+<div id="logindata"></div>
+
+<input type="button"value="Close" class="Button" onclick="Close();">
+
+</header>
+<header2>
+</header2>
+<pm>PM Maintenance Item Registration With Other Equipment</pm>
+
+<div id="tablemenu">
+     <table  style="word-break:break-all">
+        <thead>
+        <tr>
+            <td align="center" class="m1">Team</td>
+            <td align="center" class="m2">Control No.</td>
+            <td align="center" class="m3">Equip. Name</td>
+            <td align="center" class="m4">Model Name</td>
+            <td align="center" class="m5">Room Name<br>(Room No.)</td>
+            <td align="left" class="m6">Check</td>
+        </tr>
+        </thead>
+     </table>
+</div>
+
+<div id="tabledesc">
+ <table style="word-break:break-all" id="tabledesc_table">
+     <tbody>
+                      {% for equip_lists in equip_list %}
+        <tr>
+            <td align="center" class="m1-1">{{equip_lists.team}}</td> <!--models.py에서 값받아오기-->
+            <td align="center" class="m2-1">{{equip_lists.controlno}}</td>
+            <td align="center" class="m3-1">{{equip_lists.name}}</td>
+            <td align="center" class="m4-1">{{equip_lists.model}}</td>
+            <td align="center" class="m5-1">{{equip_lists.roomname}}<br>({{equip_lists.roomno}})</td>
+            <td align="center" class="m6-1">
+                <input type="hidden" name="controlno" value="{{equip_lists.controlno}}">
+                <input type="checkbox" class="check_css" name="equip_checked" onchange="Pmcontrolform_check(this);" {{equip_lists.link_check}}></td>
+        </tr>
+                        {%endfor%}
+     </tbody>
+ </table>
+</div>
+
+<div id="tablemenu_s">
+     <table  style="word-break:break-all">
+        <thead>
+        <tr>
+            <td align="center" class="m1">Team</td>
+            <td align="center" class="m2">Control No.</td>
+            <td align="center" class="m3">Equip. Name</td>
+            <td align="center" class="m4">Model Name</td>
+            <td align="center" class="m7">Room Name<br>(Room No.)</td>
+        </tr>
+        </thead>
+     </table>
+</div>
+
+<div id="tabledesc_s">
+ <table style="word-break:break-all" id="tabledesc_table_s">
+     <tbody>
+                      {% for equip_lists in equip_list_s %}
+        <tr>
+            <td align="center" class="m1-1">{{equip_lists.team}}</td> <!--models.py에서 값받아오기-->
+            <td align="center" class="m2-1">{{equip_lists.controlno}}</td>
+            <td align="center" class="m3-1">{{equip_lists.name}}</td>
+            <td align="center" class="m4-1">{{equip_lists.model}}</td>
+            <td align="center" class="m7-1">{{equip_lists.roomname}}<br>({{equip_lists.roomno}})</td>
+        </tr>
+                        {%endfor%}
+     </tbody>
+ </table>
+</div>
+
+
+<form action="pmcontrolform_write_with_new" method="post" name="pm_check_new_form">
+    {% csrf_token %}
+<div id="table_location">
+   <table id="pm_table" border="1">
+        <tr>
+            <td align="center" class="text_css">Division</td>
+            <td align="left">
+            <input type="text" name="division_get"  value="{{division_get}}" class="division_css" readonly>
+            <select class="division" name="division" onchange="Division_select();">
+            <option value="None"></option>
+                {% for pm_reference in pmreference %}
+            <option value="{{pm_reference.description}}">{{pm_reference.description}}</option>
+                {% endfor %}
+            </select></td>
+        </tr>
+        <tr>
+            <td align="center" class="text_css">Frequency</td>
+            {% if frequency == "" %}
+            <td align="left">
+            <select class="freq_no" name="freq_no">&nbsp;
+            <option value="None"></option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option></select>
+            <select class="freq_my" name="freq_my">&nbsp;
+            <option value="None"></option>
+            <option value="Month">Month</option>
+            <option value="Year">Year</option></select>
+            </td>
+            {%else%}
+            <td align="left" class="input_css2">{{frequency}}</td>
+            {%endif%}
+        </tr>
+        <tr>
+            <td align="center" class="text_css">Maintenance Item</td>
+            <td align="center">
+            <input type="text" name="item"  class="input_css" required></td>
+        </tr>
+        <tr>
+            <td align="center" class="text_css">Check Standard</td>
+            <td align="center">
+            <input type="text" name="check"  class="input_css" required></td>
+        </tr>
+        <tr>
+            <td align="center" class="text_css">Change Information</td>
+            <td align="center">
+            <input type="text" name="change"  class="input_css" required></td>
+        </tr>
+   </table>
+</div>
+    <input type="hidden" name="loginid">
+    <input type="hidden" name="controlno">
+    <input type="hidden" name="freq_no_give" value="{{freq_no}}">
+    <input type="hidden" name="freq_my_give" value="{{freq_my}}">
+    <input type="hidden" name="frequency" value="{{frequency}}">
+<input type="submit" class="submit_btn" value="Submit"></form>
+<input type="hidden" value="{{comp_signal}}" name="comp_signal">
+
+<form name="division_select_form" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="loginid">
+    <input type="hidden" name="controlno">
+    <input type="hidden" name="division">
+</form>
+
+<form name="pmcontrolform_change_form" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="loginid">
+    <input type="hidden" name="equip_check">
+    <input type="hidden" name="controlno">
+</form>
+
+<input type="hidden" name="comp_signal" value="{{comp_signal}}">
+<script>
+    //////////// 기본초기값 불러오기//////////////
+     function init(){
+            loginid = opener.document.getElementById("loginid_up").value;
+       ////아이디 정보 보내기
+            var loginid_up = loginid;
+            document.getElementById("logindata").innerHTML=loginid_up;
+            var close_signal= document.getElementsByName('comp_signal')[0].value;
+            if (close_signal=="Y"){
+               window.resizeTo(600,200);
+               alert("PM Maintenance Item Registration is complete.");
+               opener.document.location.reload();
+               self.close();}
+            }
+
+      onload=init
+
+    function Close(){
+    self.close();
+    }
+
+    function Pmcontrolform_check(obj){
+              var i = obj.parentNode.parentNode.rowIndex;
+              if (document.getElementsByName("equip_checked")[i].checked == true) {
+                        var equip_checks = "checked";}
+              else{var equip_checks = "";}
+              var controlno= document.getElementsByName('controlno')[i].value;
+              loginid = opener.document.getElementById("loginid_up").value;
+              document.pmcontrolform_change_form.equip_check.value = equip_checks;
+              document.pmcontrolform_change_form.loginid.value = loginid;
+              document.pmcontrolform_change_form.controlno.value = controlno;
+                // 서버로 전송
+              document.pmcontrolform_change_form.action="pmcontrolform_change_check";
+              document.pmcontrolform_change_form.submit();
+    }
+
+</script>
+</body>
+</html>

@@ -25,6 +25,8 @@ urlpatterns = [
     path('main', pm.views.main, name='main'),
     path('logout_page', pm.views.logout_page, name='logout_page'),
     path('login_again', pm.views.login_again, name='login_again'),
+    path('login_password', pm.views.login_password, name='login_password'),
+    path('login_password_submit', pm.views.login_password_submit, name='login_password_submit'),
     path('information_main', pm.views.information_main, name='information_main'),
     path('audittrail_main', pm.views.audittrail_main, name='audittrail_main'),
     path('audittrail_view', pm.views.audittrail_view, name='audittrail_view'),
@@ -107,6 +109,8 @@ urlpatterns = [
     path('pmcontrolform_change_link', pm.views.pmcontrolform_change_link, name='pmcontrolform_change_link'),
     path('pmcontrolform_change_controlno', pm.views.pmcontrolform_change_controlno, name='pmcontrolform_change_controlno'),
     path('pmcontrolform_change_link_submit', pm.views.pmcontrolform_change_link_submit, name='pmcontrolform_change_link_submit'),
+    path('pmcontrolform_change_with', pm.views.pmcontrolform_change_with, name='pmcontrolform_change_with'),
+    path('pmcontrolform_change_check', pm.views.pmcontrolform_change_check, name='pmcontrolform_change_check'),
 
 ####PM Assessment of Period####
     path('pmra_main', pm.views.pmra_main, name='pmra_main'),

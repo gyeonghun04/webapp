@@ -36,6 +36,7 @@ class equiplist(models.Model): #PM Master List Table
     p_name_temp = models.CharField(max_length=255, default="None") # 작성자 이름 // 결재 전 임시저장
     p_date_temp = models.CharField(max_length=255, default="None") # 작성자 날짜 // 결재 전 임시저장
     pic = models.TextField(default="N/A") #설비사진
+    link_check = models.CharField(max_length=255, default="") #pm일괄 변경시 임시체크
 
     class Meta:
         managed = False
@@ -242,6 +243,9 @@ class userinfo(models.Model):  # 유저 테이블
     useremail = models.CharField(max_length=255)
     auth1 = models.CharField(max_length=255)
     user_division = models.CharField(max_length=255)
+    password_date = models.DateField()
+    fail_count = models.CharField(max_length=255, default=0)
+    login_lock = models.CharField(max_length=255, default="Unlock")
 
     class Meta:
         managed = False

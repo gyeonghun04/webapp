@@ -31,6 +31,62 @@ def login_again(request):
 def information_main(request):
     return render(request, 'information_main.html') #templates 내 html연결
 
+def login_password(request):
+    return render(request, 'login_password.html') #templates 내 html연결
+
+def login_password_submit(request):
+    if request.method =='POST': #매소드값이 post인 값만 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        now_password = request.POST.get('now_password')  # html에서 해당 값을 받는다
+        new_password = request.POST.get('new_password')  # html에서 해당 값을 받는다
+        new_password_again = request.POST.get('new_password_again')  # html에서 해당 값을 받는다
+    ##이름 및 권한 끌고다니기##
+        users = userinfo.objects.get(userid=loginid)
+        username = users.username
+        userteam = users.userteam
+        password = users.password
+        auth = users.auth1
+        user_div = users.user_division
+        users = {"auth": auth, "password": password, "username": username, "userteam": userteam, "user_div": user_div}
+        if now_password != password:
+            error_text = "Now password is incorrect."
+            context={"error_text":error_text}
+            return render(request, 'login_password.html',context)  # templates 내 html연결
+        if new_password != new_password_again:
+            error_text = "New passwords do not match."
+            context={"error_text":error_text}
+            return render(request, 'login_password.html',context)  # templates 내 html연결
+    # PASSWORD 복잡도 판단하기
+        check = new_password
+        if len(check) > 7:  # 8자 이상
+            a = re.compile('[a-z]')  # 소문자 포함
+            result_a = a.search(check)
+            if result_a != None:
+                b = re.compile(r'\d')  # 숫자 포함
+                result_b = b.search(check)
+                if result_b != None:
+                    c = re.compile('[A-Z]')  # 대문자 포함
+                    result_c = c.search(check)
+                    if result_c != None:
+                        d = re.compile('[~!@#$%^&*]')  # 특수문자자 포함
+                        result_d = d.search(check)
+                        if result_d != None:
+                            today = date.datetime.today()
+                            pass_date = "20" + today.strftime('%y') + "-" + today.strftime('%m') + "-" + today.strftime('%d')
+                            user_info = userinfo.objects.get(userid=loginid)
+                            user_info.password = new_password
+                            user_info.password_date = pass_date
+                            user_info.fail_count = 0
+                            user_info.login_lock = "Unlock"
+                            user_info.save()
+                            comp_signal ="Y"
+                            context = {"comp_signal": comp_signal}
+                            return render(request, 'login_password.html', context)  # templates 내 html연결
+        error_text = "Password policy was violated."
+        context = {"error_text": error_text}
+        return render(request, 'login_password.html', context)  # templates 내 html연결
+
+
 def main(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
         loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
@@ -46,429 +102,458 @@ def main(request):
             users = {"auth":auth,"password":password,"username":username,"userteam":userteam,"user_div":user_div}
         except:
             users={"loginid":loginid}
-        try:
-            login_info = userinfo.objects.get(userid=loginid) #아이디 일치여부 확인
-            if login_info.password == userpassword: #비밀번호 일치여부
-#####audit추출####
-                today = date.datetime.today()
-                audit_date = "20" + today.strftime('%y') + "-" + today.strftime('%m') + "-" + today.strftime('%d')
-                audit_time = today.strftime('%H') + ":" + today.strftime('%M') + ":" + today.strftime('%S')
-                audit_trail(
-                    date = audit_date,
-                    document="Login_info",
-                    time = audit_time,
-                    user = loginid,
-                    division = "Login",
-                    new_value = loginid + "가 로그인 하였습니다.",
-                ).save()
-#####메인테이블 창 만들기####
-                #####1)PM창 카운트 계산하기####
-                today = date.datetime.today()
-                today_search = "20" + today.strftime('%y') + "-" + today.strftime('%m') + "-" + today.strftime('%d')
-                month_search = "20" + today.strftime('%y') + "-" + today.strftime('%m')
-                try:
-                    today_info = pm_sch.objects.filter(plandate=today_search).values('team').annotate(Count('team'))
-                except:
-                    today_info =""
-                try:
-                    completed = pm_sch.objects.filter(date=month_search, status="Complete")
-                    completed = completed.values('status')
-                    df_completed = pd.DataFrame.from_records(completed)
-                    completed_len = len(df_completed.index)
-                except:
-                    completed_len = 0
-                try:
-                    reviewed = pm_sch.objects.filter(date=month_search, status="Reviewed")
-                    reviewed = reviewed.values('status')
-                    df_reviewed = pd.DataFrame.from_records(reviewed)
-                    reviewed_len = len(df_reviewed.index)
-                except:
-                    reviewed_len = 0
-                try:
-                    performed = pm_sch.objects.filter(date=month_search, status="Performed")
-                    performed = performed.values('status')
-                    df_performed = pd.DataFrame.from_records(performed)
-                    performed_len = len(df_performed.index)
-                except:
-                    performed_len = 0
-                try:
-                    fixed_date = pm_sch.objects.filter(date=month_search, status__icontains="Fixed Date")
-                    fixed_date = fixed_date.values('status')
-                    df_fixed_date = pd.DataFrame.from_records(fixed_date)
-                    fixed_date_len = len(df_fixed_date.index)
-                except:
-                    fixed_date_len = 0
-                total_len = int(completed_len) + int(reviewed_len) + int(performed_len) + int(fixed_date_len)
-                pm_cont = {"total_len": total_len, "completed_len": completed_len, "reviewed_len": reviewed_len,
-                           "performed_len": performed_len, "fixed_date_len": fixed_date_len, "today_info": today_info}
-                pm_cont.update(users)
-            #####2)PM문서창 카운트 계산하기####
-                try: ###ra
-                    ra_completed = equiplist.objects.filter(status="Complete")
-                    ra_completed = ra_completed.values('status')
-                    df_ra_completed = pd.DataFrame.from_records(ra_completed)
-                    ra_completed_len = len(df_ra_completed.index)
-                except:
-                    ra_completed_len = 0
-                try:
-                    ra_prepared = equiplist.objects.filter(status="Prepared")
-                    ra_prepared = ra_prepared.values('status')
-                    df_ra_prepared = pd.DataFrame.from_records(ra_prepared)
-                    ra_prepared_len = len(df_ra_prepared.index)
-                except:
-                    ra_prepared_len = 0
-                try:
-                    new = pm_sch.objects.filter(date=month_search, status="New")
-                    new = new.values('status')
-                    df_new = pd.DataFrame.from_records(new)
-                    ra_new_len = len(df_new.index)
-                except:
-                    ra_new_len = 0
-                ra_total_len = int(ra_completed_len) + int(ra_prepared_len) + int(ra_new_len)
-                pm_ra_cont = {"ra_total_len": ra_total_len, "ra_completed_len": ra_completed_len,
-                              "ra_prepared_len": ra_prepared_len,
-                              "ra_new_len": ra_new_len}
-                pm_ra_cont.update(pm_cont)
-                try: ###control form
-                    cf_completed = controlformlist.objects.filter(status="Complete", recent_y="Y")
-                    cf_completed = cf_completed.values('status')
-                    df_cf_completed = pd.DataFrame.from_records(cf_completed)
-                    cf_completed_len = len(df_cf_completed.index)
-                except:
-                    cf_completed_len = 0
-                try:
-                    cf_reviewed = controlformlist.objects.filter(status="Reviewed", recent_y="A")
-                    cf_reviewed = cf_reviewed.values('status')
-                    df_cf_reviewed = pd.DataFrame.from_records(cf_reviewed)
-                    cf_reviewed_len = len(df_cf_reviewed.index)
-                except:
-                    cf_reviewed_len = 0
-                try:
-                    cf_prepared = controlformlist.objects.filter(status="Prepared", recent_y="A")
-                    cf_prepared = cf_prepared.values('status')
-                    df_cf_prepared = pd.DataFrame.from_records(cf_prepared)
-                    cf_prepared_len = len(df_cf_prepared.index)
-                except:
-                    cf_prepared_len = 0
-                try:
-                    cf_reject = controlformlist.objects.filter(status="Reject", recent_y="Y")
-                    cf_reject = cf_reject.values('status')
-                    df_cf_reject = pd.DataFrame.from_records(cf_reject)
-                    cf_reject_len = len(df_cf_reject.index)
-                except:
-                    cf_reject_len = 0
-                try:
-                    cf_new = controlformlist.objects.filter(status="New", recent_y="Y")
-                    cf_new = cf_new.values('status')
-                    df_cf_new = pd.DataFrame.from_records(cf_new)
-                    cf_new_len = len(df_cf_new.index)
-                except:
-                    cf_new_len = 0
-                try:
-                    cf_review = controlformlist.objects.filter(status="Review", recent_y="Y")
-                    cf_review = cf_review.values('status')
-                    df_cf_review = pd.DataFrame.from_records(cf_review)
-                    cf_review_len = len(df_cf_review.index)
-                except:
-                    cf_new_len = 0
-                cf_total_len = int(cf_completed_len) + int(cf_reject_len) + int(cf_new_len) + int(cf_prepared_len) + int(cf_reviewed_len) + int(cf_review_len)
-                pm_cf_cont = {"cf_total_len": cf_total_len, "cf_completed_len": cf_completed_len,
-                              "cf_reject_len": cf_reject_len,"cf_prepared_len":cf_prepared_len,"cf_reviewed_len":cf_reviewed_len,
-                              "cf_new_len": cf_new_len}
-                pm_cf_cont.update(pm_ra_cont)
-            ####3)BM문서창 카운트 계산하기####
-                today = date.datetime.today()##오늘 결과
-                today_search = "20" + today.strftime('%y') + "-" + today.strftime('%m') + "-" + today.strftime('%d')
-                try:
-                    bm_today_info = workorder.objects.filter(date=today_search).values('team').annotate(Count('team'))
-                except:
-                    bm_today_info =""
-                try:
-                    bm_finish_info = workorder.objects.filter(action_date=today_search).values('team').annotate(Count('team'))
-                except:
-                    bm_finish_info = ""
-                bm_today_cont = {"bm_today_info":bm_today_info,"bm_finish_info":bm_finish_info}
-                bm_today_cont.update(pm_cf_cont)
-                try:##bm 현재 status
-                    wr_approve = workorder.objects.filter(status="Approved", workorder_y_n="N")
-                    wr_approve = wr_approve.values('status')
-                    df_wr_approve = pd.DataFrame.from_records(wr_approve)
-                    wr_approve_len = len(df_wr_approve.index)
-                except:
-                    wr_approve_len = 0
-                try:
-                    wr_receive = workorder.objects.filter(status="Received", workorder_y_n="N")
-                    wr_receive = wr_receive.values('status')
-                    df_wr_receive = pd.DataFrame.from_records(wr_receive)
-                    wr_receive_len = len(df_wr_receive.index)
-                except:
-                    wr_receive_len = 0
-                try:
-                    wr_review = workorder.objects.filter(status="Reviewed", workorder_y_n="N")
-                    wr_review = wr_review.values('status')
-                    df_wr_review = pd.DataFrame.from_records(wr_review)
-                    wr_review_len = len(df_wr_review.index)
-                except:
-                    wr_review_len = 0
-                try:
-                    wr_request = workorder.objects.filter(status="Request", workorder_y_n="N")
-                    wr_request = wr_request.values('status')
-                    df_wr_request = pd.DataFrame.from_records(wr_request)
-                    wr_request_len = len(df_wr_request.index)
-                except:
-                    wr_request_len = 0
-                try:
-                    wr_team = workorder.objects.filter(status="Team_approved", workorder_y_n="N")
-                    wr_team = wr_team.values('status')
-                    df_wr_team = pd.DataFrame.from_records(wr_team)
-                    wr_team_len = len(df_wr_team.index)
-                except:
-                    wr_team_len = 0
-                try:
-                    wr_total = workorder.objects.filter(workorder_y_n="N")
-                    wr_total = wr_total.values('status')
-                    df_wr_total = pd.DataFrame.from_records(wr_total)
-                    wr_total_len = len(df_wr_total.index)
-                except:
-                    wr_total_len = 0
-                not_receive = int(wr_request_len) + int(wr_team_len)
-                receive = int(wr_receive_len) + int(wr_review_len)
-                request_cont = {"wr_approve_len":wr_approve_len,"wr_receive_len":wr_receive_len,"wr_review_len":wr_review_len,
-                                "wr_team_len":wr_team_len,"wr_total_len":wr_total_len,"wr_request_len":wr_request_len,
-                                "receive":receive,"not_receive":not_receive}
-                request_cont.update(bm_today_cont)
-                try:  ##bm 현재 status
-                    wo_approve = workorder.objects.filter(workorder_y_n="C")
-                    wo_approve = wo_approve.values('status')
-                    df_wo_approve = pd.DataFrame.from_records(wo_approve)
-                    wo_approve_len = len(df_wo_approve.index)
-                except:
-                    wo_approve_len = 0
-                try:
-                    wo_repair = workorder.objects.filter(status="Repaired", workorder_y_n="Y")
-                    wo_repair = wo_repair.values('status')
-                    df_wo_repair = pd.DataFrame.from_records(wo_repair)
-                    wo_repair_len = len(df_wo_repair.index)
-                except:
-                    wo_repair_len = 0
-                try:
-                    wo_review = workorder.objects.filter(status="Reviewed", workorder_y_n="Y")
-                    wo_review = wo_review.values('status')
-                    df_wo_review = pd.DataFrame.from_records(wo_review)
-                    wo_review_len = len(df_wo_review.index)
-                except:
-                    wo_review_len = 0
-                try:
-                    wo_check = workorder.objects.filter(status="Checked", workorder_y_n="Y")
-                    wo_check = wo_check.values('status')
-                    df_wo_check = pd.DataFrame.from_records(wo_check)
-                    wo_check_len = len(df_wo_check.index)
-                except:
-                    wo_check_len = 0
-                try:
-                    wo_total = workorder.objects.filter(Q(workorder_y_n="Y") | Q(workorder_y_n="C"))
-                    wo_total = wo_total.values('status')
-                    df_wo_total = pd.DataFrame.from_records(wo_total)
-                    wo_total_len = len(df_wo_total.index)
-                except:
-                    wo_total_len = 0
-                repaired = int(wo_repair_len) + int(wo_review_len) + int(wo_check_len)
-                wo_not_len = int(wo_total_len) - int(wo_repair_len) - int(wo_approve_len) - int(wo_review_len) - int(wo_check_len)
-                order_cont = {"wo_not_len": wo_not_len, "wo_repair_len": wo_repair_len, "wo_approve_len": wo_approve_len,
-                                "wo_total_len": wo_total_len,"repaired":repaired,"wo_review_len":wo_review_len,
-                              "wo_check_len":wo_check_len}
-                order_cont.update(request_cont)
-                context = {"loginid": loginid}
-                context.update(order_cont)
-            #####4)PM그래프 그리기####
-                ##금년도sch인거 업데이트하기##
-                ###연간 스케줄 리셋하기##
-                year_reset = pm_sch.objects.all()
-                year_reset = year_reset.values('no')
-                df_year_reset = pd.DataFrame.from_records(year_reset)
-                year_reset_len = len(df_year_reset.index)
-                for i in range(year_reset_len):
-                    no_get = df_year_reset.iat[i, 0]
-                    info_reset = pm_sch.objects.get(no=no_get)
-                    info_reset.annual_date = ""
-                    info_reset.save()
-                today = date.datetime.today()
-                today_year = "20" + today.strftime('%y')  # 올해 년도 구하기
-                year_get = pm_sch.objects.filter(~Q(status="Complete") | Q(delete_signal="Y"))
-                year_get = year_get.values('no')
-                df_year_get = pd.DataFrame.from_records(year_get)
-                year_get_len = len(df_year_get.index)
-                for i in range(year_get_len):
-                    no_get = df_year_get.iat[i, 0]
-                    info_get = pm_sch.objects.get(no=no_get)
+        login_infos = userinfo.objects.filter(userid=loginid) #아이디 일치여부 확인
+        login_infos = login_infos.values('userid')
+        df_login_infos = pd.DataFrame.from_records(login_infos)
+        login_infos_len = len(df_login_infos.index)
+        if int(login_infos_len) == 1 :
+            login_info = userinfo.objects.get(userid=loginid)  # 아이디 일치여부 확인
+            if login_info.login_lock != "Lock":
+                if login_info.password == userpassword: #비밀번호 일치여부
+    #####로그인실패 횟수 디폴트####
+                    login_info.fail_count =0
+                    login_info.save()
+    #####password 변경일 계산하기#####
+                    today = date.datetime.today()
+                    password_year = "20" + today.strftime('%y')
+                    password_month = today.strftime('%m')
+                    password_day = today.strftime('%d')
+                    password_today = date.datetime(int(password_year), int(password_month), int(password_day))
+                    count_date = password_today - login_info.password_date
+                    if int((count_date).days) > 90:
+                        password_change = "Y"
+                        context = {"password_change":password_change,"loginid":loginid}
+                        context.update(users)
+                        return render(request, 'login.html', context)  # templates 내 html연결
+    #####audit추출####
+                    audit_date = "20" + today.strftime('%y') + "-" + today.strftime('%m') + "-" + today.strftime('%d')
+                    audit_time = today.strftime('%H') + ":" + today.strftime('%M') + ":" + today.strftime('%S')
+                    audit_trail(
+                        date = audit_date,
+                        document="Login_info",
+                        time = audit_time,
+                        user = loginid,
+                        division = "Login",
+                        new_value = loginid + "가 로그인 하였습니다.",
+                    ).save()
+    #####메인테이블 창 만들기####
+                    #####1)PM창 카운트 계산하기####
+                    today = date.datetime.today()
+                    today_search = "20" + today.strftime('%y') + "-" + today.strftime('%m') + "-" + today.strftime('%d')
+                    month_search = "20" + today.strftime('%y') + "-" + today.strftime('%m')
                     try:
-                        plan_date_get = pmsheetdb.objects.get(pmsheetno_temp=info_get.pmsheetno)
-                        freq_get = pmsheetdb.objects.get(pmsheetno_temp=info_get.pmsheetno)
-                        freq = freq_get.freq  # 주기값 불러오기
-                        plan_date = plan_date_get.startdate
-                        start_date_check = plan_date_get.startdate
-                        if (freq[:2] == "10") or (freq[:2] == "11") or (freq[:2] == "12"):  ##계산식 할수있게 값 변형하기
-                            f_num = freq[:2]
-                        else:
-                            f_num = freq[:1]
-                        f_m_y = freq[2:4]
-                        next_year = int(today_year) + 2
-                        year_chk = today_year
-                        plan_date_y = plan_date[:4]  ##년도
-                        plan_date_m = plan_date[5:]  ##월
-                        plan_date = date.datetime(int(plan_date_y), int(plan_date_m), 1)
-                        if (f_m_y == "on") or (f_m_y == "Mo"):  ##주기가 월일경우
-                            if int(start_date_check[:4]) == int(today_year):
-                                info_get.annual_date = " [" + start_date_check + "] "
-                                info_get.save()
-                            while int(year_chk) < int(next_year):
-                                next_plan = plan_date + relativedelta(months=int(f_num))
-                                next_plandate = "20" + next_plan.strftime('%y') + "-" + next_plan.strftime('%m')
-                                year_chk = "20" + next_plan.strftime('%y')
-                                plan_date = next_plandate
-                                plan_date_y = plan_date[:4]
-                                plan_date_m = plan_date[5:]
-                                plan_date = date.datetime(int(plan_date_y), int(plan_date_m), 1)
-                                if int(plan_date_y) == int(today_year):
-                                    info_get.annual_date = info_get.annual_date + " [" + next_plandate + "] "
-                                    info_get.save()
-                        else:  ##주기가 년일 경우
-                            if int(start_date_check[:4]) == int(today_year):
-                                info_get.annual_date = " [" + start_date_check + "] "
-                                info_get.save()
-                            while int(year_chk) < int(next_year):
-                                next_plan = plan_date + relativedelta(years=int(f_num))
-                                next_plandate = "20" + next_plan.strftime('%y') + "-" + next_plan.strftime('%m')
-                                year_chk = "20" + next_plan.strftime('%y')
-                                plan_date = next_plandate
-                                plan_date_y = plan_date[:4]
-                                plan_date_m = plan_date[5:]
-                                plan_date = date.datetime(int(plan_date_y), int(plan_date_m), 1)
-                                if int(next_plandate[:4]) == int(today_year):
-                                    info_get.annual_date = info_get.annual_date + " [" + next_plandate + "] "
-                                    info_get.save()
+                        today_info = pm_sch.objects.filter(plandate=today_search).values('team').annotate(Count('team'))
                     except:
-                        info_get.annual_date = " [" + info_get.date + "] "
-                        info_get.save()
-            ####그래프 그리기#####
-                try:
-                    plt.figure(1)
-                    plt.clf()
+                        today_info =""
+                    try:
+                        completed = pm_sch.objects.filter(date=month_search, status="Complete")
+                        completed = completed.values('status')
+                        df_completed = pd.DataFrame.from_records(completed)
+                        completed_len = len(df_completed.index)
+                    except:
+                        completed_len = 0
+                    try:
+                        reviewed = pm_sch.objects.filter(date=month_search, status="Reviewed")
+                        reviewed = reviewed.values('status')
+                        df_reviewed = pd.DataFrame.from_records(reviewed)
+                        reviewed_len = len(df_reviewed.index)
+                    except:
+                        reviewed_len = 0
+                    try:
+                        performed = pm_sch.objects.filter(date=month_search, status="Performed")
+                        performed = performed.values('status')
+                        df_performed = pd.DataFrame.from_records(performed)
+                        performed_len = len(df_performed.index)
+                    except:
+                        performed_len = 0
+                    try:
+                        fixed_date = pm_sch.objects.filter(date=month_search, status__icontains="Fixed Date")
+                        fixed_date = fixed_date.values('status')
+                        df_fixed_date = pd.DataFrame.from_records(fixed_date)
+                        fixed_date_len = len(df_fixed_date.index)
+                    except:
+                        fixed_date_len = 0
+                    total_len = int(completed_len) + int(reviewed_len) + int(performed_len) + int(fixed_date_len)
+                    pm_cont = {"total_len": total_len, "completed_len": completed_len, "reviewed_len": reviewed_len,
+                               "performed_len": performed_len, "fixed_date_len": fixed_date_len, "today_info": today_info}
+                    pm_cont.update(users)
+                #####2)PM문서창 카운트 계산하기####
+                    try: ###ra
+                        ra_completed = equiplist.objects.filter(status="Complete")
+                        ra_completed = ra_completed.values('status')
+                        df_ra_completed = pd.DataFrame.from_records(ra_completed)
+                        ra_completed_len = len(df_ra_completed.index)
+                    except:
+                        ra_completed_len = 0
+                    try:
+                        ra_prepared = equiplist.objects.filter(status="Prepared")
+                        ra_prepared = ra_prepared.values('status')
+                        df_ra_prepared = pd.DataFrame.from_records(ra_prepared)
+                        ra_prepared_len = len(df_ra_prepared.index)
+                    except:
+                        ra_prepared_len = 0
+                    try:
+                        new = pm_sch.objects.filter(date=month_search, status="New")
+                        new = new.values('status')
+                        df_new = pd.DataFrame.from_records(new)
+                        ra_new_len = len(df_new.index)
+                    except:
+                        ra_new_len = 0
+                    ra_total_len = int(ra_completed_len) + int(ra_prepared_len) + int(ra_new_len)
+                    pm_ra_cont = {"ra_total_len": ra_total_len, "ra_completed_len": ra_completed_len,
+                                  "ra_prepared_len": ra_prepared_len,
+                                  "ra_new_len": ra_new_len}
+                    pm_ra_cont.update(pm_cont)
+                    try: ###control form
+                        cf_completed = controlformlist.objects.filter(status="Complete", recent_y="Y")
+                        cf_completed = cf_completed.values('status')
+                        df_cf_completed = pd.DataFrame.from_records(cf_completed)
+                        cf_completed_len = len(df_cf_completed.index)
+                    except:
+                        cf_completed_len = 0
+                    try:
+                        cf_reviewed = controlformlist.objects.filter(status="Reviewed", recent_y="A")
+                        cf_reviewed = cf_reviewed.values('status')
+                        df_cf_reviewed = pd.DataFrame.from_records(cf_reviewed)
+                        cf_reviewed_len = len(df_cf_reviewed.index)
+                    except:
+                        cf_reviewed_len = 0
+                    try:
+                        cf_prepared = controlformlist.objects.filter(status="Prepared", recent_y="A")
+                        cf_prepared = cf_prepared.values('status')
+                        df_cf_prepared = pd.DataFrame.from_records(cf_prepared)
+                        cf_prepared_len = len(df_cf_prepared.index)
+                    except:
+                        cf_prepared_len = 0
+                    try:
+                        cf_reject = controlformlist.objects.filter(status="Reject", recent_y="Y")
+                        cf_reject = cf_reject.values('status')
+                        df_cf_reject = pd.DataFrame.from_records(cf_reject)
+                        cf_reject_len = len(df_cf_reject.index)
+                    except:
+                        cf_reject_len = 0
+                    try:
+                        cf_new = controlformlist.objects.filter(status="New", recent_y="Y")
+                        cf_new = cf_new.values('status')
+                        df_cf_new = pd.DataFrame.from_records(cf_new)
+                        cf_new_len = len(df_cf_new.index)
+                    except:
+                        cf_new_len = 0
+                    try:
+                        cf_review = controlformlist.objects.filter(status="Review", recent_y="Y")
+                        cf_review = cf_review.values('status')
+                        df_cf_review = pd.DataFrame.from_records(cf_review)
+                        cf_review_len = len(df_cf_review.index)
+                    except:
+                        cf_new_len = 0
+                    cf_total_len = int(cf_completed_len) + int(cf_reject_len) + int(cf_new_len) + int(cf_prepared_len) + int(cf_reviewed_len) + int(cf_review_len)
+                    pm_cf_cont = {"cf_total_len": cf_total_len, "cf_completed_len": cf_completed_len,
+                                  "cf_reject_len": cf_reject_len,"cf_prepared_len":cf_prepared_len,"cf_reviewed_len":cf_reviewed_len,
+                                  "cf_new_len": cf_new_len}
+                    pm_cf_cont.update(pm_ra_cont)
+                ####3)BM문서창 카운트 계산하기####
+                    today = date.datetime.today()##오늘 결과
+                    today_search = "20" + today.strftime('%y') + "-" + today.strftime('%m') + "-" + today.strftime('%d')
+                    try:
+                        bm_today_info = workorder.objects.filter(date=today_search).values('team').annotate(Count('team'))
+                    except:
+                        bm_today_info =""
+                    try:
+                        bm_finish_info = workorder.objects.filter(action_date=today_search).values('team').annotate(Count('team'))
+                    except:
+                        bm_finish_info = ""
+                    bm_today_cont = {"bm_today_info":bm_today_info,"bm_finish_info":bm_finish_info}
+                    bm_today_cont.update(pm_cf_cont)
+                    try:##bm 현재 status
+                        wr_approve = workorder.objects.filter(status="Approved", workorder_y_n="N")
+                        wr_approve = wr_approve.values('status')
+                        df_wr_approve = pd.DataFrame.from_records(wr_approve)
+                        wr_approve_len = len(df_wr_approve.index)
+                    except:
+                        wr_approve_len = 0
+                    try:
+                        wr_receive = workorder.objects.filter(status="Received", workorder_y_n="N")
+                        wr_receive = wr_receive.values('status')
+                        df_wr_receive = pd.DataFrame.from_records(wr_receive)
+                        wr_receive_len = len(df_wr_receive.index)
+                    except:
+                        wr_receive_len = 0
+                    try:
+                        wr_review = workorder.objects.filter(status="Reviewed", workorder_y_n="N")
+                        wr_review = wr_review.values('status')
+                        df_wr_review = pd.DataFrame.from_records(wr_review)
+                        wr_review_len = len(df_wr_review.index)
+                    except:
+                        wr_review_len = 0
+                    try:
+                        wr_request = workorder.objects.filter(status="Request", workorder_y_n="N")
+                        wr_request = wr_request.values('status')
+                        df_wr_request = pd.DataFrame.from_records(wr_request)
+                        wr_request_len = len(df_wr_request.index)
+                    except:
+                        wr_request_len = 0
+                    try:
+                        wr_team = workorder.objects.filter(status="Team_approved", workorder_y_n="N")
+                        wr_team = wr_team.values('status')
+                        df_wr_team = pd.DataFrame.from_records(wr_team)
+                        wr_team_len = len(df_wr_team.index)
+                    except:
+                        wr_team_len = 0
+                    try:
+                        wr_total = workorder.objects.filter(workorder_y_n="N")
+                        wr_total = wr_total.values('status')
+                        df_wr_total = pd.DataFrame.from_records(wr_total)
+                        wr_total_len = len(df_wr_total.index)
+                    except:
+                        wr_total_len = 0
+                    not_receive = int(wr_request_len) + int(wr_team_len)
+                    receive = int(wr_receive_len) + int(wr_review_len)
+                    request_cont = {"wr_approve_len":wr_approve_len,"wr_receive_len":wr_receive_len,"wr_review_len":wr_review_len,
+                                    "wr_team_len":wr_team_len,"wr_total_len":wr_total_len,"wr_request_len":wr_request_len,
+                                    "receive":receive,"not_receive":not_receive}
+                    request_cont.update(bm_today_cont)
+                    try:  ##bm 현재 status
+                        wo_approve = workorder.objects.filter(workorder_y_n="C")
+                        wo_approve = wo_approve.values('status')
+                        df_wo_approve = pd.DataFrame.from_records(wo_approve)
+                        wo_approve_len = len(df_wo_approve.index)
+                    except:
+                        wo_approve_len = 0
+                    try:
+                        wo_repair = workorder.objects.filter(status="Repaired", workorder_y_n="Y")
+                        wo_repair = wo_repair.values('status')
+                        df_wo_repair = pd.DataFrame.from_records(wo_repair)
+                        wo_repair_len = len(df_wo_repair.index)
+                    except:
+                        wo_repair_len = 0
+                    try:
+                        wo_review = workorder.objects.filter(status="Reviewed", workorder_y_n="Y")
+                        wo_review = wo_review.values('status')
+                        df_wo_review = pd.DataFrame.from_records(wo_review)
+                        wo_review_len = len(df_wo_review.index)
+                    except:
+                        wo_review_len = 0
+                    try:
+                        wo_check = workorder.objects.filter(status="Checked", workorder_y_n="Y")
+                        wo_check = wo_check.values('status')
+                        df_wo_check = pd.DataFrame.from_records(wo_check)
+                        wo_check_len = len(df_wo_check.index)
+                    except:
+                        wo_check_len = 0
+                    try:
+                        wo_total = workorder.objects.filter(Q(workorder_y_n="Y") | Q(workorder_y_n="C"))
+                        wo_total = wo_total.values('status')
+                        df_wo_total = pd.DataFrame.from_records(wo_total)
+                        wo_total_len = len(df_wo_total.index)
+                    except:
+                        wo_total_len = 0
+                    repaired = int(wo_repair_len) + int(wo_review_len) + int(wo_check_len)
+                    wo_not_len = int(wo_total_len) - int(wo_repair_len) - int(wo_approve_len) - int(wo_review_len) - int(wo_check_len)
+                    order_cont = {"wo_not_len": wo_not_len, "wo_repair_len": wo_repair_len, "wo_approve_len": wo_approve_len,
+                                    "wo_total_len": wo_total_len,"repaired":repaired,"wo_review_len":wo_review_len,
+                                  "wo_check_len":wo_check_len}
+                    order_cont.update(request_cont)
+                    context = {"loginid": loginid}
+                    context.update(order_cont)
+                #####4)PM그래프 그리기####
+                    ##금년도sch인거 업데이트하기##
+                    ###연간 스케줄 리셋하기##
+                    year_reset = pm_sch.objects.all()
+                    year_reset = year_reset.values('no')
+                    df_year_reset = pd.DataFrame.from_records(year_reset)
+                    year_reset_len = len(df_year_reset.index)
+                    for i in range(year_reset_len):
+                        no_get = df_year_reset.iat[i, 0]
+                        info_reset = pm_sch.objects.get(no=no_get)
+                        info_reset.annual_date = ""
+                        info_reset.save()
                     today = date.datetime.today()
-                    this_year = "20" + today.strftime('%y')  # 올해 년도 구하기
-                    month = [this_year + "-01",this_year + "-02",this_year + "-03",this_year + "-04",this_year + "-05",this_year + "-06",
-                                 this_year + "-07",this_year + "-08",this_year + "-09",this_year + "-10",this_year + "-11",this_year + "-12"]
-                    team_info = pm_sch.objects.filter(date__icontains=this_year).values('team').annotate(Count('team'))
-                    team_info = team_info.values('team')
-                    df_team_info = pd.DataFrame.from_records(team_info)
-                    team_info_len = len(df_team_info.index)
-                    for i in range(team_info_len):
-                        team = df_team_info.iat[i, 0]
-                        k = 0
-                        team_date =[]
-                        while k < 12:
-                             date_team = month[k]
-                             count = pm_sch.objects.filter(annual_date__icontains=date_team, team=team)
-                             count = count.values('team')
-                             df_count = pd.DataFrame.from_records(count)
-                             count_len = len(df_count.index)
-                             team_date.append(count_len)
-                             k = k + 1
-                        if i==0:
-                            color='red'
-                        elif i==1:
-                            color='green'
-                        elif i==2:
-                            color='blue'
-                        elif i==3:
-                            color='yellow'
-                        elif i==4:
-                            color='purple'
-                        elif i==5:
-                            color='orange'
-                        elif i==6:
-                            color='pink'
-                        else:
-                            color='grey'
-                        i = plt.plot(['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May.', 'Jun.', 'Jul.', 'Aug.', 'Sept.', 'Oct.', 'Nov.', 'Dec.'],
-                                    team_date, color=color, marker='.',label=team)
-                    j=0
-                    total_date =[]
-                    while j < 12:
-                        date_team = month[j]
-                        count = pm_sch.objects.filter(annual_date__icontains=date_team)
-                        count = count.values('team')
-                        df_count = pd.DataFrame.from_records(count)
-                        count_len = len(df_count.index)
-                        total_date.append(count_len)
-                        j = j + 1
-                    p1 = plt.bar(['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May.', 'Jun.', 'Jul.', 'Aug.', 'Sept.', 'Oct.', 'Nov.', 'Dec.'],
-                             total_date, color='coral', width=0.5, label='Total')
-                    j = 0
-                    comp_date = []
-                    while j < 12:
-                        date_team = month[j]
-                        count = pm_sch.objects.filter(annual_date__icontains=date_team, status="Complete")
-                        count = count.values('team')
-                        df_count = pd.DataFrame.from_records(count)
-                        count_len = len(df_count.index)
-                        comp_date.append(count_len)
-                        j = j + 1
-                    p2 = plt.bar(['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May.', 'Jun.', 'Jul.', 'Aug.', 'Sept.', 'Oct.', 'Nov.', 'Dec.'],
-                            comp_date, color='dodgerblue', width=0.5, label='Complete')
-                    plt.xlabel('[Date]')
-                    plt.ylabel('[PM Count]')
-                    plt.legend((p1[0], p2[0]), ('Total','Complete'))
-                    plt.savefig('./static/pm_chart.png')
-                except:
-                    pass
-            ###5)BM그래프 그리기####
-                try:
-                    plt.figure(2)
-                    plt.clf()
-                    today = date.datetime.today()
-                    this_year = "20" + today.strftime('%y')  # 올해 년도 구하기
-                    month = [this_year + "-01", this_year + "-02", this_year + "-03", this_year + "-04", this_year + "-05",
-                             this_year + "-06",
-                             this_year + "-07", this_year + "-08", this_year + "-09", this_year + "-10", this_year + "-11",
-                             this_year + "-12"]
-                    j = 0
-                    total_bm = []
-                    while j < 12:
-                        date_team = month[j]
-                        count = workorder.objects.filter(date__icontains=date_team)
-                        count = count.values('team')
-                        df_count = pd.DataFrame.from_records(count)
-                        count_len = len(df_count.index)
-                        total_bm.append(count_len)
-                        j = j + 1
-                    p20 = plt.bar(['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May.', 'Jun.', 'Jul.', 'Aug.', 'Sept.', 'Oct.', 'Nov.',
-                             'Dec.'],
-                            total_bm, color='coral', width=0.5, label='Request')
-                    i = 0
-                    comp_bm = []
-                    while i < 12:
-                        date_team = month[i]
-                        count = workorder.objects.filter(action_date__icontains=date_team, status='Completed')
-                        count = count.values('team')
-                        df_count = pd.DataFrame.from_records(count)
-                        count_len = len(df_count.index)
-                        comp_bm.append(count_len)
-                        i = i + 1
-                    p21 = plt.plot(['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May.', 'Jun.', 'Jul.', 'Aug.', 'Sept.', 'Oct.', 'Nov.',
-                             'Dec.'],
-                            comp_bm, color='dodgerblue', marker='o',label='Complete')
-                    plt.xlabel('[Date]')
-                    plt.ylabel('[BM Count]')
-                    plt.legend((p20[0],p21[0]), ('Request','Complete'))
-                    plt.savefig('./static/bm_chart.png')
-                except:
-                    pass
-                return render(request, 'main.html', context)  # templates 내 html연결
+                    today_year = "20" + today.strftime('%y')  # 올해 년도 구하기
+                    year_get = pm_sch.objects.filter(~Q(status="Complete") | Q(delete_signal="Y"))
+                    year_get = year_get.values('no')
+                    df_year_get = pd.DataFrame.from_records(year_get)
+                    year_get_len = len(df_year_get.index)
+                    for i in range(year_get_len):
+                        no_get = df_year_get.iat[i, 0]
+                        info_get = pm_sch.objects.get(no=no_get)
+                        try:
+                            plan_date_get = pmsheetdb.objects.get(pmsheetno_temp=info_get.pmsheetno)
+                            freq_get = pmsheetdb.objects.get(pmsheetno_temp=info_get.pmsheetno)
+                            freq = freq_get.freq  # 주기값 불러오기
+                            plan_date = plan_date_get.startdate
+                            start_date_check = plan_date_get.startdate
+                            if (freq[:2] == "10") or (freq[:2] == "11") or (freq[:2] == "12"):  ##계산식 할수있게 값 변형하기
+                                f_num = freq[:2]
+                            else:
+                                f_num = freq[:1]
+                            f_m_y = freq[2:4]
+                            next_year = int(today_year) + 2
+                            year_chk = today_year
+                            plan_date_y = plan_date[:4]  ##년도
+                            plan_date_m = plan_date[5:]  ##월
+                            plan_date = date.datetime(int(plan_date_y), int(plan_date_m), 1)
+                            if (f_m_y == "on") or (f_m_y == "Mo"):  ##주기가 월일경우
+                                if int(start_date_check[:4]) == int(today_year):
+                                    info_get.annual_date = " [" + start_date_check + "] "
+                                    info_get.save()
+                                while int(year_chk) < int(next_year):
+                                    next_plan = plan_date + relativedelta(months=int(f_num))
+                                    next_plandate = "20" + next_plan.strftime('%y') + "-" + next_plan.strftime('%m')
+                                    year_chk = "20" + next_plan.strftime('%y')
+                                    plan_date = next_plandate
+                                    plan_date_y = plan_date[:4]
+                                    plan_date_m = plan_date[5:]
+                                    plan_date = date.datetime(int(plan_date_y), int(plan_date_m), 1)
+                                    if int(plan_date_y) == int(today_year):
+                                        info_get.annual_date = info_get.annual_date + " [" + next_plandate + "] "
+                                        info_get.save()
+                            else:  ##주기가 년일 경우
+                                if int(start_date_check[:4]) == int(today_year):
+                                    info_get.annual_date = " [" + start_date_check + "] "
+                                    info_get.save()
+                                while int(year_chk) < int(next_year):
+                                    next_plan = plan_date + relativedelta(years=int(f_num))
+                                    next_plandate = "20" + next_plan.strftime('%y') + "-" + next_plan.strftime('%m')
+                                    year_chk = "20" + next_plan.strftime('%y')
+                                    plan_date = next_plandate
+                                    plan_date_y = plan_date[:4]
+                                    plan_date_m = plan_date[5:]
+                                    plan_date = date.datetime(int(plan_date_y), int(plan_date_m), 1)
+                                    if int(next_plandate[:4]) == int(today_year):
+                                        info_get.annual_date = info_get.annual_date + " [" + next_plandate + "] "
+                                        info_get.save()
+                        except:
+                            info_get.annual_date = " [" + info_get.date + "] "
+                            info_get.save()
+                ####그래프 그리기#####
+                    try:
+                        plt.figure(1)
+                        plt.clf()
+                        today = date.datetime.today()
+                        this_year = "20" + today.strftime('%y')  # 올해 년도 구하기
+                        month = [this_year + "-01",this_year + "-02",this_year + "-03",this_year + "-04",this_year + "-05",this_year + "-06",
+                                     this_year + "-07",this_year + "-08",this_year + "-09",this_year + "-10",this_year + "-11",this_year + "-12"]
+                        team_info = pm_sch.objects.filter(date__icontains=this_year).values('team').annotate(Count('team'))
+                        team_info = team_info.values('team')
+                        df_team_info = pd.DataFrame.from_records(team_info)
+                        team_info_len = len(df_team_info.index)
+                        for i in range(team_info_len):
+                            team = df_team_info.iat[i, 0]
+                            k = 0
+                            team_date =[]
+                            while k < 12:
+                                 date_team = month[k]
+                                 count = pm_sch.objects.filter(annual_date__icontains=date_team, team=team)
+                                 count = count.values('team')
+                                 df_count = pd.DataFrame.from_records(count)
+                                 count_len = len(df_count.index)
+                                 team_date.append(count_len)
+                                 k = k + 1
+                            if i==0:
+                                color='red'
+                            elif i==1:
+                                color='green'
+                            elif i==2:
+                                color='blue'
+                            elif i==3:
+                                color='yellow'
+                            elif i==4:
+                                color='purple'
+                            elif i==5:
+                                color='orange'
+                            elif i==6:
+                                color='pink'
+                            else:
+                                color='grey'
+                            i = plt.plot(['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May.', 'Jun.', 'Jul.', 'Aug.', 'Sept.', 'Oct.', 'Nov.', 'Dec.'],
+                                        team_date, color=color, marker='.',label=team)
+                        j=0
+                        total_date =[]
+                        while j < 12:
+                            date_team = month[j]
+                            count = pm_sch.objects.filter(annual_date__icontains=date_team)
+                            count = count.values('team')
+                            df_count = pd.DataFrame.from_records(count)
+                            count_len = len(df_count.index)
+                            total_date.append(count_len)
+                            j = j + 1
+                        p1 = plt.bar(['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May.', 'Jun.', 'Jul.', 'Aug.', 'Sept.', 'Oct.', 'Nov.', 'Dec.'],
+                                 total_date, color='coral', width=0.5, label='Total')
+                        j = 0
+                        comp_date = []
+                        while j < 12:
+                            date_team = month[j]
+                            count = pm_sch.objects.filter(annual_date__icontains=date_team, status="Complete")
+                            count = count.values('team')
+                            df_count = pd.DataFrame.from_records(count)
+                            count_len = len(df_count.index)
+                            comp_date.append(count_len)
+                            j = j + 1
+                        p2 = plt.bar(['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May.', 'Jun.', 'Jul.', 'Aug.', 'Sept.', 'Oct.', 'Nov.', 'Dec.'],
+                                comp_date, color='dodgerblue', width=0.5, label='Complete')
+                        plt.xlabel('[Date]')
+                        plt.ylabel('[PM Count]')
+                        plt.legend((p1[0], p2[0]), ('Total','Complete'))
+                        plt.savefig('./static/pm_chart.png')
+                    except:
+                        pass
+                ###5)BM그래프 그리기####
+                    try:
+                        plt.figure(2)
+                        plt.clf()
+                        today = date.datetime.today()
+                        this_year = "20" + today.strftime('%y')  # 올해 년도 구하기
+                        month = [this_year + "-01", this_year + "-02", this_year + "-03", this_year + "-04", this_year + "-05",
+                                 this_year + "-06",
+                                 this_year + "-07", this_year + "-08", this_year + "-09", this_year + "-10", this_year + "-11",
+                                 this_year + "-12"]
+                        j = 0
+                        total_bm = []
+                        while j < 12:
+                            date_team = month[j]
+                            count = workorder.objects.filter(date__icontains=date_team)
+                            count = count.values('team')
+                            df_count = pd.DataFrame.from_records(count)
+                            count_len = len(df_count.index)
+                            total_bm.append(count_len)
+                            j = j + 1
+                        p20 = plt.bar(['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May.', 'Jun.', 'Jul.', 'Aug.', 'Sept.', 'Oct.', 'Nov.',
+                                 'Dec.'],
+                                total_bm, color='coral', width=0.5, label='Request')
+                        i = 0
+                        comp_bm = []
+                        while i < 12:
+                            date_team = month[i]
+                            count = workorder.objects.filter(action_date__icontains=date_team, status='Completed')
+                            count = count.values('team')
+                            df_count = pd.DataFrame.from_records(count)
+                            count_len = len(df_count.index)
+                            comp_bm.append(count_len)
+                            i = i + 1
+                        p21 = plt.plot(['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May.', 'Jun.', 'Jul.', 'Aug.', 'Sept.', 'Oct.', 'Nov.',
+                                 'Dec.'],
+                                comp_bm, color='dodgerblue', marker='o',label='Complete')
+                        plt.xlabel('[Date]')
+                        plt.ylabel('[BM Count]')
+                        plt.legend((p20[0],p21[0]), ('Request','Complete'))
+                        plt.savefig('./static/bm_chart.png')
+                    except:
+                        pass
+                    return render(request, 'main.html', context)  # templates 내 html연결
+                else:
+                    messages.error(request, "The password does not match.")  # 경고
+                    password_fail = userinfo.objects.get(userid=loginid)  # 아이디 일치여부 확인
+                    password_fail.fail_count = int(password_fail.fail_count) +1
+                    password_fail.save()
+                ###비밀번호 5회이상 틀리면 락킹###
+                    if password_fail.fail_count == 5:
+                        password_fail.login_lock = "Lock"
+                        password_fail.save()
+                    return render(request, 'login.html')  # templates 내 html연결
             else:
-                messages.error(request, "The password does not match.")  # 경고
+                messages.error(request, "Login is not possible due to a password mismatch of more than 5times.")  # 경고
                 return render(request, 'login.html')  # templates 내 html연결
-        except:
+        else:
             messages.error(request, "There is no such ID information.")  # 경고
             return render(request, 'login.html')  # templates 내 html연결
 
@@ -3863,6 +3948,46 @@ def pmcontrolform_write_new(request):
 
 def pmcontrolform_change_link(request):
     return render(request, 'pmcontrolform_change_link.html')  # templates 내 html연결
+
+def pmcontrolform_change_check(request):
+    if request.method == 'POST':  # 매소드값이 post인 값만 받는다
+        equip_check = request.POST.get('equip_check')  # html controlform의 값을 받는다
+        controlno =  request.POST.get('controlno')
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        ##이름 및 권한 끌고다니기##
+        users = userinfo.objects.get(userid=loginid)
+        username = users.username
+        userteam = users.userteam
+        password = users.password
+        auth = users.auth1
+        user_div = users.user_division
+        users = {"auth": auth, "password": password, "username": username, "userteam": userteam, "user_div": user_div}
+        print(equip_check)
+    ###기존 저장정보 리셋###
+        controlno_link = equiplist.objects.get(controlno=controlno)
+        controlno_link.link_check = equip_check
+        controlno_link.save()
+    ###기존정보 불러오기###
+        equip_list_s = equiplist.objects.filter(pmok="Y",link_check="checked").order_by("team", "name")
+        equip_list = equiplist.objects.filter(pmok="Y").order_by("team", "name")
+        context = {"equip_list": equip_list,"loginid":loginid,"equip_list_s":equip_list_s}
+        return render(request, 'pmcontrolform_change_with.html', context)  # templates 내 html연결
+
+def pmcontrolform_change_with(request):
+    ###기존 저장정보 리셋###
+    reset_check = equiplist.objects.filter(link_check="checked")
+    reset_check = reset_check.values('controlno')
+    df_reset_check = pd.DataFrame.from_records(reset_check)
+    reset_check_len = len(df_reset_check.index)
+    for i in range(reset_check_len):
+        controlno_get = df_reset_check.iat[i, 0]
+        reset = equiplist.objects.get(controlno=controlno_get)
+        reset.link_check=""
+        reset.save()
+    ###기존정보 불러오기###
+    equip_list = equiplist.objects.filter(pmok="Y").order_by("team","name")
+    context ={"equip_list":equip_list}
+    return render(request, 'pmcontrolform_change_with.html',context)  # templates 내 html연결
 
 def pmcontrolform_change_controlno(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
@@ -9914,6 +10039,10 @@ def user_info_new_submit(request):
                                 result_d = d.search(check)
                                 if result_d != None:
     ######################### 값 저장하기
+                                    #####audit추출####
+                                    today = date.datetime.today()
+                                    audit_date = "20" + today.strftime('%y') + "-" + today.strftime('%m') + "-" + today.strftime('%d')
+                                    audit_time = today.strftime('%H') + ":" + today.strftime('%M') + ":" + today.strftime('%S')
                                     userinfo(
                                         userid=userid_up,
                                         username=username_up,
@@ -9921,11 +10050,9 @@ def user_info_new_submit(request):
                                         password=password_up,
                                         useremail=useremail_up,
                                         auth1=auth_1_up,
-                                        user_division=user_div_up).save()
-                            #####audit추출####
-                                    today = date.datetime.today()
-                                    audit_date = "20" + today.strftime('%y') + "-" + today.strftime('%m') + "-" + today.strftime('%d')
-                                    audit_time = today.strftime('%H') + ":" + today.strftime('%M') + ":" + today.strftime('%S')
+                                        user_division=user_div_up,
+                                        password_date=audit_date,
+                                    ).save()
                                     audit_trail(
                                         date=audit_date,
                                         document="User_info",
@@ -10077,6 +10204,7 @@ def user_info_change_submit(request):
         user_div_get = request.POST.get('user_div')  # html에서 해당 값을 받는다
         userid_get = request.POST.get('userid')  # html에서 해당 값을 받는다
         loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        login_lock = request.POST.get('login_lock')  # html에서 해당 값을 받는다
     ##이름 및 권한 끌고다니기##
         users = userinfo.objects.get(userid=loginid)
         username = users.username
@@ -10091,7 +10219,9 @@ def user_info_change_submit(request):
         info_change.password = password_get
         info_change.useremail = useremail_get
         info_change.auth1 = auth_1_get
-        info_change.user_division = user_div_get
+        info_change.division = user_div_get
+        info_change.login_lock = login_lock
+        info_change.fail_count = 0
         info_change.save()
     ##자동클로우즈##
         comp_signal = "Y"
