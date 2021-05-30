@@ -3856,7 +3856,7 @@ def pmcontrolform_write_new(request):
         frequency = request.POST.get('frequency')
         if division == "Manual":
             if (freq_no == "None") or (freq_my == "None"):
-                messages.error(request, "입력안했다~")  # 경고
+                messages.error(request, "Frequency is not entered.")  # 경고
                 #####signal 정보 보내기#####
                 division_get = division
                 context = {"pmreference": pmreference, "loginid": loginid, "frequency": frequency,
@@ -3949,6 +3949,43 @@ def pmcontrolform_write_new(request):
 def pmcontrolform_change_link(request):
     return render(request, 'pmcontrolform_change_link.html')  # templates 내 html연결
 
+def pmcontrolform_change_w_division(request):
+    if request.method == 'POST':  # 매소드값이 post인 값만 받는다
+        controlno = request.POST.get('controlno')
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+        division = request.POST.get('division')  # html에서 해당 값을 받는다
+    ##이름 및 권한 끌고다니기##
+        users = userinfo.objects.get(userid=loginid)
+        username = users.username
+        userteam = users.userteam
+        password = users.password
+        auth = users.auth1
+        user_div = users.user_division
+        users = {"auth": auth, "password": password, "username": username, "userteam": userteam, "user_div": user_div}
+    ##값 저장하기##
+        if division == "Manual":
+                frequency = ""
+                freq_no = ""
+                freq_my = ""
+        elif division == "Standard":
+                freq_get = equiplist.objects.get(controlno=controlno)
+                frequency = freq_get.ra + "Month"
+                freq_no = freq_get.ra
+                freq_my = "Month"
+        else:
+                freq_get = pm_reference.objects.get(description=division)
+                freq_no = freq_get.freq_m_y
+                freq_my = freq_get.m_y
+                frequency = freq_no + freq_my
+        pmreference = pm_reference.objects.all()
+        equip_list_s = equiplist.objects.filter(pmok="Y",link_check="checked").order_by("team", "name")
+        equip_list = equiplist.objects.filter(pmok="Y").order_by("team", "name")
+        division_get = division
+        context = {"pmreference": pmreference,"loginid":loginid, "frequency":frequency,"division_get":division_get,
+                   "freq_no":freq_no,"freq_my":freq_my,"equip_list":equip_list,"equip_list_s":equip_list_s}
+        context.update(users)
+        return render(request, 'pmcontrolform_change_with.html', context)  # templates 내 html연결
+
 def pmcontrolform_change_check(request):
     if request.method == 'POST':  # 매소드값이 post인 값만 받는다
         equip_check = request.POST.get('equip_check')  # html controlform의 값을 받는다
@@ -3962,15 +3999,27 @@ def pmcontrolform_change_check(request):
         auth = users.auth1
         user_div = users.user_division
         users = {"auth": auth, "password": password, "username": username, "userteam": userteam, "user_div": user_div}
-        print(equip_check)
     ###기존 저장정보 리셋###
         controlno_link = equiplist.objects.get(controlno=controlno)
         controlno_link.link_check = equip_check
         controlno_link.save()
+    ###선택 인터락 확인하기###
+        check_count = equiplist.objects.filter(pmok="Y",link_check="checked")
+        check_count= check_count.values('controlno')
+        df_check_count = pd.DataFrame.from_records(check_count)
+        check_count_len = len(df_check_count.index)
+        if int(check_count_len) > 0:
+            pmreference = pm_reference.objects.all()
+            frequency = ""
+        else:
+            pmreference = ""
+            frequency = ""
     ###기존정보 불러오기###
         equip_list_s = equiplist.objects.filter(pmok="Y",link_check="checked").order_by("team", "name")
         equip_list = equiplist.objects.filter(pmok="Y").order_by("team", "name")
-        context = {"equip_list": equip_list,"loginid":loginid,"equip_list_s":equip_list_s}
+        context = {"equip_list": equip_list,"loginid":loginid,"equip_list_s":equip_list_s,
+                   "pmreference": pmreference, "frequency": frequency}
+        context.update(users)
         return render(request, 'pmcontrolform_change_with.html', context)  # templates 내 html연결
 
 def pmcontrolform_change_with(request):
@@ -3985,9 +4034,152 @@ def pmcontrolform_change_with(request):
         reset.link_check=""
         reset.save()
     ###기존정보 불러오기###
+    frequency = ""
     equip_list = equiplist.objects.filter(pmok="Y").order_by("team","name")
-    context ={"equip_list":equip_list}
+    context ={"equip_list":equip_list,"frequency":frequency}
     return render(request, 'pmcontrolform_change_with.html',context)  # templates 내 html연결
+
+def pmcontrolform_change_w_submit(request):
+    if request.method == 'POST':  # 매소드값이 post인 값만 받는다
+        loginid = request.POST.get('loginid')  # html에서 해당 값을 받는다
+    ##이름 및 권한 끌고다니기##
+        users = userinfo.objects.get(userid=loginid)
+        username = users.username
+        userteam = users.userteam
+        password = users.password
+        auth = users.auth1
+        user_div = users.user_division
+        users = {"auth": auth, "password": password, "username": username, "userteam": userteam, "user_div": user_div}
+    ##기본정보 보내기##
+        equip_list_s = equiplist.objects.filter(pmok="Y", link_check="checked").order_by("team", "name")
+        equip_list = equiplist.objects.filter(pmok="Y").order_by("team", "name")
+        pmreference = pm_reference.objects.all()
+    #####주기 미입력확인#####
+        division = request.POST.get('division_get')  # html에서 해당 값을 받는다
+        freq_no = request.POST.get('freq_no')  # html에서 해당 값을 받는다
+        freq_my = request.POST.get('freq_my')  # html에서 해당 값을 받는다
+        frequency = request.POST.get('frequency')
+        if division == "Manual":
+            if (freq_no == "None") or (freq_my == "None"):
+                messages.error(request, "Frequency is not entered.")  # 경고
+            #####signal 정보 보내기#####
+                division_get = division
+                context = {"pmreference": pmreference, "loginid": loginid, "frequency": frequency,
+                           "division_get": division_get,"equip_list":equip_list,"equip_list_s":equip_list_s,
+                           "freq_no": freq_no, "freq_my": freq_my}
+                context.update(users)
+                return render(request, 'pmcontrolform_change_with.html', context)  # templates 내 html연결
+            #####데이터 가공하기#####
+        controlno_get = equiplist.objects.filter(pmok="Y", link_check="checked")
+        controlno_get = controlno_get.values('controlno')
+        df_controlno_get = pd.DataFrame.from_records(controlno_get)
+        controlno_get_len = len(df_controlno_get.index)
+        for k in range(controlno_get_len):
+            controlno = df_controlno_get.iat[k, 0]
+            ######sheet No. 만들기#####
+            equiptable = equiplist.objects.get(controlno=controlno)
+            equiptablerev = controlformlist.objects.get(controlno=controlno, recent_y="Y")
+            division = request.POST.get('division_get')
+            try:
+                if division == "Standard":
+                    freq_get = equiplist.objects.get(controlno=controlno)
+                    frequency = freq_get.ra + "Month"
+                    freq_no = freq_get.ra
+                    freq_my = "Month"
+                else:
+                    freq_no = request.POST.get('freq_no')  # html에서 해당 값을 받는다
+                    freq_my = request.POST.get('freq_my')  # html에서 해당 값을 받는다
+                if int(freq_no) == 12:
+                    sheetno = str(controlno) + "-1Y"
+                else:
+                    if freq_my == "Month":
+                        freq_my = "M"
+                    else:
+                        freq_my = "Y"
+                    sheetno = str(controlno) + "-" + str(freq_no) + freq_my
+            except:
+                if division == "Standard":
+                    freq_get = equiplist.objects.get(controlno=controlno)
+                    frequency = freq_get.ra + "Month"
+                    freq_no = freq_get.ra
+                    freq_my = "Month"
+                else:
+                    freq_no = request.POST.get('freq_no_give')  # html에서 해당 값을 받는다
+                    freq_my = request.POST.get('freq_my_give')  # html에서 해당 값을 받는다
+                if int(freq_no) == 12:
+                    sheetno = str(controlno) + "-1Y"
+                else:
+                    if freq_my == "Month":
+                        freq_my = "M"
+                    else:
+                        freq_my = "Y"
+                    sheetno = str(controlno) + "-" + str(freq_no) + freq_my
+                ######주기만들기#####
+            if str(freq_my) == "Y":
+                freq_my = "Year"
+            else:
+                freq_my = "Month"
+            freq = str(freq_no) + str(freq_my)
+            ######itemno 만들기#####
+            itemno_make = pmmasterlist_temp.objects.filter(sheetno=sheetno).values('sheetno')
+            df = pd.DataFrame.from_records(itemno_make)
+            itemno = len(df.index) + 1
+            ######itemcode 만들기#####
+            itemcode = sheetno + str(itemno)
+            ######시트시작일 만들기#####
+            pm_sch_check = pmsheetdb.objects.filter(pmsheetno_temp=sheetno)
+            pm_sch_check = pm_sch_check.values('pmsheetno_temp')
+            df_pm_sch_check = pd.DataFrame.from_records(pm_sch_check)
+            pm_sch_len = len(df_pm_sch_check.index)
+            if int(pm_sch_len) == 0:
+                pmsheetdb(
+                    controlno=controlno,
+                    pmsheetno_temp=sheetno,  # 신규Sheet No. 임시입력
+                    freq_temp=freq,  # 신규주기 임시입력
+                    startdate_temp="New",  # 시작일자 입력
+                ).save()
+            #####새로운 값 저장하기#####
+            pmmasterlist_temp(  # 컨트롤폼에 신규등록하기
+                team=equiptable.team,  # 팀명
+                controlno=controlno,  # 컨트롤넘버
+                name=equiptable.name,  # 설비명
+                model=equiptable.model,  # 모델명
+                serial=equiptable.serial,  # 시리얼넘버
+                maker=equiptable.maker,  # 제조사
+                roomname=equiptable.roomname,  # 룸명
+                roomno=equiptable.roomno,  # 룸넘버
+                revno=equiptablerev.revno,  # 리비젼넘버
+                date=equiptablerev.revdate,  # 리비젼날짜
+                freq=freq,  # 주기
+                ra=equiptable.ra,  # ra결과
+                sheetno=sheetno,  # 시트넘버
+                amd="A",  # a/m/d
+                itemno=itemno,  # 순번
+                item=request.POST.get('item'),  # 점검내용
+                check=request.POST.get('check'),  # 점검기준
+                startdate="New",  # 시트시작일
+                change=request.POST.get('change'),  # 변경사유
+                itemcode=itemcode,  # 점검내용 구분좌
+                division=request.POST.get('division_get'),
+            ).save()
+        #####컨트롤폼 status 변경#####
+            controlform_status = controlformlist.objects.get(controlno=controlno, recent_y="Y")
+            controlform_status.status = "Review"  # 기존버전 RECENT값 Y로 바꾸기
+            controlform_status.save()
+        #####signal 정보 보내기#####
+        #####완료 시그널 주기#####
+        item = request.POST.get('item')
+        check = request.POST.get('check')
+        change = request.POST.get('change')
+        comp_signal = "Y"
+        comp_msg = "PM Control Form registration is completed."
+        division_get = division
+        context = {"pmreference": pmreference, "loginid": loginid, "frequency": frequency,
+                       "division_get": division_get, "equip_list": equip_list, "equip_list_s": equip_list_s,
+                       "freq_no": freq_no, "freq_my": freq_my,"comp_signal":comp_signal,"comp_msg":comp_msg,
+                       "change":change,"check":check,"item":item}
+        context.update(users)
+        return render(request, 'pmcontrolform_change_with.html', context)  # templates 내 html연결
 
 def pmcontrolform_change_controlno(request):
     if request.method =='POST': #매소드값이 post인 값만 받는다
@@ -4192,9 +4384,11 @@ def pmcontrolform_write_delete(request):
         if startdate_check.startdate != "New":
             itemcode_amd = pmmasterlist_temp.objects.get(itemcode = itemcode_delete)
             if amd_change == "A":
+                today = date.datetime.today()
+                del_date = "20" + today.strftime('%y') + "-" + today.strftime('%m') + "-" + today.strftime('%d')
                 itemcode_amd.amd = "D"
                 itemcode_amd.change = delete_reason
-                itemcode_amd.startdate = "Delete"
+                itemcode_amd.startdate = del_date + "(D)"
                 itemcode_amd.save()
             else:
                 messages.error(request, "Deleted items cannot be changed.")  # 경고
@@ -4430,16 +4624,22 @@ def pmcontrolform_submit(request):
             controlformlist_info = controlformlist.objects.get(controlno=controlno, recent_y="Y")
             controlformlist_info.status = "Prepared"
             controlformlist_info.save()
-            controlformlist(
-                controlno=controlformlist_info.controlno,
-                team=controlformlist_info.team,
-                name=controlformlist_info.name,
-                status="Prepared",
-                revno= int(controlformlist_info.revno),
-                p_name = username,
-                p_date = p_date,
-                recent_y="A",
-            ).save()
+
+            controlformlist_a = controlformlist.objects.filter(controlno=controlno, recent_y="A")
+            controlformlist_a = controlformlist_a.values('controlno')
+            df_controlformlist_a = pd.DataFrame.from_records(controlformlist_a)
+            controlformlist_a_len = len(df_controlformlist_a.index)
+            if int(controlformlist_a_len) == 0:
+                controlformlist(
+                    controlno=controlformlist_info.controlno,
+                    team=controlformlist_info.team,
+                    name=controlformlist_info.name,
+                    status="Prepared",
+                    revno= int(controlformlist_info.revno),
+                    p_name = username,
+                    p_date = p_date,
+                    recent_y="A",
+                ).save()
     #####signal 정보 보내기#####
             signalinfo = controlformlist.objects.get(controlno=controlno, recent_y="Y")
             signal = [signalinfo.status][0]
@@ -4500,7 +4700,7 @@ def pmcontrolform_return(request):
             messages.error(request, "PM Control Form that have been approved cannot be returned.")  # 경고
             #####signal 정보 보내기#####
             signalinfo = controlformlist.objects.get(controlno=controlno, recent_y="Y")
-            signal = [signalinfo.status][0]
+            signal = signalinfo.status
             context = {"controlformdb": controlformdb_temp, "controlformlists": controlformlists,
                        "equipinfo": equipinfo,
                        "equipinforev": equipinforev, "loginid": loginid, "controlno": controlno,

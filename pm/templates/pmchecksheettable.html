@@ -177,6 +177,7 @@ height:20px;}
 .u4-1{width:300px;}
 .u5-1{width:120px;}
 .u6-1{width:200px;}
+
 </style>
 
 </head>
@@ -266,6 +267,7 @@ Preventive Maintenance Check Sheet
  </div>
 <div id="usedpartbody">
    <table id="usedparttable" border="1">
+       {%if comp_signal == "Y" %}
             {% for spare_out in spare_list %}
        <tr>
             <td align="center" class="u1-1">{{spare_out.codeno}}</td>
@@ -276,6 +278,7 @@ Preventive Maintenance Check Sheet
             <td align="center" class="u6-1">{{spare_out.out_code}}</td>
        </tr>
             {% endfor %}
+       {%endif%}
    </table>
 </div>
 

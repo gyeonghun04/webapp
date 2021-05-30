@@ -111,6 +111,10 @@ urlpatterns = [
     path('pmcontrolform_change_link_submit', pm.views.pmcontrolform_change_link_submit, name='pmcontrolform_change_link_submit'),
     path('pmcontrolform_change_with', pm.views.pmcontrolform_change_with, name='pmcontrolform_change_with'),
     path('pmcontrolform_change_check', pm.views.pmcontrolform_change_check, name='pmcontrolform_change_check'),
+    path('pmcontrolform_change_w_division', pm.views.pmcontrolform_change_w_division, name='pmcontrolform_change_w_division'),
+    path('pmcontrolform_change_w_submit', pm.views.pmcontrolform_change_w_submit,
+         name='pmcontrolform_change_w_submit'),
+
 
 ####PM Assessment of Period####
     path('pmra_main', pm.views.pmra_main, name='pmra_main'),

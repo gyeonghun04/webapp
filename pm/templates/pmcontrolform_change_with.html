@@ -135,6 +135,9 @@ pm{
       height:25px;
       background-color:white;
 }
+.input_css3{
+      background-color:white;
+}
 .location_btn{
         margin-top:11px;
     	font-family: arial;
@@ -198,6 +201,12 @@ tr:nth-child(even){
 .check_css{
     cursor:pointer;
 }
+#comp_msg{
+    font-family: arial;
+    font-size:13px;
+    color:blue;
+    position:fixed; top:560px; left:10px;
+}
 </style>
 </head>
 
@@ -238,9 +247,15 @@ tr:nth-child(even){
             <td align="center" class="m3-1">{{equip_lists.name}}</td>
             <td align="center" class="m4-1">{{equip_lists.model}}</td>
             <td align="center" class="m5-1">{{equip_lists.roomname}}<br>({{equip_lists.roomno}})</td>
+            {% if comp_signal == "Y" %}
+            <td align="center" class="m6-1">
+                <input type="hidden" name="controlno" value="{{equip_lists.controlno}}">
+                <input type="checkbox" class="check_css" name="equip_checked" onchange="Pmcontrolform_check(this);" {{equip_lists.link_check}} disabled></td>
+            {% else%}
             <td align="center" class="m6-1">
                 <input type="hidden" name="controlno" value="{{equip_lists.controlno}}">
                 <input type="checkbox" class="check_css" name="equip_checked" onchange="Pmcontrolform_check(this);" {{equip_lists.link_check}}></td>
+            {%endif%}
         </tr>
                         {%endfor%}
      </tbody>
@@ -277,8 +292,7 @@ tr:nth-child(even){
  </table>
 </div>
 
-
-<form action="pmcontrolform_write_with_new" method="post" name="pm_check_new_form">
+<form action="pmcontrolform_change_w_submit" method="post" name="pm_check_new_form">
     {% csrf_token %}
 <div id="table_location">
    <table id="pm_table" border="1">
@@ -286,17 +300,24 @@ tr:nth-child(even){
             <td align="center" class="text_css">Division</td>
             <td align="left">
             <input type="text" name="division_get"  value="{{division_get}}" class="division_css" readonly>
+                {% if comp_signal == "Y" %}
+            <select class="division" name="division">
+                 <option value="None"></option>
+             </select>
+            {%else%}
             <select class="division" name="division" onchange="Division_select();">
             <option value="None"></option>
                 {% for pm_reference in pmreference %}
             <option value="{{pm_reference.description}}">{{pm_reference.description}}</option>
                 {% endfor %}
-            </select></td>
+            </select>
+            {%endif%}
+            </td>
         </tr>
         <tr>
             <td align="center" class="text_css">Frequency</td>
             {% if frequency == "" %}
-            <td align="left">
+            <td align="left" class="input_css3">
             <select class="freq_no" name="freq_no">&nbsp;
             <option value="None"></option>
             <option value="1">1</option>
@@ -321,18 +342,33 @@ tr:nth-child(even){
         </tr>
         <tr>
             <td align="center" class="text_css">Maintenance Item</td>
+            {% if comp_signal == "Y" %}
             <td align="center">
+            <input type="text" name="item"  value="{{item}}" class="input_css" readonly></td>
+            {% else %}
+             <td align="center">
             <input type="text" name="item"  class="input_css" required></td>
+            {%endif%}
         </tr>
         <tr>
             <td align="center" class="text_css">Check Standard</td>
+            {% if comp_signal == "Y" %}
             <td align="center">
+            <input type="text" name="check" value="{{check}}" class="input_css" readonly></td>
+            {% else %}
+             <td align="center">
             <input type="text" name="check"  class="input_css" required></td>
+            {%endif%}
         </tr>
         <tr>
             <td align="center" class="text_css">Change Information</td>
+            {% if comp_signal == "Y" %}
             <td align="center">
+            <input type="text" name="change" value="{{change}}" class="input_css" readonly></td>
+            {% else %}
+             <td align="center">
             <input type="text" name="change"  class="input_css" required></td>
+            {%endif%}
         </tr>
    </table>
 </div>
@@ -341,8 +377,13 @@ tr:nth-child(even){
     <input type="hidden" name="freq_no_give" value="{{freq_no}}">
     <input type="hidden" name="freq_my_give" value="{{freq_my}}">
     <input type="hidden" name="frequency" value="{{frequency}}">
+    <input type="hidden" name="division_get" value="{{division_get}}">
 <input type="submit" class="submit_btn" value="Submit"></form>
 <input type="hidden" value="{{comp_signal}}" name="comp_signal">
+<div id="comp_msg">
+    {{comp_msg}}
+</div>
+
 
 <form name="division_select_form" method="post">
     {% csrf_token %}
@@ -365,18 +406,15 @@ tr:nth-child(even){
             loginid = opener.document.getElementById("loginid_up").value;
        ////아이디 정보 보내기
             var loginid_up = loginid;
+            document.division_select_form.loginid.value = loginid;
+            document.pm_check_new_form.loginid.value = loginid;
             document.getElementById("logindata").innerHTML=loginid_up;
-            var close_signal= document.getElementsByName('comp_signal')[0].value;
-            if (close_signal=="Y"){
-               window.resizeTo(600,200);
-               alert("PM Maintenance Item Registration is complete.");
-               opener.document.location.reload();
-               self.close();}
             }
 
       onload=init
 
     function Close(){
+    opener.document.location.reload();
     self.close();
     }
 
@@ -395,6 +433,19 @@ tr:nth-child(even){
               document.pmcontrolform_change_form.submit();
     }
 
+    function Division_select(){
+            var division= document.getElementsByName('division')[0].value;
+            loginid = opener.document.getElementById("loginid_up").value;
+            controlno = opener.document.getElementById("controlno_up").value;
+                // 값보내기
+            document.division_select_form.division.value = division;
+            document.division_select_form.loginid.value = loginid;
+            document.division_select_form.controlno.value = controlno;
+
+                // 서버연결
+            document.division_select_form.action="pmcontrolform_change_w_division";
+            document.division_select_form.submit();
+                }
 </script>
 </body>
 </html>

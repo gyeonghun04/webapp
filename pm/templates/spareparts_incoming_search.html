@@ -357,11 +357,11 @@ position:fixed;top:73%; left:56%;
             <input type="submit" value="Reset" class="btn_reset">
                 </form></td>
             <td>
-             <form action="spareparts_incoming_submit" name="Submit_incoming" method="post">
+             <form name="Submit_incoming" method="post">
                 {% csrf_token %}
             <input type="hidden" name="loginid" value="{{loginid}}">
             <input type="hidden" id="loginid_up" value="{{loginid}}">
-            <input type="submit" value="Submit" class="btn_submit">
+            <input type="button" value="Submit" class="btn_submit" onclick="Btn_submit();">
                 </form></td>
         </tr>
     </table>
@@ -393,6 +393,12 @@ position:fixed;top:73%; left:56%;
                 }
         }
 
+        function Btn_submit(){
+              var check_again = window.confirm("Did you print out the barcode?","");
+        if (check_again == true){
+            document.Submit_incoming.action="spareparts_incoming_submit";
+            document.Submit_incoming.submit();}
+        }
 
 </script>
 </body>
