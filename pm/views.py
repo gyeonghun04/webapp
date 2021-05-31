@@ -193,7 +193,14 @@ def main(request):
                     except:
                         ra_prepared_len = 0
                     try:
-                        new = pm_sch.objects.filter(date=month_search, status="New")
+                        review = equiplist.objects.filter(status="Review")
+                        review = review.values('status')
+                        df_review = pd.DataFrame.from_records(review)
+                        ra_review_len = len(df_review.index)
+                    except:
+                        ra_review_len = 0
+                    try:
+                        new = equiplist.objects.filter(status="New")
                         new = new.values('status')
                         df_new = pd.DataFrame.from_records(new)
                         ra_new_len = len(df_new.index)
@@ -201,7 +208,7 @@ def main(request):
                         ra_new_len = 0
                     ra_total_len = int(ra_completed_len) + int(ra_prepared_len) + int(ra_new_len)
                     pm_ra_cont = {"ra_total_len": ra_total_len, "ra_completed_len": ra_completed_len,
-                                  "ra_prepared_len": ra_prepared_len,
+                                  "ra_prepared_len": ra_prepared_len,"ra_review_len":ra_review_len,
                                   "ra_new_len": ra_new_len}
                     pm_ra_cont.update(pm_cont)
                     try: ###control form
@@ -300,6 +307,20 @@ def main(request):
                     except:
                         wr_team_len = 0
                     try:
+                        wr_team_m = workorder.objects.filter(status="Request", workorder_y_n="N", team=userteam)
+                        wr_team_m = wr_team_m.values('status')
+                        df_wr_team_m = pd.DataFrame.from_records(wr_team_m)
+                        wr_team_m_len = len(df_wr_team_m.index)
+                    except:
+                        wr_team_m_len = 0
+                    try:
+                        wr_soe = workorder.objects.filter(status="Team_approved")
+                        wr_soe = wr_soe.values('status')
+                        df_wr_soe = pd.DataFrame.from_records(wr_soe)
+                        wr_soe_len = len(df_wr_soe.index)
+                    except:
+                        wr_soe_len = 0
+                    try:
                         wr_total = workorder.objects.filter(workorder_y_n="N")
                         wr_total = wr_total.values('status')
                         df_wr_total = pd.DataFrame.from_records(wr_total)
@@ -310,7 +331,7 @@ def main(request):
                     receive = int(wr_receive_len) + int(wr_review_len)
                     request_cont = {"wr_approve_len":wr_approve_len,"wr_receive_len":wr_receive_len,"wr_review_len":wr_review_len,
                                     "wr_team_len":wr_team_len,"wr_total_len":wr_total_len,"wr_request_len":wr_request_len,
-                                    "receive":receive,"not_receive":not_receive}
+                                    "receive":receive,"not_receive":not_receive,"wr_team_m_len":wr_team_m_len,"wr_soe_len":wr_soe_len}
                     request_cont.update(bm_today_cont)
                     try:  ##bm 현재 status
                         wo_approve = workorder.objects.filter(workorder_y_n="C")
@@ -347,11 +368,41 @@ def main(request):
                         wo_total_len = len(df_wo_total.index)
                     except:
                         wo_total_len = 0
+                    try:
+                        staff_not_repair = workorder.objects.filter(Q(workorder_y_n="N", requestor = username)|Q(workorder_y_n="Y", status="Approved",requestor = username))
+                        staff_not_repair = staff_not_repair.values('status')
+                        df_staff_not_repair = pd.DataFrame.from_records(staff_not_repair)
+                        staff_not_repair_len = len(df_staff_not_repair.index)
+                    except:
+                        staff_not_repair_len = 0
+                    try:
+                        staff_repair = workorder.objects.filter(Q(workorder_y_n="Y", status="Reviewed", requestor = username)|Q(workorder_y_n="Y", status="Repaired",requestor = username)
+                                                                    |Q(workorder_y_n="Y", status="Checked",requestor = username))
+                        staff_repair = staff_repair.values('status')
+                        df_staff_repair = pd.DataFrame.from_records(staff_repair)
+                        staff_repair_len = len(df_staff_repair.index)
+                    except:
+                        staff_repair_len = 0
+                    try:
+                        staff_comp = workorder.objects.filter(workorder_y_n="C", requestor = username)
+                        staff_comp = staff_comp.values('status')
+                        df_staff_comp = pd.DataFrame.from_records(staff_comp)
+                        staff_comp_len = len(df_staff_comp.index)
+                    except:
+                        staff_comp_len = 0
+                    try:
+                        staff_reject = workorder.objects.filter(status="Reject", requestor = username)
+                        staff_reject = staff_reject.values('status')
+                        df_staff_reject = pd.DataFrame.from_records(staff_reject)
+                        staff_reject_len = len(df_staff_reject.index)
+                    except:
+                        staff_reject_len = 0
                     repaired = int(wo_repair_len) + int(wo_review_len) + int(wo_check_len)
                     wo_not_len = int(wo_total_len) - int(wo_repair_len) - int(wo_approve_len) - int(wo_review_len) - int(wo_check_len)
                     order_cont = {"wo_not_len": wo_not_len, "wo_repair_len": wo_repair_len, "wo_approve_len": wo_approve_len,
                                     "wo_total_len": wo_total_len,"repaired":repaired,"wo_review_len":wo_review_len,
-                                  "wo_check_len":wo_check_len}
+                                  "wo_check_len":wo_check_len,"staff_not_repair_len":staff_not_repair_len,"staff_comp_len":staff_comp_len,
+                                  "staff_repair_len":staff_repair_len,"staff_reject_len":staff_reject_len}
                     order_cont.update(request_cont)
                     context = {"loginid": loginid}
                     context.update(order_cont)
@@ -541,10 +592,11 @@ def main(request):
                         pass
                     return render(request, 'main.html', context)  # templates 내 html연결
                 else:
-                    messages.error(request, "The password does not match.")  # 경고
                     password_fail = userinfo.objects.get(userid=loginid)  # 아이디 일치여부 확인
                     password_fail.fail_count = int(password_fail.fail_count) +1
                     password_fail.save()
+                    login_error_text = "The password does not match. (" + str(password_fail.fail_count) + "times)"
+                    messages.error(request, login_error_text)  # 경고
                 ###비밀번호 5회이상 틀리면 락킹###
                     if password_fail.fail_count == 5:
                         password_fail.login_lock = "Lock"
@@ -7534,7 +7586,7 @@ def workrequest_main(request):
     #################검색어 반영##################
         selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
         searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
-        if user_div == "Engineer":
+        if (user_div == "Engineer") or (user_div == "SO Manager") or (user_div == "QA Manager"):
             try:
                 if selecttext == "status":
                     workorderlist = workorder.objects.filter(workorder_y_n="N", status__icontains=searchtext).order_by('-date')  # db 동기화
@@ -7967,7 +8019,7 @@ def workrequest_view(request):
     #################검색어 반영##################
         selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
         searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
-        if user_div == "Engineer":
+        if (user_div == "Engineer") or (user_div == "SO Manager") or (user_div == "QA Manager"):
             try:
                 if selecttext == "status":
                     workorderlist = workorder.objects.filter(workorder_y_n="N", status__icontains=searchtext).order_by(
@@ -8055,7 +8107,7 @@ def workrequest_receive(request):
     #################검색어 반영##################
         selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
         searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
-        if user_div == "Engineer":
+        if (user_div == "Engineer") or (user_div == "SO Manager") or (user_div == "QA Manager"):
             try:
                 if selecttext == "status":
                     workorderlist = workorder.objects.filter(workorder_y_n="N", status__icontains=searchtext).order_by(
@@ -8162,7 +8214,7 @@ def workrequest_r_t_accept(request):
             #################검색어 반영##################
                 selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
                 searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
-                if user_div == "Engineer":
+                if (user_div == "Engineer") or (user_div == "SO Manager") or (user_div == "QA Manager"):
                     try:
                         if selecttext == "status":
                             workorderlist = workorder.objects.filter(workorder_y_n="N",
@@ -8219,7 +8271,7 @@ def workrequest_r_t_accept(request):
     #################검색어 반영##################
         selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
         searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
-        if user_div == "Engineer":
+        if (user_div == "Engineer") or (user_div == "SO Manager") or (user_div == "QA Manager"):
             try:
                 if selecttext == "status":
                     workorderlist = workorder.objects.filter(workorder_y_n="N", status__icontains=searchtext).order_by(
@@ -8342,7 +8394,7 @@ def workrequest_r_s_accept(request):
                     #################검색어 반영##################
                         selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
                         searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
-                        if user_div == "Engineer":
+                        if (user_div == "Engineer") or (user_div == "SO Manager") or (user_div == "QA Manager"):
                             try:
                                 if selecttext == "status":
                                     workorderlist = workorder.objects.filter(workorder_y_n="N",
@@ -8428,7 +8480,7 @@ def workrequest_r_s_accept(request):
                     #################검색어 반영##################
                        selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
                        searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
-                       if user_div == "Engineer":
+                       if (user_div == "Engineer") or (user_div == "SO Manager") or (user_div == "QA Manager"):
                            try:
                                if selecttext == "status":
                                    workorderlist = workorder.objects.filter(workorder_y_n="N",
@@ -8490,7 +8542,7 @@ def workrequest_r_s_accept(request):
     #################검색어 반영##################
             selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
             searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
-            if user_div == "Engineer":
+            if (user_div == "Engineer") or (user_div == "SO Manager") or (user_div == "QA Manager"):
                 try:
                     if selecttext == "status":
                         workorderlist = workorder.objects.filter(workorder_y_n="N", status__icontains=searchtext).order_by(
@@ -8544,7 +8596,7 @@ def workrequest_r_s_accept(request):
     #################검색어 반영##################
         selecttext = request.POST.get('selecttext')  # html 선택조건의 값을 받는다
         searchtext = request.POST.get('searchtext')  # html 입력 값을 받는다
-        if user_div == "Engineer":
+        if (user_div == "Engineer") or (user_div == "SO Manager") or (user_div == "QA Manager"):
             try:
                 if selecttext == "status":
                     workorderlist = workorder.objects.filter(workorder_y_n="N", status__icontains=searchtext).order_by(
@@ -8608,6 +8660,8 @@ def workorderlist_main(request):
         if user_div == "Engineer":
             workorderlist = workorder.objects.all().order_by('-date')  # db 동기화
         elif userteam == "QA":
+            workorderlist = workorder.objects.all().order_by('-date')  # db 동기화
+        elif user_div == "SO Manager":
             workorderlist = workorder.objects.all().order_by('-date')  # db 동기화
         else:
             workorderlist = workorder.objects.filter(team=userteam).order_by('-date')  # db 동기화
@@ -10329,7 +10383,7 @@ def approval_info_new_submit(request):
             document="Approval_info",
             time=audit_time,
             user=loginid,
-            division="Approval Registration",
+            division="New",
             new_value= division_get +"문서의 "+ description_get +"이(가) 신규등록 되었습니다." ,
         ).save()
     ##정보보내기##

@@ -81,8 +81,8 @@ text-decoration: underline;}
         font-family:arial;
      }
 #pmcontrol_table{
-        position:fixed;top:260px; left:730px;
-        font-size:14px;
+        position:fixed;top:280px; left:730px;
+        font-size:14px
         font-color:black;
         font-family:arial;
      }
@@ -366,6 +366,10 @@ a{
     <td align="center" class="t2">{{ra_prepared_len}}</td>
 </tr>
 <tr>
+    <td align="center" class="t1">Review</td>
+    <td align="center" class="t2">{{ra_review_len}}</td>
+</tr>
+<tr>
     <td align="center" class="t1">New</td>
     <td align="center" class="t2">{{ra_new_len}}</td>
 </tr>
@@ -624,7 +628,7 @@ a{
 <tr>
     <td align="center" class="m1">PM Control Form</td>
     <td align="center" class="m2">
-                    <form method="post">
+        <form method="post">
         {% csrf_token %}
         <input type="hidden" value="{{loginid}}" name="loginid">
         <input type="button" value="{{cf_reviewed_len}}" class="my_button" onclick="Pmapproval();"></form></td>
@@ -632,7 +636,7 @@ a{
 <tr>
     <td align="center" class="m1">Work Request</td>
     <td align="center" class="m2">
-                        <form method="post">
+        <form method="post">
         {% csrf_token %}
         <input type="hidden" value="{{loginid}}" name="loginid">
         <input type="button"value="{{wr_review_len}}" class="my_button" onclick="Workrequest_approval();"></form></td>
@@ -647,6 +651,66 @@ a{
 </tr>
 </table>
     {%endif%}
+
+{% if auth == "Team_M" %}
+    <table>
+<tr>
+    <td align="center" class="m1-2">Document Name</td>
+    <td align="center" class="m2-2">Number of Approval</td>
+</tr>
+<tr>
+    <td align="center" class="m1">Work Request</td>
+    <td align="center" class="m2">
+        <form action="workrequest_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value="{{loginid}}" name="loginid">
+        <input type="submit" value="{{wr_team_m_len}}" class="my_button"></form></td>
+</tr>
+</table>
+    {%endif%}
+
+{% if auth == "Staff" %}
+    <table>
+<tr>
+    <td align="center" class="m1-2">Document Name</td>
+    <td align="center" class="m2-2">Status of Work Order</td>
+</tr>
+<tr>
+    <td align="center" class="m1">Complete</td>
+    <td align="center" class="m2">{{staff_comp_len}}</td>
+</tr>
+<tr>
+    <td align="center" class="m1">Repaired</td>
+    <td align="center" class="m2">{{staff_repair_len}}</td>
+</tr>
+<tr>
+    <td align="center" class="m1">Not Repaired</td>
+    <td align="center" class="m2">{{staff_not_repair_len}}</td>
+</tr>
+<tr>
+    <td align="center" class="m1">Reject</td>
+    <td align="center" class="m2">{{staff_reject_len}}</td>
+</tr>
+</table>
+{%endif%}
+
+{% if auth == "SO_E" %}
+<table>
+<tr>
+    <td align="center" class="m1-2">Document Name</td>
+    <td align="center" class="m2-2">Number of Approval</td>
+</tr>
+<tr>
+    <td align="center" class="m1">Work Request</td>
+    <td align="center" class="m2">
+        <form action="workrequest_main" method="post">
+        {% csrf_token %}
+        <input type="hidden" value="{{loginid}}" name="loginid">
+        <input type="submit" value="{{wr_soe_len}}" class="my_button"></form></td>
+</tr>
+</table>
+{%endif%}
+
 </div>
 
 <div id="date">
