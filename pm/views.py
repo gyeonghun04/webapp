@@ -3394,12 +3394,13 @@ def pmcheckapproval_approve_accept(request):
             pass
     #####pm check sheet업데이트#####
         pm_upload = pmchecksheet.objects.filter(pmcode=pmcode)
-        pmcode_upload = pm_upload.values('pmcode')  # sql문 dataframe으로 변경
+        pmcode_upload = pm_upload.values('pmcode','itemcode')  # sql문 dataframe으로 변경
         df_pmcode_upload = pd.DataFrame.from_records(pmcode_upload)
         df_pmcode_upload_len = len(df_pmcode_upload.index)  # 일정 숫자로 변환
         for k in range(df_pmcode_upload_len):
             pmcode_upload = df_pmcode_upload.iat[k, 0]
-            pm_upload_save = pmchecksheet.objects.get(pmcode=pmcode_upload)
+            itemcode_upload = df_pmcode_upload.iat[k, 1]
+            pm_upload_save = pmchecksheet.objects.get(itemcode=itemcode_upload,pmcode=pmcode_upload)
             pm_upload_save.result = pm_upload_save.result_temp
             pm_upload_save.pass_y = pm_upload_save.pass_y_temp
             pm_upload_save.fail_y = pm_upload_save.fail_y_temp
@@ -12076,6 +12077,7 @@ def partslist_pm_cal(request):
         no_get = df_year_get.iat[i, 0]
         info_get = parts_pm.objects.get(no=no_get)
         info_get.plan_date="" ##plan_date 값 리셋하기
+        info_get.save()
         freq = info_get.freq #주기값 불러오기
         plan_date = info_get.sch
         if (freq[:2] == "10") or (freq[:2] == "11") or (freq[:2] == "12"): ##계산식 할수있게 값 변형하기
@@ -12164,6 +12166,7 @@ def spareparts_short_main(request):
         ##금년도sch인거 업데이트하기##
         today = date.datetime.today()
         today_year = "20" + today.strftime('%y')  # 올해 년도 구하기
+        this_month = today.strftime('%m')
         year_get = parts_pm.objects.all()
         year_get = year_get.values('no')
         df_year_get = pd.DataFrame.from_records(year_get)
@@ -12172,6 +12175,8 @@ def spareparts_short_main(request):
             no_get = df_year_get.iat[i, 0]
             info_get = parts_pm.objects.get(no=no_get)
             info_get.plan_date = ""  ##plan_date 값 리셋하기
+            info_get.qy_plan = 0
+            info_get.save()
             freq = info_get.freq  # 주기값 불러오기
             plan_date = info_get.sch
             if (freq[:2] == "10") or (freq[:2] == "11") or (freq[:2] == "12"):  ##계산식 할수있게 값 변형하기
@@ -12179,7 +12184,7 @@ def spareparts_short_main(request):
             else:
                 f_num = freq[:1]
             f_m_y = freq[2:4]
-            next_year = int(today_year) + 2
+            next_year = int(today_year) + 1
             year_chk = today_year
             plan_date_y = plan_date[:4]  ##년도
             plan_date_m = plan_date[5:]  ##월
@@ -12194,45 +12199,48 @@ def spareparts_short_main(request):
                     plan_date_y = plan_date[:4]
                     plan_date_m = plan_date[5:]
                     plan_date = date.datetime(int(plan_date_y), int(plan_date_m), 1)
-                    if int(next_plandate[:4]) == int(today_year) + 1:
-                        qy_count = qy_count + 1
-                        info_get.plan_date = info_get.plan_date + " [" + next_plandate + "] "
-                        info_get.qy_plan = int(qy_count) * int(info_get.qy)
-                        info_get.save()
-            if freq == "1Year":  ##주기가 1년일 경우
-                next_plan = plan_date + relativedelta(years=1)
+                    if int(next_plandate[:4]) == int(today_year):
+                        if (int(next_plandate[5:7]) > int(this_month)) or (int(next_plandate[5:7]) == int(this_month)):
+                            qy_count = qy_count + 1
+                            info_get.plan_date = info_get.plan_date + " [" + next_plandate + "] "
+                            info_get.qy_plan = int(qy_count) * int(info_get.qy)
+                            info_get.save()
+            else:  ##주기가 년일 경우
+                next_plan = plan_date + relativedelta(years=int(f_num))
                 next_plandate = "20" + next_plan.strftime('%y') + "-" + next_plan.strftime('%m')
-                if int(next_plandate[:4]) == int(today_year) + 1:
-                    info_get.plan_date = next_plandate
-                    info_get.save()
+                if int(next_plandate[:4]) == int(today_year):
+                    if (int(next_plandate[5:7]) > int(this_month)) or (int(next_plandate[5:7]) == int(this_month)):
+                        info_get.plan_date = next_plandate
+                        info_get.qy_plan = int(info_get.qy)
+                        info_get.save()
         next_year = int(today_year) + 1
         ##수량계산하기##
         ##리셋##
-        reset = spare_parts_list.objects.filter(~Q(req_qy=0))
+        reset = spare_parts_list.objects.all()
         reset = reset.values('codeno')
         df_reset = pd.DataFrame.from_records(reset)
         reset_len = len(df_reset.index)
         for m in range(reset_len):
             codeno_get = df_reset.iat[m, 0]
             reset_get = spare_parts_list.objects.get(codeno=codeno_get)
-            reset_get.req_qy = ""
-            reset_get.short_qy = ""
+            reset_get.req_qy = 0
+            reset_get.short_qy = 0
             reset_get.save()
         ##수량입력##
-        spare_check = parts_pm.objects.filter(plan_date__icontains=next_year).values('codeno').annotate(Sum('qy_plan'))
+        spare_check = parts_pm.objects.filter(plan_date__icontains=today_year).values('codeno').annotate(Sum('qy_plan'))
         spare_check = spare_check.values('codeno', 'qy_plan__sum')
         df_spare_check = pd.DataFrame.from_records(spare_check)
         spare_check_len = len(df_spare_check.index)
         for j in range(spare_check_len):
             codeno_get = df_spare_check.iat[j, 0]
             qy_get = spare_parts_list.objects.get(codeno=codeno_get)
-            qy_get.req_qy = int(df_spare_check.iat[j, 1])
+            qy_get.req_qy = int(df_spare_check.iat[j, 1]) ####qy_plan__sum
             qy_get.short_qy = int(qy_get.stock) - int(qy_get.req_qy)
             qy_get.save()
         total = ""
         pm = "checked"
         short = ""
-        parts_list = spare_parts_list.objects.filter(short_qy__icontains="-")
+        parts_list = spare_parts_list.objects.filter(Q(short_qy__icontains="-")&~Q(req_qy=0))
     elif type =="short":
         short_cal = spare_parts_list.objects.all()
         short_cal = short_cal.values('codeno')
